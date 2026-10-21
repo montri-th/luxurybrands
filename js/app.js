@@ -1,4 +1,4 @@
-import {SEGMENTS,CHANNELS,filterRows,summarize,pointFeatures,hasPoint,isClosed,toCSV,safeURL} from './model.js';
+import {SEGMENTS,CHANNELS,filterRows,summarize,pointFeatures,hasPoint,isClosed,safeURL} from './model.js';
 import {renderInsightChart} from './charts.js';
 import {installStorePins} from './pins.js';
 import {installVenueBuildings} from './buildings.js';
@@ -112,7 +112,6 @@ async function init(){
   document.querySelector('.skip').onclick=()=>{openMobilePanel();$('dataset-title').focus();};
   $('toggle-insights').onclick=()=>{const open=$('insight-content').hidden;$('insight-content').hidden=!open;$('insights').classList.toggle('is-collapsed',!open);$('toggle-insights').setAttribute('aria-expanded',String(open));$('toggle-insights').textContent=open?'ย่อกราฟ ↓':'เปิดกราฟ ↑';requestAnimationFrame(()=>{document.documentElement.style.setProperty('--bottom-panel-height',`${$('insights').getBoundingClientRect().height}px`);state.pins?.layout();updateLabels();drawChart();});};
   const insightSize=new ResizeObserver(()=>{document.documentElement.style.setProperty('--bottom-panel-height',`${$('insights').getBoundingClientRect().height}px`);state.pins?.layout();updateLabels();});insightSize.observe($('insights'));
-  $('export').onclick=()=>{const blob=new Blob([toCSV(state.rows)],{type:'text/csv;charset=utf-8'}),a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download='citymeter-luxury-selected-2026-10-21.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
   $('open-table').onclick=()=>{$('results').hidden=false;closeMobilePanel();$('toggle-table').focus();};$('toggle-table').onclick=()=>{$('results').hidden=true;$('open-table').focus();};
   $('prev-page').onclick=()=>{state.page--;renderTable();};$('next-page').onclick=()=>{state.page++;renderTable();};update();initMap();
  }catch(e){$('load-error').hidden=false;$('load-error').textContent='โหลดข้อมูลไม่สำเร็จ กรุณาเปิดผ่านเว็บเซิร์ฟเวอร์ หรือดูข้อมูลใน repository';console.error(e);}
