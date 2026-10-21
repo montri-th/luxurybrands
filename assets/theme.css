@@ -1,17 +1,61 @@
-/* Applied values used by this demo only. Exact LDS 0.9.7 values; no normative library or full analytical scales are distributed. */
+/* Applied LDS 0.9.7 values used by this demo (release v0.9.7-owner.1, color-srgb-10).
+   Every value below is copied exactly from machine.tokens / machine.analyticalScales
+   of Landometer-Design-System-v0.9.7.md (SHA-256 d3085cbc…96). No derived colours.
+   Scope: UI foundation pairs, categorical series 1–10, map/data-state roles and the
+   five-class projection of the `count` sequential family. The full LDS library and
+   the remaining analytical scales are intentionally not distributed here. */
+
 :root {
+  /* Foundation — light */
   --surface-canvas: #F6F7F3;
   --surface-alt: #EEF1EE;
   --surface-card: #FCFCFA;
   --surface-raised: #FFFFFF;
   --surface-soft: #E5E9E6;
+  --surface-blue-tint: #E2E9ED;
+  --surface-beige-tint: #F2F1DF;
   --text-primary: #182327;
   --text-secondary: #5F635A;
   --text-metadata: #5C6A61;
   --text-muted: #7B877D;
-  --border-default: #C9D0CB;
+  --text-disabled: #A7B3A9;
   --border-hairline: #DCE1DD;
+  --border-default: #C9D0CB;
+  --border-emphasis: #7D877F;
+  --interaction-accent: #176B82;
   --interaction-focus-ring: #176B82;
+
+  /* Brand identity (portfolio) */
+  --brand-blue: #1D4497;
+  --brand-beige: #F2F1DF;
+
+  /* Semantic states — light (surface / content) */
+  --state-info-surface: #E8EEF0;
+  --state-info-content: #176B82;
+  --state-pending-surface: #F3EEDB;
+  --state-pending-content: #5C6A61;
+  --state-neutral-surface: #ECE4D2;
+  --state-neutral-content: #5F635A;
+  --state-warning-surface: #FFF1D1;
+  --state-warning-content: #A64A00;
+  --state-danger-surface: #FCE5DF;
+  --state-danger-content: #B43A3A;
+  --state-success-surface: #E2F4E5;
+  --state-success-content: #126B49;
+
+  /* Map roles — light */
+  --map-active-layer: #347DA8;
+  --map-hover-stroke: #347DA8;
+  --map-selected-stroke: #176B82;
+  --map-focus-stroke: #176B82;
+  --map-marker-halo: #FFFFFF;
+  --map-marker-stroke: #182327;
+
+  /* Data-state roles — light */
+  --data-no-data: #D5DAD6;
+  --data-zero-outline: #7D877F;
+
+  /* Categorical series landometer-series-10-v8 — light soft fill / ink */
   --series-1-fill: #D88381;
   --series-1-ink: #963538;
   --series-2-fill: #E39B6E;
@@ -28,21 +72,67 @@
   --series-7-ink: #006967;
   --series-8-fill: #6196D1;
   --series-8-ink: #0E599D;
+  --series-9-fill: #8AA4AA;
+  --series-9-ink: #355F6A;
+  --series-10-fill: #82AC79;
+  --series-10-ink: #34622A;
   --chart-on-fill: #182327;
+
+  /* Sequential family `count` (totals, unit = brands) — five classes, same on both themes */
+  --scale-count-1: #F4F0E7;
+  --scale-count-2: #BAD5D4;
+  --scale-count-3: #7DBAC0;
+  --scale-count-4: #4C7A98;
+  --scale-count-5: #213E70;
+  --scale-count-ink-on-1: #182327;
+  --scale-count-ink-on-2: #182327;
+  --scale-count-ink-on-3: #182327;
+  --scale-count-ink-on-4: #FFFFFF;
+  --scale-count-ink-on-5: #FFFFFF;
 }
+
 :root[data-theme="dark"] {
   --surface-canvas: #11191D;
   --surface-alt: #172126;
   --surface-card: #20292D;
   --surface-raised: #293337;
   --surface-soft: #2B3534;
+  --surface-blue-tint: #18333E;
+  --surface-beige-tint: #2C2A22;
   --text-primary: #F1F4EF;
   --text-secondary: #C4CECA;
   --text-metadata: #A6B5B1;
   --text-muted: #8D9D99;
-  --border-default: #46524F;
+  --text-disabled: #71817D;
   --border-hairline: #33403D;
+  --border-default: #46524F;
+  --border-emphasis: #7C8A84;
+  --interaction-accent: #68C4E2;
   --interaction-focus-ring: #68C4E2;
+
+  --state-info-surface: #18333E;
+  --state-info-content: #68C4E2;
+  --state-pending-surface: #2C2A22;
+  --state-pending-content: #D8CFB2;
+  --state-neutral-surface: #2B3534;
+  --state-neutral-content: #C4CECA;
+  --state-warning-surface: #3B2E16;
+  --state-warning-content: #F5C15C;
+  --state-danger-surface: #3A1F21;
+  --state-danger-content: #FF7C72;
+  --state-success-surface: #17362D;
+  --state-success-content: #72E8C4;
+
+  --map-active-layer: #65B6DB;
+  --map-hover-stroke: #65B6DB;
+  --map-selected-stroke: #68C4E2;
+  --map-focus-stroke: #68C4E2;
+  --map-marker-halo: #101318;
+  --map-marker-stroke: #F1F4EF;
+
+  --data-no-data: #404844;
+  --data-zero-outline: #93A398;
+
   --series-1-fill: #E37A84;
   --series-1-ink: #FF4F6D;
   --series-2-fill: #F59B62;
@@ -59,5 +149,11 @@
   --series-7-ink: #00B6AB;
   --series-8-fill: #5A8CDA;
   --series-8-ink: #5396FF;
+  --series-9-fill: #BFD4E7;
+  --series-9-ink: #C0DBF4;
+  --series-10-fill: #5B9455;
+  --series-10-ink: #3CA633;
   --chart-on-fill: #182327;
+
+  /* DATAVIZ-03: analytical values keep the approved light HEX on dark surfaces. */
 }

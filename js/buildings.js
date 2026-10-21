@@ -21,13 +21,15 @@ function list(value) {
 }
 
 function colors(theme) {
-  // Fallbacks are the exact series-8 values already distributed in assets/theme.css.
+  // Host buildings are map context, not a category: LDS map.activeLayer role
+  // (light #347DA8 / dark #65B6DB) with the selected-stroke role for outlines.
+  // Fallbacks are the exact values already distributed in assets/theme.css.
   const dark = theme === 'dark';
   const style = typeof document !== 'undefined' && typeof getComputedStyle === 'function'
     ? getComputedStyle(document.documentElement) : null;
   return {
-    fill: style?.getPropertyValue('--series-8-fill').trim() || (dark ? '#5A8CDA' : '#6196D1'),
-    ink: style?.getPropertyValue('--series-8-ink').trim() || (dark ? '#5396FF' : '#0E599D'),
+    fill: style?.getPropertyValue('--map-active-layer').trim() || (dark ? '#65B6DB' : '#347DA8'),
+    ink: style?.getPropertyValue('--map-selected-stroke').trim() || (dark ? '#68C4E2' : '#176B82'),
   };
 }
 
@@ -82,7 +84,7 @@ export function installVenueBuildings(map, geojson, options = {}) {
       'fill-extrusion-color': palette.fill,
       'fill-extrusion-height': ['get', 'display_height_m'],
       'fill-extrusion-base': ['get', 'display_base_m'],
-      'fill-extrusion-opacity': 1,
+      'fill-extrusion-opacity': 0.92,
       'fill-extrusion-vertical-gradient': true,
     },
   }, before);

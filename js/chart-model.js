@@ -1,4 +1,4 @@
-import {summarizeNeighborhoods} from './neighborhoods.js?v=20261021-r5';
+import {summarizeNeighborhoods} from './neighborhoods.js';
 
 const text = value => String(value ?? '').trim();
 const uniqueBrands = rows => new Set(rows.map(row => text(row.brand)).filter(Boolean));

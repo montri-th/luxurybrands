@@ -1,136 +1,126 @@
 /**
- * Selected neighborhood presence, amCharts 5.20.8. Official examples reviewed 2026-10-21:
- * https://www.amcharts.com/demos/bar-chart/
- * https://www.amcharts.com/demos/bubble-based-heat-map/
- * https://www.amcharts.com/demos/stacked-bar-chart/
- * Values come only from committed, filtered rows. No demo data or animation.
+ * Neighborhood charts rendered as plain HTML/SVG — no chart vendor.
+ *
+ * Three views share one model (chart-model.js) and the committed selection:
+ *  - ranking  (view key `centers`, kept for URL compatibility): distinct brands per area
+ *  - mix      : area × segment matrix of distinct brands (numeric heat table)
+ *  - compare  : exclusive vs shared brands per area, stacked bars
+ *
+ * Colour: ranking bars and matrix cells use the LDS `count` family (same HEX on
+ * both themes, see scales.js) so the chart reads with the map legend. Compare
+ * uses two categorical series with their non-colour cues. Every mark is a real
+ * <button>, so keyboard and screen-reader users get the same actions as pointer
+ * users. Every click emits {type:'neighborhood', id}; the empty compare state
+ * emits {type:'resetAreas'}.
  */
-import {buildNeighborhoodChartModel, neighborhoodMatrix, bubbleRadius} from './chart-model.js?v=20261021-r5';
-const roots = new Map();
-const FONT = 'Bai Jamjuree', DIGITS = 'JetBrains Mono';
+import {buildNeighborhoodChartModel, neighborhoodMatrix} from './chart-model.js';
+import {buildCountClasses, classify} from './scales.js';
+import {SEGMENT_SHORT} from './model.js';
+
 const NUMBER = new Intl.NumberFormat('th-TH', {maximumFractionDigits: 0});
-const INSTRUCTIONS = 'ใช้ปุ่มลูกศรเลือกข้อมูล และกด Enter เพื่อดูย่านนี้';
-const SHORT = {luxury_designer:'ดีไซเนอร์',fine_jewelry:'จิวเวลรี',watches:'นาฬิกา',upscale_streetwear:'Streetwear',thai_designer:'ดีไซน์ไทย',curated_retailer:'Multibrand',beauty_fragrance:'บิวตี้',premium_extension:'พรีเมียม',__unclassified__:'ยังไม่จัดกลุ่ม'};
-const key = value => String(value ?? '').trim();
-const escaped = value => key(value).replaceAll('[', '[[');
-function hash(value) {let result=0;for(const c of key(value))result=((result*31)+c.charCodeAt(0))>>>0;return result;}
-function readPalette(element, am5, segments) {
-  const style=getComputedStyle(element);
-  const get=name=>{const value=style.getPropertyValue(name).trim();if(!value)throw new Error(`Missing chart color token ${name}`);return am5.color(value);};
-  return {text:get('--text-primary'),metadata:get('--text-metadata'),grid:get('--border-hairline'),surface:get('--surface-raised'),onFill:get('--chart-on-fill'),
-    series:Array.from({length:8},(_,i)=>({fill:get(`--series-${i+1}-fill`),ink:get(`--series-${i+1}-ink`)})),
-    segmentIndex:new Map(segments.map((s,i)=>[key(s.id),i%8]))};
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+const num = n => NUMBER.format(n);
+
+const CUES = {
+  hexagon: '<svg viewBox="0 0 12 12" aria-hidden="true"><polygon points="6,1 10.5,3.5 10.5,8.5 6,11 1.5,8.5 1.5,3.5"/></svg>',
+  dash: '<svg viewBox="0 0 12 12" aria-hidden="true"><rect x="1" y="5" width="10" height="2.4" rx="1"/></svg>',
+};
+
+function empty(element, message, actionLabel, action) {
+  element.innerHTML = `<div class="chart-empty"><p>${esc(message)}</p>${action ? `<button type="button" class="chart-empty-action">${esc(actionLabel)}</button>` : ''}</div>`;
+  if (action) element.querySelector('.chart-empty-action').addEventListener('click', action);
 }
-function tip(root,palette,am5,text='{tooltip}') {
-  const t=am5.Tooltip.new(root,{getFillFromSprite:false,getStrokeFromSprite:false,autoTextColor:false,labelText:text});
-  t.get('background').setAll({fill:palette.surface,fillOpacity:1,stroke:palette.grid,strokeOpacity:1,cornerRadius:5});
-  t.label.setAll({fontFamily:FONT,fontWeight:'400',fontSize:13,fill:palette.text,maxWidth:300,oversizedBehavior:'wrap'});return t;
+
+function ranking(element, model, select, selectedId) {
+  const classes = buildCountClasses(model.areas.map(a => a.brands));
+  const max = Math.max(1, ...model.areas.map(a => a.brands));
+  const rows = model.areas.map((a, i) => {
+    const cls = classify(a.brands, classes);
+    const pressed = a.id === selectedId;
+    return `<li><button type="button" class="bar-row${pressed ? ' is-selected' : ''}" data-area="${esc(a.id)}" aria-pressed="${pressed}"
+      aria-label="อันดับ ${i + 1} ${esc(a.name)}: ${num(a.brands)} แบรนด์ไม่ซ้ำ, ${num(a.pos)} รายการจุดขาย กดเพื่อดูย่านนี้">
+      <span class="bar-rank data-number" aria-hidden="true">${i + 1}</span>
+      <span class="bar-label">${esc(a.name)}</span>
+      <span class="bar-track" aria-hidden="true"><span class="bar-fill" style="width:${Math.max(2, Math.round((a.brands / max) * 100))}%;background:${cls.fill}"></span></span>
+      <span class="bar-value" aria-hidden="true"><b class="data-number">${num(a.brands)}</b><small>${num(a.pos)} จุดขาย</small></span>
+    </button></li>`;
+  }).join('');
+  element.innerHTML = `<p class="chart-caption">${num(model.areaCount)} ย่านที่มีจุดขาย · เรียงตามแบรนด์ไม่ซ้ำ · หน่วย: แบรนด์ · สีตามระดับเดียวกับแผนที่</p><ol class="chart-bars">${rows}</ol>`;
+  element.querySelectorAll('[data-area]').forEach(b => b.addEventListener('click', () => select({type: 'neighborhood', id: b.dataset.area})));
 }
-function rendererStyle(renderer,palette,numeric=false) {
-  renderer.grid.template.setAll({stroke:palette.grid,strokeOpacity:1});
-  renderer.labels.template.setAll({fontFamily:numeric?DIGITS:FONT,fontWeight:'400',fontSize:12,fill:numeric?palette.metadata:palette.text,paddingTop:3,paddingBottom:3});
-  renderer.ticks.template.set('visible',false);
+
+function matrix(element, model, select, selectedId) {
+  const m = neighborhoodMatrix(model, {areaLimit: 12, segmentLimit: 8});
+  const classes = buildCountClasses(m.cells.map(c => c.brands));
+  const head = m.segments.map(s => `<th scope="col" title="${esc(s.name)}"><span class="matrix-col"><i class="category-swatch category-${segmentIndex(s.id)}" aria-hidden="true"></i>${esc(SEGMENT_SHORT[s.id] || s.name)}</span></th>`).join('');
+  const body = m.areas.map(a => {
+    const pressed = a.id === selectedId;
+    const cells = m.segments.map(s => {
+      const cell = m.cells.find(c => c.areaId === a.id && c.segmentId === s.id);
+      const brands = cell?.brands || 0, pos = cell?.pos || 0;
+      const cls = classify(brands, classes);
+      const style = cls.state === 'measured_zero'
+        ? `background:${cls.fill};color:${cls.ink};box-shadow:inset 0 0 0 2px ${cls.outline}`
+        : `background:${cls.fill};color:${cls.ink}`;
+      return `<td><button type="button" class="matrix-cell is-${cls.state}" data-area="${esc(a.id)}" style="${style}"
+        aria-label="${esc(a.name)} × ${esc(s.name)}: ${num(brands)} แบรนด์ไม่ซ้ำ, ${num(pos)} รายการจุดขาย กดเพื่อดูย่านนี้"
+        title="${esc(a.name)} × ${esc(s.name)} — ${num(brands)} แบรนด์ · ${num(pos)} จุดขาย"><span class="data-number">${num(brands)}</span></button></td>`;
+    }).join('');
+    return `<tr${pressed ? ' class="is-selected"' : ''}><th scope="row"><button type="button" class="matrix-row" data-area="${esc(a.id)}" aria-pressed="${pressed}">${esc(a.name)}<small class="data-number">${num(a.brands)}</small></button></th>${cells}</tr>`;
+  }).join('');
+  const legend = classes.classes.map(c => `<span class="legend-step"><i style="background:${c.fill}" aria-hidden="true"></i>${esc(c.label)}</span>`).join('');
+  element.innerHTML = `<p class="chart-caption">${num(m.areas.length)}/${num(m.totalAreas)} ย่าน · ${num(m.segments.length)}/${num(m.totalSegments)} กลุ่ม · ตัวเลข = แบรนด์ไม่ซ้ำในช่อง · 0 = ไม่พบในข้อมูลที่เลือก</p>
+    <div class="matrix-scroll"><table class="matrix"><thead><tr><th scope="col" class="matrix-corner">ย่าน · แบรนด์</th>${head}</tr></thead><tbody>${body}</tbody></table></div>
+    <p class="chart-legend"><span class="legend-title">ระดับสี (แบรนด์ในช่อง):</span>${legend}<span class="legend-step"><i class="legend-zero" aria-hidden="true"></i>0</span></p>`;
+  element.querySelectorAll('[data-area]').forEach(b => b.addEventListener('click', () => select({type: 'neighborhood', id: b.dataset.area})));
 }
-function empty(element,message,action) {
-  const content=document.createElement('div');content.className='chart-empty';
-  content.style.cssText='display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;height:100%;padding:12px;font:400 14px "Bai Jamjuree",sans-serif;color:var(--text-metadata);text-align:center;';
-  const p=document.createElement('p');p.textContent=message;content.append(p);
-  if(action){const b=document.createElement('button');b.type='button';b.textContent='ดูทุกย่าน';b.onclick=action;content.append(b);}
-  element.replaceChildren(content);let disposed=false;
-  return()=>{if(!disposed&&content.parentNode===element)content.remove();disposed=true;};
+
+function compare(element, model, select, selectedId) {
+  const max = Math.max(1, ...model.areas.map(a => a.brands));
+  const rows = model.areas.map(a => {
+    const pressed = a.id === selectedId;
+    const ex = Math.round((a.exclusiveBrands / max) * 100), sh = Math.round((a.sharedBrands / max) * 100);
+    return `<li><button type="button" class="bar-row stacked${pressed ? ' is-selected' : ''}" data-area="${esc(a.id)}" aria-pressed="${pressed}"
+      aria-label="${esc(a.name)}: เฉพาะย่านนี้ ${num(a.exclusiveBrands)} แบรนด์, พบในย่านอื่นด้วย ${num(a.sharedBrands)} แบรนด์ จากทั้งหมด ${num(a.brands)} แบรนด์ กดเพื่อดูย่านนี้">
+      <span class="bar-label">${esc(a.name)}</span>
+      <span class="bar-track" aria-hidden="true">
+        <span class="bar-fill seg-exclusive" style="width:${ex}%">${a.exclusiveBrands ? `<span>${num(a.exclusiveBrands)}</span>` : ''}</span><span class="bar-fill seg-shared" style="width:${sh}%">${a.sharedBrands ? `<span>${num(a.sharedBrands)}</span>` : ''}</span>
+      </span>
+      <span class="bar-value" aria-hidden="true"><b class="data-number">${num(a.brands)}</b><small>แบรนด์</small></span>
+    </button></li>`;
+  }).join('');
+  element.innerHTML = `<p class="chart-caption">เทียบ ${num(model.areaCount)} ย่านที่มีจุดขายในข้อมูลที่เลือก · หน่วย: แบรนด์</p>
+    <p class="chart-legend"><span class="legend-item"><i class="cue seg-exclusive">${CUES.hexagon}</i>เฉพาะย่านนี้</span><span class="legend-item"><i class="cue seg-shared">${CUES.dash}</i>พบในย่านอื่นด้วย</span></p>
+    <ol class="chart-bars">${rows}</ol>`;
+  element.querySelectorAll('[data-area]').forEach(b => b.addEventListener('click', () => select({type: 'neighborhood', id: b.dataset.area})));
 }
-function caption(root,text,palette,am5) {
-  root.container.children.push(am5.Label.new(root,{text,fontFamily:FONT,fontSize:12,fontWeight:'400',fill:palette.metadata,paddingLeft:0,paddingTop:0,paddingBottom:4,maxWidth:am5.p100,oversizedBehavior:'truncate'}));
-}
-const rowLimit=(element,extra=0)=>Math.max(2,Math.min(8,Math.floor((element.clientHeight-49-extra)/25)||3));
-const selectArea=(callback,area)=>callback({type:'neighborhood',id:area.id??area.areaId});
-function barAxes(root,element,palette,am5,xy) {
-  const chart=root.container.children.push(xy.XYChart.new(root,{width:am5.p100,height:am5.p100,panX:false,panY:false,wheelX:'none',wheelY:'none',paddingLeft:0,paddingRight:30,paddingTop:0,paddingBottom:0}));
-  const yr=xy.AxisRendererY.new(root,{inversed:true,minGridDistance:18,cellStartLocation:0.18,cellEndLocation:0.82});rendererStyle(yr,palette);yr.grid.template.set('visible',false);
-  yr.labels.template.setAll({maxWidth:Math.max(98,Math.min(180,element.clientWidth*0.28)),oversizedBehavior:'truncate',ellipsis:'…',textAlign:'right',paddingRight:8});
-  const yAxis=chart.yAxes.push(xy.CategoryAxis.new(root,{categoryField:'category',renderer:yr}));
-  const xr=xy.AxisRendererX.new(root,{minGridDistance:48});rendererStyle(xr,palette,true);
-  const xAxis=chart.xAxes.push(xy.ValueAxis.new(root,{min:0,maxPrecision:0,extraMax:0.08,numberFormat:'#,###',renderer:xr}));
-  return {chart,xAxis,yAxis};
-}
-function columnStyle(series,palette,callback,group) {
-  series.columns.template.setAll({fillOpacity:1,stroke:palette.surface,strokeOpacity:1,strokeWidth:1,tooltipText:'{tooltip}',cursorOverStyle:'pointer',focusable:true,hoverOnFocus:true,role:'button',focusableGroup:group,ariaLabel:`{categoryY}: {brands} แบรนด์ไม่ซ้ำ ${INSTRUCTIONS}`});
-  series.columns.template.events.on('click',e=>{const area=e.target.dataItem?.dataContext;if(area)selectArea(callback,area);});
-}
-function ranking(root,element,model,palette,callback,am5,xy) {
-  const data=model.areas.slice(0,rowLimit(element)).map(area=>({...area,category:escaped(area.name),tooltip:`${escaped(area.name)}\n${NUMBER.format(area.brands)} แบรนด์ไม่ซ้ำ · ${NUMBER.format(area.pos)} รายการจุดขาย\nกดเพื่อดูย่านนี้บนแผนที่`}));
-  caption(root,`${data.length}/${model.areaCount} ย่าน · เรียงตามแบรนด์ไม่ซ้ำ`,palette,am5);
-  const {chart,xAxis,yAxis}=barAxes(root,element,palette,am5,xy);chart.set('ariaLabel','อันดับย่านตามจำนวนแบรนด์ไม่ซ้ำ หน่วยแบรนด์');
-  const series=chart.series.push(xy.ColumnSeries.new(root,{name:'แบรนด์ไม่ซ้ำ',xAxis,yAxis,baseAxis:yAxis,valueXField:'brands',categoryYField:'category',fill:palette.series[0].fill,stroke:palette.surface,tooltip:tip(root,palette,am5),interpolationDuration:0}));
-  columnStyle(series,palette,callback,'luxury-area-ranking');series.columns.template.setAll({cornerRadiusTR:3,cornerRadiusBR:3});
-  series.bullets.push(()=>am5.Bullet.new(root,{locationX:1,sprite:am5.Label.new(root,{text:'{valueX}',populateText:true,centerY:am5.p50,dx:4,fontFamily:DIGITS,fontSize:12,fill:palette.text})}));
-  yAxis.data.setAll(data);series.data.setAll(data);
-}
-function matrix(root,element,model,palette,callback,am5,xy) {
-  const labelWidth=Math.max(96,Math.min(165,element.clientWidth*0.28));
-  const maxSegments=Math.max(2,Math.min(8,Math.floor((element.clientWidth-labelWidth-14)/65)));
-  const m=neighborhoodMatrix(model,{areaLimit:rowLimit(element),segmentLimit:maxSegments});
-  caption(root,`${m.areas.length}/${m.totalAreas} ย่าน · ${m.segments.length}/${m.totalSegments} กลุ่ม · ขนาดวง = แบรนด์`,palette,am5);
-  const chart=root.container.children.push(xy.XYChart.new(root,{width:am5.p100,height:am5.p100,panX:false,panY:false,wheelX:'none',wheelY:'none',paddingLeft:0,paddingRight:5,paddingTop:0,paddingBottom:0,ariaLabel:'กลุ่มแบรนด์ในแต่ละย่าน พื้นที่วงกลมแทนจำนวนแบรนด์ไม่ซ้ำ สีแทนกลุ่มแบรนด์'}));
-  const yr=xy.AxisRendererY.new(root,{inversed:true,minGridDistance:18}),xr=xy.AxisRendererX.new(root,{minGridDistance:20});rendererStyle(yr,palette);rendererStyle(xr,palette);
-  yr.grid.template.set('visible',false);yr.labels.template.setAll({maxWidth:labelWidth,oversizedBehavior:'truncate',ellipsis:'…',paddingRight:8});
-  xr.grid.template.setAll({location:0.5,strokeDasharray:[2,4]});xr.labels.template.setAll({maxWidth:76,oversizedBehavior:'truncate',ellipsis:'…',textAlign:'center',fontSize:12});
-  const yAxis=chart.yAxes.push(xy.CategoryAxis.new(root,{categoryField:'areaId',renderer:yr})),xAxis=chart.xAxes.push(xy.CategoryAxis.new(root,{categoryField:'segmentId',renderer:xr}));
-  yr.labels.template.adapters.add('text',(v,t)=>escaped(t.dataItem?.dataContext?.name||v));xr.labels.template.adapters.add('text',(v,t)=>escaped(t.dataItem?.dataContext?.label||v));
-  const series=chart.series.push(xy.ColumnSeries.new(root,{xAxis,yAxis,categoryXField:'segmentId',categoryYField:'areaId',valueField:'brands',clustered:false,interpolationDuration:0}));series.columns.template.set('forceHidden',true);
-  const bullets=[];let maxRadius=10;
-  series.bullets.push((_root,_series,item)=>{
-    const cell=item.dataContext,color=palette.series[palette.segmentIndex.get(cell.segmentId)??hash(cell.segmentId)%8],count=NUMBER.format(cell.brands);
-    const text=`${escaped(cell.areaName)} · ${escaped(cell.segmentName)}\n${count} แบรนด์ไม่ซ้ำ · ${NUMBER.format(cell.pos)} รายการจุดขาย\nกดเพื่อดูย่านนี้บนแผนที่`;
-    const sprite=am5.Container.new(root,{width:24,height:24,centerX:am5.p50,centerY:am5.p50,background:am5.Rectangle.new(root,{fill:palette.surface,fillOpacity:0}),tooltipText:text,tooltip:tip(root,palette,am5,text),cursorOverStyle:'pointer',focusable:true,hoverOnFocus:true,role:'button',focusableGroup:'luxury-area-matrix',ariaLabel:`${escaped(cell.areaName)} ${escaped(cell.segmentName)} ${count} แบรนด์ไม่ซ้ำ ${INSTRUCTIONS}`});
-    const circle=sprite.children.push(am5.Circle.new(root,{x:12,y:12,radius:bubbleRadius(cell.brands,m.maxBrands,maxRadius),fill:color.fill,fillOpacity:1,stroke:palette.grid,strokeOpacity:1,strokeWidth:1,interactive:false}));
-    const label=sprite.children.push(am5.Label.new(root,{x:12,y:12,centerX:am5.p50,centerY:am5.p50,text:count,fontFamily:DIGITS,fontSize:12,fill:cell.brands?palette.onFill:palette.metadata,interactive:false,visible:!cell.brands||circle.get('radius')>=10}));
-    sprite.events.on('click',()=>selectArea(callback,cell));bullets.push({circle,label,cell});return am5.Bullet.new(root,{sprite});
-  });
-  chart.plotContainer.events.on('boundschanged',()=>{
-    maxRadius=Math.max(0,Math.min(15,chart.plotContainer.width()/Math.max(1,m.segments.length)*0.33,chart.plotContainer.height()/Math.max(1,m.areas.length)*0.38));
-    for(const b of bullets){const radius=bubbleRadius(b.cell.brands,m.maxBrands,maxRadius);b.circle.set('radius',radius);b.label.set('visible',!b.cell.brands||radius>=10);}
-  });
-  xAxis.data.setAll(m.segments.map(s=>({...s,segmentId:s.id,label:SHORT[s.id]||s.name})));yAxis.data.setAll(m.areas.map(a=>({...a,areaId:a.id})));series.data.setAll(m.cells);
-}
-function overlap(root,element,model,palette,callback,am5,xy) {
-  caption(root,`เทียบ ${model.areaCount} ย่านที่มีจุดขาย · หน่วยแบรนด์`,palette,am5);
-  const legend=root.container.children.push(am5.Legend.new(root,{width:am5.p100,layout:root.horizontalLayout,marginBottom:2,paddingTop:0,paddingBottom:0}));
-  legend.labels.template.setAll({fontFamily:FONT,fontSize:12,fill:palette.text});legend.valueLabels.template.set('forceHidden',true);legend.markers.template.setAll({width:9,height:9});
-  legend.itemContainers.template.setAll({paddingTop:0,paddingBottom:2,paddingLeft:0,paddingRight:10,interactive:false,focusable:false});
-  const data=model.areas.slice(0,rowLimit(element,20)).map(a=>({...a,category:escaped(a.name),tooltip:`${escaped(a.name)}\nเฉพาะย่านนี้ ${NUMBER.format(a.exclusiveBrands)} แบรนด์\nพบในย่านอื่นด้วย ${NUMBER.format(a.sharedBrands)} แบรนด์\nเทียบ ${model.areaCount} ย่านในข้อมูลที่เลือก\nกดเพื่อดูย่านนี้บนแผนที่`}));
-  const {chart,xAxis,yAxis}=barAxes(root,element,palette,am5,xy);chart.set('ariaLabel',`แบรนด์เฉพาะย่านและแบรนด์ที่พบร่วมกับย่านอื่น เทียบ ${model.areaCount} ย่านในข้อมูลที่เลือก`);
-  const definitions=[{name:'เฉพาะย่านนี้',field:'exclusiveBrands',color:palette.series[1].fill},{name:'พบในย่านอื่นด้วย',field:'sharedBrands',color:palette.series[7].fill}];
-  for(const d of definitions){
-    const series=chart.series.push(xy.ColumnSeries.new(root,{name:d.name,xAxis,yAxis,baseAxis:yAxis,stacked:true,valueXField:d.field,categoryYField:'category',fill:d.color,stroke:palette.surface,tooltip:tip(root,palette,am5),interpolationDuration:0}));
-    columnStyle(series,palette,callback,`luxury-area-${d.field}`);series.columns.template.set('ariaLabel',`{categoryY} ${d.name}: {valueX} แบรนด์ เทียบ ${model.areaCount} ย่าน ${INSTRUCTIONS}`);
-    if(d.field==='sharedBrands')series.bullets.push(()=>am5.Bullet.new(root,{locationX:1,sprite:am5.Label.new(root,{text:'{brands}',populateText:true,centerY:am5.p50,dx:4,fontFamily:DIGITS,fontSize:12,fill:palette.text})}));
-    series.data.setAll(data);legend.data.push(series);
-  }
-  yAxis.data.setAll(data);
-}
+
+const SEGMENT_ORDER = ['luxury_designer', 'fine_jewelry', 'watches', 'upscale_streetwear', 'thai_designer', 'curated_retailer', 'beauty_fragrance', 'premium_extension'];
+const segmentIndex = id => Math.max(0, SEGMENT_ORDER.indexOf(id) + 1);
+
 /**
- * Existing view keys are retained. All mark clicks emit {type:'neighborhood',id};
- * a comparison with fewer than two areas offers {type:'resetAreas'}.
- * centers remains an accepted compatibility field; frozen GeoJSON owns membership.
+ * Render one view into #elementId. Returns an idempotent disposer.
+ * `view` accepts `centers` (ranking), `mix` and `compare`.
  */
-export function renderInsightChart({elementId,view='centers',rows=[],centers=[],segments=[],neighborhoods,theme}={},onSelect=()=>{}) {
-  roots.get(elementId)?.();const element=document.getElementById(elementId);if(!element)return()=>{};element.replaceChildren();
-  const select=typeof onSelect==='function'?onSelect:()=>{};
-  const keepEmpty=(message,action)=>{const remove=empty(element,message,action);const cleanup=()=>{remove();if(roots.get(elementId)===cleanup)roots.delete(elementId);};roots.set(elementId,cleanup);return cleanup;};
-  if(!Array.isArray(rows)||!rows.length)return keepEmpty('ไม่พบรายการจุดขายตามตัวกรองนี้');
-  const model=buildNeighborhoodChartModel(rows,neighborhoods,segments);
-  if(view==='compare'&&model.areaCount<2)return keepEmpty('เลือกอย่างน้อย 2 ย่านเพื่อเปรียบเทียบ',()=>select({type:'resetAreas'}));
-  if(!model.areaCount)return keepEmpty('ยังไม่มีย่านสำหรับกราฟนี้ ดูจุดขายบนแผนที่หรือตาราง');
-  const am5=globalThis.am5,xy=globalThis.am5xy;if(!am5||!xy)return keepEmpty('กราฟยังโหลดไม่สำเร็จ โปรดดูข้อมูลเดียวกันในตาราง');
-  const label=view==='mix'?'กลุ่มแบรนด์ในแต่ละย่าน':view==='compare'?'แบรนด์เฉพาะย่านและแบรนด์ที่พบร่วมกัน':'ย่านเรียงตามจำนวนแบรนด์ไม่ซ้ำ';
-  element.setAttribute('aria-label',label);if(theme)element.dataset.chartTheme=theme;
-  let root,disposed=false;const dispose=()=>{if(disposed)return;disposed=true;root?.dispose();if(roots.get(elementId)===dispose)roots.delete(elementId);};
-  try{
-    root=am5.Root.new(elementId,{focusable:true,ariaLabel:label,role:'document',focusPadding:2});roots.set(elementId,dispose);
-    const palette=readPalette(element,am5,segments),rules=am5.Theme.new(root);rules.rule('Label').setAll({fontFamily:FONT,fontWeight:'400',fontSize:12,fill:palette.text});rules.rule('Sprite').setAll({stateAnimationDuration:0});
-    root.setThemes([rules]);root.interfaceColors.setAll({text:palette.text,alternativeText:palette.metadata,grid:palette.grid});root.numberFormatter.set('numberFormat','#,###');root.container.set('layout',root.verticalLayout);
-    if(view==='mix')matrix(root,element,model,palette,select,am5,xy);else if(view==='compare')overlap(root,element,model,palette,select,am5,xy);else ranking(root,element,model,palette,select,am5,xy);
-  }catch(error){dispose();console.error('CityMETER insight chart could not render:',error);return keepEmpty('แสดงกราฟไม่ได้ในขณะนี้ โปรดดูข้อมูลเดียวกันในตาราง');}
-  return dispose;
+export function renderInsightChart({elementId, view = 'centers', rows = [], segments = [], neighborhoods, theme, selectedAreaId = ''} = {}, onSelect = () => {}) {
+  const element = document.getElementById(elementId);
+  if (!element) return () => {};
+  const select = typeof onSelect === 'function' ? onSelect : () => {};
+  element.replaceChildren();
+  if (theme) element.dataset.chartTheme = theme;
+  const labels = {centers: 'ย่านเรียงตามจำนวนแบรนด์ไม่ซ้ำ', mix: 'กลุ่มแบรนด์ในแต่ละย่าน', compare: 'แบรนด์เฉพาะย่านและแบรนด์ที่พบร่วมกัน'};
+  element.setAttribute('aria-label', labels[view] || labels.centers);
+  if (!Array.isArray(rows) || !rows.length) { empty(element, 'ไม่พบรายการจุดขายตามตัวกรองนี้'); return () => element.replaceChildren(); }
+  const model = buildNeighborhoodChartModel(rows, neighborhoods, segments);
+  if (view === 'compare' && model.areaCount < 2) { empty(element, 'เลือกอย่างน้อย 2 ย่านเพื่อเปรียบเทียบ', 'ดูทุกย่าน', () => select({type: 'resetAreas'})); return () => element.replaceChildren(); }
+  if (!model.areaCount) { empty(element, 'ยังไม่มีย่านสำหรับกราฟนี้ ดูจุดขายบนแผนที่หรือตาราง'); return () => element.replaceChildren(); }
+  try {
+    if (view === 'mix') matrix(element, model, select, selectedAreaId);
+    else if (view === 'compare') compare(element, model, select, selectedAreaId);
+    else ranking(element, model, select, selectedAreaId);
+  } catch (error) {
+    console.error('CityMETER insight chart could not render:', error);
+    empty(element, 'แสดงกราฟไม่ได้ในขณะนี้ โปรดดูข้อมูลเดียวกันในตาราง');
+  }
+  return () => element.replaceChildren();
 }
