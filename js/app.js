@@ -3,7 +3,7 @@ import {summarizeAreaInsight,filterAreaRows} from './area-insight.js?v=20261021-
 import {renderInsightChart} from './charts.js?v=20261021-r5';
 import {loadMapLibrary,loadChartLibraries} from './vendors.js?v=20261021-r5';
 let chartsReady=false,chartsLoading=false,chartError=null;
-import {installStorePins} from './pins.js?v=20261021-r5';
+import {installStorePins} from './pins.js?v=20261022-r6';
 import {installVenueBuildings} from './buildings.js?v=20261021-r5';
 import {assignNeighborhood,neighborhoodRows,summarizeNeighborhoods} from './neighborhoods.js?v=20261021-r5';
 import {configureBrandLogos,brandLogoMarkup,getBrandLogo} from './brand-logos.js?v=20261021-r5';
@@ -80,7 +80,23 @@ function detailOutlet(id,{fly=true,showPopup=false}={}){const r=state.data.rows.
  revealDetail();$('results').hidden=true;
 }
 function bottomSpace(){return $('insights').getBoundingClientRect().height+12;}
-function updateLabels(){if(!state.map||!state.neighborhoods)return;for(const e of state.labels){const p=state.map.project(e.center),y=p.y-50;const visible=state.showNeighborhoods&&state.map.getZoom()>=12&&p.x>0&&p.x<$('map').clientWidth&&y>60&&y<$('map').clientHeight-bottomSpace();e.button.hidden=!visible;e.button.style.left=`${p.x}px`;e.button.style.top=`${y}px`;}}
+function updateLabels(){
+ if(!state.map||!state.neighborhoods)return;
+ const width=$('map').clientWidth,height=$('map').clientHeight-bottomSpace(),placed=[];
+ const overlaps=(a,b)=>a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top;
+ for(const e of state.labels){
+  const p=state.map.project(e.center),baseY=p.y-50;
+  e.button.hidden=!(state.showNeighborhoods&&state.map.getZoom()>=12&&p.x>0&&p.x<width&&baseY>60&&baseY<height);
+  if(e.button.hidden)continue;
+  const w=e.button.offsetWidth,h=e.button.offsetHeight;let position=null;
+  for(const [dx,dy]of [[0,0],[0,-28],[0,28],[-36,0],[36,0],[0,-56]]){
+   const x=p.x+dx,y=baseY+dy,box={left:x-w/2-4,right:x+w/2+4,top:y-h/2-3,bottom:y+h/2+3};
+   if(box.left<4||box.right>width-4||box.top<60||box.bottom>height||placed.some(b=>overlaps(box,b)))continue;
+   position={x,y,box};break;
+  }
+  e.button.hidden=!position;if(position){e.button.style.left=`${position.x}px`;e.button.style.top=`${position.y}px`;placed.push(position.box);}
+ }
+}
 function updateSpatialLayers(){
  if(!state.loaded)return;
  const coverage=state.buildings?.update({rows:state.rows,enabled:state.showCenters,theme:document.documentElement.dataset.theme});

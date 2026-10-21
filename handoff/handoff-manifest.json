@@ -247,8 +247,8 @@
     },
     {
       "path": "handoff/VERIFICATION.md",
-      "bytes": 2732,
-      "sha256": "a2f3c9b6945016e5765985a46fc576f90d72432d33d1abc633f6ce73c4eff922"
+      "bytes": 2923,
+      "sha256": "1a11335818f842d34cec5294477c697bff77ce51e07b510e70114e9214e9a2c8"
     },
     {
       "path": "handoff/handoff.schema.json",
@@ -268,12 +268,12 @@
     {
       "path": "index.html",
       "bytes": 15475,
-      "sha256": "cd7d45b06a2f58147a053d485013c4bef25b43e7f450e42a1224cab221311a14"
+      "sha256": "c3f45ad7352723f9b4d8403fc4eb5825c70c09f20362ddd38260257b8f815f1d"
     },
     {
       "path": "js/app.js",
-      "bytes": 31398,
-      "sha256": "227e067e000cadd5434326f4cedfa4ea1a732f457d05a6e1fed14129552f181b"
+      "bytes": 32027,
+      "sha256": "78e332bf7440885f9fe1bc6eaed08c9cb31c8d3c5114709609d7456cf30cbf40"
     },
     {
       "path": "js/area-insight.js",
@@ -322,8 +322,8 @@
     },
     {
       "path": "js/pins.js",
-      "bytes": 10614,
-      "sha256": "4548ec8ca009d92c8e05160c8e97228f13f09fc4a86e8dce2b09a8f946882fca"
+      "bytes": 10634,
+      "sha256": "28f58bee1e82d15f6d93b7b02123c1e77c64e9f58f99e6f14096b14f49846509"
     },
     {
       "path": "js/vendors.js",

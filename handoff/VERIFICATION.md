@@ -12,6 +12,8 @@ Dataset snapshot: 2026-10-21. This record distinguishes automated checks, render
 - Earlier in this revision cycle: native Chrome and Safari loaded 345 rows, map/buildings/logos and readable store popup. Scoped popup foreground/background were checked in light and dark. Later final-public browser checks are recorded separately in the archive release receipt.
 - Generic caveats/workflow notes, research badge and CSV controls removed from ordinary UI. Historical closures and evidence remain in source data/docs.
 
+- Final map-label adjustment: eight visible neighborhood labels in the Bangkok desktop view had zero label-to-label intersections; logo placement now reserves neighborhood label rectangles.
+
 ## Coverage to extend in development
 
 The 12 acceptance criteria in the implementation plan are a test plan, not a claim that every combination was exercised. Native `file:` navigation was not verified in Chrome/Safari; the fixed public bridge was source/VM checked. Full failure-injection, every browser/viewport permutation, assistive-technology review and all keyboard/reduced-motion combinations remain future regression coverage. Chrome keyboard check passed using the actual Tab order into the chart followed by Enter: Siam selected and the shared count changed to 64 POS. Pointer chart drilldown and HTML tab/selection controls were also verified.
