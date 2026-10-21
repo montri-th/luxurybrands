@@ -1,23 +1,49 @@
-# Verification record — 2026-10-22
+# Verification record — release 0.2 (2026-10-22)
 
-Dataset snapshot: 2026-10-21. This record distinguishes automated checks, rendered spot checks and deployment evidence.
+Dataset snapshot: 2026-10-21. Levels are reported separately: unit tests, rendered harness, live browser spot checks and live byte attestation. None of them is a blanket LDS, accessibility or market-completeness certificate.
 
-## Completed
+## Automated (unit)
 
-- `npm test`: 51/51 passed, including real-data area Aha, area membership, distinct-brand union, chart matrix/exclusivity, bounded pins, logo safety and closure filtering.
-- LDS 0.9.7 package integrity: 9,768 checks passed. Static artifact check: PASS for registered color literals, local CSS and covered numeric-state rules. These are not full accessibility or design-system certifications.
-- Machine JSON parses; required fields and task/acceptance references checked; P01–P08 dependency graph is acyclic. Dataset and Aha snapshots match the implementation. The included JSON Schema is a consumer contract; a full JSON Schema validator was not installed in this workspace.
-- IAB desktop 1280 × 800: district-first Aha, all three neighborhood charts, map/row counts, dark theme, chart-to-Siam drilldown (64 POS), fewer-than-two-area comparison state and return-to-all (345 POS).
-- IAB portrait 390 × 844: first insight is visible on the map; its action selects 175 source rows / 97 brands. No document-level horizontal overflow. Map viewport dimensions remain unchanged.
-- Earlier in this revision cycle: native Chrome and Safari loaded 345 rows, map/buildings/logos and readable store popup. Scoped popup foreground/background were checked in light and dark. Later final-public browser checks are recorded separately in the archive release receipt.
-- Generic caveats/workflow notes, research badge and CSV controls removed from ordinary UI. Historical closures and evidence remain in source data/docs.
+`npm test` — **62/62 passed** (Node 22) on the release working tree:
 
-- Final map-label adjustment: eight visible neighborhood labels in the Bangkok desktop view had zero label-to-label intersections; logo placement now reserves neighborhood label rectangles.
+- area Aha, area membership, brand union, denominators (`area-insight.test.js`)
+- chart model: ranking, matrix cells incl. zero, exclusive/shared before top-N (`chart-model.test.js`)
+- count scale: exact LUT/anchors/class projections, equal-interval closed intervals, measured zero vs no data, label contrast ≥ 4.5:1 (`scales.test.js`)
+- panel models: overview insights, neighborhood profile partition exclusive + shared = brands, whole-selection reference, venue and brand presence, geometry precision and status wording, EVID-05 area states (`profile-model.test.js`)
+- pins: bounded slots, logo ceiling and priority, co-location identities (`pins.test.js`)
+- model, neighborhoods, brand logos, first-insight compatibility (`model.test.js`, `neighborhoods.test.js`, `brand-logos.test.js`, `first-insight.test.js`)
 
-## Coverage to extend in development
+Machine contracts (`product-brief.json`, `implementation-plan.json`, generated `handoff-manifest.json`) validate against `handoff.schema.json` 1.1.0.
 
-The 12 acceptance criteria in the implementation plan are a test plan, not a claim that every combination was exercised. Native `file:` navigation was not verified in Chrome/Safari; the fixed public bridge was source/VM checked. Full failure-injection, every browser/viewport permutation, assistive-technology review and all keyboard/reduced-motion combinations remain future regression coverage. Chrome keyboard check passed using the actual Tab order into the chart followed by Enter: Siam selected and the shared count changed to 64 POS. Pointer chart drilldown and HTML tab/selection controls were also verified.
+## Rendered harness (Playwright, Chromium, container)
 
-## Release evidence
+Because the test container cannot reach unpkg.com or tiles.openfreemap.org, the harness serves the repository on 127.0.0.1:4173, fulfils the pinned MapLibre 5.6.2 JS/CSS from an npm-vendored copy and answers the two style URLs with a stub style (background + empty line/symbol layers). Data, layers, pins, labels, panel, charts and table are the real code paths; only basemap tiles are absent.
 
-The downloadable archive includes `RELEASE_RECEIPT.json` outside the source folder. It binds the final Git commit, terminal GitHub Pages result, public byte attestation and final screenshots. `handoff-manifest.json` hashes the delivered source files while excluding itself to avoid a circular hash. Compare source hashes and release identity before continuing development.
+| Viewport / theme | Flows checked | Result |
+|---|---|---|
+| 1280×800 light | overview Aha + ranking; charts ranking/mix/compare; explore 3 areas; Siam profile; venue (Siam Paragon); store (pin click, popup); table overlay; help dialog | pass — no page errors; 63 focus pins / 9 context pins in Siam |
+| 1280×800 dark | same flows after switching theme | pass — same data HEX, dark basemap style, readable matrix ink |
+| 390×844 light + dark (DPR 2, touch) | overview with compact map Aha; bottom sheet; neighborhood via ranking (sheet open, area framed above the sheet); charts and matrix in the tray; store via tap | pass — no horizontal document overflow |
+| keyboard | Tab to the first focus pin, ArrowRight, Enter → store mode; context pins are not focusable | pass |
+| states | `?segment=watches`, `?search=zzzz` (empty state copy + clear action), `?neighborhood=siam&view=mix` (highlighted row), `?province=Phuket` (rows outside all cores → venue ranking fallback, all areas measured zero, no legend classes) | pass |
+
+Console: only Chromium software-WebGL performance notices; no application errors or warnings after the zoom-expression fix in `map-layers.js`.
+
+## Live spot checks (Chrome on macOS, 1512×804, real tiles)
+
+Checked on the published commit after the Pages run completed:
+
+- Overview: choropleth under Positron roads, labels with counts, quiet tiny pins, Aha 86% / 97 of 113 brands, ranking list with class-coloured bars.
+- Explore 3 areas: only Siam, Phrom Phong and Chit Lom–Phloen Chit keep fill; others outline-only with quiet labels; 40 context dots reported in the status line; logos appear at zoom ≥ 13.5.
+- Siam selected: selected outline, host buildings in `map.activeLayer`, category pins with logos, legend switches to pins/buildings at detail zoom; profile with segment bars, venues, 14 exclusive / 43 shared brand chips with logos.
+- Dark theme: dark basemap, same analytical HEX, matrix readable, selected row outlined.
+
+Not re-verified in this release: native `file:` entry (AC02), fault injection of core data and MapLibre timeout (AC03/AC05) — the code paths are unchanged from 0.1 and were source-checked only; Safari.
+
+## Live byte attestation
+
+`npm run verify:live` compares SHA-256 of every published file in the generated manifest with the bytes served by GitHub Pages (`cache: no-store`, cache-busting query). The result for this release is in `evidence/live-attestation.json` inside the bundle and summarised in `RELEASE_RECEIPT.json`. The manifest itself is generated from `git ls-files` of the release commit and is not tracked in git, so it cannot drift from the bytes it describes.
+
+## Evidence files in the bundle
+
+`evidence/` holds the harness screenshots listed above (`d-*`, `m-*`, `a11y-*`, `s-*`) and `live-attestation.json`. Screenshots from the harness show the stub basemap; the live Chrome checks were observed interactively and are described, not attached.

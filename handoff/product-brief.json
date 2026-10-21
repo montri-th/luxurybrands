@@ -1,54 +1,115 @@
 {
   "$schema": "./handoff.schema.json",
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "1.1.0",
   "documentType": "product-brief",
   "productId": "citymeter-luxury-brands",
+  "productVersion": "0.2.0",
   "updatedOn": "2026-10-22",
+  "datasetCheckedOn": "2026-10-21",
   "language": "th-TH",
   "productName": "CityMETER · Luxury Brands",
   "repository": "https://github.com/montri-th/luxurybrands",
   "liveUrl": "https://montri-th.github.io/luxurybrands/",
-  "job": "เข้าใจโครงสร้างทำเลของ luxury และ upscale street brands ผ่านย่าน แล้วเจาะศูนย์การค้า อาคาร และร้าน",
+  "job": "อ่านเมืองผ่านแบรนด์: เห็นก่อนว่าแบรนด์กระจุกอยู่ย่านใด แล้วเจาะลงถึงศูนย์การค้า อาคาร และจุดขายพร้อมหลักฐาน",
   "audiences": [
-    "ทีมวางแผนขยายสาขาและกลยุทธ์ทำเล",
-    "ผู้พัฒนาศูนย์การค้าและอสังหาริมทรัพย์",
-    "นักวิเคราะห์เมืองและแบรนด์"
+    "ทีมแบรนด์และขยายสาขา",
+    "ทีมศูนย์การค้าและเจ้าของสินทรัพย์",
+    "นักวิเคราะห์และที่ปรึกษาด้านทำเล"
   ],
   "journey": [
-    "เห็นข้อค้นพบระดับย่านก่อนตัวกรอง",
-    "สำรวจกลุ่มย่านด้วยการกดครั้งเดียว",
-    "เทียบความหลากหลายและบุคลิกแบรนด์",
-    "เจาะย่าน อาคาร และร้าน",
-    "ตรวจรายละเอียดและแหล่งข้อมูล"
+    "เห็นข้อค้นพบระดับย่านและแผนที่ย่านทันที ไม่ต้องตั้งค่าตัวกรอง",
+    "สำรวจ 3 ย่านอันดับต้นด้วยการกดครั้งเดียว ส่วนอื่นของแผนที่เงียบลง",
+    "เปิดโปรไฟล์ย่าน: บุคลิกตามกลุ่มแบรนด์ สถานที่ แบรนด์เฉพาะ/ร่วม",
+    "เจาะสถานที่และร้าน อ่านสถานะ หลักฐาน และระดับความแม่นของพิกัด",
+    "เปรียบเทียบย่านด้วยกราฟและตาราง แล้วคัดรายการไปสำรวจ"
   ],
+  "rowScopes": {
+    "scopeRows": {
+      "definition": "rows after search/cohort/segment/province/channel/venue filters, before neighborhood selection and area focus",
+      "consumers": ["aha denominator", "choropleth", "charts", "neighborhood profile exclusive/shared reference", "context pins"]
+    },
+    "baseRows": {
+      "definition": "scopeRows narrowed by the selected neighborhood",
+      "consumers": ["panel ranking", "aha when a neighborhood is selected"]
+    },
+    "rows": {
+      "definition": "baseRows narrowed by the explore-top-3 area focus",
+      "consumers": ["focused pins", "counters", "table", "host buildings"]
+    },
+    "visibleCue": "chart scope caption appends ‘เทียบทุกย่าน ไม่รวมการเลือกย่าน’ whenever rows ≠ scopeRows"
+  },
   "firstAha": {
-    "scope": "current filtered source rows before area focus",
+    "scope": "baseRows (scopeRows narrowed by a selected neighborhood when present)",
     "ranking": "top three fixed neighborhoods by distinct brand labels, POS count, stable ID",
-    "headlineTemplate": "{areaCount} ย่านรวม {sharePercent}% ของแบรนด์",
-    "numerator": "union of distinct source brand labels assigned to top neighborhoods",
-    "denominator": "all distinct brand labels in the filtered rows, including rows outside defined neighborhoods",
-    "action": "สำรวจ {areaCount} ย่าน",
+    "headlineTemplate": "{sharePercent}% ของแบรนด์ที่เลือกอยู่ใน {areaCount} ย่านนี้",
+    "numerator": "union of distinct source brand labels assigned to the top neighborhoods",
+    "denominator": "all distinct brand labels in baseRows, including rows outside defined neighborhoods",
+    "secondaryFinding": "neighborhood with the most exclusive brands within scopeRows (profile-model.js#buildOverviewInsights)",
+    "action": "สำรวจ {areaCount} ย่านนี้",
     "model": "js/area-insight.js#summarizeAreaInsight",
     "filter": "js/area-insight.js#filterAreaRows",
+    "fallbacks": {
+      "noRows": "ไม่พบจุดขายตามตัวกรองนี้ + clear filter action",
+      "rowsOutsideAllAreas": "explain rows are outside the ten defined cores and rank venues with profile-model.js#rankVenues"
+    },
     "defaultSnapshot": {
-      "areas": [
-        "siam",
-        "phrom-phong",
-        "chit-lom-phloen-chit"
-      ],
+      "areas": ["siam", "phrom-phong", "chit-lom-phloen-chit"],
       "brands": 97,
       "totalBrands": 113,
       "sharePercent": 85.8,
+      "sharePercentDisplayed": 86,
       "pos": 175,
       "totalPos": 345,
       "assignedPos": 244
     },
     "requirements": [
       "No login, sharing or geolocation prerequisite",
-      "Core dataset and neighborhood boundaries enable area Aha; core counts/table still work without boundaries; optional map/chart vendors load separately",
-      "Same source-row set drives map, counters, charts and table",
+      "Core dataset and neighborhood boundaries enable the area Aha; counts and table still work without boundaries; the map vendor loads separately",
+      "Snapshot values are regression fixtures, never UI constants",
       "Returning to all clears only area focus"
     ]
+  },
+  "mapFocusContract": {
+    "principle": "Show detail only for the focused part; keep everything else quiet (owner instruction 2026-10-22)",
+    "states": {
+      "overview": {
+        "focus": "all defined areas filled by distinct brands (count family, 5 equal-interval classes), labels with counts",
+        "quiet": "pins are 3–5 px dots below zoom 13.5, no logos"
+      },
+      "exploreTop3": {
+        "focus": "the three areas keep their fill and emphasis outline; category pins and logos inside",
+        "quiet": "other areas outline-only with quiet labels; rows outside focus become grey context dots without logos, aria-hidden, not in the tab order"
+      },
+      "neighborhood": {
+        "focus": "selected area fill below zoom 14.5, selected outline, host buildings, category pins, logos",
+        "quiet": "as above"
+      },
+      "store": {
+        "focus": "selected pin ring, leader line to the source coordinate, desktop popup",
+        "quiet": "inherits current focus"
+      }
+    },
+    "choropleth": {
+      "scaleId": "count",
+      "metric": "distinct brand labels per defined neighborhood within scopeRows",
+      "classification": "equal-interval, 5 classes from the current maximum, integer closed intervals shown in the legend",
+      "evidenceStates": {"measured": "class fill", "measured_zero": "lowest fill + zero outline", "out_of_scope": "bare basemap"},
+      "themePolicy": "identical light HEX on both themes; fill-opacity 1 under the basemap's first line layer; hard switch off at zoom ≥ 14.5",
+      "model": "js/map-layers.js#buildAreaModel, js/scales.js#buildCountClasses"
+    },
+    "hostBuildings": "map.activeLayer role (light #347DA8 / dark #65B6DB), only for rows in focus, zoom ≥ 14"
+  },
+  "panel": {
+    "modes": ["overview", "neighborhood", "venue", "store"],
+    "navigation": "back stack (max 20); mode and id restored from URL (?neighborhood, ?place, ?store)",
+    "actions": ["select-area", "select-store", "select-venue", "search-brand", "back", "explore-top", "clear-focus", "open-charts", "open-table", "clear-filter"],
+    "models": {
+      "neighborhood": "js/profile-model.js#buildNeighborhoodProfile (uses scopeRows so exclusive/shared keeps the whole selection as reference)",
+      "venue": "js/profile-model.js#buildVenueProfile",
+      "store": "js/profile-model.js#buildStoreDetail (+describeGeometry, describeStatus)",
+      "overview": "js/profile-model.js#buildOverviewInsights, rankVenues"
+    },
+    "renderer": "js/panel.js (pure HTML strings, delegated data-action clicks)"
   },
   "data": {
     "observationGrain": "one declared brand store/counter/POS observation; repeated source records are not silently merged",
@@ -56,156 +117,54 @@
     "neighborhoods": "data/neighborhoods.geojson",
     "hostBuildings": "data/venue-buildings.geojson",
     "brandLogos": "data/brand-logos.json",
-    "defaultFilter": {
-      "origin": "market_refresh",
-      "excludedStatuses": [
-        "permanently closed",
-        "closure_conflict_review"
-      ]
-    },
-    "snapshot": {
-      "observations": 565,
-      "mappedObservations": 562,
-      "defaultPOS": 345,
-      "defaultBrands": 113,
-      "definedNeighborhoods": 10,
-      "logoIdentities": 168
-    },
-    "closurePolicy": "Retain permanently closed records and factual closure status; exclude from default current view; never delete to improve counts",
-    "coordinatePolicy": "Preserve original geographic coordinates; any marker displacement is screen-space only"
+    "defaultFilter": {"origin": "market_refresh", "excludedStatuses": ["permanently closed", "closure_conflict_review"]},
+    "snapshot": {"observations": 565, "mappedObservations": 562, "defaultPOS": 345, "defaultBrands": 113, "definedNeighborhoods": 10, "logoIdentities": 168},
+    "closurePolicy": "Retain permanently closed records and factual closure status; exclude from the default current view; never delete to improve counts",
+    "coordinatePolicy": "Preserve original geographic coordinates; marker displacement is screen-space only; precision is described from geometryRole/geometryStatus and never upgraded"
   },
   "visualSystem": {
     "release": "LDS 0.9.7",
     "releaseId": "v0.9.7-owner.1",
+    "revision": "standalone-0.9.7-r1",
+    "colorSetId": "color-srgb-10",
     "normativeSha256": "d3085cbc0a50195f1cbf0c77b1d77c0d19b84364daf2948eb367348d65432d96",
-    "fonts": {
-      "body": "Bai Jamjuree",
-      "headingLatin": "Arvo",
-      "headingThai": "IBM Plex Sans Thai Looped",
-      "numbers": "JetBrains Mono"
-    },
-    "mapStyles": {
-      "light": "https://tiles.openfreemap.org/styles/positron",
-      "dark": "https://tiles.openfreemap.org/styles/dark"
-    },
-    "icons": {
-      "asset": "assets/icons/material-nav-300.woff2",
-      "axes": {
-        "FILL": 0,
-        "wght": 300,
-        "GRAD": 0,
-        "opsz": 24
-      },
-      "allowed": [
-        "open_in_new",
-        "menu",
-        "close",
-        "light_mode",
-        "dark_mode",
-        "contrast",
-        "groups"
-      ],
-      "fallback": "visible semantic text label"
-    },
-    "layout": {
-      "headerPx": 48,
-      "desktopSidebar": "min(max(260px,25%),440px)",
-      "map": "fills remaining viewport",
-      "charts": "collapsed bottom tray, open on demand",
-      "mobile": "full map with compact first insight and bottom data sheet"
-    }
+    "appliedTokens": "assets/theme.css (foundation pairs, semantic states, map roles, data states, series 1–10, count classes)",
+    "analyticalScale": {"family": "count", "lutSamples": 41, "scaleVersion": "4ff5c1fb4be71ecd13c48685b38371b528bcd4ce369ce964a75354c2eb4d0980", "source": "js/scales.js"},
+    "categoricalSeries": {"registry": "landometer-series-10-v8", "variant": "soft", "segmentAssignment": "model.js SEGMENTS order = series.01 … series.08", "compareCues": {"exclusive": "series.07 hexagon", "shared": "series.09 dash"}},
+    "locationProfile": {"document": "Location-Intelligence-Profile-for-LDS-v0.9.7.md", "applied": false, "reason": "profile defines business metrics (demand, supply, market size …) that this dataset does not carry"},
+    "fonts": {"body": "Bai Jamjuree 400/600", "headingLatin": "Arvo 700", "headingThai": "IBM Plex Sans Thai Looped 700", "numbers": "JetBrains Mono 400 tabular"},
+    "icons": {"asset": "assets/icons/material-nav-300.woff2", "axes": {"FILL": 0, "wght": 300, "GRAD": 0, "opsz": 24}, "allowed": ["open_in_new", "menu", "close", "light_mode", "dark_mode", "contrast", "groups"], "fallback": "visible semantic text label"},
+    "iconSet": "iconset.landometer.portfolio.symbol.01 (16/32/48/180/192/512) + site.webmanifest",
+    "mapStyles": {"light": "https://tiles.openfreemap.org/styles/positron", "dark": "https://tiles.openfreemap.org/styles/dark"},
+    "layout": {"headerPx": 48, "desktopPanel": "min(max(300px,28%),440px)", "chartTrayCollapsedPx": 52, "mobileSheetMaxHeight": "64dvh"}
   },
   "invariants": [
-    {
-      "id": "INV01",
-      "rule": "One store observation owns one pin; no clustering or aggregation"
-    },
-    {
-      "id": "INV02",
-      "rule": "250 logo labels is a ceiling, never a quota; collision avoidance wins"
-    },
-    {
-      "id": "INV03",
-      "rule": "Preserve original logo artwork; use verified local sprite and restrained framing"
-    },
-    {
-      "id": "INV04",
-      "rule": "Default first insight concerns neighborhoods, not venues"
-    },
-    {
-      "id": "INV05",
-      "rule": "Never sum distinct brands across areas; use set union"
-    },
-    {
-      "id": "INV06",
-      "rule": "Keep generic caveats and workflow notes out of UI; retain provenance in documentation and real closure/error states"
-    },
-    {
-      "id": "INV07",
-      "rule": "No CSV download UI"
-    },
-    {
-      "id": "INV08",
-      "rule": "No decorative bracket or colored left rail; keep visible focus"
-    },
-    {
-      "id": "INV09",
-      "rule": "No fabricated coordinates, store openings, administrative boundaries or consumer behavior claims"
-    },
-    {
-      "id": "INV10",
-      "rule": "Every visible count and action must respect the same selected source rows"
-    }
+    {"id": "INV01", "rule": "One store observation owns one pin; no clustering or aggregation, including quiet context pins"},
+    {"id": "INV02", "rule": "250 logo labels is a ceiling, never a quota; logos only at zoom ≥ 13.5 and only for rows in focus"},
+    {"id": "INV03", "rule": "Preserve original logo artwork; use the verified local sprite and restrained framing"},
+    {"id": "INV04", "rule": "Default first insight concerns neighborhoods, not venues; venues are the fallback only when no defined area has rows"},
+    {"id": "INV05", "rule": "Never sum distinct brands across areas; use set union"},
+    {"id": "INV06", "rule": "Keep generic caveats and workflow notes out of UI; retain provenance in documentation and real closure/error states"},
+    {"id": "INV07", "rule": "No CSV download UI"},
+    {"id": "INV08", "rule": "No decorative bracket or colored left rail; keep visible focus"},
+    {"id": "INV09", "rule": "No fabricated coordinates, store openings, administrative boundaries or consumer behavior claims"},
+    {"id": "INV10", "rule": "Pins, counters, table and panel counts use the same committed rows; Aha, choropleth and charts use scopeRows and say so when they differ"},
+    {"id": "INV11", "rule": "Detail only for the focused part; everything else stays visible but quiet (no logos, grey dots, outline-only areas)"},
+    {"id": "INV12", "rule": "Analytical colours keep the approved light HEX on both themes; contrast is solved with labels, outlines and backplates, never by recolouring data"},
+    {"id": "INV13", "rule": "Exclusive/shared and the Aha denominator reference the whole filtered scope, never a single selected area"}
   ],
   "chartContracts": [
-    {
-      "viewKey": "centers",
-      "title": "ย่านที่มีแบรนด์",
-      "question": "ย่านใดมีแบรนด์หลากหลาย",
-      "encoding": "horizontal bars",
-      "metric": "distinct brand labels per assigned neighborhood",
-      "action": {
-        "type": "neighborhood",
-        "id": "neighborhood ID"
-      }
-    },
-    {
-      "viewKey": "mix",
-      "title": "บุคลิกของย่าน",
-      "question": "ย่านใดเด่นแบรนด์กลุ่มไหน",
-      "encoding": "bubble matrix; circle area proportional to distinct brands; color identifies segment",
-      "metric": "distinct brand labels per neighborhood and segment",
-      "action": {
-        "type": "neighborhood",
-        "id": "neighborhood ID"
-      }
-    },
-    {
-      "viewKey": "compare",
-      "title": "แบรนด์เฉพาะ / ร่วม",
-      "question": "แต่ละย่านมีแบรนด์ต่างหรือซ้ำกับย่านอื่นเพียงใด",
-      "encoding": "stacked horizontal bars",
-      "metric": "brands assigned to exactly one versus multiple selected neighborhoods",
-      "reference": "all assigned neighborhoods in selected rows, before display top-N truncation",
-      "minimumAreas": 2,
-      "emptyAction": {
-        "type": "resetAreas"
-      }
-    }
+    {"viewKey": "centers", "title": "ย่านที่มีแบรนด์", "question": "ย่านใดมีแบรนด์หลากหลาย", "encoding": "horizontal bars; bar fill = count class of the area", "metric": "distinct brand labels per assigned neighborhood", "scope": "scopeRows", "action": {"type": "neighborhood", "id": "neighborhood ID"}},
+    {"viewKey": "mix", "title": "บุคลิกของย่าน", "question": "ย่านใดเด่นแบรนด์กลุ่มไหน", "encoding": "numeric heat table; cell tint = count class of the cell value; 0 shown with zero outline", "metric": "distinct brand labels per neighborhood × segment", "scope": "scopeRows", "action": {"type": "neighborhood", "id": "neighborhood ID"}},
+    {"viewKey": "compare", "title": "แบรนด์เฉพาะ / ร่วม", "question": "แต่ละย่านมีแบรนด์ต่างหรือซ้ำกับย่านอื่นเพียงใด", "encoding": "stacked horizontal bars with shape cues", "metric": "brands assigned to exactly one versus multiple neighborhoods", "reference": "all assigned neighborhoods in scopeRows, before display truncation", "scope": "scopeRows", "minimumAreas": 2, "emptyAction": {"type": "resetAreas"}}
   ],
   "delivery": {
-    "human": [
-      "README.md",
-      "PRODUCT_BRIEF.md",
-      "IMPLEMENTATION_PLAN.md"
-    ],
-    "machine": [
-      "product-brief.json",
-      "implementation-plan.json",
-      "handoff-manifest.json"
-    ],
+    "human": ["README.md", "PRODUCT_BRIEF.md", "IMPLEMENTATION_PLAN.md", "VERIFICATION.md", "START_HERE.md"],
+    "machine": ["product-brief.json", "implementation-plan.json", "handoff-manifest.json", "handoff.schema.json"],
     "start": "npm start",
     "test": "npm test",
+    "handoff": "npm run handoff:bundle",
+    "verifyLive": "npm run verify:live",
     "localUrl": "http://127.0.0.1:4173/"
   }
 }

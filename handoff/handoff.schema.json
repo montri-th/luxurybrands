@@ -1,121 +1,51 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "CityMETER Luxury Brands developer contracts",
+  "description": "Shared envelope for product-brief.json, implementation-plan.json and handoff-manifest.json. Version 1.1.0 adds row scopes, the map focus contract, panel modes and manifest provenance fields.",
   "type": "object",
-  "required": [
-    "schemaVersion",
-    "documentType",
-    "productId",
-    "updatedOn"
-  ],
+  "required": ["schemaVersion", "documentType", "productId"],
   "properties": {
-    "schemaVersion": {
-      "const": "1.0.0"
-    },
-    "documentType": {
-      "enum": [
-        "product-brief",
-        "implementation-plan"
-      ]
-    },
-    "productId": {
-      "const": "citymeter-luxury-brands"
-    },
-    "updatedOn": {
-      "type": "string",
-      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
-    }
+    "schemaVersion": {"enum": ["1.0.0", "1.1.0"]},
+    "documentType": {"enum": ["product-brief", "implementation-plan", "handoff-manifest"]},
+    "productId": {"const": "citymeter-luxury-brands"},
+    "productVersion": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+    "updatedOn": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"}
   },
   "allOf": [
     {
-      "if": {
-        "properties": {
-          "documentType": {
-            "const": "product-brief"
-          }
-        }
-      },
+      "if": {"properties": {"documentType": {"const": "product-brief"}}},
       "then": {
-        "required": [
-          "firstAha",
-          "data",
-          "visualSystem",
-          "invariants",
-          "chartContracts"
-        ],
+        "required": ["updatedOn", "firstAha", "data", "visualSystem", "invariants", "chartContracts", "rowScopes", "mapFocusContract", "panel"],
         "properties": {
-          "firstAha": {
-            "type": "object",
-            "required": [
-              "scope",
-              "ranking",
-              "numerator",
-              "denominator",
-              "action",
-              "model",
-              "filter",
-              "defaultSnapshot"
-            ]
-          },
-          "invariants": {
-            "type": "array",
-            "minItems": 10,
-            "items": {
-              "type": "object",
-              "required": [
-                "id",
-                "rule"
-              ]
-            }
-          }
+          "firstAha": {"type": "object", "required": ["scope", "ranking", "numerator", "denominator", "action", "model", "filter", "defaultSnapshot", "fallbacks"]},
+          "rowScopes": {"type": "object", "required": ["scopeRows", "baseRows", "rows"]},
+          "mapFocusContract": {"type": "object", "required": ["principle", "states", "choropleth"]},
+          "panel": {"type": "object", "required": ["modes", "actions", "models"]},
+          "invariants": {"type": "array", "minItems": 10, "items": {"type": "object", "required": ["id", "rule"]}},
+          "chartContracts": {"type": "array", "minItems": 3, "items": {"type": "object", "required": ["viewKey", "title", "question", "encoding", "metric", "scope"]}}
         }
       }
     },
     {
-      "if": {
-        "properties": {
-          "documentType": {
-            "const": "implementation-plan"
-          }
-        }
-      },
+      "if": {"properties": {"documentType": {"const": "implementation-plan"}}},
       "then": {
-        "required": [
-          "architecture",
-          "selection",
-          "tasks",
-          "acceptanceCriteria",
-          "developerWorkflow",
-          "backlog"
-        ],
+        "required": ["updatedOn", "architecture", "selection", "tasks", "acceptanceCriteria", "developerWorkflow", "backlog"],
         "properties": {
-          "tasks": {
-            "type": "array",
-            "minItems": 8,
-            "items": {
-              "type": "object",
-              "required": [
-                "id",
-                "dependsOn",
-                "acceptanceCriteria",
-                "files",
-                "status"
-              ]
-            }
-          },
-          "acceptanceCriteria": {
-            "type": "array",
-            "minItems": 12,
-            "items": {
-              "type": "object",
-              "required": [
-                "id",
-                "scenario",
-                "expected",
-                "verificationType"
-              ]
-            }
-          }
+          "architecture": {"type": "object", "required": ["runtime", "commands", "libraries", "modules"]},
+          "selection": {"type": "object", "required": ["filterFields", "queryFields", "rowScopes", "panelActions"]},
+          "tasks": {"type": "array", "minItems": 8, "items": {"type": "object", "required": ["id", "dependsOn", "acceptanceCriteria", "files", "status"]}},
+          "acceptanceCriteria": {"type": "array", "minItems": 14, "items": {"type": "object", "required": ["id", "scenario", "expected", "verificationType"]}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"documentType": {"const": "handoff-manifest"}}},
+      "then": {
+        "required": ["generatedOn", "sourceCommit", "hashAlgorithm", "fileCount", "files"],
+        "properties": {
+          "sourceCommit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "hashAlgorithm": {"const": "SHA-256"},
+          "files": {"type": "array", "items": {"type": "object", "required": ["path", "bytes", "sha256"], "properties": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}}
         }
       }
     }

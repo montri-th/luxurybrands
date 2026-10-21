@@ -1,7 +1,11 @@
 {
-  "artifact": "CityMETER Luxury Brands research demo",
+  "artifact": "CityMETER Luxury Brands — neighborhood-first retail presence map",
+  "productVersion": "0.2.0",
+  "updatedOn": "2026-10-22",
   "ldsVersion": "0.9.7",
   "release": "v0.9.7-owner.1",
+  "revision": "standalone-0.9.7-r1",
+  "colorSetId": "color-srgb-10",
   "baseDocumentSha256": "d3085cbc0a50195f1cbf0c77b1d77c0d19b84364daf2948eb367348d65432d96",
   "layoutReference": "https://landometer.com/v3/citymeter?d=shoppingCenter",
   "fontRoles": {
@@ -11,89 +15,45 @@
     "dataAndMetrics": "JetBrains Mono 400; tabular numerals; normal tracking",
     "navigation": "Material Symbols Rounded approved nav-7 subset; FILL 0 / wght 300 / GRAD 0 / opsz 24"
   },
-  "colors": "Only exact applied UI and eight categorical color pairs required by this demo; full LDS library and analytical scale registries are not distributed.",
-  "geometryAndMetricContract": "brand-POS research rows, source status and host representative geometry remain explicit",
+  "colors": {
+    "applied": "assets/theme.css — foundation pairs, semantic states, map roles (activeLayer, selectedStroke, markerHalo, markerStroke), data states (noData, zero), categorical series 1–10 (landometer-series-10-v8 soft), count classes",
+    "analytical": "js/scales.js — count family, 41-sample LUT, scaleVersion 4ff5c1fb4be71ecd13c48685b38371b528bcd4ce369ce964a75354c2eb4d0980, identical HEX on both themes",
+    "notDistributed": "full LDS library, other analytical families, Location Intelligence profile scales"
+  },
+  "firstAha": "share of distinct brands held by the top three neighborhoods, computed per selection, with the neighborhood choropleth as the map-side expression",
+  "focusAndQuiet": {
+    "ownerInstruction": "2026-10-22: show detail only for the focused part; keep the rest quiet",
+    "implementation": "map-layers.js filled/quiet properties; pins.js context pins; panel modes drive focus"
+  },
+  "geometryAndMetricContract": "brand–POS observation rows, source status, host representative geometry and coordinate precision remain explicit; distinct brands never summed across areas",
   "accessibility": [
-    "native form labels",
-    "visible focus",
-    "keyboard chart selection",
-    "reduced motion",
-    "table equivalent",
-    "empty and map/chart failure paths"
+    "native form labels and disclosure",
+    "visible focus on every control including pins and chart marks",
+    "keyboard pin tour (arrow keys) excluding quiet context pins",
+    "reduced motion respected",
+    "table equivalent for every map view",
+    "empty, map-failure and load-error paths with actions"
   ],
   "validation": {
-    "status": "verified applied revision",
-    "packageChecksPassed": 9768,
-    "assetHashChecksPassed": 29,
-    "modelAndGeometryTestsPassed": 26,
-    "buildingGeometryAndLifecycleChecksPassed": 20,
-    "uiReviewViewports": [
-      [
-        1280,
-        720
-      ],
-      [
-        390,
-        844
-      ],
-      [
-        740,
-        360
-      ]
-    ],
-    "uiThemes": [
-      "Positron/light",
-      "Dark"
-    ],
-    "renderedEvidence": {
-      "desktopHeaderPx": 48,
-      "desktopMapPx": [
-        960,
-        672
-      ],
-      "desktopSidebarPx": 320,
-      "landscapeMapPx": [
-        444,
-        312
-      ],
-      "landscapeSidebarPx": 296,
-      "allObservationPinsOnLandscape": 562,
-      "observedPinOverlaps": 0,
-      "mobilePageOverflow": false,
-      "navigationHelp": "390px Thai dialog, Escape close, opener focus return; mobile-only controls hidden on desktop and landscape",
-      "logoSurfaces": [
-        "individual store pins",
-        "table rows",
-        "host store list",
-        "store details",
-        "map popups"
-      ]
-    },
-    "scope": "Applied LDS assets, fonts and actual rendered interfaces. Responsive browser checks; no blanket LDS, native-device or market completeness claim.",
-    "brandLogoChecks": {
-      "catalogIdentities": 168,
-      "datasetLabelsCovered": 147,
-      "datasetRecordsCovered": 565,
-      "missing": 0,
-      "sourceHashesVerified": 168,
-      "spriteRevision": "e8a64e69d522"
-    }
+    "status": "release 0.2 verified as recorded in handoff/VERIFICATION.md",
+    "unitTests": 62,
+    "renderedHarness": "Playwright + vendored MapLibre + stub style; 1280×800 and 390×844; light and dark",
+    "liveChecks": "Chrome on macOS against https://montri-th.github.io/luxurybrands/ (overview, explore 3, Siam profile, dark theme, matrix)",
+    "scope": "Applied LDS assets, fonts and actual rendered interfaces. No blanket LDS, CVD, native-device or market-completeness claim."
   },
   "layoutContract": {
     "headerPx": 48,
-    "rightPanelWidth": "min(max(260px, 25%), 440px)",
+    "readingPanelWidth": "min(max(300px, 28%), 440px)",
     "map": "full remaining viewport below header",
-    "insights": "collapsible bottom overlay; collapsed by default",
-    "mobilePortrait": "full map with optional bottom sheet capped at 50dvh",
-    "productionSource": "web-v3/src/modules/citymeter/base/CmMapLayout.tsx"
+    "chartTray": "collapsible bottom overlay, 52 px collapsed, 360 px / ≤58% open",
+    "mobilePortrait": "full map, bottom sheet ≤ 64dvh with sticky close, compact Aha card on the map while the sheet is closed"
   },
   "mapContract": {
-    "basemaps": [
-      "https://tiles.openfreemap.org/styles/positron",
-      "https://tiles.openfreemap.org/styles/dark"
-    ],
-    "pins": "one declared point-of-sale row per pin; no aggregation; screen displacement with leader lines, source coordinates unchanged",
-    "venues": "source building footprints/parts with explicit height provenance; unknown heights use marked 3m display slab",
+    "basemaps": ["https://tiles.openfreemap.org/styles/positron", "https://tiles.openfreemap.org/styles/dark"],
+    "choropleth": "count family, five equal-interval classes from the current maximum, fill-opacity 1 beneath the basemap's first line layer, off at zoom ≥ 14.5, EVID-05 measured / measured_zero / out_of_scope",
+    "pins": "one declared point-of-sale row per pin; zoom tiers 3 px / 5 px / full; context pins grey and logo-less; screen displacement with leader lines, source coordinates unchanged",
+    "logos": "≤ 250, only at zoom ≥ 13.5 and only inside the focus",
+    "venues": "source building footprints/parts with explicit height provenance in map.activeLayer; unknown heights use a marked 3 m display slab",
     "neighborhoods": "frozen named analytical road/river envelopes; no arbitrary radius components; no claimed consumer consensus"
   },
   "brandIdentity": {

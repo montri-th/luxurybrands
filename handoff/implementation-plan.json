@@ -1,8 +1,9 @@
 {
   "$schema": "./handoff.schema.json",
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "1.1.0",
   "documentType": "implementation-plan",
   "productId": "citymeter-luxury-brands",
+  "productVersion": "0.2.0",
   "updatedOn": "2026-10-22",
   "brief": "product-brief.json",
   "humanPlan": "IMPLEMENTATION_PLAN.md",
@@ -10,319 +11,90 @@
     "runtime": "static HTML/CSS/JavaScript ES modules",
     "framework": null,
     "buildStep": null,
+    "nodeEngine": ">=20",
     "commands": {
       "start": "npm start",
-      "test": "npm test"
+      "test": "npm test",
+      "handoffManifest": "npm run handoff:manifest",
+      "handoffBundle": "npm run handoff:bundle",
+      "verifyLive": "npm run verify:live"
     },
-    "libraries": {
-      "maplibre": "5.6.2",
-      "amcharts": "5.20.8"
-    },
+    "libraries": {"maplibre": "5.6.2"},
+    "removed": {"amcharts": "charts are rendered by js/charts.js as HTML/SVG"},
     "coreDataTimeoutMs": 12000,
-    "optionalVendorTimeoutMs": 20000
-  },
-  "selection": {
-    "filterFields": [
-      "search",
-      "cohort",
-      "segment",
-      "province",
-      "channel",
-      "venue",
-      "neighborhood"
-    ],
-    "queryFields": [
-      "search",
-      "cohort",
-      "segment",
-      "province",
-      "channel",
-      "venue",
-      "neighborhood",
-      "areas",
-      "mall",
-      "centers",
-      "view"
-    ],
-    "areaFocusQuery": "areas=comma-separated stable neighborhood IDs; at most three",
-    "legacyCenterQuery": "centers remains supported as an intersecting base filter",
-    "chartActions": [
-      {
-        "type": "neighborhood",
-        "id": "stable area ID"
-      },
-      {
-        "type": "resetAreas"
-      }
+    "optionalVendorTimeoutMs": 20000,
+    "modules": [
+      {"path": "js/app.js", "role": "orchestration, row scopes, panel modes, URL state, map lifecycle"},
+      {"path": "js/model.js", "role": "taxonomy, shared filter, summaries"},
+      {"path": "js/neighborhoods.js", "role": "point-in-polygon membership and area summaries"},
+      {"path": "js/area-insight.js", "role": "top-3 Aha and area focus"},
+      {"path": "js/chart-model.js", "role": "ranking, matrix, exclusive/shared model"},
+      {"path": "js/profile-model.js", "role": "neighborhood/venue/store/brand view models, geometry and status descriptions, venue ranking"},
+      {"path": "js/scales.js", "role": "LDS count family LUT, class projection, EVID-05 states"},
+      {"path": "js/map-layers.js", "role": "choropleth, outlines, focus/quiet, HTML labels"},
+      {"path": "js/pins.js", "role": "per-observation pins, context pins, logo placement, keyboard"},
+      {"path": "js/buildings.js", "role": "host building extrusions and coverage"},
+      {"path": "js/charts.js", "role": "vendor-free chart renderers"},
+      {"path": "js/panel.js", "role": "panel HTML renderers and filter chips"},
+      {"path": "js/vendors.js", "role": "MapLibre loader with timeout/retry"},
+      {"path": "js/brand-logos.js", "role": "approved brand identity registry"},
+      {"path": "js/navigation.js", "role": "approved icons and help dialog"},
+      {"path": "js/launch.js", "role": "boot states and file bridge"},
+      {"path": "scripts/build-handoff.mjs", "role": "manifest + bundle"},
+      {"path": "scripts/verify-live.mjs", "role": "live byte attestation"}
     ]
   },
+  "selection": {
+    "filterFields": ["search", "cohort", "segment", "province", "channel", "venue", "neighborhood"],
+    "queryFields": ["search", "cohort", "segment", "province", "channel", "venue", "neighborhood", "areas", "view", "store", "place", "mall"],
+    "rowScopes": ["scopeRows", "baseRows", "rows"],
+    "areaFocusQuery": "areas=comma-separated stable neighborhood IDs; at most three",
+    "panelQuery": "store=<row id> opens store mode; place=<center id> opens venue mode; neighborhood=<area id> opens neighborhood mode",
+    "legacyMallQuery": "mall=<center id> narrows the venue filter to that center's label when present",
+    "chartActions": [{"type": "neighborhood", "id": "stable area ID"}, {"type": "resetAreas"}],
+    "panelActions": ["select-area", "select-store", "select-venue", "search-brand", "back", "explore-top", "clear-focus", "open-charts", "open-table", "clear-filter"]
+  },
   "tasks": [
-    {
-      "id": "P01",
-      "title": "Snapshot and contracts",
-      "dependsOn": [],
-      "acceptanceCriteria": [
-        "AC12"
-      ],
-      "files": [
-        "data/luxury.json",
-        "data/neighborhoods.geojson",
-        "assets/manifest.json"
-      ],
-      "status": "implemented_and_spot_checked"
-    },
-    {
-      "id": "P02",
-      "title": "Neighborhood Aha and shared selection",
-      "dependsOn": [
-        "P01"
-      ],
-      "acceptanceCriteria": [
-        "AC06"
-      ],
-      "files": [
-        "js/area-insight.js",
-        "js/app.js",
-        "tests/area-insight.test.js"
-      ],
-      "status": "implemented_and_spot_checked"
-    },
-    {
-      "id": "P03",
-      "title": "Neighborhood chart suite",
-      "dependsOn": [
-        "P02"
-      ],
-      "acceptanceCriteria": [
-        "AC06",
-        "AC10"
-      ],
-      "files": [
-        "js/chart-model.js",
-        "js/charts.js",
-        "tests/chart-model.test.js",
-        "docs/CHART_SELECTION.md"
-      ],
-      "status": "implemented_and_spot_checked"
-    },
-    {
-      "id": "P04",
-      "title": "Map, pins, logos and buildings",
-      "dependsOn": [
-        "P02"
-      ],
-      "acceptanceCriteria": [
-        "AC07",
-        "AC08"
-      ],
-      "files": [
-        "js/pins.js",
-        "js/buildings.js",
-        "js/brand-logos.js"
-      ],
-      "status": "implemented_and_spot_checked"
-    },
-    {
-      "id": "P05",
-      "title": "LDS and presentation",
-      "dependsOn": [
-        "P02",
-        "P03",
-        "P04"
-      ],
-      "acceptanceCriteria": [
-        "AC09",
-        "AC11"
-      ],
-      "files": [
-        "index.html",
-        "styles.css",
-        "navigation.css",
-        "logos.css",
-        "js/navigation.js"
-      ],
-      "status": "implemented_and_spot_checked"
-    },
-    {
-      "id": "P06",
-      "title": "Resilience and retries",
-      "dependsOn": [
-        "P01"
-      ],
-      "acceptanceCriteria": [
-        "AC01",
-        "AC02",
-        "AC03",
-        "AC04",
-        "AC05"
-      ],
-      "files": [
-        "js/launch.js",
-        "js/vendors.js",
-        "js/app.js"
-      ],
-      "status": "implemented_partial_regression_coverage"
-    },
-    {
-      "id": "P07",
-      "title": "Verification",
-      "dependsOn": [
-        "P02",
-        "P03",
-        "P04",
-        "P05",
-        "P06"
-      ],
-      "acceptanceCriteria": [
-        "AC01",
-        "AC06",
-        "AC07",
-        "AC08",
-        "AC09",
-        "AC10",
-        "AC11"
-      ],
-      "files": [
-        "tests",
-        "handoff/VERIFICATION.md"
-      ],
-      "status": "automated_pass_rendered_spot_checks"
-    },
-    {
-      "id": "P08",
-      "title": "Public release and developer bundle",
-      "dependsOn": [
-        "P07"
-      ],
-      "acceptanceCriteria": [
-        "AC12"
-      ],
-      "files": [
-        "handoff/handoff-manifest.json",
-        "RELEASE_RECEIPT.json (archive envelope)"
-      ],
-      "status": "see_archive_release_receipt"
-    }
+    {"id": "P01", "title": "Snapshot, contracts and manifest script", "dependsOn": [], "acceptanceCriteria": ["AC12"], "files": ["data/luxury.json", "data/neighborhoods.geojson", "assets/manifest.json", "scripts/build-handoff.mjs", "handoff/handoff-manifest.json"], "status": "done"},
+    {"id": "P02", "title": "Row scopes and neighborhood Aha with fallbacks", "dependsOn": ["P01"], "acceptanceCriteria": ["AC06"], "files": ["js/app.js", "js/area-insight.js", "js/profile-model.js", "tests/area-insight.test.js", "tests/profile-model.test.js"], "status": "done"},
+    {"id": "P03", "title": "Vendor-free chart suite", "dependsOn": ["P02"], "acceptanceCriteria": ["AC06", "AC10"], "files": ["js/chart-model.js", "js/charts.js", "tests/chart-model.test.js", "docs/CHART_SELECTION.md"], "status": "done"},
+    {"id": "P04", "title": "Count choropleth, focus/quiet map, pins, logos, buildings", "dependsOn": ["P02"], "acceptanceCriteria": ["AC07", "AC08", "AC13", "AC14"], "files": ["js/map-layers.js", "js/scales.js", "js/pins.js", "js/buildings.js", "tests/scales.test.js", "tests/pins.test.js"], "status": "done"},
+    {"id": "P05", "title": "Reading panel modes, filters, mobile sheet, LDS presentation", "dependsOn": ["P02", "P03", "P04"], "acceptanceCriteria": ["AC09", "AC11"], "files": ["index.html", "styles.css", "navigation.css", "logos.css", "assets/theme.css", "js/panel.js", "js/navigation.js", "site.webmanifest"], "status": "done"},
+    {"id": "P06", "title": "Resilience and retries", "dependsOn": ["P01"], "acceptanceCriteria": ["AC01", "AC02", "AC03", "AC04", "AC05"], "files": ["js/launch.js", "js/vendors.js", "js/app.js"], "status": "retained_source_checked"},
+    {"id": "P07", "title": "Verification", "dependsOn": ["P02", "P03", "P04", "P05", "P06"], "acceptanceCriteria": ["AC01", "AC06", "AC07", "AC08", "AC09", "AC10", "AC11", "AC13", "AC14"], "files": ["tests", "handoff/VERIFICATION.md"], "status": "done_scoped"},
+    {"id": "P08", "title": "Public release, live attestation and developer bundle", "dependsOn": ["P07"], "acceptanceCriteria": ["AC12"], "files": ["scripts/verify-live.mjs", "handoff/handoff-manifest.json", "RELEASE_RECEIPT.json (bundle envelope)", "evidence/ (bundle envelope)"], "status": "done"}
   ],
   "acceptanceCriteria": [
-    {
-      "id": "AC01",
-      "scenario": "HTTP/HTTPS first load",
-      "expected": "Data and controls ready before optional map/chart; citymeter:ready dismisses launch overlay",
-      "verificationType": "browser",
-      "result": "see VERIFICATION.md"
-    },
-    {
-      "id": "AC02",
-      "scenario": "Local file entry",
-      "expected": "Fixed public route preserves query/hash; do not bypass origin protections",
-      "verificationType": "manual-browser",
-      "result": "see VERIFICATION.md"
-    },
-    {
-      "id": "AC03",
-      "scenario": "Core data/module failure",
-      "expected": "Actionable retry and public link; never blank shell or endless spinner",
-      "verificationType": "fault-injection",
-      "result": "see VERIFICATION.md"
-    },
-    {
-      "id": "AC04",
-      "scenario": "Malformed optional data",
-      "expected": "Counts, filters and table remain usable; invalid geometry never enters spatial calculation",
-      "verificationType": "fault-injection",
-      "result": "see VERIFICATION.md"
-    },
-    {
-      "id": "AC05",
-      "scenario": "Map/chart timeout and retry",
-      "expected": "Core data survives; retries do not duplicate script/map/overlay",
-      "verificationType": "fault-injection",
-      "result": "see VERIFICATION.md"
-    },
-    {
-      "id": "AC06",
-      "scenario": "Aha, filters and shared URL state",
-      "expected": "Same source rows drive views; restore query and clear area focus correctly",
-      "verificationType": "browser-and-unit",
-      "result": "see VERIFICATION.md"
-    },
-    {
-      "id": "AC07",
-      "scenario": "Co-located source points",
-      "expected": "Separate ID per pin; bounded display offsets; source coordinates unchanged",
-      "verificationType": "unit-and-browser",
-      "result": "see VERIFICATION.md"
-    },
-    {
-      "id": "AC08",
-      "scenario": "Logo density",
-      "expected": "No more than 250 collision-free labels; distinct brands prioritized; points remain",
-      "verificationType": "unit-and-browser",
-      "result": "see VERIFICATION.md"
-    },
-    {
-      "id": "AC09",
-      "scenario": "Responsive light/dark",
-      "expected": "48px header, full map, readable popup, no horizontal page overflow at 390px and desktop",
-      "verificationType": "browser",
-      "result": "see VERIFICATION.md"
-    },
-    {
-      "id": "AC10",
-      "scenario": "Keyboard and reduced motion",
-      "expected": "Visible focus, usable pins/chart controls/help/tabs; Escape returns focus; motion respected",
-      "verificationType": "manual-browser",
-      "result": "see VERIFICATION.md"
-    },
-    {
-      "id": "AC11",
-      "scenario": "Presentation and data truth",
-      "expected": "No generic caveat/research/CSV UI; retain real closure status/date/source/units",
-      "verificationType": "source-and-browser",
-      "result": "see VERIFICATION.md"
-    },
-    {
-      "id": "AC12",
-      "scenario": "Release and handoff",
-      "expected": "Source commit, public bytes, hashes and bundle match; no secrets/private source URLs",
-      "verificationType": "release-attestation",
-      "result": "see VERIFICATION.md"
-    }
+    {"id": "AC01", "scenario": "HTTP/HTTPS first load", "expected": "Data and panel ready before the map; citymeter:ready dismisses the launch overlay", "verificationType": "browser", "result": "see VERIFICATION.md"},
+    {"id": "AC02", "scenario": "Local file entry", "expected": "Fixed public route preserves query/hash; no origin protections bypassed", "verificationType": "manual-browser", "result": "not re-verified in 0.2; source retained"},
+    {"id": "AC03", "scenario": "Core data failure", "expected": "Short message, link and retry; never a blank shell", "verificationType": "fault-injection", "result": "source retained; not fault-injected in 0.2"},
+    {"id": "AC04", "scenario": "Malformed optional data", "expected": "Counts, filters and table usable; invalid geometry never enters spatial calculation", "verificationType": "fault-injection", "result": "source retained; not fault-injected in 0.2"},
+    {"id": "AC05", "scenario": "Map vendor timeout and retry", "expected": "Data, table and charts survive; retry works; no duplicate scripts", "verificationType": "fault-injection", "result": "charts no longer depend on a vendor; map retry source retained"},
+    {"id": "AC06", "scenario": "Filters, neighborhood selection, area focus, clear", "expected": "rows drive pins/counters/table; scopeRows drive Aha/choropleth/charts with a visible scope cue; URL restores state", "verificationType": "unit-and-browser", "result": "see VERIFICATION.md"},
+    {"id": "AC07", "scenario": "Co-located source points", "expected": "Separate pin per ID; bounded screen offsets; source coordinates unchanged", "verificationType": "unit-and-browser", "result": "see VERIFICATION.md"},
+    {"id": "AC08", "scenario": "Logo density", "expected": "≤ 250 collision-free labels; distinct brands first; none below zoom 13.5 or on context pins", "verificationType": "unit-and-browser", "result": "see VERIFICATION.md"},
+    {"id": "AC09", "scenario": "Responsive light/dark", "expected": "48 px header; panel/sheet per contract; readable popup; no horizontal overflow at 390 px", "verificationType": "browser", "result": "see VERIFICATION.md"},
+    {"id": "AC10", "scenario": "Keyboard and reduced motion", "expected": "Visible focus; pins, charts, panel and help operable; context pins out of the tab order", "verificationType": "browser", "result": "see VERIFICATION.md"},
+    {"id": "AC11", "scenario": "Dynamic text truth", "expected": "No caveat/research/CSV UI; real closure status, dates, sources, units; missing never shown as 0", "verificationType": "source-and-browser", "result": "see VERIFICATION.md"},
+    {"id": "AC12", "scenario": "Release and handoff", "expected": "Commit, live bytes, manifest hashes and bundle agree; no secrets or private URLs", "verificationType": "release-attestation", "result": "see RELEASE_RECEIPT.json"},
+    {"id": "AC13", "scenario": "Focus and quiet context", "expected": "With a selected or explored area, other areas are thin outlines with quiet labels; rows outside focus are grey context dots without logos", "verificationType": "browser", "result": "see VERIFICATION.md"},
+    {"id": "AC14", "scenario": "Choropleth integrity", "expected": "Class colours equal the legend and the ranking bars; measured zero has a zero outline; fill off at zoom ≥ 14.5; same HEX on both themes", "verificationType": "unit-and-browser", "result": "see VERIFICATION.md"}
   ],
   "developerWorkflow": [
-    "Read AGENTS.md then handoff/README.md and paired human/machine briefs",
-    "Run baseline tests before changes",
-    "Change one bounded task at a time and preserve invariant IDs",
-    "Validate calculations with real dataset fixtures",
-    "Inspect rendered Thai/English at desktop and narrow widths in both themes",
-    "Publish only authorized changes and verify provider terminal status plus live file hashes",
-    "Regenerate handoff manifest from final source bytes; do not hand-edit hashes"
+    "Read AGENTS.md, then handoff/README.md and the paired human/machine briefs",
+    "Run npm test before changes; keep the three row scopes and the panel action contract",
+    "Change one bounded task at a time; preserve invariant IDs INV01–INV13",
+    "Validate calculations with real dataset fixtures in tests/",
+    "Review rendered Thai/English at 390 px and desktop in both themes; use the stub-tile harness when CDN/tiles are blocked",
+    "Publish only authorized changes; wait for the Pages run; run verify:live before reporting a release",
+    "Regenerate the manifest and bundle from final bytes; never hand-edit hashes"
   ],
   "backlog": [
-    {
-      "id": "NEXT01",
-      "title": "Assign data refresh owner, cadence and closure review workflow",
-      "ownerRole": "data owner",
-      "status": "requires product decision"
-    },
-    {
-      "id": "NEXT02",
-      "title": "Field validate neighborhood boundaries and exact storefront coordinates",
-      "ownerRole": "data and field research",
-      "status": "research backlog"
-    },
-    {
-      "id": "NEXT03",
-      "title": "Add reproducible browser failure/retry CI and expand keyboard coverage",
-      "ownerRole": "frontend developer",
-      "status": "engineering backlog"
-    },
-    {
-      "id": "NEXT04",
-      "title": "Pin development Node/Python runtime and production hosting source configuration",
-      "ownerRole": "release owner",
-      "status": "engineering backlog"
-    }
+    {"id": "N01", "title": "Playwright regression in CI with stub tiles and vendored MapLibre, including vendor fault injection", "ownerRole": "frontend developer", "status": "engineering backlog"},
+    {"id": "N02", "title": "Neighborhood labels as a MapLibre symbol layer with native collision", "ownerRole": "frontend developer", "status": "engineering backlog"},
+    {"id": "N03", "title": "Side-by-side comparison of two neighborhood profiles on the same scopeRows", "ownerRole": "product + frontend", "status": "product decision"},
+    {"id": "N04", "title": "Define analytical cores outside Bangkok (Phuket, Pattaya, Chiang Mai) per NEIGHBORHOOD_METHOD", "ownerRole": "data and field research", "status": "research backlog"},
+    {"id": "N05", "title": "Assign data refresh owner, cadence and closure review workflow", "ownerRole": "data owner", "status": "requires product decision"},
+    {"id": "N06", "title": "Native file: entry and fault-injection checks in Chrome/Safari", "ownerRole": "QA", "status": "engineering backlog"}
   ]
 }
