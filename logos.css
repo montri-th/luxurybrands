@@ -1,19 +1,17 @@
-/* Identity artwork is embedded unchanged. Neutral backing lives in the sprite. */
-.brand-logo{display:block;width:80px;height:40px;flex:0 0 auto;border:1px solid var(--border-hairline);border-radius:5px;overflow:hidden;background:#FFFFFF}
-.brand-row{display:flex;align-items:center;gap:10px;white-space:normal}
-.brand-row>span{min-width:0;overflow-wrap:anywhere}
-.detail-logo{width:128px;height:64px;margin:8px 0 12px}
-.popup-logo{width:104px;height:52px;margin:0 28px 10px 0}
-.logo-credit{font-size:12px!important}
-.row-name.brand-row{max-width:300px}
-.row-name .brand-logo{width:64px;height:32px}
-.store-pin{width:var(--pin-size,45px);height:calc(var(--pin-size,45px)*.64);border:1px solid #1D4497;border-radius:5px;background:#FFFFFF;padding:1px;box-shadow:0 1px 3px #18232740}
-.store-pin .brand-logo{width:100%;height:100%;border:0;border-radius:3px;filter:none;overflow:hidden}
-.store-pin.is-closed{border-style:dashed;border-width:2px}
-.store-pin.is-selected,.store-pin:hover{outline:2px solid var(--text-primary);outline-offset:2px;background:#FFFFFF}
-.store-pin.no-logo{background:#1D4497;border:1px solid #FFFFFF;border-radius:50%;width:var(--pin-size,8px);height:var(--pin-size,8px)}
-.store-pin[data-compact=true],.store-pin-overlay.is-overview .store-pin{width:var(--pin-size,3px);height:var(--pin-size,3px);padding:0;border:0;border-radius:50%;background:#1D4497;box-shadow:0 0 0 .5px #FFFFFF}
-.store-pin[data-compact=true] .brand-logo,.store-pin-overlay.is-overview .store-pin .brand-logo{display:none}
-.store-pin[data-compact=true]:is(:hover,:focus-visible) .brand-logo,.store-pin-overlay.is-overview .store-pin:is(:hover,:focus-visible) .brand-logo{display:block;position:absolute;left:50%;bottom:10px;transform:translateX(-50%);width:80px;height:40px;max-width:none;box-shadow:0 1px 8px #18232760;border:1px solid #1D4497}
-.store-pin[data-compact=true].is-closed,.store-pin-overlay.is-overview .store-pin.is-closed{background:var(--surface-card);border:1px dashed #1D4497}
+/* Unchanged identity artwork on a neutral backing; category colors are LDS. */
+.brand-logo{display:block;width:80px;height:40px;flex:0 0 auto;border:0;border-radius:2px;overflow:hidden;background:transparent}
+.brand-row{display:flex;align-items:center;gap:10px;white-space:normal}.brand-row>span{min-width:0;overflow-wrap:anywhere}.detail-logo{width:128px;height:auto;max-height:64px;margin:8px 0 16px;aspect-ratio:var(--logo-ratio)}.popup-logo{width:104px;height:auto;max-height:52px;margin:0 28px 16px 0;aspect-ratio:var(--logo-ratio)}.logo-credit{font-size:12px!important}.row-name.brand-row{max-width:300px}.row-name .brand-logo{width:64px;height:32px}
+.store-pin{width:var(--pin-size,7px);height:var(--pin-size,7px);min-height:0;padding:0;border:0;border-radius:50%;background:transparent;box-shadow:none;--pin-fill:var(--text-muted);--pin-ink:var(--text-primary)}
+.pin-dot{display:block;width:100%;height:100%;border-radius:50%;background:var(--pin-fill);box-shadow:0 0 0 .7px var(--surface-card),0 0 0 1.2px var(--pin-ink)}
+.store-pin.is-closed .pin-dot{background:var(--surface-card);border:1px dashed var(--pin-ink);box-shadow:none}
+.store-pin.is-selected,.store-pin:hover,.store-pin:focus-visible{background:transparent;outline:2px solid var(--interaction-focus-ring);outline-offset:3px;z-index:5}
+.pin-brand-label{display:block;position:absolute;transform:translate(-50%,-50%);border:0;border-radius:2px;background:transparent;box-shadow:0 1px 2px #18232720;overflow:hidden;pointer-events:auto}
+.store-pin .brand-logo{width:100%;height:100%;border:0;border-radius:2px;filter:none;overflow:hidden}
+.store-pin.is-selected .pin-brand-label,.store-pin:hover .pin-brand-label{outline:2px solid var(--interaction-focus-ring);outline-offset:2px}
+.pin-leaders line{stroke:var(--text-primary);stroke-opacity:.8;stroke-width:1}.pin-leaders circle{fill:var(--surface-card);stroke:var(--text-primary);stroke-width:1.5}
+.store-pin[data-category="1"],.category-1{--pin-fill:var(--series-1-fill)}.store-pin[data-category="2"],.category-2{--pin-fill:var(--series-2-fill)}.store-pin[data-category="3"],.category-3{--pin-fill:var(--series-3-fill)}.store-pin[data-category="4"],.category-4{--pin-fill:var(--series-4-fill)}.store-pin[data-category="5"],.category-5{--pin-fill:var(--series-5-fill)}.store-pin[data-category="6"],.category-6{--pin-fill:var(--series-6-fill)}.store-pin[data-category="7"],.category-7{--pin-fill:var(--series-7-fill)}.store-pin[data-category="8"],.category-8{--pin-fill:var(--series-8-fill)}
+#category-key{pointer-events:auto}#category-key summary{cursor:pointer;text-decoration:underline;text-underline-offset:3px}#category-key>div{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;padding-top:9px}#category-key span{display:flex;align-items:center;gap:6px}.category-swatch{display:inline-block;width:8px;height:8px;flex:0 0 8px;border:1px solid var(--text-primary);border-radius:50%;background:var(--pin-fill)}
 .maplibregl-popup{z-index:7}
+
+@media(max-width:760px) and (orientation:portrait){#map-coverage{width:auto}.map-key{bottom:calc(var(--bottom-panel-height) + 66px);gap:5px 7px}}
+@media(max-width:760px) and (orientation:portrait){.mobile-close{position:sticky;top:-8px;z-index:2;background:var(--surface-card);box-shadow:0 4px 8px #1823270a}.map-key .legend-boundary{flex-shrink:0}}

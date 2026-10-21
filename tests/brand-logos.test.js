@@ -72,7 +72,9 @@ test('markup escapes labels/classes and uses only the fixed local sprite and cat
     assert.ok(hrefs[0].startsWith(`assets/brand-logos.svg?v=${catalog.meta.spriteRevision.slice(0, 12).toLowerCase()}#`));
     assert.ok(symbolIDs.has(hrefs[0].split('#')[1]));
     assert.ok(!markup.includes('https:') && !markup.includes('drive.google.com'));
-    assert.match(markup, /viewBox="0 0 320 160"/);
+    const bounds=markup.match(/viewBox="([\d.]+) ([\d.]+) ([\d.]+) ([\d.]+)"/).slice(1).map(Number);
+    assert.ok(bounds[0]>=0 && bounds[1]>=0 && bounds[0]+bounds[2]<=320.001 && bounds[1]+bounds[3]<=160.001);
+    assert.match(markup, /<use width="320" height="160"/);
     assert.match(markup, /aria-hidden="true"/);
   }
   configureBrandLogos({brands: [fixture('escaped', 'A & <B> "C"', {altEn: 'A & <B> "C"'})]});

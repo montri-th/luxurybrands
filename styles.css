@@ -11,3 +11,46 @@ strong,b,th{font-weight:600}.data-number{font-family:"JetBrains Mono",monospace;
 .store-pin-overlay.is-overview .store-pin{width:var(--pin-size,3px);height:var(--pin-size,3px);border-radius:50%;background:#1D4497;box-shadow:0 0 0 .5px #FFFFFF}.store-pin-overlay.is-overview .store-pin svg{display:none}.store-pin-overlay.is-overview .pin-leaders line{stroke-opacity:.14}.store-pin-overlay.is-overview .store-pin:hover,.store-pin-overlay.is-overview .store-pin:focus-visible{outline:2px solid var(--interaction-focus-ring);outline-offset:2px}
 .store-pin-overlay.is-overview .store-pin.is-closed{background:var(--surface-card);border:1px solid #1D4497}
 .map-panel.is-tight .map-note{display:block;bottom:calc(var(--bottom-panel-height) + 28px);max-width:calc(100% - 16px);line-height:1.4}
+
+/* MapLibre CSS loads lazily after this file. Scope popup theme rules above
+   vendor specificity so its later white defaults cannot split the color pair. */
+.map-panel .maplibregl-popup-content{
+ background:var(--surface-card);color:var(--text-primary);
+ font:400 14px/1.6 "Bai Jamjuree",sans-serif;
+ padding:14px;border:1px solid var(--border-default);border-radius:10px;
+}
+.map-panel .maplibregl-popup-content h3{
+ color:var(--text-primary);font-family:"Arvo","IBM Plex Sans Thai Looped",sans-serif;
+ font-size:16px;font-weight:700;line-height:1.45;
+}
+.map-panel .maplibregl-popup-content p{
+ color:var(--text-secondary);font:400 14px/1.6 "Bai Jamjuree",sans-serif;margin-top:6px;
+}
+.map-panel .maplibregl-popup-content a,
+.map-panel .maplibregl-popup-content a:visited{
+ color:var(--text-primary);font-family:"Bai Jamjuree",sans-serif;
+ text-decoration:underline;text-underline-offset:3px;
+}
+.map-panel .maplibregl-popup-content a:hover{text-decoration-thickness:2px}
+.map-panel .maplibregl-popup-content .maplibregl-popup-close-button{
+ color:var(--text-primary);background:var(--surface-card);
+ border:1px solid var(--border-default);border-radius:999px;
+ font:400 20px/1 "Bai Jamjuree",sans-serif;
+ top:7px;right:7px;width:32px;height:32px;min-height:32px;
+}
+.map-panel .maplibregl-popup-content .maplibregl-popup-close-button:hover,
+.map-panel .maplibregl-popup-content .maplibregl-popup-close-button:active{
+ color:var(--text-primary);background:var(--surface-alt);
+}
+.map-panel .maplibregl-popup-content a:focus-visible,
+.map-panel .maplibregl-popup-content .maplibregl-popup-close-button:focus-visible{
+ outline:3px solid var(--interaction-focus-ring);outline-offset:3px;
+}
+.map-panel .maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.map-panel .maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+.map-panel .maplibregl-popup-anchor-top-right .maplibregl-popup-tip{border-bottom-color:var(--surface-card)}
+.map-panel .maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+.map-panel .maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+.map-panel .maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip{border-top-color:var(--surface-card)}
+.map-panel .maplibregl-popup-anchor-left .maplibregl-popup-tip{border-right-color:var(--surface-card)}
+.map-panel .maplibregl-popup-anchor-right .maplibregl-popup-tip{border-left-color:var(--surface-card)}

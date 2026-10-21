@@ -5,12 +5,14 @@
  <title>Luxury Brands · CityMETER</title>
  <meta name="description" content="อ่านพื้นที่ผ่านจุดขาย Luxury และ upscale street brands ในไทย สำรวจรายร้าน อาคาร และย่าน พร้อมหลักฐานตรวจสอบย้อนกลับ">
  <meta name="theme-color" content="#F6F7F3">
+ <style id="launch-critical-styles">
+  #launch-status{position:fixed;inset:48px 0 0;z-index:30;display:grid;place-items:center;padding:20px;background:var(--surface-canvas,#F6F7F3);color:var(--text-primary,#182327);overflow:auto;font:400 14px/1.65 "Bai Jamjuree",sans-serif}#launch-status[hidden]{display:none!important}.launch-card{width:min(560px,100%);padding:24px;background:var(--surface-card,#FCFCFA);border:1px solid var(--border-default,#C9D0CB);border-radius:16px}.launch-card h1{font-size:24px;line-height:1.4;margin:0 0 12px}.launch-card p{margin:12px 0}.launch-card a{color:inherit;overflow-wrap:anywhere;text-underline-offset:3px}.launch-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.launch-card button{min-height:44px;padding:8px 16px;font:inherit}.launch-card details{margin-top:16px;font-size:12px}.launch-card summary{cursor:pointer;min-height:44px;display:flex;align-items:center}.launch-card pre{white-space:pre-wrap;overflow-wrap:anywhere;font:400 12px/1.6 "JetBrains Mono",monospace}.launch-card :focus-visible{outline:3px solid var(--interaction-focus-ring,#1D4497);outline-offset:3px}@media(max-width:420px){#launch-status{padding:16px}.launch-card{padding:20px}.launch-card h1{font-size:21px}}
+ </style>
+ <script src="js/launch.js?v=20261021-r4"></script>
  <link rel="icon" href="assets/icons/icon-portfolio-32.png" sizes="32x32"><link rel="apple-touch-icon" href="assets/icons/icon-portfolio-180.png">
- <link rel="stylesheet" href="assets/lds/build-kit/fonts.css"><link rel="stylesheet" href="assets/theme.css">
- <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.css"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="navigation.css"><link rel="stylesheet" href="logos.css">
- <script src="https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.js" defer></script>
- <script src="https://cdn.amcharts.com/lib/version/5.20.8/index.js" defer></script><script src="https://cdn.amcharts.com/lib/version/5.20.8/xy.js" defer></script><script src="https://cdn.amcharts.com/lib/version/5.20.8/hierarchy.js" defer></script>
- <script type="module" src="js/app.js"></script><script type="module" src="js/navigation.js"></script>
+ <link rel="stylesheet" href="assets/lds/build-kit/fonts.css?v=20261021-r4"><link rel="stylesheet" href="assets/theme.css?v=20261021-r4">
+ <link rel="stylesheet" href="styles.css?v=20261021-r4"><link rel="stylesheet" href="navigation.css?v=20261021-r4"><link rel="stylesheet" href="logos.css?v=20261021-r4">
+ <script type="module" src="js/app.js?v=20261021-r4"></script><script type="module" src="js/navigation.js?v=20261021-r4"></script>
 </head>
 <body>
 <a class="skip" href="#dataset-title">ข้ามไปข้อมูลและตัวกรอง</a>
@@ -19,14 +21,24 @@
  <span class="brand-divider">/</span><span class="product-name">Luxury Brands</span><span class="demo-tag">Research demo</span>
  <div class="top-actions"><a class="text-link" href="PRODUCT_STATEMENT.md">Product statement ↗</a><label class="theme-control"><span class="theme-visible-label">ธีม</span><select id="theme" aria-label="รูปแบบหน้าจอและแผนที่"><option value="auto">Auto</option><option value="light">Positron</option><option value="dark">Dark</option></select></label></div>
 </header>
+<section id="launch-status" role="status" aria-live="polite" aria-busy="true" aria-labelledby="launch-title">
+ <div class="launch-card">
+  <p class="eyebrow">CITYMETER LUXURY BRANDS</p><h1 id="launch-title">กำลังโหลดข้อมูล</h1>
+  <p id="launch-message">กำลังอ่านข้อมูลจุดขาย อาคาร และย่าน หากรอนาน สามารถเปิดเว็บสาธารณะได้จากลิงก์นี้</p>
+  <p><a id="launch-public" href="https://montri-th.github.io/luxurybrands/">https://montri-th.github.io/luxurybrands/</a></p>
+  <div class="launch-actions"><button id="launch-retry" type="button" hidden>ลองโหลดใหม่</button><a href="https://github.com/montri-th/luxurybrands" target="_blank" rel="noopener">ดูที่มาใน GitHub</a></div>
+  <details id="launch-debug" hidden><summary>รายละเอียดเพื่อแจ้งปัญหา</summary><pre id="launch-diagnostics"></pre></details>
+  <noscript><p>หน้านี้ต้องใช้ JavaScript เพื่ออ่านข้อมูลและแสดงแผนที่ กรุณาเปิด JavaScript แล้วลองใหม่ หรือเปิดลิงก์เว็บสาธารณะด้านบน</p></noscript>
+ </div>
+</section>
 <main class="workspace">
  <div class="map-and-insight">
   <section class="map-panel" aria-label="แผนที่จุดขายรายร้าน อาคาร และย่าน">
    <div id="map"></div><div id="neighborhood-labels" aria-label="ย่านบนแผนที่"></div>
    <div id="map-failure" class="map-failure" hidden>โหลดแผนที่ไม่ได้ ดูพิกัดและหลักฐานในตารางรายการได้</div>
    <div class="map-toolbar"><button id="fit-map" title="ดูจุดขายที่เลือกทั้งหมด">ดูทั้งหมด</button><button id="bangkok-map">กรุงเทพฯ</button><button id="toggle-centers" aria-pressed="true">อาคาร 3D</button><button id="toggle-neighborhoods" aria-pressed="true">ขอบเขตย่าน</button><button id="mobile-panel" aria-expanded="false" aria-controls="sidebar">ข้อมูล / ตัวกรอง</button><button id="open-help" type="button" aria-haspopup="dialog" aria-controls="usage-help">วิธีใช้</button></div>
-   <div class="map-key"><span class="legend-pin" aria-hidden="true"></span><span>1 หมุด = 1 จุดขาย</span><span class="legend-building" aria-hidden="true"></span><span>อาคารที่ตั้ง</span><span class="legend-boundary" aria-hidden="true"></span><span>ขอบเขตย่านเสนอวิเคราะห์</span><span id="map-coverage"></span></div>
-   <p class="map-note">หมุดที่แยกออกมีเส้นเชื่อมกลับพิกัดต้นทาง · เลือกหมุดเพื่อดูร้าน</p>
+   <div class="map-key"><span class="legend-pin" aria-hidden="true"></span><span>1 หมุด = 1 จุดขาย</span><span class="legend-building" aria-hidden="true"></span><span>อาคารที่ตั้ง</span><span class="legend-boundary" aria-hidden="true"></span><span>ขอบเขตย่านเสนอวิเคราะห์</span><span id="map-coverage"></span><details id="category-key"><summary>สีประเภท</summary><div id="category-items"></div></details></div>
+   <p class="map-note">หมุดแยกบนจอโดยคงพิกัดต้นทาง · เลือกหมุดเพื่อดูร้าน</p>
   </section>
   <section id="insights" class="insights is-collapsed" aria-labelledby="insight-title">
    <div class="insight-heading"><h2 id="insight-title">อ่านรูปแบบของพื้นที่</h2><span id="chart-scope" class="small muted"></span><button id="toggle-insights" aria-expanded="false" aria-controls="insight-content">เปิดกราฟ ↑</button><button id="open-table">รายการ <span id="result-count"></span></button></div>
@@ -49,23 +61,25 @@
    <div class="filter-actions"><button type="reset">ล้างตัวกรอง</button></div>
   </form>
   <div id="active-selection" hidden class="selection-note"></div>
+  <p id="data-warnings" class="small muted spatial-coverage" hidden></p>
   <p id="building-coverage" class="small muted spatial-coverage"></p>
   <section id="detail" class="detail"><h2>เลือกจุดเพื่อสำรวจ</h2><p>แต่ละหมุดแทนหนึ่งรายการร้านหรือจุดขาย เลือกเพื่อดูสถานะ ที่มาพิกัด และอาคารที่ตั้ง</p></section>
-  <details class="method"><summary>อ่านข้อมูลนี้อย่างไร</summary><p>หนึ่งรายการ = แบรนด์–จุดขาย อาจเป็น boutique, counter หรือตัวแทนหลายแบรนด์ จึงยังไม่ใช่จำนวนหน้าร้านอิสระที่ตรวจภาคสนามแล้ว</p><p>รายการที่ค้นใหม่หมายถึงพบในแหล่งข้อมูล ร้านที่ระบุว่า permanently closed และหลักฐานปิดขัดกันเก็บไว้ และแยกออกจากค่าเริ่มต้น</p><p>หมุดรายร้านแยกกันเสมอ ไม่มีการรวมหมุด ร้านที่พิกัดตรงกันจะจัดหมุดแยกบนหน้าจอพร้อมเส้นกลับพิกัดจริง พิกัดบางร้านเป็นจุดตัวแทนอาคารหรือศูนย์การค้า</p><p>อาคารใช้รูปทรงจากแหล่งข้อมูล ความสูงที่ไม่ทราบแสดงเป็นชั้นบาง 3 เมตรเพื่อมองเห็นรูปทรง โดยไม่ถือเป็นความสูงจริง</p><p>ขอบเขตย่านเป็นข้อเสนอวิเคราะห์ตามชื่อย่าน ถนน แม่น้ำ และบริบทจุดขาย ไม่ใช่เขตปกครองหรือผลสำรวจการรับรู้ผู้บริโภค พื้นที่นอกขอบเขตไม่ถูกบังคับเข้าย่าน</p><p>ข้อมูลสะท้อนการมีอยู่ของจุดขาย ไม่ใช้ยืนยันยอดขาย กำลังซื้อ หรือพฤติกรรมของผู้คน</p><a href="docs/NEIGHBORHOOD_METHOD.md">วิธีนิยามขอบเขตย่าน ↗</a><br><a href="DATA_METHOD.md">ข้อมูลและข้อจำกัด ↗</a><br><a href="PRODUCT_STATEMENT.md">Product statement ↗</a><p class="small muted">LDS 0.9.7 · <a href="https://github.com/montri-th/luxurybrands" target="_blank" rel="noopener">Source</a> · <a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> · <a href="https://www.amcharts.com/demos/" target="_blank" rel="noopener">amCharts</a></p></details>
+  <details class="method"><summary>อ่านข้อมูลนี้อย่างไร</summary><p>หนึ่งรายการ = แบรนด์–จุดขาย อาจเป็น boutique, counter หรือตัวแทนหลายแบรนด์ จึงยังไม่ใช่จำนวนหน้าร้านอิสระที่ตรวจภาคสนามแล้ว</p><p>รายการที่ค้นใหม่หมายถึงพบในแหล่งข้อมูล ร้านที่ระบุว่า permanently closed และหลักฐานปิดขัดกันเก็บไว้ และแยกออกจากค่าเริ่มต้น</p><p>หมุดรายร้านแยกกันเสมอ ไม่มีการรวมหมุด ร้านที่พิกัดตรงกันจะจัดหมุดแยกบนหน้าจอโดยไม่เปลี่ยนพิกัดข้อมูล พิกัดบางร้านเป็นจุดตัวแทนอาคารหรือศูนย์การค้า</p><p>อาคารใช้รูปทรงจากแหล่งข้อมูล ความสูงที่ไม่ทราบแสดงเป็นชั้นบาง 3 เมตรเพื่อมองเห็นรูปทรง โดยไม่ถือเป็นความสูงจริง</p><p>ขอบเขตย่านเป็นข้อเสนอวิเคราะห์ตามชื่อย่าน ถนน แม่น้ำ และบริบทจุดขาย ไม่ใช่เขตปกครองหรือผลสำรวจการรับรู้ผู้บริโภค พื้นที่นอกขอบเขตไม่ถูกบังคับเข้าย่าน</p><p>ข้อมูลสะท้อนการมีอยู่ของจุดขาย ไม่ใช้ยืนยันยอดขาย กำลังซื้อ หรือพฤติกรรมของผู้คน</p><a href="docs/NEIGHBORHOOD_METHOD.md">วิธีนิยามขอบเขตย่าน ↗</a><br><a href="DATA_METHOD.md">ข้อมูลและข้อจำกัด ↗</a><br><a href="PRODUCT_STATEMENT.md">Product statement ↗</a><p class="small muted">LDS 0.9.7 · <a href="https://github.com/montri-th/luxurybrands" target="_blank" rel="noopener">Source</a> · <a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> · <a href="https://www.amcharts.com/demos/" target="_blank" rel="noopener">amCharts</a></p></details>
  </aside>
 </main>
 <dialog id="usage-help" class="usage-dialog" aria-labelledby="usage-help-title" aria-describedby="usage-help-intro">
  <div class="help-heading"><div><p class="eyebrow">CITYMETER LUXURY BRANDS</p><h2 id="usage-help-title">เริ่มสำรวจพื้นที่อย่างไร</h2></div><button id="close-help" type="button">ปิดวิธีใช้</button></div>
  <p id="usage-help-intro" class="help-intro">เลือกพื้นที่ ดูจุดขาย แล้วเปิดหลักฐานก่อนนำไปตัดสินใจ ข้อมูลนี้เป็นภาพวิจัยตามวันที่ตรวจของแต่ละรายการ</p>
+ <p class="help-intro">หากเปิดไฟล์จากเครื่องแล้วไม่เห็นข้อมูล ให้เปิด <a href="https://montri-th.github.io/luxurybrands/" id="help-public-site">เว็บสาธารณะ Luxury Brands</a> เพื่อใช้งาน</p>
  <ol class="help-steps">
   <li><strong>เริ่มจากตัวกรอง</strong><p>ค้นหาแบรนด์หรือทำเล แล้วเลือกจังหวัด กลุ่มแบรนด์ รูปแบบร้าน หรือย่าน ตัวกรองเดียวกันใช้กับหมุด ตัวเลข กราฟ และตาราง</p></li>
-  <li><strong>เลือกหมุดเพื่อดูรายจุดขาย</strong><p>1 หมุด = 1 รายการจุดขายตามแหล่งข้อมูล ยังไม่ใช่จำนวนหน้าร้านอิสระที่ยืนยันแล้ว หมุดที่พิกัดตรงกันจะแยกบนจอพร้อมเส้นกลับพิกัดต้นทาง โดยไม่เปลี่ยนพิกัดข้อมูล โลโก้คงรูปต้นฉบับเพื่อระบุแบรนด์ ในมุมมองไกลแต่ละจุดจะเล็กลงแต่ยังแยกกัน ซูมเข้าหรือเลือกหมุดเพื่ออ่านชื่อและดูโลโก้ชัดขึ้น</p></li>
+  <li><strong>เลือกหมุดเพื่อดูรายจุดขาย</strong><p>1 หมุด = 1 รายการจุดขายตามแหล่งข้อมูล ยังไม่ใช่จำนวนหน้าร้านอิสระที่ยืนยันแล้ว หมุดที่พิกัดตรงกันจะแยกบนจอโดยไม่เปลี่ยนพิกัดข้อมูล แสดงโลโก้ได้สูงสุด 250 จุด โดยเลือกให้เห็นแบรนด์ที่ต่างกันก่อน จุดอื่นยังแสดงหมุดสีตามกลุ่มแบรนด์ โลโก้คงรูปต้นฉบับเพื่อระบุแบรนด์ ซูมเข้าหรือเลือกหมุดเพื่ออ่านชื่อและดูรายละเอียด</p></li>
   <li><strong>อ่านอาคาร 3D พร้อมที่มา</strong><p>อาคารเป็นบริบทของสถานที่ ไม่ใช่พื้นที่ร้าน ความสูงอาจมาจากแหล่งข้อมูล แบบจำลอง หรือยังรอตรวจ กรณีไม่ทราบหรือพักค่าความสูง แสดงบาง 3 เมตรเพื่อให้เห็นรูปทรง ไม่ใช่ความสูงจริง เลือกอาคารเพื่ออ่านป้ายและแหล่งที่มา</p></li>
   <li><strong>ใช้ขอบเขตย่านเพื่อสำรวจต่อ</strong><p>เลือกชื่อย่านบนแผนที่หรือในตัวกรอง ขอบเขตเป็นข้อเสนอวิเคราะห์จากชื่อย่าน ถนน และบริบทพื้นที่ ไม่ใช่เขตปกครองหรือผลสำรวจการรับรู้ของผู้บริโภค</p></li>
   <li><strong>เปรียบเทียบแล้วตรวจหลักฐาน</strong><p>กด “เปิดกราฟ” เพื่ออ่านการกระจาย หรือ “รายการ” เพื่อดูตารางพร้อมสถานะ ที่มา และพิกัดต้นทาง พบใน locator ไม่เท่ากับยืนยันการเปิดจริง และจำนวนจุดขายไม่ใช่ยอดขายหรือกำลังซื้อ</p></li>
  </ol>
  <p class="help-keyboard"><strong>คีย์บอร์ด:</strong> ใช้ Tab ไปยังปุ่มและตัวกรอง ใช้ปุ่มลูกศรเลื่อนระหว่างหมุดที่มองเห็น กด Enter เพื่อเลือก และกด Escape เพื่อปิดวิธีใช้</p>
- <p class="help-links"><a href="PRODUCT_STATEMENT.md">Product statement</a> · <a href="DATA_METHOD.md">วิธีจัดทำข้อมูลและข้อจำกัด</a></p>
+ <p class="help-links"><a href="PRODUCT_STATEMENT.md">Product statement</a> · <a href="DATA_METHOD.md">วิธีจัดทำข้อมูลและข้อจำกัด</a> · <a href="https://github.com/montri-th/luxurybrands" target="_blank" rel="noopener">ที่มาใน GitHub</a></p>
 </dialog>
 <div id="announcement" role="status" class="sr-only"></div><div id="load-error" class="load-error" hidden></div>
 </body>

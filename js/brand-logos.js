@@ -42,7 +42,10 @@ function approvedRecord(item) {
   const width = Number(item.width), height = Number(item.height);
   if (!sourceURL || (item.assetURL && !assetURL) || !/^[a-f0-9]{64}$/i.test(item.sourceSHA256 || '') ||
     !MIME_TYPES.has(item.mime) || !Number.isFinite(width) || width <= 0 || !Number.isFinite(height) || height <= 0) return null;
-  return Object.freeze({id: item.id, name: item.name.trim(), spriteId: item.spriteId,
+  const crop=item.viewportCrop,cropValid=crop&&[crop.x,crop.y,crop.width,crop.height].every(Number.isFinite)&&crop.x>=0&&crop.y>=0&&crop.width>0&&crop.height>0&&crop.x+crop.width<=width+.01&&crop.y+crop.height<=height+.01;
+  const ratio=cropValid?crop.width/crop.height:width/height,artWidth=Math.min(296,136*ratio),artHeight=Math.min(136,296/ratio);
+  const presentation={x:160-artWidth/2-8,y:80-artHeight/2-8,width:artWidth+16,height:artHeight+16};
+  return Object.freeze({presentation:Object.freeze(presentation),displayRatio:presentation.width/presentation.height,id: item.id, name: item.name.trim(), spriteId: item.spriteId,
     sourceURL, publicsourceURL: sourceURL, assetURL, sourceSHA256: item.sourceSHA256.toLowerCase(),
     mime: item.mime, width, height, background: /^#[0-9a-f]{6}$/i.test(item.background || '') ? item.background : null,
     sourceKind: typeof item.sourceKind === 'string' ? item.sourceKind : '',
@@ -102,7 +105,8 @@ export function brandLogoMarkup(brand, {className = '', decorative = true} = {})
   const accessible = decorative ? 'aria-hidden="true"' : `role="img" aria-label="${escapeMarkup(logo.altTh || logo.altEn || logo.name)}"`;
   const title = decorative ? '' : `<title>${escapeMarkup(logo.name)}</title>`;
   const spritePath = spriteRevision ? `${SPRITE_PATH}?v=${spriteRevision}` : SPRITE_PATH;
-  return `<svg class="${classes}" viewBox="0 0 320 160" ${accessible} focusable="false">${title}<use href="${spritePath}#${logo.spriteId}"></use></svg>`;
+  const box=logo.presentation,viewBox=[box.x,box.y,box.width,box.height].map(n=>Number(n.toFixed(3))).join(' ');
+  return `<svg class="${classes}" viewBox="${viewBox}" style="--logo-ratio:${logo.displayRatio.toFixed(4)};--logo-backing:${logo.background||'#FFFFFF'}" ${accessible} focusable="false">${title}<use width="320" height="160" href="${spritePath}#${logo.spriteId}"></use></svg>`;
 }
 
 export function logoCoverage(rows = []) {

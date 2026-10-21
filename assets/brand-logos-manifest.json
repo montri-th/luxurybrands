@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-21-r2",
+  "version": "2026-10-21-r3",
   "createdOn": "2026-10-21",
   "count": 168,
   "publicationBasis": {
@@ -7,22 +7,22 @@
     "scope": "Identify brands in the owner-requested public CityMETER Luxury Brands demo: individual store pins, lists and details.",
     "rightsStatement": "Brand marks remain owned by their respective owners. This request and manifest do not grant additional trademark rights, imply endorsement or establish a new image license."
   },
-  "transformation": "Original approved logo bytes embedded unchanged as SVG image data URI; deterministic viewport trim of transparent or solid-neutral outer whitespace only with safety margin, contain fit and neutral backing; no ink cropping, recoloring, inversion or tracing",
+  "transformation": "Original approved logo bytes embedded unchanged as SVG image data URI; deterministic viewport trim of transparent or solid-neutral outer whitespace only with safety margin. Added UI backing is LDS surface-soft stone #E5E9E6 for 139 transparent-source marks, original white #FFFFFF for 13 opaque-white sources, and dark #182327 for 16 marks requiring dark backing. No source image recoloring, inversion, ink cropping or tracing.",
   "outputs": [
     {
       "path": "assets/brand-logos.svg",
-      "sha256": "e8a64e69d522c7b5d57b23ddf5fa3654ebcfa77d7175eb24f33666a92a74ad51",
+      "sha256": "ba10353d17fc5f770813a68be6bf22081eadac1d53f340fe306d88af1e3fa576",
       "bytes": 3939650,
       "scope": "Brand identity sprite; symbol viewBox 320×160; original approved image bytes retained"
     },
     {
       "path": "data/brand-logos.json",
-      "sha256": "c446c57523d3fd719e6f70034146578d5c3e394849ff1c15c4df6401e23eb3ac",
-      "bytes": 121210,
+      "sha256": "74cc2ffbe04766bf1198d79a27659df0b09fdea35e25c0f635b6c5fc5abca322",
+      "bytes": 121382,
       "scope": "Public brand registry and source/crop metadata"
     }
   ],
-  "spriteRevision": "e8a64e69d522",
+  "spriteRevision": "ba10353d17fc",
   "visualReview": {
     "contactSheets": "All 168 source identities reviewed at 320×160, 44×22 within a 44×28 tile, and 80×40.",
     "browser": "Chrome verified external SVG use, original SVG/currentColor, PNG, WEBP, white ink and viewport-cropped edge cases.",
@@ -45,7 +45,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-6088ed099adf",
         "symbolId": "logo-br-6088ed099adf",
-        "symbolSHA256": "7f644abeffebf91a67a735a04c59e5418025b540cd9f6dcd3868f45f059d98b1",
+        "symbolSHA256": "dd8b86b5e98afeef1284059a895b449102da2848d35d782af9c314aafaa2aecc",
         "symbolBytes": 15701,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -54,7 +54,7 @@
           "width": 169,
           "height": 31.15
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -84,7 +84,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-a3ab747d76de",
         "symbolId": "logo-br-a3ab747d76de",
-        "symbolSHA256": "9a432e42fecba9f62781bb769c2c459b67496f8b373849569c86ed0b8ed428e9",
+        "symbolSHA256": "00392ec86dc35baa8ad82987be14a8e894d348619e317f61d44bfa22e5e850fb",
         "symbolBytes": 2042,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -93,7 +93,7 @@
           "width": 292.4707986688852,
           "height": 82.6914364640884
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -123,7 +123,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-a3345755adb0",
         "symbolId": "logo-br-a3345755adb0",
-        "symbolSHA256": "dd7750308e600977fc5cff681dbb449970b8e63e5bd605604b352aeed9bb5bf3",
+        "symbolSHA256": "81f80d87ec484baa118286af26a29288ec6044549f6b0fa597dfa28f72d6d851",
         "symbolBytes": 32630,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -132,7 +132,7 @@
           "width": 250.99999999999997,
           "height": 148
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -201,7 +201,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-bf61abd9c8c9",
         "symbolId": "logo-br-bf61abd9c8c9",
-        "symbolSHA256": "95c19cd4c387fa86c03437f2938b22243263a804758e315e29f1240be98b0927",
+        "symbolSHA256": "784f99d0b1d6233fd00b7001c5d09a7b7e851ab977dc5ce7f4a26910615f9fc4",
         "symbolBytes": 26914,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -210,7 +210,7 @@
           "width": 400,
           "height": 138
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -240,7 +240,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-40d8f7c300fd",
         "symbolId": "logo-br-40d8f7c300fd",
-        "symbolSHA256": "f373850c0b3e57189cc1e4bcd3aed6489fe4705d781a784ef942c5ef05eb51d8",
+        "symbolSHA256": "f363fcbb7628a45828f90cf9d3585538f960129aa41eafb3d5d7696cd34ac1e4",
         "symbolBytes": 5284,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -249,7 +249,7 @@
           "width": 271,
           "height": 53
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -318,7 +318,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-b97ce5913c66",
         "symbolId": "logo-br-b97ce5913c66",
-        "symbolSHA256": "31b2a928d0b82dd755bc6f6f6baf37b2448ba013fe2284af63434fe805022a85",
+        "symbolSHA256": "cb20b55111443c1526ec22ba156072ecc8a7b0c191def12f3e8fcc6d43749291",
         "symbolBytes": 8164,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -327,7 +327,7 @@
           "width": 160,
           "height": 15
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -357,7 +357,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-71c3f4af3d0d",
         "symbolId": "logo-br-71c3f4af3d0d",
-        "symbolSHA256": "f6a04fd225da63dedbeb7e80837a4175d78e0c602a93f9fab0b19c8ae9a9e426",
+        "symbolSHA256": "e6d2189baec330fec127c8d4fcca6c78355c140f6054aa847df8a927f2ea13a4",
         "symbolBytes": 49119,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -366,7 +366,7 @@
           "width": 236,
           "height": 27
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -396,7 +396,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-50f299ba0ba7",
         "symbolId": "logo-br-50f299ba0ba7",
-        "symbolSHA256": "639c7b6112469b324bac82d60e039c093a5d6a11540620d03d31a94ee58ba2d4",
+        "symbolSHA256": "b4692eb2a2a3ac6d658a8e31e3b6ec807fb2434183c3a4a817a2e91f01b5157f",
         "symbolBytes": 3317,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -405,7 +405,7 @@
           "width": 218,
           "height": 29
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -435,7 +435,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-71ed955f85b9",
         "symbolId": "logo-br-71ed955f85b9",
-        "symbolSHA256": "443085b5252aa038114fc2633c8962ce3bf98e70ca8147d6e25c3bacbeefb8b9",
+        "symbolSHA256": "b54a2beea411f4968cc97dce6bf7358c117ac0955dc605fae0d8b33021293110",
         "symbolBytes": 4264,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -444,7 +444,7 @@
           "width": 300,
           "height": 75.5
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -591,7 +591,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-8550a0638140",
         "symbolId": "logo-br-8550a0638140",
-        "symbolSHA256": "263f4f4882eea7738c7c3e7be67957f428959cad0e80bdaff599944d757812c4",
+        "symbolSHA256": "e174199232de73a9d7f7008c1f82cf6724ef7f305eb09952d66df48b8b6986a1",
         "symbolBytes": 2083,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -600,7 +600,7 @@
           "width": 454,
           "height": 69
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -630,7 +630,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-7c466d13b715",
         "symbolId": "logo-br-7c466d13b715",
-        "symbolSHA256": "9b68c5301f899d85730d55d4454f41245d82035b2b1724de025386ee6992eeef",
+        "symbolSHA256": "d611f403eb8f096b855e0510e9cf4d62bdadb17ce3109d8388d9905831d64b44",
         "symbolBytes": 7442,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -639,7 +639,7 @@
           "width": 58,
           "height": 80
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -669,7 +669,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-e799fd0f0ff3",
         "symbolId": "logo-br-e799fd0f0ff3",
-        "symbolSHA256": "ad6d93b5fce73a733e97491d6a85ec6528090baf3553bde5ea8ce01141c6d4f7",
+        "symbolSHA256": "6b4a2be2679efdd3c2c67f3f14211313f889563c421ff7b8d7608e585bf93a65",
         "symbolBytes": 286705,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -678,7 +678,7 @@
           "width": 244.321,
           "height": 62.711
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -747,7 +747,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-a2f751296247",
         "symbolId": "logo-br-a2f751296247",
-        "symbolSHA256": "9a3c0623e2401b40bbb409228d1885e75362298cb3259a289a0c7b889f51b8f2",
+        "symbolSHA256": "7e00f08b400016c1a04bf3b2c628893647f0f6e19ef0c9d7ebb601ba1db41e31",
         "symbolBytes": 5953,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -756,7 +756,7 @@
           "width": 131.511,
           "height": 37.141
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -786,7 +786,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-018710361dbb",
         "symbolId": "logo-br-018710361dbb",
-        "symbolSHA256": "98e0841dae6c841e8842ddc7ba9293e2fd9b6d6ad08eafc6ec0201a7c013244e",
+        "symbolSHA256": "9d0319e797109214fcfd8a7fe43c9f7e8f8612873e637d9d4e8750c4a02ee3d1",
         "symbolBytes": 45883,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -795,7 +795,7 @@
           "width": 400,
           "height": 322
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -825,7 +825,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-23109d7f3ebb",
         "symbolId": "logo-br-23109d7f3ebb",
-        "symbolSHA256": "6770d253ed62ca96e4054bff9d8927a873ae1bacb37a7853ef739562741e4dd4",
+        "symbolSHA256": "69e7dd634c0e6f1127c17ccfabbdebd16fb6c3e9a6c0e37f625d9151615d4275",
         "symbolBytes": 24739,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -834,7 +834,7 @@
           "width": 1737,
           "height": 234
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -864,7 +864,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-b57e381bb1e6",
         "symbolId": "logo-br-b57e381bb1e6",
-        "symbolSHA256": "9f6e44520c1c796a537253972587d55997fae858bfda78d59333b0450ef42e68",
+        "symbolSHA256": "f75a2ba40e727b0a0a76b7aa2d895644a6ce15cf8b7e18ef48fd1732699d517b",
         "symbolBytes": 10069,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -873,7 +873,7 @@
           "width": 215,
           "height": 65
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -981,7 +981,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-2b02729b8006",
         "symbolId": "logo-br-2b02729b8006",
-        "symbolSHA256": "126b8709932e2bca233e9467898c82a67aaa3d952967c87ca613d6fffbaa5127",
+        "symbolSHA256": "f179f4636ebde9065b2fb8d3743240316318970eabb86de5e666a82ffacf1683",
         "symbolBytes": 4738,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -990,7 +990,7 @@
           "width": 300,
           "height": 60
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1020,7 +1020,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-09d3290acd1f",
         "symbolId": "logo-br-09d3290acd1f",
-        "symbolSHA256": "ec97808d17314c79afdc02a6f1bce731ffa8b7b3bcbbdeb99363b2956bc75e88",
+        "symbolSHA256": "be8d3133beef26847cdf3790e07eecf149a90d37dbb2b0c212812f22429db3cb",
         "symbolBytes": 4997,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1029,7 +1029,7 @@
           "width": 2160,
           "height": 755.6
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1059,7 +1059,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-6cfd2c202f3c",
         "symbolId": "logo-br-6cfd2c202f3c",
-        "symbolSHA256": "3a54fabbedc7f6e6801ef77c138df8bf6f7ae7a300c834e0c957740faf1cb23a",
+        "symbolSHA256": "d87b08dc361b14b6cc83f2bedbaeb90d89d8df53f1b245a0a3d07fee75082a35",
         "symbolBytes": 9861,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1068,7 +1068,7 @@
           "width": 215,
           "height": 108.00000000000001
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1098,7 +1098,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-b24ee1dcd85b",
         "symbolId": "logo-br-b24ee1dcd85b",
-        "symbolSHA256": "5b9143c97c8a66aaeac02f31dccea1f5036913d1ee64f02e8e815e67aec2776e",
+        "symbolSHA256": "52e130dea4cb55bf12dd11bf22427b8d8204cb2ed24496b58117ae3bc93b5ac3",
         "symbolBytes": 45628,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1107,7 +1107,7 @@
           "width": 199,
           "height": 62
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1137,7 +1137,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-430667fb1c4c",
         "symbolId": "logo-br-430667fb1c4c",
-        "symbolSHA256": "b5aebda3517321f5a5fe32f3c6a3213dc7951753253acf07290b9a82d267aa13",
+        "symbolSHA256": "c8572761d3ba12d004adb04a330ea70bc823ae52903b5b506e6b8196f7ed2701",
         "symbolBytes": 5770,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1146,7 +1146,7 @@
           "width": 124,
           "height": 20
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1176,7 +1176,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-721256f63763",
         "symbolId": "logo-br-721256f63763",
-        "symbolSHA256": "04e578b158502d047cc6e2e142689e5b4212c5bb95881253cd8f68030b5c6cf6",
+        "symbolSHA256": "7185b84d0b3614eca3069c9fb34ab5d61d287016b9d19aa812498c6cf49a13cf",
         "symbolBytes": 34797,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1185,7 +1185,7 @@
           "width": 1202,
           "height": 152
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1215,7 +1215,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-dd3294b85820",
         "symbolId": "logo-br-dd3294b85820",
-        "symbolSHA256": "d89b40f153ac7616f510e219ede8869e8bbe76ebcdc6636be198bb90dcd0b195",
+        "symbolSHA256": "268d672c8aabfcd163248dae968c2017bf4f50f6053ea1b021f8d5b755f16ca4",
         "symbolBytes": 3262,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1224,7 +1224,7 @@
           "width": 684,
           "height": 144
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1254,7 +1254,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-41727e6d840a",
         "symbolId": "logo-br-41727e6d840a",
-        "symbolSHA256": "b5c35316b0bd94957ad4b5ac71079512361ad191b1e81b912b39ecbcc209533f",
+        "symbolSHA256": "48c4798d1a644775af128045df98560e59c4169468f972bf6c5e2ebcc29f7a22",
         "symbolBytes": 14270,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1263,7 +1263,7 @@
           "width": 139,
           "height": 30
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1332,7 +1332,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-239c61c5ed11",
         "symbolId": "logo-br-239c61c5ed11",
-        "symbolSHA256": "3170c8f4fa8be1b130eea2673ba0dd2a6d41fb5a6963a7d648b971d589fe1e62",
+        "symbolSHA256": "d98dac6e80e19acdcc6aa42493baed617c6781a2f151f713ed89620a5efa5a8c",
         "symbolBytes": 8707,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1341,7 +1341,7 @@
           "width": 215.9,
           "height": 39.7
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1371,7 +1371,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-827c0fb1ae67",
         "symbolId": "logo-br-827c0fb1ae67",
-        "symbolSHA256": "a440dd78788170016ba39c3f7f1baa5a66a8cfe3df308575557681165b06c517",
+        "symbolSHA256": "8c2370d65a10347a9604fa74dff9d8c9b1ba1e45d665bb20548895614b9a12da",
         "symbolBytes": 5581,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1380,7 +1380,7 @@
           "width": 233,
           "height": 65
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1410,7 +1410,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-c06f5d9112e7",
         "symbolId": "logo-br-c06f5d9112e7",
-        "symbolSHA256": "c786718ee30d2e01234aac2e07777742eaef81acf9e41bd12642671d2f3f158c",
+        "symbolSHA256": "e7cb1366318136d001550f35ae8f17b1aa2ad1d32dc2d46e2a97e85367f63b06",
         "symbolBytes": 38310,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1419,7 +1419,7 @@
           "width": 500,
           "height": 188
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1488,7 +1488,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-741eb7fa36e3",
         "symbolId": "logo-br-741eb7fa36e3",
-        "symbolSHA256": "434d39ee2423454ce6ee63adc83e1d04f780a22986039b250ff74f098258582a",
+        "symbolSHA256": "8e04f52848d4f51b4b118655bc35ee1c318d441eb9885e96e941f2a8b7bf8158",
         "symbolBytes": 61312,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1497,7 +1497,7 @@
           "width": 1141,
           "height": 284
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1527,7 +1527,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-67ccf48a3c8c",
         "symbolId": "logo-br-67ccf48a3c8c",
-        "symbolSHA256": "0f7c076497aa710cfa959ba81b9949e8b894e696e9b651e9b7631e136323b42b",
+        "symbolSHA256": "5f496264d39ff19e47dfc56fcd2b00eb1d6fa01a2a592df66a8f6eba325d0cfc",
         "symbolBytes": 3745,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1536,7 +1536,7 @@
           "width": 598.11,
           "height": 62.36
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1566,7 +1566,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-569a0ccecd72",
         "symbolId": "logo-br-569a0ccecd72",
-        "symbolSHA256": "6eb636999c53307a74fe5399f2c909e33cb5f1c33c1164d539cd8a2676b0d84b",
+        "symbolSHA256": "22b8df7376b96ec03367bcb46f11d57d1bcc0560f875281fd188339dbc139d6e",
         "symbolBytes": 5579,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1575,7 +1575,7 @@
           "width": 489.082,
           "height": 155.261
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1605,7 +1605,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-f51ae58668f7",
         "symbolId": "logo-br-f51ae58668f7",
-        "symbolSHA256": "c78348cdefb850ba0b63c8ef18c15fa1d7322697cb16965c2b427819fe15855c",
+        "symbolSHA256": "d8a95b8d6e8c39e4b059ca1648378995f430eca759bd98f33b9f35fc16abbbf5",
         "symbolBytes": 17687,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1614,7 +1614,7 @@
           "width": 300,
           "height": 232
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1644,7 +1644,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-d23740951697",
         "symbolId": "logo-br-d23740951697",
-        "symbolSHA256": "c555aa5226f7e7d64e3cd3fda04a743e5b32b7377a5eef9d07fff5be32461580",
+        "symbolSHA256": "29ce8eb0d61787e19f1082b32a107b8322f2e27b5844d6b5dd655f3c0d1c6fdc",
         "symbolBytes": 7987,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1653,7 +1653,7 @@
           "width": 433.7,
           "height": 99.21
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1683,7 +1683,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-37e5e6273f12",
         "symbolId": "logo-br-37e5e6273f12",
-        "symbolSHA256": "e1e6deac0fd61daa54a35a881791511122933a4ce2a16e4b1a7265b92c2935b5",
+        "symbolSHA256": "056712ee3fb014dafefabe899f8ec4527f63a260197faa7319454121da321ff3",
         "symbolBytes": 28056,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1692,7 +1692,7 @@
           "width": 97,
           "height": 60
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1722,7 +1722,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-015f84e8df82",
         "symbolId": "logo-br-015f84e8df82",
-        "symbolSHA256": "72def4eba0aba135fef17700571e8902f7e51cc26e212bcb1df6e1db7798a4ca",
+        "symbolSHA256": "4c95e95ca94a06185d315518e65b7e9d93f6a6c5cee367060add3c37c6c75747",
         "symbolBytes": 5828,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1731,7 +1731,7 @@
           "width": 568,
           "height": 66
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1761,7 +1761,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-416d7ebfac32",
         "symbolId": "logo-br-416d7ebfac32",
-        "symbolSHA256": "926bac3c8916646cf5cab8bab6e605b705a89e4922dded1414d864db0f4d8a33",
+        "symbolSHA256": "095b30df52ce1f63f25ef17d53a84ca8d0506a1e8781843a6e08db4afdbf60d6",
         "symbolBytes": 8335,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1770,7 +1770,7 @@
           "width": 86,
           "height": 20
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1839,7 +1839,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-0faa4447645b",
         "symbolId": "logo-br-0faa4447645b",
-        "symbolSHA256": "dee4d76a26a3b29aa7d3457c86cbaa66da2fde6dbefecafe4f55f26edd31082e",
+        "symbolSHA256": "e8b246d0ee04ccb85c8d915ab7bfae6adc2175f553862688818158efb9c8d656",
         "symbolBytes": 5272,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1848,7 +1848,7 @@
           "width": 189.5,
           "height": 78.5
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1878,7 +1878,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-8eacdfd26662",
         "symbolId": "logo-br-8eacdfd26662",
-        "symbolSHA256": "5a520642320d302b513635dce156f2f4922c5fc9e282d5a4d9b053eef45f370c",
+        "symbolSHA256": "ef0530551e3a57ef34044b81334e5d6262b87c2ef8098d1b5c895bf03bcc2761",
         "symbolBytes": 20928,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1887,7 +1887,7 @@
           "width": 640,
           "height": 141
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1917,7 +1917,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-28cc2c287380",
         "symbolId": "logo-br-28cc2c287380",
-        "symbolSHA256": "e28d1a38221ff71b8c83fabf7a8b2aa0932ab3b255805260ec8a11ee408afe4d",
+        "symbolSHA256": "87a54aae82dd497d3e5847bf3f36ab6246d44961302da34601436f23c148caec",
         "symbolBytes": 17110,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1926,7 +1926,7 @@
           "width": 105,
           "height": 32
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1956,7 +1956,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-5187c024352e",
         "symbolId": "logo-br-5187c024352e",
-        "symbolSHA256": "08940ef4d2d07756bbf24daa9045a0cfe7034ca0235f38293801902b660659b9",
+        "symbolSHA256": "a0ee06a4c3f8de8d3a4370acb11759573d596000070b8c9cc861a02a8a75105a",
         "symbolBytes": 4084,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -1965,7 +1965,7 @@
           "width": 160,
           "height": 46
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -1995,7 +1995,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-7e20fdb3e3dc",
         "symbolId": "logo-br-7e20fdb3e3dc",
-        "symbolSHA256": "cb2497dd6c113cbfd29af94a985cdefd25c0a2a13ff93142b36180daf903cc1f",
+        "symbolSHA256": "44186d7fe41ba42e8b03177f290626ff1b705d3576db0ff224895c9ef966f1ba",
         "symbolBytes": 5337,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2004,7 +2004,7 @@
           "width": 165,
           "height": 16
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2034,7 +2034,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-e1a59b4c915f",
         "symbolId": "logo-br-e1a59b4c915f",
-        "symbolSHA256": "98d773bd501dd60de44f098d5afda98fe070988ad81aee2ed3236e7f2366f168",
+        "symbolSHA256": "b8b43801cc34e779ea2bd35351ed7cfbe9db81911224330db711599896857fd6",
         "symbolBytes": 5765,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2043,7 +2043,7 @@
           "width": 200,
           "height": 13
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2112,7 +2112,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-2cb1b1987de6",
         "symbolId": "logo-br-2cb1b1987de6",
-        "symbolSHA256": "ed0e86a18c4f91fcdb48ecaea0979ac896647d58944e32454a073bf1fa51a797",
+        "symbolSHA256": "4d34e76ef1ac66312e97c7265b4e2212e157148059fd9095c35b4300c19cd88b",
         "symbolBytes": 22311,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2121,7 +2121,7 @@
           "width": 150,
           "height": 150
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2151,7 +2151,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-e9806698c334",
         "symbolId": "logo-br-e9806698c334",
-        "symbolSHA256": "0acaa520608e2761c59f200578ad82807c2b89e7b12537e72f95ad620fadd900",
+        "symbolSHA256": "3ef68a4c2f186bcc5418f6afd4a00723937388da3d63c49f9df63cd07ef16cb9",
         "symbolBytes": 6620,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2160,7 +2160,7 @@
           "width": 256,
           "height": 22
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2190,7 +2190,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-a96bf4d0c5ea",
         "symbolId": "logo-br-a96bf4d0c5ea",
-        "symbolSHA256": "ed56b71fd32e0232d784a3c98850250ba258de99e5087656c8a2fd9acb7cf039",
+        "symbolSHA256": "be376af2145fa99a63a39e00a0a71f5b5e7832928cc86ee79fa74ecc934b4055",
         "symbolBytes": 4845,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2199,7 +2199,7 @@
           "width": 211,
           "height": 33
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2229,7 +2229,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-7976113a5f68",
         "symbolId": "logo-br-7976113a5f68",
-        "symbolSHA256": "58b2918db6f8edba7fbfd2237a176af4d7e26d3751d113168a015d3e613ae9fe",
+        "symbolSHA256": "7f10ac4237b6205c1b010d07b201395f5b382008272bb3ba1564f6050cfce5ff",
         "symbolBytes": 3950,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2238,7 +2238,7 @@
           "width": 132,
           "height": 14
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2268,7 +2268,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-e105b3dabebb",
         "symbolId": "logo-br-e105b3dabebb",
-        "symbolSHA256": "206a56a5d23926924e8e8946f010586cab2744695e1422d13dfa4a88f45d9aee",
+        "symbolSHA256": "908d40ef9bc004a92fa4c8e52889b22f75c6a418a3d4bb4cbc96d1879a4ac367",
         "symbolBytes": 11688,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2277,7 +2277,7 @@
           "width": 536.8052583862194,
           "height": 192.5
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2307,7 +2307,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-bb45e55a4f04",
         "symbolId": "logo-br-bb45e55a4f04",
-        "symbolSHA256": "3061484cc9c7d79c924c4ef794c6a729fa60e4707fda341b2100f454203d8c0d",
+        "symbolSHA256": "8b55eb229989e6029d3b7ef5401269fadacb5c63d0f994393df4b53eb261911d",
         "symbolBytes": 8481,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2316,7 +2316,7 @@
           "width": 400,
           "height": 171
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2346,7 +2346,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-e3d32c5bf82b",
         "symbolId": "logo-br-e3d32c5bf82b",
-        "symbolSHA256": "f5b92c93bb96cb917eed044d021bf28f633a35c0a23fb9e1a7c3d65547f57d6b",
+        "symbolSHA256": "f85f8065ad1dc9c79d87ae62a857420b3ecbe9d4818454c3591780632ad7287c",
         "symbolBytes": 6791,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2355,7 +2355,7 @@
           "width": 632,
           "height": 79
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2424,7 +2424,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-fa83d528f430",
         "symbolId": "logo-br-fa83d528f430",
-        "symbolSHA256": "adb2afb4e5db044e5cd0f905d627ed4d86b19aaec80a58ddf5f3fed2ce19e82b",
+        "symbolSHA256": "ec79b290334c35f6542b3540294c8def934496c16d75a55e4339330003f6cf1d",
         "symbolBytes": 17167,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2433,7 +2433,7 @@
           "width": 372,
           "height": 90
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2463,7 +2463,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-d0cfc2e5319b",
         "symbolId": "logo-br-d0cfc2e5319b",
-        "symbolSHA256": "e09043e32352d03298b595a867dbae5afbb0b9b09116e2f565fb0d1929d8b250",
+        "symbolSHA256": "0f2ceebf75b19794fa9779341caf0d447836ac65effee25f103dfb006fde0265",
         "symbolBytes": 7770,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2472,7 +2472,7 @@
           "width": 440,
           "height": 159
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2541,7 +2541,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-511b5f4a69ba",
         "symbolId": "logo-br-511b5f4a69ba",
-        "symbolSHA256": "00c07c6b9a223de664773efe8d04765d151902573ddca081d3bf4cf719f81556",
+        "symbolSHA256": "e28c62ac3f21c6ee22a929b67a913d8bfaa7c0c7f978d54feff8177d3156f239",
         "symbolBytes": 4173,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2550,7 +2550,7 @@
           "width": 237,
           "height": 22
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2580,7 +2580,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-ffbaa99d9493",
         "symbolId": "logo-br-ffbaa99d9493",
-        "symbolSHA256": "ecbe091213b4411611bd0c48805b6065e2ade175c21ac64ef9e07d8aad042940",
+        "symbolSHA256": "39d39f3860d77e86ef39b120a0ce39624d07c9a24c68c0539da505e15e487f76",
         "symbolBytes": 7887,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2589,7 +2589,7 @@
           "width": 525.5,
           "height": 50.88
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2619,7 +2619,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-e5e82a724df2",
         "symbolId": "logo-br-e5e82a724df2",
-        "symbolSHA256": "2b7dc474f16257aff8eb10611a43ea03c31147378b6f5914939293fd9f040b7e",
+        "symbolSHA256": "bfb959c51b712c0f857a440c30119ec54308d8359b7f0c470c9bb5c969677e9a",
         "symbolBytes": 4472,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2628,7 +2628,7 @@
           "width": 219,
           "height": 25
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2658,7 +2658,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-ffb5cfd2780d",
         "symbolId": "logo-br-ffb5cfd2780d",
-        "symbolSHA256": "69e16cb39ed4953bcfe5a90b8f21734d6cc9388bd3b9a0e3d631d9584631d0d1",
+        "symbolSHA256": "cd3fe321e3a9407af6f8c7e06645baff835f24f0b37cb36a2d25fb6a35af6c2e",
         "symbolBytes": 2858,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2667,7 +2667,7 @@
           "width": 195,
           "height": 20
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2697,7 +2697,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-7ee9757fe856",
         "symbolId": "logo-br-7ee9757fe856",
-        "symbolSHA256": "70c7d18fc1c2ea42cc1ec8c56cc10f729e6cdf86bbf48ec0e804dfa7d862d323",
+        "symbolSHA256": "1910db5940febaf636ea7bc7d6c701a1b974c6b7b0ce6db76b857a3402cb1dac",
         "symbolBytes": 2545,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2706,7 +2706,7 @@
           "width": 802.5,
           "height": 137.5
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2736,7 +2736,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-bc10117ffca6",
         "symbolId": "logo-br-bc10117ffca6",
-        "symbolSHA256": "9d75bf6e7a97053dd82b0b3c85d78a809a72c762016ca712f7298cfd68e2eeda",
+        "symbolSHA256": "63ad03304b0c7800ee44906ad43e71d0688c98fe1ffc7874fa21cc96a90fa6b3",
         "symbolBytes": 17087,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2745,7 +2745,7 @@
           "width": 154.4695,
           "height": 64
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2775,7 +2775,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-de56d0c68ff0",
         "symbolId": "logo-br-de56d0c68ff0",
-        "symbolSHA256": "01f66c9f9238c4142426b92abdd2cd6e95ad7f4ce41a904f5a6be128e978a58b",
+        "symbolSHA256": "c7dfcc3a68b36829d479da80ca56d447e2cb4983e72fadeea5a1e0879a987420",
         "symbolBytes": 46829,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2784,7 +2784,7 @@
           "width": 1500,
           "height": 416
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2814,7 +2814,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-fb1d2d7b1024",
         "symbolId": "logo-br-fb1d2d7b1024",
-        "symbolSHA256": "d2b4d6fd7214056fba037dbd1b9b70c98a7a4d47a712d00e47b3912541439026",
+        "symbolSHA256": "36101f31e57d2c3195cdd9afd9830e7954eae268943b11348ce17e9932e3b0bc",
         "symbolBytes": 66085,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2823,7 +2823,7 @@
           "width": 4656,
           "height": 844
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2853,7 +2853,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-7bb73cf8ed61",
         "symbolId": "logo-br-7bb73cf8ed61",
-        "symbolSHA256": "3a995debb04d09f457e7685065dea9040f5d3b5c4600c55ed92ec3a8c9746c17",
+        "symbolSHA256": "2010733f2ca15a41b4ffecf63c1e573f845045a246671d702c5c9a2f43890fb0",
         "symbolBytes": 41242,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2862,7 +2862,7 @@
           "width": 1472,
           "height": 388
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2892,7 +2892,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-a09b6854755a",
         "symbolId": "logo-br-a09b6854755a",
-        "symbolSHA256": "75eadc0b9a541d3d0034ac77f8859f40da1c7615925464c33bb0fe9869736e3f",
+        "symbolSHA256": "54445fb1f300c0bdd367c9cfe6de8dac131d9be3efd43ffc227202a49b29c994",
         "symbolBytes": 39765,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2901,7 +2901,7 @@
           "width": 192,
           "height": 98
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2931,7 +2931,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-8cfde6efdfc4",
         "symbolId": "logo-br-8cfde6efdfc4",
-        "symbolSHA256": "519402f08ef9d4ebfc783cd19b7c02707408d5ea9c6996dac7564836f0d218ba",
+        "symbolSHA256": "f22e8bc68e193a9daabd739ef4de544bc9925b501d9c3ec9ee5dbfdb7f516a95",
         "symbolBytes": 17079,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2940,7 +2940,7 @@
           "width": 70,
           "height": 40
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -2970,7 +2970,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-3c26104b9c3a",
         "symbolId": "logo-br-3c26104b9c3a",
-        "symbolSHA256": "d569d1f6f4677745b0d6dd49f7f53e36c32e7498d658fc04f26900f8cd468ae0",
+        "symbolSHA256": "8009d0ab760004b3571d060d02a3b350d209a60961115868addff911119cf4cb",
         "symbolBytes": 9938,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -2979,7 +2979,7 @@
           "width": 461,
           "height": 206
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3009,7 +3009,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-fed9563291ce",
         "symbolId": "logo-br-fed9563291ce",
-        "symbolSHA256": "6993dd57d46dd8e60ddaceabc791b7b5787c52c756817cac7ebdb2ea592430f8",
+        "symbolSHA256": "b1dc26b702d50f8f847bf181b62531953e4ae85f4ea043d9b558a69193ee79cb",
         "symbolBytes": 17059,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3018,7 +3018,7 @@
           "width": 323.5,
           "height": 288
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3048,7 +3048,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-fa6e0c5edd19",
         "symbolId": "logo-br-fa6e0c5edd19",
-        "symbolSHA256": "bf2f4af8221cb59d2684a0e83aa3087e7d7e96f029cebe2376ecfaf289790303",
+        "symbolSHA256": "d244fc70d957a4da6c38d3cf84ed7ec84889d707e6e504514f8b4479c94c69d7",
         "symbolBytes": 4078,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3057,7 +3057,7 @@
           "width": 247,
           "height": 28
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3087,7 +3087,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-b7df27dec78e",
         "symbolId": "logo-br-b7df27dec78e",
-        "symbolSHA256": "38878d0151341397fd295fc3dc54dfe4a91a842f1f23f8e944a3c5992ce2d1b4",
+        "symbolSHA256": "80f0b4ce5ae537ddcc9033f1ecc94c3163d39ef9ab03571e44e9d1151e7b4950",
         "symbolBytes": 7149,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3096,7 +3096,7 @@
           "width": 171,
           "height": 67.95294117647059
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3126,7 +3126,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-e351a4e02aff",
         "symbolId": "logo-br-e351a4e02aff",
-        "symbolSHA256": "ec756af492f5b855f7948f3f5817fc569ff035c5764522def426dba357709456",
+        "symbolSHA256": "e39589b84872d1a15f1a187e3358d205e38ba24c936943136383c75a48bc3331",
         "symbolBytes": 10505,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3135,7 +3135,7 @@
           "width": 473.9,
           "height": 130.3777517564403
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3204,7 +3204,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-f087d6073dea",
         "symbolId": "logo-br-f087d6073dea",
-        "symbolSHA256": "fd5d34a3c962f2e7fef6e978f1ffde68471f1f6e0acfa19ac244aa3d44a4bef8",
+        "symbolSHA256": "c80a76693edcd81aaf2a953a6d2b9eeef3a7d50370f808a4f97e4c43695fcd82",
         "symbolBytes": 14442,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3213,7 +3213,7 @@
           "width": 46.5,
           "height": 69
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3243,7 +3243,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-fb24cfa80b33",
         "symbolId": "logo-br-fb24cfa80b33",
-        "symbolSHA256": "d1dfed6461509ebdadb7849729e68358069325d5272f0a18217e543b04cb19c8",
+        "symbolSHA256": "18caff2e2a8e40f4c388e751a6a9fc423dadf2373f11b4ca458fde2be1b592ac",
         "symbolBytes": 40100,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3252,7 +3252,7 @@
           "width": 1398,
           "height": 326
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3282,7 +3282,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-81dd6b775afc",
         "symbolId": "logo-br-81dd6b775afc",
-        "symbolSHA256": "142c5969013046d8ac286c2b2b79bd98a3f6c5a44f02448b015d51b842903171",
+        "symbolSHA256": "56c6107a98dec34bc26a7da9a68bff993c7ebd41b374a4e0d3b314c93f3d3f74",
         "symbolBytes": 11093,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3291,7 +3291,7 @@
           "width": 423,
           "height": 61
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3321,7 +3321,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-cc98764ac015",
         "symbolId": "logo-br-cc98764ac015",
-        "symbolSHA256": "d3432d6e1634d971e1886d211e6b0e5c91ce5d9218e890697db77d32383d9554",
+        "symbolSHA256": "61519182e2c9c9f3d999f8368caaba4745e4f36a75849c09ad0d436fc629b7ce",
         "symbolBytes": 10403,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3330,7 +3330,7 @@
           "width": 105,
           "height": 62
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3399,7 +3399,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-02d6f18ba503",
         "symbolId": "logo-br-02d6f18ba503",
-        "symbolSHA256": "dcae69e21c8ae7effc9b8f5add509fefd1dc05293716ffc3b395748d71495a98",
+        "symbolSHA256": "a58120716f52172d057ff32c4820b4554ffc9c5344790a37bc33616f6cda9fd9",
         "symbolBytes": 17985,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3408,7 +3408,7 @@
           "width": 170,
           "height": 202
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3438,7 +3438,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-4426dc5c82c3",
         "symbolId": "logo-br-4426dc5c82c3",
-        "symbolSHA256": "dfc003def1bc850f5d7415351ba04c9835195e289856f646dd68a0500a3acf97",
+        "symbolSHA256": "30dd25237b17b69487bf36d38da95bd94449f9c0f5a559f82524a03186df6b8a",
         "symbolBytes": 6814,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3447,7 +3447,7 @@
           "width": 252,
           "height": 55
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3477,7 +3477,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-4f69dd532490",
         "symbolId": "logo-br-4f69dd532490",
-        "symbolSHA256": "c42326ec5541690dde6c98932a7f1fe8d18cab604ad6f4cda9ea5e0d4a5f39c6",
+        "symbolSHA256": "0832038f971acded080de4f1ecab30a115b3ad3ff9b6640592c642dfa12e0e0a",
         "symbolBytes": 22812,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3486,7 +3486,7 @@
           "width": 1200,
           "height": 239
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3516,7 +3516,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-350c0e1b4af4",
         "symbolId": "logo-br-350c0e1b4af4",
-        "symbolSHA256": "7175f18facae49e1a12e02e2fc7ee4e66ac70796b298f781385e85c5a699febb",
+        "symbolSHA256": "7a6cf019c08a65f2e75282c000525cae9f5d945a1a171ae50255cb5eee207098",
         "symbolBytes": 9284,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3525,7 +3525,7 @@
           "width": 168,
           "height": 41
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3555,7 +3555,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-c55637c63bba",
         "symbolId": "logo-br-c55637c63bba",
-        "symbolSHA256": "3269b265513744cb46ca0f0d6593621a7495ccddfd9b673b98a740787c06ae3f",
+        "symbolSHA256": "94e181826ebf5a61b4e308b8a28f61648f43f7c5c33260fba7c9b102aa2768ad",
         "symbolBytes": 4342,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3564,7 +3564,7 @@
           "width": 279,
           "height": 57
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3594,7 +3594,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-e4e9a5a93b78",
         "symbolId": "logo-br-e4e9a5a93b78",
-        "symbolSHA256": "c269885de9c190468dbefb3231649954e4898aa500958d75399e0a440eacc737",
+        "symbolSHA256": "0abc7fcb3d21cdd1bff8522b299a71ed6438e99988d9f967089f1557b73cc363",
         "symbolBytes": 1652,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3603,7 +3603,7 @@
           "width": 163.751,
           "height": 20.968
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3633,7 +3633,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-873b56afdd5e",
         "symbolId": "logo-br-873b56afdd5e",
-        "symbolSHA256": "4bf9434772ae42e7d863cee027b89a94a645294ae59cc6d5ad5b8fb7062f949a",
+        "symbolSHA256": "0a56322413d3fe72d208a84a049076aab0ac7f0a4de495618843a7e10e778b4b",
         "symbolBytes": 16361,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3642,7 +3642,7 @@
           "width": 295,
           "height": 86
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3711,7 +3711,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-87b5af729f4c",
         "symbolId": "logo-br-87b5af729f4c",
-        "symbolSHA256": "9270f07c137c1a45779ac86dd916ce27aec9af83aaa72ce1bf3057d82bc252f4",
+        "symbolSHA256": "5be184c350d20358fefdb4f41f5e0e3610187ae60aa31185b5d4d4351696b311",
         "symbolBytes": 9481,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3720,7 +3720,7 @@
           "width": 477,
           "height": 109
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3750,7 +3750,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-f685a6457d08",
         "symbolId": "logo-br-f685a6457d08",
-        "symbolSHA256": "fd44c8fd762dc3486a80f98bc4823f0b340057f795c42da96e6e938378aab825",
+        "symbolSHA256": "7946f80c43c1d5e8bf8ee7d4a684e4283e5a75b75a69a90ee3a902bd82ade64f",
         "symbolBytes": 12443,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3759,7 +3759,7 @@
           "width": 289,
           "height": 80
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3789,7 +3789,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-e82e039ae3e0",
         "symbolId": "logo-br-e82e039ae3e0",
-        "symbolSHA256": "aa22fbd6b3d8fe4a4807e8c5b61338dffea2dace4cf90ebd17676db3c53d9cda",
+        "symbolSHA256": "9937f7871e7cf33f08e6a8c8ad5d0e13206766cce5d3e0ecdf096790baadd8fa",
         "symbolBytes": 18144,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3798,7 +3798,7 @@
           "width": 400,
           "height": 84
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3828,7 +3828,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-bbd4b13180c5",
         "symbolId": "logo-br-bbd4b13180c5",
-        "symbolSHA256": "cebaa483ddf9352468c847afff4f45650db667c2e7040046bcd79ceb171bbb26",
+        "symbolSHA256": "329a111ac2e1c6ef157e90f81779079e13bd2b2faf3250bd3ffb09fa8a865605",
         "symbolBytes": 25678,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3837,7 +3837,7 @@
           "width": 396,
           "height": 52
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3867,7 +3867,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-8d8b75933636",
         "symbolId": "logo-br-8d8b75933636",
-        "symbolSHA256": "f6a57a5084e1f8292dd5087ddfa0ce5d6fdf439954c22aa55843cac1d1f8634a",
+        "symbolSHA256": "f09df3fa581146bd4d1d07915450ef93f90ef4f21b27a26c544336c2e271dc6b",
         "symbolBytes": 4531,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3876,7 +3876,7 @@
           "width": 384,
           "height": 43
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3906,7 +3906,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-bcb05f5ab848",
         "symbolId": "logo-br-bcb05f5ab848",
-        "symbolSHA256": "08549bd2f1328466df3c6cb5e18cc95cac0e5480131d6b59d9c3f6ddda799d61",
+        "symbolSHA256": "5b7295a5043a4abc5775e98140b5257cf1efbaeeb6032fbdd331da3b1a2e32ef",
         "symbolBytes": 70498,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3915,7 +3915,7 @@
           "width": 3033,
           "height": 279
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -3984,7 +3984,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-0c1d6c6faf02",
         "symbolId": "logo-br-0c1d6c6faf02",
-        "symbolSHA256": "83d819c98998acc79c56e13fe34423dcb22859b680f66629a9591174e5a9c093",
+        "symbolSHA256": "e902dd069074866ffef4f6924982801806b2b7d7f5b6aa494844d3c0462c59bb",
         "symbolBytes": 5533,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -3993,7 +3993,7 @@
           "width": 400,
           "height": 84
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4023,7 +4023,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-de7556eb9e35",
         "symbolId": "logo-br-de7556eb9e35",
-        "symbolSHA256": "62e5affb2297165d45e655ef1b5ca63231e3fbcf634b15dfe3ee3351074cd2f0",
+        "symbolSHA256": "1860afa59ea8809013a59bc53323a806cc6fc4a41c423e35bf4155279438ed87",
         "symbolBytes": 1731,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4032,7 +4032,7 @@
           "width": 400,
           "height": 33
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4062,7 +4062,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-2ae8e3db9922",
         "symbolId": "logo-br-2ae8e3db9922",
-        "symbolSHA256": "87bf3e20c4d54c472f6b0b3b870d8c2da2f67c0c0089a08e108571c3afa36df0",
+        "symbolSHA256": "e2d197a626458923140b29ac1645ccc295f8a9eba0409fd5b2548eadd4684e02",
         "symbolBytes": 6492,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4071,7 +4071,7 @@
           "width": 840.8901306413302,
           "height": 143.97020689655173
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4101,7 +4101,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-0ddde2c20663",
         "symbolId": "logo-br-0ddde2c20663",
-        "symbolSHA256": "0fe7eea99cdaf6851a4e8126d03ff4fd48e753ec3cc304f32cfb1e74f04b03a4",
+        "symbolSHA256": "a2cf90212883278a3e33389ae8a4270a325f70002296f5c9af059aa05b0d8db3",
         "symbolBytes": 4658,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4110,7 +4110,7 @@
           "width": 948,
           "height": 305.4
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4140,7 +4140,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-cbeab90cd924",
         "symbolId": "logo-br-cbeab90cd924",
-        "symbolSHA256": "9341003e5d80de2fe3b34f94bc43103e20df910202a2aa5f5b15083dbc96dab7",
+        "symbolSHA256": "b3b2ba2db340d418e7b3d1d36f8583d1f30e05ecd52783196e67f0c63eb48dc3",
         "symbolBytes": 24569,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4149,7 +4149,7 @@
           "width": 224,
           "height": 40
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4257,7 +4257,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-15222f816d65",
         "symbolId": "logo-br-15222f816d65",
-        "symbolSHA256": "7fd4545c6c7bf0d9543523b75e980aa3631c3224a1c1daea3b647d182647118d",
+        "symbolSHA256": "185b579b8f77cb6ae5f4b80c550e6d9997cf597f40f392b8802963c9e2d4b69d",
         "symbolBytes": 4654,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4266,7 +4266,7 @@
           "width": 222,
           "height": 27
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4296,7 +4296,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-4b67eb9e246e",
         "symbolId": "logo-br-4b67eb9e246e",
-        "symbolSHA256": "c59aab0d7d19dfd031205c073267ea00908063667aafe24dda04ff9facacf277",
+        "symbolSHA256": "cc5570b69e4bd33fff5a3cec4f201e3d8f7d98881058738f4debd44964455b8c",
         "symbolBytes": 2069,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4305,7 +4305,7 @@
           "width": 135,
           "height": 22
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4335,7 +4335,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-a33a3059ad6d",
         "symbolId": "logo-br-a33a3059ad6d",
-        "symbolSHA256": "e0a0f06d782380a4eccd4122d60737320bd5e7c60435d6c0ef158513786903ca",
+        "symbolSHA256": "c86515286d98091a33056abfebe761539d09cfbca7e038cdfd7b44c7a934ef7e",
         "symbolBytes": 119087,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4344,7 +4344,7 @@
           "width": 3051,
           "height": 1350
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4374,7 +4374,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-9045e5ee6075",
         "symbolId": "logo-br-9045e5ee6075",
-        "symbolSHA256": "8bd1a104bfae8577f459d870102da8bfe8707a982d2c14d54c1acbc06c751a6f",
+        "symbolSHA256": "bb2e24f756aec31c9b06be8a82be9477c079ce6bb8af5ed4824dcb453abd02bf",
         "symbolBytes": 4720,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4383,7 +4383,7 @@
           "width": 354,
           "height": 51
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4413,7 +4413,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-3e0e7ac11647",
         "symbolId": "logo-br-3e0e7ac11647",
-        "symbolSHA256": "e3c3ac16763f5940d56a7ebb3c238c6687cc0b54a9e336d7e4b0cbda4d2392c0",
+        "symbolSHA256": "0eb8f5f2e5a9eaa74c933fa21aacc6b4bff68088992df5b09a0d655a620ef231",
         "symbolBytes": 13015,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4422,7 +4422,7 @@
           "width": 198,
           "height": 34
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4452,7 +4452,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-304b4a90a76a",
         "symbolId": "logo-br-304b4a90a76a",
-        "symbolSHA256": "b104a4cb620274f5a62f7e573527086435ae15e3d9a704e89532abe9447ea4f7",
+        "symbolSHA256": "a14ab38ccbc836a306e1913218f8e60e948cbe6f60cda8ded495c914b927c90a",
         "symbolBytes": 25613,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4461,7 +4461,7 @@
           "width": 900,
           "height": 468
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4491,7 +4491,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-288971671685",
         "symbolId": "logo-br-288971671685",
-        "symbolSHA256": "ee31742f3af3425b8120ab6bed90201ee9d3dc303d79b6da068819568226ac19",
+        "symbolSHA256": "353f969d4354210b749e173e785a7244c1f9f02ec7c3d25a3bf93b7181593b7d",
         "symbolBytes": 17087,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4500,7 +4500,7 @@
           "width": 188,
           "height": 60
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4530,7 +4530,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-417ca5a9d7b7",
         "symbolId": "logo-br-417ca5a9d7b7",
-        "symbolSHA256": "edddfda1bb11b91e9c75e61e756b0c03bc229a895eb20ff79cdc049c13319e59",
+        "symbolSHA256": "4415ca16c4399765dc12767d6a7fc20a066cc7618a44f22fb4cf00b56367ff59",
         "symbolBytes": 6784,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4539,7 +4539,7 @@
           "width": 283.46,
           "height": 112.62
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4608,7 +4608,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-631f503e7346",
         "symbolId": "logo-br-631f503e7346",
-        "symbolSHA256": "bb09afc3370e804c6ffca7e79f1c36e58305c85cd50bd240a0c4977513e94db6",
+        "symbolSHA256": "ca31156adc4ff435e59f61b39dc61e58c8d9e1f75fe90a765bf4f19b154792db",
         "symbolBytes": 5925,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4617,7 +4617,7 @@
           "width": 146,
           "height": 28
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4647,7 +4647,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-d796ef086cce",
         "symbolId": "logo-br-d796ef086cce",
-        "symbolSHA256": "e73953b705dd2d6f037407146e22b9a5638cb46189e499c8497f123e709fc759",
+        "symbolSHA256": "e5e0a5a58831ef3147c3776498bb0d28881ef149f1baaa74019f1ac3e906c883",
         "symbolBytes": 10548,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4656,7 +4656,7 @@
           "width": 874,
           "height": 110
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4686,7 +4686,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-6fb91acd86b9",
         "symbolId": "logo-br-6fb91acd86b9",
-        "symbolSHA256": "305b05dad5243ee02016adbfb51d1c5e32f9694f2123010ff042061861fb29e4",
+        "symbolSHA256": "7bc95126c754d5bce4bf93df6e0d774e0c54e47506ec04b5578121105564b2f8",
         "symbolBytes": 59126,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4695,7 +4695,7 @@
           "width": 2921,
           "height": 369
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4725,7 +4725,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-d7b2378b30b4",
         "symbolId": "logo-br-d7b2378b30b4",
-        "symbolSHA256": "29515c035d99bac6497dcf857c524394f4ad4a665905e4c4ebe530ea3ff8fa07",
+        "symbolSHA256": "62dfbc98a13b8a26cf73bf41eb65254eb6194e9a05f46bb8d840b8a49adf139f",
         "symbolBytes": 7556,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4734,7 +4734,7 @@
           "width": 164,
           "height": 87
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4764,7 +4764,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-03a86f039d4f",
         "symbolId": "logo-br-03a86f039d4f",
-        "symbolSHA256": "aa481dadee044e258c5379b0a4dcdf934d1279df7da4d7f4f509bddd5d162116",
+        "symbolSHA256": "943f2b48cd6481aacb0f2a8461bea71a3d75e41a7b3f5357a1eb9c568ed06e4a",
         "symbolBytes": 13388,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4773,7 +4773,7 @@
           "width": 143,
           "height": 26
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4803,7 +4803,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-b97acac9d4d6",
         "symbolId": "logo-br-b97acac9d4d6",
-        "symbolSHA256": "594e47bf3b1601a5ab626aa3ec82f9146c9446f7cd1a0c7ccbb7196f95e986a1",
+        "symbolSHA256": "fe7c2d283539216532c818d9bda6fee136bba51b8483a387fa811f7ce812061b",
         "symbolBytes": 3082,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4812,7 +4812,7 @@
           "width": 178,
           "height": 35
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4842,7 +4842,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-c3940d8457bb",
         "symbolId": "logo-br-c3940d8457bb",
-        "symbolSHA256": "6e781a227c4e22a14a85895c59be0e10af0dc340cf0697285375b38815bf0dc9",
+        "symbolSHA256": "07d774b9dc87e6a593320805999fbc8750a286f37227817d2ccbacd3fe125448",
         "symbolBytes": 29784,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4851,7 +4851,7 @@
           "width": 1920,
           "height": 353
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4881,7 +4881,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-675f4ef1b0d6",
         "symbolId": "logo-br-675f4ef1b0d6",
-        "symbolSHA256": "4689b2172dc536e0335e3fd179fcb558e7124e5d28127b86914b5f75ba9ee2c0",
+        "symbolSHA256": "abe08c07231b0079e68f524beb7285bf89c1a446f011415d3f82cb593cbce23e",
         "symbolBytes": 2322,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4890,7 +4890,7 @@
           "width": 93,
           "height": 36
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4920,7 +4920,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-71900e71d558",
         "symbolId": "logo-br-71900e71d558",
-        "symbolSHA256": "34c09f2ec086cbf472539fbd75a12a5d7a1a2d34ec04639d005d96e4e82d4dca",
+        "symbolSHA256": "24533babfdf04decad21d590c34ebc0a7f1dcecff40f06fa1b589df5623f9674",
         "symbolBytes": 8148,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -4929,7 +4929,7 @@
           "width": 360,
           "height": 47
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -4998,7 +4998,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-fdd09e4e4e1f",
         "symbolId": "logo-br-fdd09e4e4e1f",
-        "symbolSHA256": "44a63c0fd40afdbcdd83c0046e913dc7f5fe35307a195b4e84e041aa9e14a309",
+        "symbolSHA256": "5fe6f30318d944f05aea9f570852b9a39f5b7e2023d941927147fac7f70a09e8",
         "symbolBytes": 4402,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5007,7 +5007,7 @@
           "width": 222.38,
           "height": 24
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5037,7 +5037,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-801321025a0d",
         "symbolId": "logo-br-801321025a0d",
-        "symbolSHA256": "3ce054cdecbad9f2f28ef484cdfaeb97d9c643ff02c53a842d18d86b661a4434",
+        "symbolSHA256": "6761719cf7e8bb369e20b2b370b57457276161dafe53d37dbb810381a44cdf81",
         "symbolBytes": 3859,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5046,7 +5046,7 @@
           "width": 128,
           "height": 20
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5076,7 +5076,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-976b74a11ffe",
         "symbolId": "logo-br-976b74a11ffe",
-        "symbolSHA256": "0ba55a307a5f0b54e532e65079c88e9ed8e86a06bcdd1af6b67906ccffe8cf56",
+        "symbolSHA256": "d23fde91c405c675cdf584c1a8c2d5093b4800210394c054b9470ba68fe4ea2e",
         "symbolBytes": 5553,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5085,7 +5085,7 @@
           "width": 235,
           "height": 61
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5115,7 +5115,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-edc7f37cab96",
         "symbolId": "logo-br-edc7f37cab96",
-        "symbolSHA256": "27f0ff84ab895e8f3ab5709045f6367ee20770f5e87577289a119fb11ed740d7",
+        "symbolSHA256": "b20325eac2483e4f0a16e03c016a0e76032c23bb7668670775e13f1f5d5b3f5a",
         "symbolBytes": 46472,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5124,7 +5124,7 @@
           "width": 732,
           "height": 247
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5154,7 +5154,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-97ae8f8295f2",
         "symbolId": "logo-br-97ae8f8295f2",
-        "symbolSHA256": "0b4b9b1f1dcd41f4db7eb7875d493934ef662cdc44f94f0779f155d03dbd8e99",
+        "symbolSHA256": "174e625beda3980a153231850f30dadec0f6c6f552c5f5f1a1c4b9c776895f22",
         "symbolBytes": 18460,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5163,7 +5163,7 @@
           "width": 900,
           "height": 285
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5193,7 +5193,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-34953ba7279d",
         "symbolId": "logo-br-34953ba7279d",
-        "symbolSHA256": "f7213ef879c2037afbe247ff79277ce60f02f06021abd7876b500b1f0302e348",
+        "symbolSHA256": "b61339dcb25b3cfff29679c480e6a21de77b6065e04550ce47ef185e7e0b766c",
         "symbolBytes": 46757,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5202,7 +5202,7 @@
           "width": 1302,
           "height": 677
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5271,7 +5271,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-aed3b460597f",
         "symbolId": "logo-br-aed3b460597f",
-        "symbolSHA256": "db82b7e3ac147e14eb8cc83328ffaa2596da83a21ab09927a6b223df87cdd2d9",
+        "symbolSHA256": "f25a5b9dff8afebfc50d0a45b02e441b4e9942b827bd61305ec71ce888f98246",
         "symbolBytes": 3859,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5280,7 +5280,7 @@
           "width": 180,
           "height": 14
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5310,7 +5310,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-c0e7177e095e",
         "symbolId": "logo-br-c0e7177e095e",
-        "symbolSHA256": "d3e8d95d89c0b3aa7fa7dc156cddef569ddc3fbc8e01ff555a9d0b67889a42d6",
+        "symbolSHA256": "ebf7939f3a1793b3a7df926b7d6d5da5a10929f662939ac025a0d95df5cfd7a1",
         "symbolBytes": 10573,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5319,7 +5319,7 @@
           "width": 1122.52,
           "height": 153
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5349,7 +5349,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-5ea3f62c26f5",
         "symbolId": "logo-br-5ea3f62c26f5",
-        "symbolSHA256": "10263b07a6cc5357796fb1430ae2f42ff302a1c58d10613716fd3fc278dc565f",
+        "symbolSHA256": "afb6ce658c0e754d10400da3bba6d45c1f22b86c8050f23cc4447fa39abb52af",
         "symbolBytes": 28432,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5358,7 +5358,7 @@
           "width": 350,
           "height": 62
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5388,7 +5388,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-530b6c07ea30",
         "symbolId": "logo-br-530b6c07ea30",
-        "symbolSHA256": "9179b88adb4556644a27fbf0c3605b27a5e04c1e7ae853c756dc55b0e74a460d",
+        "symbolSHA256": "70c7d30ccf65ae6e900f4f31013d8fc8c4062614d70b480307ea7b78fd041f7a",
         "symbolBytes": 4522,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5397,7 +5397,7 @@
           "width": 160,
           "height": 15
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5427,7 +5427,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-2024f14d9568",
         "symbolId": "logo-br-2024f14d9568",
-        "symbolSHA256": "0969a407654b9475273e47f89f6b50c2438cf0c965c111ae59db72ba640c3f9c",
+        "symbolSHA256": "d9bc1d42353b2f13bb9d5ced8e716fd64fcd4353d5d792ab437d2f913d6ae129",
         "symbolBytes": 3702,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5436,7 +5436,7 @@
           "width": 1556.29,
           "height": 618.55
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5466,7 +5466,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-647308d90300",
         "symbolId": "logo-br-647308d90300",
-        "symbolSHA256": "34cbfed73fd75251f69f73003a026f6aa8492fc9b8ae48072593ac519bcbd0c0",
+        "symbolSHA256": "3d23c5dd3ae925546f9e45522fd1ff4f8233a0efa6094855eeabf4005b8e987f",
         "symbolBytes": 5015,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5475,7 +5475,7 @@
           "width": 103,
           "height": 59
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5544,7 +5544,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-b32000697286",
         "symbolId": "logo-br-b32000697286",
-        "symbolSHA256": "3555b0181d48a02bd5630f787a278d090af1c49960ea9155027aec160abd7ff1",
+        "symbolSHA256": "3f841ddabab997bcb22107c0cbb6aba2243beff50b1dd82b0679cff7f826a832",
         "symbolBytes": 53559,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5553,7 +5553,7 @@
           "width": 234,
           "height": 53
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5700,7 +5700,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-5780680c6750",
         "symbolId": "logo-br-5780680c6750",
-        "symbolSHA256": "ac4e4e4af57f726793848e41c4e9042a90fde21e75a815f6be1b72ec3598fb4a",
+        "symbolSHA256": "658952ba58e45b2b4b84a8d6bea35a0db9cf0f2c19a6855c14f9cf384c6801ba",
         "symbolBytes": 13292,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5709,7 +5709,7 @@
           "width": 83,
           "height": 24
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5739,7 +5739,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-1f66e4e17c93",
         "symbolId": "logo-br-1f66e4e17c93",
-        "symbolSHA256": "e2acb997cebf15dd3fcb69295be977623dbb9fde1d471f905ad2de0ecb510685",
+        "symbolSHA256": "7d0438b7d79bdc17b3b35452c487484051818ac4796cf69a1fccf2557e5b684e",
         "symbolBytes": 5733,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5748,7 +5748,7 @@
           "width": 300,
           "height": 59
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5778,7 +5778,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-aca52d36d2b3",
         "symbolId": "logo-br-aca52d36d2b3",
-        "symbolSHA256": "b225a03dac2c4cbd7480f8490841b0f7758bcad2f1ba89e389cf95cbe40e93d3",
+        "symbolSHA256": "599fa2b4a4fd84449ecdf22d0c200a0d8e681b4cc132055151cf13824d9e3542",
         "symbolBytes": 28935,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5787,7 +5787,7 @@
           "width": 399.96,
           "height": 282.42
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5817,7 +5817,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-f8f474a55bef",
         "symbolId": "logo-br-f8f474a55bef",
-        "symbolSHA256": "54e44798bbdf39ddf9b2185fcff1528792323b4c85405a05f9830d35f5bc490b",
+        "symbolSHA256": "afa6dc36390f9e269e426bee68e534f8ad2faa64010812e7b6eaac4ab5bbdf8a",
         "symbolBytes": 5181,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5826,7 +5826,7 @@
           "width": 288,
           "height": 87
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5856,7 +5856,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-2dcb808d957e",
         "symbolId": "logo-br-2dcb808d957e",
-        "symbolSHA256": "74f5556a82cd2d0d0aaec3bf3f4c3f5ad0c7db7b44c9f8e157501162f562a714",
+        "symbolSHA256": "c4d5802018eea26a01308d49809d1d8da5335f397d1b62938832c425906351dd",
         "symbolBytes": 28121,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5865,7 +5865,7 @@
           "width": 282,
           "height": 245.99999999999997
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5895,7 +5895,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-67b7f222d30c",
         "symbolId": "logo-br-67b7f222d30c",
-        "symbolSHA256": "ed273e89e7c45c224509b1dc166082e1ffb401f27f4bf4055d1c16ed7bc7873b",
+        "symbolSHA256": "1b7f018acdb23dd710caf9e5dc988b91e0975f5865becbe181b963e502cae3c7",
         "symbolBytes": 3739,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5904,7 +5904,7 @@
           "width": 216,
           "height": 45
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5934,7 +5934,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-6ee8b02b02e5",
         "symbolId": "logo-br-6ee8b02b02e5",
-        "symbolSHA256": "78a98a89affb0b7df382717ed8b2eecaf585f834b7b98cb6bb161fdf310e303e",
+        "symbolSHA256": "485004ecada54d48471dd229e677b141e602da5532662e5bf6a602edbf831eb6",
         "symbolBytes": 8289,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5943,7 +5943,7 @@
           "width": 640,
           "height": 52
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -5973,7 +5973,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-ad31062597ed",
         "symbolId": "logo-br-ad31062597ed",
-        "symbolSHA256": "0d32a7d6ab7604f1aa425cff3c162ae253c716c4518a7ce26c595a04a24df7d9",
+        "symbolSHA256": "6c75fe6ae5e10a14a17c0840b1a2327cb4c2f2033bea707f5050f4a1e44d6238",
         "symbolBytes": 23141,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -5982,7 +5982,7 @@
           "width": 1353,
           "height": 531
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6012,7 +6012,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-247c3845d1f5",
         "symbolId": "logo-br-247c3845d1f5",
-        "symbolSHA256": "116a7ac83c362d3726eecd5b064a7b10676732fadad09a2867e70d73ab91baea",
+        "symbolSHA256": "626b0e356f8ce85307f09c9d556d6ab8c9b56ba29730a5fd7f49df3233199f0f",
         "symbolBytes": 8243,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6021,7 +6021,7 @@
           "width": 615.76001,
           "height": 257.48001
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6051,7 +6051,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-8b31b7ab04eb",
         "symbolId": "logo-br-8b31b7ab04eb",
-        "symbolSHA256": "2607d65b7eef1aff8d87eedb956a5f9b9e79dce30c64318d40001e398698ea6a",
+        "symbolSHA256": "e19797fb8d8863b53455dbc7196f4d8adeb8af300599791107b8cf1a292be7b1",
         "symbolBytes": 54255,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6060,7 +6060,7 @@
           "width": 1999,
           "height": 248
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6090,7 +6090,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-d655bf6e28b4",
         "symbolId": "logo-br-d655bf6e28b4",
-        "symbolSHA256": "f878d09aa7e2b9f22839d4f1a2d88b46ee35e44ac57c92627b61ac40d631769c",
+        "symbolSHA256": "9bd358eff7c574f079a67191f143e6e668bb34bf3e7442df54c0522366f60519",
         "symbolBytes": 3342,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6099,7 +6099,7 @@
           "width": 987.7,
           "height": 283.8
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6129,7 +6129,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-a6434726c118",
         "symbolId": "logo-br-a6434726c118",
-        "symbolSHA256": "214e9776b4cc0731b24f003dc9b62ec9ea82f2c1159fe0e9dca5c0a6f22e6a4d",
+        "symbolSHA256": "a371738f3ea4a6e88af5df0b04bb8a285e1076d274358877b817bb5fccc2797e",
         "symbolBytes": 2850,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6138,7 +6138,7 @@
           "width": 213,
           "height": 32
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6168,7 +6168,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-48a91a363d07",
         "symbolId": "logo-br-48a91a363d07",
-        "symbolSHA256": "74d06c323a6898e2846f98e167a91638086d37ad829066acbaad06c7b0fb81d9",
+        "symbolSHA256": "2478db38391cd2ce5f99be50ba1c5cf92236235cc78069d19cda42ff3b6604c3",
         "symbolBytes": 2976,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6177,7 +6177,7 @@
           "width": 370,
           "height": 35
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6207,7 +6207,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-3d186a192625",
         "symbolId": "logo-br-3d186a192625",
-        "symbolSHA256": "eb7fe18afca51b39024c5c72a581b42b9193ccca1d6dac0c978cb76eadbb9972",
+        "symbolSHA256": "1044b8746dee2345c3413a16cec9953bf7535467213f7feb08cc646b8dc713b0",
         "symbolBytes": 18100,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6216,7 +6216,7 @@
           "width": 110,
           "height": 35
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6285,7 +6285,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-07a06feaaf9b",
         "symbolId": "logo-br-07a06feaaf9b",
-        "symbolSHA256": "4e59322ec791ee5a571dc154617fc678324b17d266bd7a2e106854ca2bb0ecb7",
+        "symbolSHA256": "d485037a0c5afa0bc3084a625069f4ad68ac94f55434abff03c364a5afb34c5b",
         "symbolBytes": 4537,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6294,7 +6294,7 @@
           "width": 201,
           "height": 113
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6324,7 +6324,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-a030ef501c9a",
         "symbolId": "logo-br-a030ef501c9a",
-        "symbolSHA256": "6dff389f75ecd0765e9e0b466edda955dfb66b07b5f8c5ad8d671597abf111fb",
+        "symbolSHA256": "370b4ea434fb9dbf11cfb38e03acc438b984e89e796eee580572113e3118ca0e",
         "symbolBytes": 12848,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6333,7 +6333,7 @@
           "width": 342,
           "height": 132
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6363,7 +6363,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-87c84cdcddd6",
         "symbolId": "logo-br-87c84cdcddd6",
-        "symbolSHA256": "066a516e4457aff39d3eff4e8847f17d52c0103598b9b7a60014f5e0de7f0386",
+        "symbolSHA256": "b3d6efe0c81de2642bae783e507d5c5582abc14ed91827025d644b6014be6a31",
         "symbolBytes": 12401,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6372,7 +6372,7 @@
           "width": 233,
           "height": 76
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6402,7 +6402,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-3fec2131852b",
         "symbolId": "logo-br-3fec2131852b",
-        "symbolSHA256": "3d981c477ef7121182ee274e4bcc8fdfac006480f35149dc5e68cc6f2c0edc02",
+        "symbolSHA256": "e0e50ae2d3ba45f5d4d62c6b8cda7e25c65da7d558917e271d8956f89ec9719a",
         "symbolBytes": 10513,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6411,7 +6411,7 @@
           "width": 361.78,
           "height": 105.03
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6441,7 +6441,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-821fc06fb84c",
         "symbolId": "logo-br-821fc06fb84c",
-        "symbolSHA256": "dbfb5b410d20d592c74bb4fe28ca38e967bcd04664abfa8cd0f00704be1f7add",
+        "symbolSHA256": "835a1d340521889aee287c38d34fe52ffabc99696387a685f80ab57bde3bdfe9",
         "symbolBytes": 105744,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6450,7 +6450,7 @@
           "width": 231,
           "height": 76
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6519,7 +6519,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-f4221170fa6f",
         "symbolId": "logo-br-f4221170fa6f",
-        "symbolSHA256": "354f022fcf8a0b636d6641fbdc8ae3ded48fe37e401d96112199e6e739837d7a",
+        "symbolSHA256": "1eca5045356bcca13d358890d2acbcfe32b978cf26202e0346a703d47fceb261",
         "symbolBytes": 6479,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6528,7 +6528,7 @@
           "width": 129,
           "height": 32
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [
@@ -6558,7 +6558,7 @@
       "output": {
         "path": "assets/brand-logos.svg#logo-br-0d517047196c",
         "symbolId": "logo-br-0d517047196c",
-        "symbolSHA256": "f6132578a54e87634e0bdf9708a59092b0f8860d6c6ce63f09da1a71c823388b",
+        "symbolSHA256": "c4cfc941f135f6b3688a02cf6e3de4267e36f5cdec1ffe0d2607947f0d3d8c7d",
         "symbolBytes": 19538,
         "viewBox": "0 0 320 160",
         "viewportCrop": {
@@ -6567,7 +6567,7 @@
           "width": 450,
           "height": 195
         },
-        "background": "#FFFFFF",
+        "background": "#E5E9E6",
         "originalImageBytesUnmodified": true
       },
       "approvedRoles": [

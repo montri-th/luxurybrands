@@ -126,20 +126,20 @@
     },
     {
       "path": "assets/brand-logos.svg",
-      "sha256": "e8a64e69d522c7b5d57b23ddf5fa3654ebcfa77d7175eb24f33666a92a74ad51",
+      "sha256": "ba10353d17fc5f770813a68be6bf22081eadac1d53f340fe306d88af1e3fa576",
       "bytes": 3939650,
       "scope": "Brand identity sprite for store pins, lists and details; original approved logo bytes retained"
     },
     {
       "path": "data/brand-logos.json",
-      "sha256": "c446c57523d3fd719e6f70034146578d5c3e394849ff1c15c4df6401e23eb3ac",
-      "bytes": 121210,
+      "sha256": "74cc2ffbe04766bf1198d79a27659df0b09fdea35e25c0f635b6c5fc5abca322",
+      "bytes": 121382,
       "scope": "Public brand identity registry, source hashes and viewport crops"
     },
     {
       "path": "assets/brand-logos-manifest.json",
-      "sha256": "5192ee6536ab96ca1f05fc3d5f0bc56986bd20af6f6e43f49081c7ef50e6c1ab",
-      "bytes": 222230,
+      "sha256": "be65ce92fdc09d37e305e73db0ef21a7bbbd0068b3825de9a250f473a04eabef",
+      "bytes": 222402,
       "scope": "Public brand asset/source/output/role manifest; publication basis is user-requested identity display"
     },
     {

@@ -1,83 +1,73 @@
-import {hasPoint,isClosed} from './model.js';
-import {brandLogoMarkup} from './brand-logos.js';
+import {hasPoint,isClosed,SEGMENTS} from './model.js?v=20261021-r4';
+import {brandLogoMarkup,getBrandLogo} from './brand-logos.js?v=20261021-r4';
 
-/** Screen-space collision avoidance only. Never returns geographic coordinates.
- * Every visible source anchor gets an individual pickable pin, with no hiding,
- * aggregation, cluster thresholds, or coordinate jitter written to the data.
- */
-export function separatePins(points,bounds,spacing=19,{minSpacing=10}={}){
- const used=new Map(),result=[],cell=spacing;
- const cellKey=(x,y)=>`${Math.floor(x/cell)},${Math.floor(y/cell)}`;
- const occupied=(x,y)=>{
-  if((bounds.exclusions||[]).some(b=>x>b.left-cell/2&&x<b.right+cell/2&&y>b.top-cell/2&&y<b.bottom+cell/2))return true;
-  const cx=Math.floor(x/cell),cy=Math.floor(y/cell);
-  for(let a=cx-1;a<=cx+1;a++)for(let b=cy-1;b<=cy+1;b++)for(const p of used.get(`${a},${b}`)||[])if(Math.abs(x-p.x)<cell&&Math.abs(y-p.y)<cell)return true;
-  return false;
- };
- const inside=(x,y)=>x>=bounds.left&&x<=bounds.right&&y>=bounds.top&&y<=bounds.bottom;
- for(const p of [...points].sort((a,b)=>a.id.localeCompare(b.id))){
-  const ox=Math.max(bounds.left,Math.min(bounds.right,p.x)),oy=Math.max(bounds.top,Math.min(bounds.bottom,p.y));
-  let best=null;
-  // Search concentric screen-space rings, preserving each source anchor.
-  const maxRing=Math.ceil(Math.max(bounds.right-bounds.left,bounds.bottom-bounds.top)/cell)+2;
-  for(let ring=0;ring<=maxRing&&!best;ring++){
-   const candidates=[];
-   for(let dx=-ring;dx<=ring;dx++)for(let dy=-ring;dy<=ring;dy++){
-    if(Math.max(Math.abs(dx),Math.abs(dy))!==ring)continue;
-    const x=ox+dx*cell,y=oy+dy*cell;
-    if(inside(x,y)&&!occupied(x,y))candidates.push({x,y,cost:(x-p.x)**2+(y-p.y)**2});
-   }
-   candidates.sort((a,b)=>a.cost-b.cost||a.y-b.y||a.x-b.x);best=candidates[0];
+export const MAX_LOGOS=250;
+const segmentIndex=new Map(Object.keys(SEGMENTS).map((id,i)=>[id,i+1]));
+const intersects=(a,b,gap=0)=>a.left<b.right+gap&&a.right>b.left-gap&&a.top<b.bottom+gap&&a.bottom>b.top-gap;
+const inside=(p,b)=>p.x>=b.left&&p.x<=b.right&&p.y>=b.top&&p.y<=b.bottom;
+const pointBox=(x,y,size)=>({left:x-size/2,right:x+size/2,top:y-size/2,bottom:y+size/2});
+
+export const isSourceVisible=(point,bounds)=>inside(point,bounds)&&!(bounds.exclusions||[]).some(b=>inside(point,b));
+
+/** Compact display-only slots. A strict source-distance cap replaces the old
+ * viewport-wide fan. The caller supplies only unobscured source anchors. */
+export function separatePins(points,bounds,spacing=8,{minSpacing=.5,maxOffset=36}={}){
+ if(!points.length)return [];
+ const sorted=[...points].sort((a,b)=>a.id.localeCompare(b.id));
+ for(let pitch=spacing;pitch>=minSpacing;pitch=pitch>2?pitch-1:pitch/2){
+  const offsets=[],used=new Map(),placed=[];const ring=Math.ceil(maxOffset/pitch);
+  for(let dx=-ring;dx<=ring;dx++)for(let dy=-ring;dy<=ring;dy++){const x=dx*pitch,y=dy*pitch,d=x*x+y*y;if(d<=maxOffset*maxOffset+.001)offsets.push({x,y,d});}
+  offsets.sort((a,b)=>a.d-b.d||a.y-b.y||a.x-b.x);
+  const collision=(x,y)=>{const cx=Math.floor(x/pitch),cy=Math.floor(y/pitch);for(let a=cx-1;a<=cx+1;a++)for(let b=cy-1;b<=cy+1;b++)for(const q of used.get(`${a},${b}`)||[])if(Math.abs(x-q.x)<pitch-.001&&Math.abs(y-q.y)<pitch-.001)return true;return false;};
+  for(const p of sorted){let found=null;for(const o of offsets){const x=p.x+o.x,y=p.y+o.y,box=pointBox(x,y,pitch);if(box.left<bounds.left||box.right>bounds.right||box.top<bounds.top||box.bottom>bounds.bottom||(bounds.exclusions||[]).some(b=>intersects(box,b))||collision(x,y))continue;found={...p,x,y,anchorX:p.x,anchorY:p.y,spacing:pitch};break;}
+   if(!found)break;placed.push(found);const key=`${Math.floor(found.x/pitch)},${Math.floor(found.y/pitch)}`;if(!used.has(key))used.set(key,[]);used.get(key).push(found);
   }
-  // A very small viewport may have insufficient space. Repack with a smaller
-  // glyph pitch instead of dropping a store or replacing it with a count.
-  if(!best&&spacing>minSpacing)return separatePins(points,bounds,spacing-1,{minSpacing});
-  if(!best)throw new Error('Map viewport is too small for individual pins');
-  const placed={...p,x:best.x,y:best.y,anchorX:p.x,anchorY:p.y,spacing};
-  const key=cellKey(best.x,best.y);if(!used.has(key))used.set(key,[]);used.get(key).push(placed);result.push(placed);
+  if(placed.length===sorted.length)return placed;
  }
+ throw new Error('Local viewport is too small for individual pins');
+}
+
+/** Logo labels are optional; individual point identities never depend on them.
+ * Give each canonical brand a chance before repeated branches. Only accept a
+ * nearby label if it clears every other mark, UI obstacle and accepted label. */
+export function placeBrandLogos(points,bounds,{limit=MAX_LOGOS,width=60,height=30,maxOffset=64,selectedId='',areaFraction=.12}={}){
+ const result=new Map(),labels=[],cx=(bounds.left+bounds.right)/2,cy=(bounds.top+bounds.bottom)/2;
+ const budget=Math.min(MAX_LOGOS,Math.max(0,limit),Math.floor((bounds.right-bounds.left)*(bounds.bottom-bounds.top)*areaFraction/(width*height)));
+ const candidates=points.filter(p=>p.brandKey&&p.hasLogo!==false).sort((a,b)=>Number(b.id===selectedId)-Number(a.id===selectedId)||((a.anchorX-cx)**2+(a.anchorY-cy)**2)-((b.anchorX-cx)**2+(b.anchorY-cy)**2)||a.id.localeCompare(b.id));
+ const offsets=[[0,-height/2-8],[0,height/2+8],[width/2+8,0],[-width/2-8,0],[width/2+8,-height/2-8],[-width/2-8,-height/2-8],[width/2+8,height/2+8],[-width/2-8,height/2+8],[0,-height-14],[0,height+14]];
+ const tryPlace=p=>{if(result.size>=budget)return false;const labelHeight=p.logoRatio?Math.min(height,Math.max(18,width/p.logoRatio)):height;for(const [dx,dy]of offsets){if(Math.hypot(dx,dy)>maxOffset)continue;const x=p.anchorX+dx,y=p.anchorY+dy,box={left:x-width/2,right:x+width/2,top:y-labelHeight/2,bottom:y+labelHeight/2};if(box.left<bounds.left||box.right>bounds.right||box.top<bounds.top||box.bottom>bounds.bottom||(bounds.exclusions||[]).some(b=>intersects(box,b,5))||labels.some(b=>intersects(box,b,9))||points.some(q=>q.id!==p.id&&intersects(box,pointBox(q.x,q.y,Math.max(3,q.spacing)),3)))continue;labels.push(box);result.set(p.id,{x,y,width,height:labelHeight,box});return true;}return false;};
+ const seen=new Set();for(const p of candidates){if(seen.has(p.brandKey))continue;if(tryPlace(p))seen.add(p.brandKey);}
+ for(const p of candidates)if(!result.has(p.id))tryPlace(p);
  return result;
 }
 
 export function installStorePins(map,container,{onSelect,reservedBottom=()=>90}={}){
- const overlay=document.createElement('div');overlay.className='store-pin-overlay';overlay.setAttribute('aria-label','หมุดจุดขายรายร้าน ใช้ปุ่มลูกศรเลื่อนไปหมุดถัดไป');
- const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('pin-leaders');svg.setAttribute('aria-hidden','true');overlay.append(svg);container.append(overlay);
- let entries=[],frame=0,activeId='',selectedId='';
+ const overlay=document.createElement('div');overlay.className='store-pin-overlay';overlay.setAttribute('aria-label','หมุดรายจุดขาย ใช้ลูกศรเลือกหมุดถัดไป');
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('pin-leaders');svg.setAttribute('aria-hidden','true');const leader=document.createElementNS('http://www.w3.org/2000/svg','line'),anchor=document.createElementNS('http://www.w3.org/2000/svg','circle');anchor.setAttribute('r','3');svg.append(leader,anchor);overlay.append(svg);container.append(overlay);
+ let entries=[],frame=0,activeId='',selectedId='',hoveredId='';
  const schedule=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(layout);};
  function layout(){
-  const width=container.clientWidth,height=container.clientHeight;
-  const panel=container.closest('.map-panel');panel.classList.toggle('is-tight',height<480);
-  const rect=container.getBoundingClientRect();
-  const exclusions=[...panel.querySelectorAll('.map-toolbar button,.map-key,.map-note,.maplibregl-ctrl-top-right,.maplibregl-ctrl-bottom-right,.maplibregl-ctrl-bottom-left,.neighborhood-label')].filter(e=>e.offsetWidth&&e.offsetHeight).map(e=>{const b=e.getBoundingClientRect();return {left:b.left-rect.left,right:b.right-rect.left,top:b.top-rect.top,bottom:b.bottom-rect.top};});
-  const bounds={left:24,right:Math.max(25,width-24),top:24,bottom:Math.max(25,height-reservedBottom()-14),exclusions};
-  const projected=[];
-  for(const e of entries){const p=map.project([e.row.longitude,e.row.latitude]);e.button.hidden=!(p.x>=0&&p.x<=width&&p.y>=0&&p.y<=height);e.line.hidden=e.button.hidden;e.line.style.display=e.button.hidden?'none':'';if(!e.button.hidden)projected.push({id:e.row.id,x:p.x,y:p.y,entry:e});}
-  // Individual marks get smaller in regional/national views. Keeping a street-
-  // sized icon at country scale would spread Bangkok stores across countries.
-  const zoom=map.getZoom(),pitch=zoom>=13.5?46:zoom>=12.5?32:zoom>=11.5?22:zoom>=10.5?7:zoom>=9?5:3;
-  overlay.classList.toggle('is-overview',zoom<11.5);
-  let placed;try{placed=separatePins(projected,bounds,pitch,{minSpacing:Math.min(7,pitch)});}catch{
-   // Reclaim the optional graph before resorting to very small overview pins.
-   const insights=document.getElementById('insights');if(!insights.classList.contains('is-collapsed')){document.getElementById('toggle-insights').click();schedule();return;}
-   placed=separatePins(projected,bounds,7,{minSpacing:2});
-  }
-  const visible=placed.map(p=>p.id);if(!visible.includes(activeId))activeId=visible[0]||'';
-  for(const p of placed){const {button,line}=p.entry;button.style.left=`${p.x}px`;button.style.top=`${p.y}px`;button.style.setProperty('--pin-size',`${Math.min(45,p.spacing-1)}px`);button.dataset.compact=String(p.spacing<18);button.tabIndex=p.id===activeId?0:-1;button.dataset.displaced=String(Math.hypot(p.x-p.anchorX,p.y-p.anchorY)>3);for(const [k,v] of Object.entries({x1:p.anchorX,y1:p.anchorY,x2:p.x,y2:p.y}))line.setAttribute(k,v);line.style.display=button.dataset.displaced==='true'?'':'none';}
-  overlay.dataset.visiblePins=String(placed.length);
+  const width=container.clientWidth,height=container.clientHeight,panel=container.closest('.map-panel'),rect=container.getBoundingClientRect();panel.classList.toggle('is-tight',height<480);
+  const blockers=[...panel.querySelectorAll('.map-toolbar button,.map-key,.map-note,.maplibregl-ctrl-top-right,.maplibregl-ctrl-bottom-right,.maplibregl-ctrl-bottom-left')].filter(e=>e.offsetWidth&&e.offsetHeight).map(e=>{const b=e.getBoundingClientRect();return{left:b.left-rect.left-3,right:b.right-rect.left+3,top:b.top-rect.top-3,bottom:b.bottom-rect.top+3};});
+  const bounds={left:5,right:width-5,top:5,bottom:Math.max(6,height-reservedBottom()),exclusions:blockers};
+  const projected=[];for(const e of entries){const p=map.project([e.row.longitude,e.row.latitude]);const visible=isSourceVisible(p,bounds);e.button.hidden=!visible;e.label.hidden=true;if(visible)projected.push({id:e.row.id,x:p.x,y:p.y,entry:e,brandKey:e.brandKey,hasLogo:e.hasLogo,logoRatio:e.logoRatio});}
+  const zoom=map.getZoom(),pitch=zoom>=13?8:zoom>=11?5:zoom>=8?3:1.5,maxOffset=zoom>=13?36:zoom>=11?24:zoom>=8?14:8;
+  let placed;try{placed=separatePins(projected,bounds,pitch,{minSpacing:.125,maxOffset});}catch{placed=projected.map(p=>({...p,anchorX:p.x,anchorY:p.y,spacing:1}));}
+  const labelBounds={...bounds,exclusions:[...blockers,...[...panel.querySelectorAll('.neighborhood-label:not([hidden])')].map(e=>{const b=e.getBoundingClientRect();return{left:b.left-rect.left,right:b.right-rect.left,top:b.top-rect.top,bottom:b.bottom-rect.top};})]};
+  const labels=placeBrandLogos(placed,labelBounds,{selectedId,width:zoom>=15?68:60,height:zoom>=15?34:30});
+  const ids=placed.map(p=>p.id);if(!ids.includes(activeId))activeId=ids[0]||'';
+  for(const p of placed){const {button,label}=p.entry;button.style.left=`${p.x}px`;button.style.top=`${p.y}px`;button.style.setProperty('--pin-size',`${Math.max(.4,Math.min(7,p.spacing-.75))}px`);button.tabIndex=p.id===activeId?0:-1;button.dataset.displaced=String(Math.hypot(p.x-p.anchorX,p.y-p.anchorY)>2);const l=labels.get(p.id);button.classList.toggle('has-logo',!!l);if(l){label.hidden=false;label.style.left=`${l.x-p.x}px`;label.style.top=`${l.y-p.y}px`;label.style.width=`${l.width}px`;label.style.height=`${l.height}px`;}}
+  const selected=placed.find(p=>p.id===(hoveredId||selectedId));svg.style.display=selected?'':'none';if(selected){for(const [k,v]of Object.entries({x1:selected.anchorX,y1:selected.anchorY,x2:selected.x,y2:selected.y}))leader.setAttribute(k,v);anchor.setAttribute('cx',selected.anchorX);anchor.setAttribute('cy',selected.anchorY);}
+  overlay.dataset.visiblePins=String(placed.length);overlay.dataset.visibleLogos=String(labels.size);overlay.dataset.logoLimit=String(MAX_LOGOS);
+  const note=panel.querySelector('.map-note');if(note)note.textContent=`${placed.length.toLocaleString('th-TH')} จุดในมุมมอง · โลโก้ ${labels.size.toLocaleString('th-TH')}/${MAX_LOGOS} · จุดอื่นใช้สีประเภท`;
  }
  function update(rows){
-  for(const e of entries){e.button.remove();e.line.remove();}entries=[];
-  for(const row of rows.filter(hasPoint)){
-   const button=document.createElement('button');button.type='button';button.className=`store-pin${isClosed(row)?' is-closed':''}`;button.dataset.storeId=row.id;button.setAttribute('aria-label',`${row.brand} · ${row.name||row.venue} · ${row.venue}${isClosed(row)?' · Permanently closed':''}`);button.title=button.getAttribute('aria-label');button.innerHTML=brandLogoMarkup(row.brand);if(!button.firstChild)button.classList.add('no-logo');
-   const line=document.createElementNS('http://www.w3.org/2000/svg','line');svg.append(line);overlay.append(button);button.classList.toggle('is-selected',selectedId===row.id);
-   button.onclick=()=>{select(row.id);onSelect?.(row);};
-   button.onfocus=()=>{activeId=row.id;for(const e of entries)e.button.tabIndex=e.row.id===activeId?0:-1;};
-   button.onkeydown=e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(e.key))return;e.preventDefault();const visible=entries.filter(e=>!e.button.hidden);const i=visible.findIndex(e=>e.row.id===row.id);const j=e.key==='Home'?0:e.key==='End'?visible.length-1:(i+(['ArrowRight','ArrowDown'].includes(e.key)?1:-1)+visible.length)%visible.length;visible[j]?.button.focus();};
-   entries.push({row,button,line});
-  }
-  schedule();
+  for(const e of entries)e.button.remove();entries=[];
+  for(const row of rows.filter(hasPoint)){const logo=getBrandLogo(row.brand),button=document.createElement('button'),label=document.createElement('span');button.type='button';button.className=`store-pin${isClosed(row)?' is-closed':''}`;button.dataset.storeId=row.id;button.dataset.category=String(segmentIndex.get(row.segment)||0);const text=`${row.brand} · ${row.name||row.venue} · ${SEGMENTS[row.segment]||'ยังไม่ระบุประเภท'}${isClosed(row)?' · Permanently closed':''}`;button.setAttribute('aria-label',text);button.title=text;const dot=document.createElement('span');dot.className='pin-dot';dot.setAttribute('aria-hidden','true');label.className='pin-brand-label';label.hidden=true;label.setAttribute('aria-hidden','true');label.innerHTML=brandLogoMarkup(row.brand);button.append(dot,label);overlay.append(button);button.classList.toggle('is-selected',selectedId===row.id);
+   button.onclick=()=>{select(row.id);onSelect?.(row);};button.onmouseenter=()=>{hoveredId=row.id;schedule();};button.onmouseleave=()=>{hoveredId='';schedule();};button.onfocus=()=>{activeId=row.id;hoveredId=row.id;for(const e of entries)e.button.tabIndex=e.row.id===activeId?0:-1;schedule();};button.onblur=()=>{hoveredId='';schedule();};button.onkeydown=event=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key))return;event.preventDefault();const visible=entries.filter(e=>!e.button.hidden),i=visible.findIndex(e=>e.row.id===row.id),j=event.key==='Home'?0:event.key==='End'?visible.length-1:(i+(['ArrowRight','ArrowDown'].includes(event.key)?1:-1)+visible.length)%visible.length;visible[j]?.button.focus();};entries.push({row,button,label,brandKey:logo?.id||row.brand.toLowerCase(),hasLogo:!!logo,logoRatio:logo?.displayRatio||2});
+  }schedule();
  }
- function select(id){selectedId=id;for(const e of entries)e.button.classList.toggle('is-selected',e.row.id===id);}
- map.on('move',schedule);map.on('resize',schedule);const resize=new ResizeObserver(schedule);resize.observe(container);
- return {update,select,layout:schedule,dispose(){cancelAnimationFrame(frame);map.off('move',schedule);map.off('resize',schedule);resize.disconnect();overlay.remove();}};
+ function select(id){selectedId=id;for(const e of entries)e.button.classList.toggle('is-selected',e.row.id===id);schedule();}
+ map.on('move',schedule);map.on('resize',schedule);const resize=typeof ResizeObserver==='function'?new ResizeObserver(schedule):null;resize?.observe(container);const legend=container.closest('.map-panel').querySelector('#category-key');legend?.addEventListener('toggle',schedule);
+ return{update,select,layout:schedule,dispose(){cancelAnimationFrame(frame);map.off('move',schedule);map.off('resize',schedule);resize?.disconnect();legend?.removeEventListener('toggle',schedule);overlay.remove();}};
 }
