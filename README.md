@@ -4,7 +4,11 @@ Demo สำรวจแบรนด์ luxury, upscale streetwear, Thai designer
 
 **Research snapshot: 21 Oct 2026 · Record grain: brand–point of sale · Artifact status: public research demo, not production.**
 
-ฐานรวบรวมใหม่มี **349 รายการจุดขาย** และเก็บประวัติต้นฉบับของมายด์ **352 แถว** ไว้ตรวจสอบย้อนกลับ การจับคู่ประวัติกับรายการใหม่ไม่ทำให้เป็นจุดขายเพิ่มอีกหนึ่งแห่ง ตัวเลขพิกัด สถานะปิด และความครอบคลุมล่าสุดให้อ่านจาก `meta` ใน [data/luxury.json](data/luxury.json) และสถานะบนหน้าจอ
+ฐานรวบรวมใหม่มี **349 รายการจุดขาย** และเก็บประวัติต้นฉบับของมายด์ **352 แถว** ไว้ตรวจสอบย้อนกลับ เว็บไซต์รวม **565 research records** ซึ่งมีทั้งรายการใหม่และข้อสังเกตประวัติ ไม่ใช่ 565 ร้านที่เปิดอยู่ การจับคู่ประวัติกับรายการใหม่ไม่ทำให้เป็นจุดขายเพิ่มอีกหนึ่งแห่ง
+
+ผลตรวจ snapshot นี้: รายการใหม่มีพิกัด **349/349** แถว แบ่งเป็นจุดสถานที่จากแหล่งข้อมูล **171** แถว และจุดตัวแทนศูนย์/อาคาร **178** แถว; ประวัติเดิมใช้พิกัดได้ **348/352** แถว อีก **4** แถวพักพิกัดเพื่อตรวจตัวตน พบข้อสังเกตปิดถาวร **21** แถว และปิดชั่วคราว **1** แถว ค่าเริ่มต้นแสดง **345** รายการใหม่ โดยพัก **4** รายการที่ official listing กับหลักฐานปิดขัดกันไว้จาก presence จนกว่าจะตรวจเพิ่ม ตัวเลขเหล่านี้ซ้อนขอบเขตกันและไม่ควรบวกเป็นจำนวนร้านทั้งหมด
+
+อ่าน metadata ล่าสุดจาก [data/luxury.json](data/luxury.json) และจำนวนตามตัวกรองบนหน้าจอ การมีพิกัดครบไม่เท่ากับยืนยันประตูร้านหรือการเปิดจริงจากภาคสนาม
 
 ## ใช้งาน
 
@@ -36,12 +40,12 @@ npm test
 
 อ่าน [DATA_METHOD.md](DATA_METHOD.md) ก่อนตีความผล จำนวนแบรนด์ในข้อมูลไม่ใช่ส่วนแบ่งตลาด ยอดขาย กำลังซื้อ หรือความครบถ้วนของตลาดไทย พิกัดที่ไม่มีข้อมูลยังอยู่ในตัวหารของตาราง แต่ไม่ถูกสร้างตำแหน่งขึ้นบนแผนที่
 
-- [Research master ใน Google Sheets](https://docs.google.com/spreadsheets/d/1OPZfjEhkox3fYGPyZX0idTOQh-DgJI359TsD_3iywCg/edit)
-- [ต้นฉบับของมายด์](https://docs.google.com/spreadsheets/d/1YTxuha3X_frYrggOAIj8S4jvzT_Rk-vwsfEI38FNCZI/edit)
+- Research master ใน Google Sheets (internal working reference; public demo data: [data/luxury.json](data/luxury.json))
+- ต้นฉบับของมายด์ (internal working reference; public demo data: [data/luxury.json](data/luxury.json))
 - [CityMETER Shopping Center](https://landometer.com/v3/citymeter?d=shoppingCenter)
 
 ## Assets and verification
 
-ใช้ LDS **0.9.7 / v0.9.7-owner.1** พร้อม fonts และ production color tokens ที่บันทึก byte length และ SHA-256 ใน [assets/manifest.json](assets/manifest.json) การตรวจแพ็กเกจ authority ผ่าน **9,768 checks** ในงานนี้; ผลดังกล่าวไม่ใช่การรับรองว่า demo ทุกหน้าผ่านการตรวจ UI หรือผ่านการทดสอบ production แล้ว ต้องรายงานผลหน้าจอจริงแยกจาก hash/package checks
+ใช้ LDS **0.9.7 / v0.9.7-owner.1** พร้อม fonts และเฉพาะค่าสี UI/กลุ่มข้อมูลที่หน้านี้ใช้จริง (ไม่แนบคลัง LDS ทั้งชุด) ที่บันทึก byte length และ SHA-256 ใน [assets/manifest.json](assets/manifest.json) การตรวจแพ็กเกจ authority ผ่าน **9,768 checks** ในงานนี้; ผลดังกล่าวไม่ใช่การรับรองว่า demo ทุกหน้าผ่านการตรวจ UI หรือผ่านการทดสอบ production แล้ว ต้องรายงานผลหน้าจอจริงแยกจาก hash/package checks
 
 คงเครื่องหมาย amCharts และ attribution ของ OpenStreetMap ตามสิทธิ์ผู้ให้บริการ ไม่ได้รวมสิทธิ์ redistributable สำหรับข้อมูลหรือสื่อทุกอย่างของแบรนด์ ไฟล์นี้เป็น research/demo snapshot และยังต้องจัดทำกระบวนการอัปเดต สิทธิ์ข้อมูล และ field validation ก่อนยกระดับเป็น production dataset

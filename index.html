@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Luxury Brands · CityMETER</title>
+  <meta name="description" content="สำรวจการกระจายของแบรนด์ luxury และ upscale streetwear ในไทย พร้อมหลักฐานสาขา สถานะ และบริบท Shopping Center">
+  <meta name="theme-color" content="#F6F7F3">
+  <link rel="icon" href="assets/icons/icon-portfolio-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/icons/icon-portfolio-180.png">
+  <link rel="stylesheet" href="assets/lds/build-kit/fonts.css">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.js" defer></script>
+  <script src="https://cdn.amcharts.com/lib/version/5.20.8/index.js" defer></script>
+  <script src="https://cdn.amcharts.com/lib/version/5.20.8/xy.js" defer></script>
+  <script src="https://cdn.amcharts.com/lib/version/5.20.8/hierarchy.js" defer></script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+<a class="skip" href="#results">ข้ามไปตารางข้อมูล</a>
+<header class="topbar">
+  <a class="brand" href="https://landometer.com/v3/citymeter" aria-label="CityMETER production"><img src="assets/icons/icon-portfolio-32.png" alt="" width="26" height="26"><span>CityMETER<span class="brand-divider">/</span></span></a>
+  <span class="product-name">Luxury Brands</span><span class="demo-tag">Research demo</span>
+  <div class="top-actions"><a class="text-link" href="data/luxury.json" target="_blank" rel="noopener">ข้อมูลและที่มา ↗</a><label class="theme-control"><span class="sr-only">รูปแบบหน้าจอ</span><select id="theme" aria-label="รูปแบบหน้าจอ"><option value="auto">Auto</option><option value="light">Light</option><option value="dark">Dark</option></select></label></div>
+</header>
+<main class="workspace">
+ <div class="map-and-insight">
+  <section class="map-panel" aria-label="แผนที่การกระจายแบรนด์">
+   <div id="map"></div><div id="map-failure" class="map-failure" hidden>โหลดแผนที่ไม่ได้ ดูพิกัดและหลักฐานในตารางด้านล่างได้</div>
+   <div class="map-toolbar"><button id="fit-map" title="ดูพื้นที่ที่เลือกทั้งหมด">↗ <span>ดูทั้งหมด</span></button><button id="bangkok-map">กรุงเทพฯ</button><button id="toggle-centers" aria-pressed="true" title="ซูมเข้าเพื่อดูจุดศูนย์การค้า">◇ ศูนย์การค้า</button></div>
+   <div class="map-caption"><span class="legend-dot"></span> จุดขายที่เลือก <span class="legend-center">◇</span> Shopping Center <span id="map-coverage"></span></div>
+   <div class="map-note">จุดหลายแบรนด์ในอาคารเดียวกันแสดงรวมกัน · แตะเพื่อดูรายการ</div>
+  </section>
+  <section class="insights" aria-labelledby="insight-title">
+   <div class="insight-heading"><div><p class="eyebrow">EXPLORE THE PATTERN</p><h2 id="insight-title">แบรนด์กระจุกตัวอยู่ที่ไหน</h2></div><span id="chart-scope" class="small muted"></span></div>
+   <div class="tabs" role="tablist" aria-label="มุมมองข้อมูล"><button role="tab" id="tab-centers" aria-selected="true" data-view="centers" aria-controls="chart">ศูนย์การค้า</button><button role="tab" id="tab-mix" aria-selected="false" data-view="mix" aria-controls="chart">สัดส่วนแบรนด์</button><button role="tab" id="tab-compare" aria-selected="false" data-view="compare" aria-controls="chart">เทียบศูนย์การค้า</button><button role="tab" id="tab-clusters" aria-selected="false" data-view="clusters" aria-controls="cluster-list">คลัสเตอร์พื้นที่</button></div>
+   <div id="chart" class="chart" role="tabpanel" aria-labelledby="tab-centers"></div><div id="cluster-list" class="cluster-list" role="tabpanel" aria-labelledby="tab-clusters" hidden></div>
+   <p id="chart-note" class="chart-note">นับแบรนด์ไม่ซ้ำภายในศูนย์การค้าที่จับคู่กับ CityMETER ได้ · คลิกแท่งเพื่อกรอง</p>
+  </section>
+ </div>
+ <aside class="sidebar" aria-labelledby="dataset-title">
+  <div class="dataset-heading"><p class="eyebrow">CITYMETER DATASET</p><h1 id="dataset-title">Luxury Brands</h1><p class="intro">อ่านพื้นที่ผ่านแบรนด์<br>ตั้งแต่ luxury maisons ถึง street culture</p><p class="small muted">ประเทศไทย · ตรวจล่าสุด <time datetime="2026-10-21">21 ต.ค. 2569</time></p></div>
+  <div class="metrics" aria-live="polite"><div><strong id="metric-brands">—</strong><span>แบรนด์ / ชื่อร้าน</span></div><div><strong id="metric-pos">—</strong><span>รายการจุดขาย</span></div><div><strong id="metric-centers">—</strong><span>ศูนย์การค้าที่จับคู่</span></div><div><strong id="metric-clusters">—</strong><span>กลุ่มพื้นที่</span></div></div>
+  <form id="filters" class="filters">
+   <label>ค้นหาแบรนด์หรือทำเล<input type="search" id="search" placeholder="เช่น Loewe, Song Wat, Ari" autocomplete="off"></label>
+   <label>ชุดข้อมูล<select id="cohort"><option value="refresh">รายการที่ค้นใหม่</option><option value="all">ทั้งหมด รวมประวัติเดิม</option><option value="legacy">ประวัติเดิมที่ยังไม่ยืนยันใหม่</option><option value="closed">Permanently closed</option></select></label>
+   <label>กลุ่มแบรนด์<select id="segment"><option value="">ทุกกลุ่ม</option></select></label>
+   <div class="filter-pair"><label>จังหวัด<select id="province"><option value="">ทุกจังหวัด</option></select></label><label>รูปแบบสถานที่<select id="channel"><option value="">ทุกรูปแบบ</option></select></label></div>
+   <label>ศูนย์การค้า / ทำเล<select id="venue"><option value="">ทุกทำเล</option></select></label>
+   <label>ระยะเชื่อมกลุ่มพื้นที่<select id="radius"><option value="500">500 เมตร</option><option value="800" selected>800 เมตร</option><option value="1200">1,200 เมตร</option></select></label>
+   <p class="small muted">เชื่อมจุดที่อยู่ใกล้กันตามระยะที่เลือก ไม่ใช่ขอบเขตย่านทางการ</p>
+   <div class="filter-actions"><button type="reset">ล้างตัวกรอง</button><button type="button" id="export" class="primary">ดาวน์โหลด CSV ↓</button></div>
+  </form>
+  <div id="active-cluster" hidden class="selection-note"></div>
+  <section id="detail" class="detail"><h2>เลือกจุดเพื่อสำรวจ</h2><p>ดูแบรนด์ในอาคารเดียวกัน ที่มาพิกัด และบริบทศูนย์การค้า หรือเลือกจากกราฟและตาราง</p></section>
+  <details class="method"><summary>อ่านข้อมูลนี้อย่างไร</summary><p>หนึ่งรายการ = แบรนด์–จุดขาย อาจเป็น boutique, counter หรือตัวแทนหลายแบรนด์ จึงยังไม่ใช่จำนวนหน้าร้านอิสระ</p><p>รายการที่ค้นใหม่หมายถึงพบในแหล่งข้อมูล ไม่ได้ยืนยันการเปิดจริงจากภาคสนาม ร้านที่แหล่งข้อมูลระบุว่าปิดถาวรและรายการที่มีหลักฐานปิดขัดกันเก็บไว้ และแยกออกจากค่าเริ่มต้น</p><p>พิกัดบางจุดเป็นตัวแทนศูนย์การค้าหรืออาคาร ไม่ใช่ประตูร้าน คลัสเตอร์เป็นการเชื่อมตามระยะ อาจต่อเป็นแนวยาวได้ และไม่ใช่ตัวชี้วัดยอดขายหรือกำลังซื้อ</p><p>Shopping Center อ้างอิงข้อมูล CityMETER production เฉพาะศูนย์ที่จับคู่ชื่อได้ ไม่เติมการจับคู่ด้วยระยะใกล้ที่สุด พื้นที่ GLA เป็นค่าที่แหล่งข้อมูลรายงานพร้อมระดับความเชื่อมั่น</p><a href="https://github.com/montri-th/luxurybrands#data-and-method" target="_blank" rel="noopener">วิธีจัดทำและข้อจำกัด ↗</a></details>
+ </aside>
+ <section id="results" class="results" aria-labelledby="results-title"><div class="results-heading"><div><p class="eyebrow">EVIDENCE YOU CAN INSPECT</p><h2 id="results-title">รายการตามขอบเขตที่เลือก <span id="result-count"></span></h2></div><button id="toggle-table" aria-expanded="false" aria-controls="table-wrap">เปิดตาราง ↓</button></div><div id="table-wrap" hidden><p class="small muted">ร้านที่ไม่มีพิกัดยังอยู่ในตาราง · เลือกรายการเพื่อดูหลักฐาน</p><div class="table-scroll"><table><thead><tr><th scope="col">แบรนด์ / จุดขาย</th><th scope="col">ทำเล</th><th scope="col">สถานะหลักฐาน</th><th scope="col">พิกัด</th><th scope="col">แหล่งข้อมูล</th></tr></thead><tbody id="result-rows"></tbody></table></div><div class="pagination"><button id="prev-page">← ก่อนหน้า</button><span id="page-label"></span><button id="next-page">ถัดไป →</button></div></div></section>
+</main>
+<footer>CityMETER · Research snapshot 21 Oct 2026 · LDS 0.9.7 · <a href="https://www.amcharts.com/demos/" target="_blank" rel="noopener">amCharts</a> · <a href="https://github.com/montri-th/luxurybrands" target="_blank" rel="noopener">Source & methodology ↗</a></footer>
+<div id="announcement" role="status" class="sr-only"></div><div id="load-error" class="load-error" hidden></div>
+</body>
+</html>

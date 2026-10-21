@@ -1,0 +1,63 @@
+/* Applied values used by this demo only. Exact LDS 0.9.7 values; no normative library or full analytical scales are distributed. */
+:root {
+  --surface-canvas: #F6F7F3;
+  --surface-alt: #EEF1EE;
+  --surface-card: #FCFCFA;
+  --surface-raised: #FFFFFF;
+  --surface-soft: #E5E9E6;
+  --text-primary: #182327;
+  --text-secondary: #5F635A;
+  --text-metadata: #5C6A61;
+  --text-muted: #7B877D;
+  --border-default: #C9D0CB;
+  --border-hairline: #DCE1DD;
+  --interaction-focus-ring: #176B82;
+  --series-1-fill: #D88381;
+  --series-1-ink: #963538;
+  --series-2-fill: #E39B6E;
+  --series-2-ink: #182327;
+  --series-3-fill: #EAC578;
+  --series-3-ink: #182327;
+  --series-4-fill: #BECE7E;
+  --series-4-ink: #606E00;
+  --series-5-fill: #7BD0A3;
+  --series-5-ink: #007047;
+  --series-6-fill: #6ACCF0;
+  --series-6-ink: #006580;
+  --series-7-fill: #49C0BC;
+  --series-7-ink: #006967;
+  --series-8-fill: #6196D1;
+  --series-8-ink: #0E599D;
+  --chart-on-fill: #182327;
+}
+:root[data-theme="dark"] {
+  --surface-canvas: #11191D;
+  --surface-alt: #172126;
+  --surface-card: #20292D;
+  --surface-raised: #293337;
+  --surface-soft: #2B3534;
+  --text-primary: #F1F4EF;
+  --text-secondary: #C4CECA;
+  --text-metadata: #A6B5B1;
+  --text-muted: #8D9D99;
+  --border-default: #46524F;
+  --border-hairline: #33403D;
+  --interaction-focus-ring: #68C4E2;
+  --series-1-fill: #E37A84;
+  --series-1-ink: #FF4F6D;
+  --series-2-fill: #F59B62;
+  --series-2-ink: #FF8A37;
+  --series-3-fill: #ECCB67;
+  --series-3-ink: #FFD242;
+  --series-4-fill: #A9C065;
+  --series-4-ink: #A9CB00;
+  --series-5-fill: #6EC69D;
+  --series-5-ink: #00E39D;
+  --series-6-fill: #62BEE6;
+  --series-6-ink: #54CDFF;
+  --series-7-fill: #2DA096;
+  --series-7-ink: #00B6AB;
+  --series-8-fill: #5A8CDA;
+  --series-8-ink: #5396FF;
+  --chart-on-fill: #182327;
+}

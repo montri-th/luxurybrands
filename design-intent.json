@@ -1,0 +1,35 @@
+{
+  "artifact": "CityMETER Luxury Brands research demo",
+  "ldsVersion": "0.9.7",
+  "release": "v0.9.7-owner.1",
+  "baseDocumentSha256": "d3085cbc0a50195f1cbf0c77b1d77c0d19b84364daf2948eb367348d65432d96",
+  "layoutReference": "https://landometer.com/v3/citymeter?d=shoppingCenter",
+  "fontRoles": {
+    "body": "Bai Jamjuree 400/600",
+    "thaiHeadings": "IBM Plex Sans Thai Looped 700",
+    "latinMetric": "Arvo 700"
+  },
+  "colors": "Only exact applied UI and eight categorical color pairs required by this demo; full LDS library and analytical scale registries are not distributed.",
+  "geometryAndMetricContract": "brand-POS research rows, source status and host representative geometry remain explicit",
+  "accessibility": [
+    "native form labels",
+    "visible focus",
+    "keyboard chart selection",
+    "reduced motion",
+    "table equivalent",
+    "empty and map/chart failure paths"
+  ],
+  "validation": {
+    "packageChecksPassed": 9768,
+    "modelTestsPassed": 7,
+    "uiReviewWidths": [
+      1280,
+      390
+    ],
+    "uiThemes": [
+      "light",
+      "dark"
+    ],
+    "scope": "Verified bundled asset hashes and rendered app; this is not an attestation of every LDS rule or production release"
+  }
+}
