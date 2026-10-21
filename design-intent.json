@@ -7,7 +7,9 @@
   "fontRoles": {
     "body": "Bai Jamjuree 400/600",
     "thaiHeadings": "IBM Plex Sans Thai Looped 700",
-    "latinMetric": "Arvo 700"
+    "latinHeadings": "Arvo 700",
+    "dataAndMetrics": "JetBrains Mono 400; tabular numerals; normal tracking",
+    "navigation": "Material Symbols Rounded approved nav-7 subset; FILL 0 / wght 300 / GRAD 0 / opsz 24"
   },
   "colors": "Only exact applied UI and eight categorical color pairs required by this demo; full LDS library and analytical scale registries are not distributed.",
   "geometryAndMetricContract": "brand-POS research rows, source status and host representative geometry remain explicit",
@@ -20,16 +22,83 @@
     "empty and map/chart failure paths"
   ],
   "validation": {
+    "status": "verified applied revision",
     "packageChecksPassed": 9768,
-    "modelTestsPassed": 7,
-    "uiReviewWidths": [
-      1280,
-      390
+    "assetHashChecksPassed": 29,
+    "modelAndGeometryTestsPassed": 26,
+    "buildingGeometryAndLifecycleChecksPassed": 20,
+    "uiReviewViewports": [
+      [
+        1280,
+        720
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        740,
+        360
+      ]
     ],
     "uiThemes": [
-      "light",
-      "dark"
+      "Positron/light",
+      "Dark"
     ],
-    "scope": "Verified bundled asset hashes and rendered app; this is not an attestation of every LDS rule or production release"
+    "renderedEvidence": {
+      "desktopHeaderPx": 48,
+      "desktopMapPx": [
+        960,
+        672
+      ],
+      "desktopSidebarPx": 320,
+      "landscapeMapPx": [
+        444,
+        312
+      ],
+      "landscapeSidebarPx": 296,
+      "allObservationPinsOnLandscape": 562,
+      "observedPinOverlaps": 0,
+      "mobilePageOverflow": false,
+      "navigationHelp": "390px Thai dialog, Escape close, opener focus return; mobile-only controls hidden on desktop and landscape",
+      "logoSurfaces": [
+        "individual store pins",
+        "table rows",
+        "host store list",
+        "store details",
+        "map popups"
+      ]
+    },
+    "scope": "Applied LDS assets, fonts and actual rendered interfaces. Responsive browser checks; no blanket LDS, native-device or market completeness claim.",
+    "brandLogoChecks": {
+      "catalogIdentities": 168,
+      "datasetLabelsCovered": 147,
+      "datasetRecordsCovered": 565,
+      "missing": 0,
+      "sourceHashesVerified": 168,
+      "spriteRevision": "e8a64e69d522"
+    }
+  },
+  "layoutContract": {
+    "headerPx": 48,
+    "rightPanelWidth": "min(max(260px, 25%), 440px)",
+    "map": "full remaining viewport below header",
+    "insights": "collapsible bottom overlay; collapsed by default",
+    "mobilePortrait": "full map with optional bottom sheet capped at 50dvh",
+    "productionSource": "web-v3/src/modules/citymeter/base/CmMapLayout.tsx"
+  },
+  "mapContract": {
+    "basemaps": [
+      "https://tiles.openfreemap.org/styles/positron",
+      "https://tiles.openfreemap.org/styles/dark"
+    ],
+    "pins": "one declared point-of-sale row per pin; no aggregation; screen displacement with leader lines, source coordinates unchanged",
+    "venues": "source building footprints/parts with explicit height provenance; unknown heights use marked 3m display slab",
+    "neighborhoods": "frozen named analytical road/river envelopes; no arbitrary radius components; no claimed consumer consensus"
+  },
+  "brandIdentity": {
+    "sources": "155 official brand sources; 13 retailers; source artwork embedded unchanged, outer whitespace cropped in viewport only",
+    "fallback": "Visible brand names and accessible marker labels retained; logos are identity, not a metric or endorsement",
+    "manifest": "assets/brand-logos-manifest.json"
   }
 }

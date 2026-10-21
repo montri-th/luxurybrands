@@ -1,0 +1,19 @@
+/* Identity artwork is embedded unchanged. Neutral backing lives in the sprite. */
+.brand-logo{display:block;width:80px;height:40px;flex:0 0 auto;border:1px solid var(--border-hairline);border-radius:5px;overflow:hidden;background:#FFFFFF}
+.brand-row{display:flex;align-items:center;gap:10px;white-space:normal}
+.brand-row>span{min-width:0;overflow-wrap:anywhere}
+.detail-logo{width:128px;height:64px;margin:8px 0 12px}
+.popup-logo{width:104px;height:52px;margin:0 28px 10px 0}
+.logo-credit{font-size:12px!important}
+.row-name.brand-row{max-width:300px}
+.row-name .brand-logo{width:64px;height:32px}
+.store-pin{width:var(--pin-size,45px);height:calc(var(--pin-size,45px)*.64);border:1px solid #1D4497;border-radius:5px;background:#FFFFFF;padding:1px;box-shadow:0 1px 3px #18232740}
+.store-pin .brand-logo{width:100%;height:100%;border:0;border-radius:3px;filter:none;overflow:hidden}
+.store-pin.is-closed{border-style:dashed;border-width:2px}
+.store-pin.is-selected,.store-pin:hover{outline:2px solid var(--text-primary);outline-offset:2px;background:#FFFFFF}
+.store-pin.no-logo{background:#1D4497;border:1px solid #FFFFFF;border-radius:50%;width:var(--pin-size,8px);height:var(--pin-size,8px)}
+.store-pin[data-compact=true],.store-pin-overlay.is-overview .store-pin{width:var(--pin-size,3px);height:var(--pin-size,3px);padding:0;border:0;border-radius:50%;background:#1D4497;box-shadow:0 0 0 .5px #FFFFFF}
+.store-pin[data-compact=true] .brand-logo,.store-pin-overlay.is-overview .store-pin .brand-logo{display:none}
+.store-pin[data-compact=true]:is(:hover,:focus-visible) .brand-logo,.store-pin-overlay.is-overview .store-pin:is(:hover,:focus-visible) .brand-logo{display:block;position:absolute;left:50%;bottom:10px;transform:translateX(-50%);width:80px;height:40px;max-width:none;box-shadow:0 1px 8px #18232760;border:1px solid #1D4497}
+.store-pin[data-compact=true].is-closed,.store-pin-overlay.is-overview .store-pin.is-closed{background:var(--surface-card);border:1px dashed #1D4497}
+.maplibregl-popup{z-index:7}

@@ -1,6 +1,6 @@
 # CityMETER: Luxury Brands Thailand
 
-Demo สำรวจแบรนด์ luxury, upscale streetwear, Thai designers และ curated retailers ในประเทศไทย พร้อมแผนที่ Shopping Center บริบทศูนย์การค้า คลัสเตอร์ตามระยะ และหลักฐานรายรายการ
+Demo สำรวจแบรนด์ luxury, upscale streetwear, Thai designers และ curated retailers ในประเทศไทย ผ่านหมุดรายจุดขาย อาคารสามมิติ ขอบเขตย่าน และหลักฐานรายรายการ
 
 **Research snapshot: 21 Oct 2026 · Record grain: brand–point of sale · Artifact status: public research demo, not production.**
 
@@ -16,29 +16,36 @@ Demo สำรวจแบรนด์ luxury, upscale streetwear, Thai designer
 npm start
 ```
 
-เปิด <http://127.0.0.1:4173> ต้องเปิดผ่าน HTTP เพื่อโหลดไฟล์ข้อมูล; ไม่ต้อง build หรือติดตั้ง dependencies ภายในโปรเจกต์ การแสดงแผนที่และกราฟใช้เครือข่ายเพื่อโหลด MapLibre GL 5.6.2, amCharts 5.20.8 และ OpenStreetMap tiles
+เปิด <http://127.0.0.1:4173> ต้องเปิดผ่าน HTTP เพื่อโหลดไฟล์ข้อมูล; ไม่ต้อง build หรือติดตั้ง dependencies ภายในโปรเจกต์ การแสดงแผนที่และกราฟใช้เครือข่ายเพื่อโหลด MapLibre GL 5.6.2, amCharts 5.20.8 และ OpenFreeMap vector tiles
 
 ```sh
 npm test
 ```
 
-ชุดทดสอบตรวจขอบเขตสถานะ การนับแบรนด์เทียบกับจุดขาย จุดที่ไม่มีพิกัด คลัสเตอร์ การกรองร่วม และการส่งออก CSV ส่วนการตรวจหน้าจอจริง ความอ่านง่าย และพฤติกรรมกราฟต้องตรวจในเบราว์เซอร์แยกต่างหาก
+ชุดทดสอบตรวจสถานะ หน่วยนับ หมุดรายจุดขายแม้ใช้พิกัดเดียวกัน การแยกหมุดบนหน้าจอ ขอบเขตย่าน การกรองร่วม และการส่งออก CSV ส่วนความอ่านง่ายและพฤติกรรมแผนที่กับกราฟตรวจในเบราว์เซอร์แยกต่างหาก
 
 ## สิ่งที่สำรวจได้
 
-- แผนที่จุดขายและศูนย์การค้า พร้อมแยกจุดตัวแทนอาคารออกจากพิกัดร้าน
+- หนึ่งหมุดต่อหนึ่งรายการจุดขาย ไม่มีการรวมหมุด; หมุดที่จัดแยกบนจอมีเส้นเชื่อมกลับพิกัดต้นทางที่คงเดิม
+- โลโก้แบรนด์จากแหล่งทางการหรือ retailer แสดงในหมุด รายการ และรายละเอียด พร้อมชื่อแบรนด์และลิงก์ที่มา; ซูมระดับประเทศใช้เครื่องหมายรายร้านขนาดเล็ก และเปิดโลโก้เมื่อชี้หรือเลือก
+- ปุ่มวิธีใช้และไอคอนนำทางพร้อมข้อความกำกับ รองรับคีย์บอร์ดและจอมือถือ
+- อาคารที่ตั้งใช้ footprint/parts จากแหล่งข้อมูลจริง พร้อมแยกความสูงที่ทราบจากแผ่นแสดงรูปทรง 3 เมตรเมื่อไม่ทราบความสูง
 - อันดับศูนย์การค้าตามแบรนด์ไม่ซ้ำ, treemap สัดส่วนรายการจุดขาย และ scatter เปรียบเทียบแบรนด์กับรายการจุดขาย
-- กลุ่มจุดที่เชื่อมกันในระยะเริ่มต้น 800 เมตร ปรับเป็น 500 หรือ 1,200 เมตรได้
+- ขอบเขตย่านเชิงวิเคราะห์ตามถนนและริมน้ำ พร้อมที่มาชื่อย่านและนิยามขอบเขต; รูปทรงไม่เปลี่ยนตามตัวกรอง
 - รายการเดิมที่ยังยืนยันใหม่ไม่ได้ และร้านที่มีหลักฐาน `permanently closed` โดยไม่ลบประวัติ
-- ตัวกรองเดียวกันใช้กับแผนที่ ตัวเลข กราฟ คลัสเตอร์ และตาราง; ดาวน์โหลดรายการที่เลือกเป็น CSV ได้
+- ตัวกรองเดียวกันใช้กับแผนที่ ตัวเลข กราฟ ย่าน และตาราง; ดาวน์โหลดรายการที่เลือกเป็น CSV ได้
 
-โครงสร้างหน้าจออ้างอิง [CityMETER Shopping Center production](https://landometer.com/v3/citymeter?d=shoppingCenter): header แบบกะทัดรัด แผนที่หลัก แผงข้อมูลด้านขวา และแผง insight ด้านล่าง แผงขวา production ใช้ `min(max(260px, 25%), 440px)`; demo ปรับรายละเอียดสำหรับจอเล็ก
+โครงสร้างหน้าจอยึด [CityMETER Shopping Center production](https://landometer.com/v3/citymeter?d=shoppingCenter) และ `CmMapLayout.tsx`: header 48 px แผนที่เต็ม viewport ที่เหลือ แผงขวา `min(max(260px, 25%), 440px)` และ insight เป็นแผงซ้อนด้านล่างที่ย่อได้ ค่าเริ่มต้นย่อกราฟเพื่อเปิดพื้นที่แผนที่ จอมือถือแนวตั้งใช้แผงข้อมูลซ้อนด้านล่างไม่เกิน 50% ของ viewport; แนวนอนใช้แผงขวา 40% ภายใต้ขีดจำกัดเดียวกับ production
+
+ขอบเขตตั้งต้นมี 10 ย่าน: สยาม ราชประสงค์ ชิดลม–เพลินจิต พร้อมพงษ์ ทองหล่อ ทรงวาด อารีย์–อารีย์สัมพันธ์ นิมมาน เจริญนคร และสีลม มี 244/345 รายการค่าเริ่มต้นอยู่ในขอบเขต อีก 101 รายการยังอยู่ภายนอกและแสดงต่อไป ไม่บังคับจับเข้าย่านใกล้ที่สุด รายละเอียดช่วงขอบที่ยังเป็นการตีความอยู่ใน method; ชื่อย่านที่มีหลักฐานไม่ได้พิสูจน์ว่าคนทั่วไปยอมรับเส้นขอบนี้ร่วมกัน
+
+ธีมสว่างใช้ [OpenFreeMap Positron](https://tiles.openfreemap.org/styles/positron) ธีมมืดใช้ [OpenFreeMap Dark](https://tiles.openfreemap.org/styles/dark) ตาม [styles repository](https://github.com/hyperknot/openfreemap-styles) โดยคง attribution ของ OpenFreeMap, OpenMapTiles และ OpenStreetMap
 
 กราฟดัดแปลงจากตัวอย่างทางการของ amCharts: [Bar chart race](https://www.amcharts.com/demos/bar-chart-race/) (อ้างอิงโครงสร้างแท่งแนวนอน; demo นี้ไม่ใช้การแข่งตามเวลา), [Simple treemap](https://www.amcharts.com/demos/simple-treemap/) และ [Bubble chart](https://www.amcharts.com/demos/bubble-chart/) โดยใช้ API ของ [Scatter chart](https://www.amcharts.com/demos/scatter-chart/) สำหรับจุดเปรียบเทียบ ไม่มีข้อมูลตัวอย่างของ amCharts ปะปนกับข้อมูลชุดนี้
 
 ## Data and method
 
-อ่าน [DATA_METHOD.md](DATA_METHOD.md) ก่อนตีความผล จำนวนแบรนด์ในข้อมูลไม่ใช่ส่วนแบ่งตลาด ยอดขาย กำลังซื้อ หรือความครบถ้วนของตลาดไทย พิกัดที่ไม่มีข้อมูลยังอยู่ในตัวหารของตาราง แต่ไม่ถูกสร้างตำแหน่งขึ้นบนแผนที่
+อ่าน [Product statement](PRODUCT_STATEMENT.md), [DATA_METHOD.md](DATA_METHOD.md) และ [วิธีนิยามย่าน](docs/NEIGHBORHOOD_METHOD.md) ก่อนตีความผล จำนวนแบรนด์ในข้อมูลไม่ใช่ส่วนแบ่งตลาด ยอดขาย กำลังซื้อ หรือความครบถ้วนของตลาดไทย พิกัดที่ไม่มีข้อมูลยังอยู่ในตัวหารของตาราง แต่ไม่ถูกสร้างตำแหน่งขึ้นบนแผนที่
 
 - Research master ใน Google Sheets (internal working reference; public demo data: [data/luxury.json](data/luxury.json))
 - ต้นฉบับของมายด์ (internal working reference; public demo data: [data/luxury.json](data/luxury.json))
@@ -49,3 +56,5 @@ npm test
 ใช้ LDS **0.9.7 / v0.9.7-owner.1** พร้อม fonts และเฉพาะค่าสี UI/กลุ่มข้อมูลที่หน้านี้ใช้จริง (ไม่แนบคลัง LDS ทั้งชุด) ที่บันทึก byte length และ SHA-256 ใน [assets/manifest.json](assets/manifest.json) การตรวจแพ็กเกจ authority ผ่าน **9,768 checks** ในงานนี้; ผลดังกล่าวไม่ใช่การรับรองว่า demo ทุกหน้าผ่านการตรวจ UI หรือผ่านการทดสอบ production แล้ว ต้องรายงานผลหน้าจอจริงแยกจาก hash/package checks
 
 คงเครื่องหมาย amCharts และ attribution ของ OpenStreetMap ตามสิทธิ์ผู้ให้บริการ ไม่ได้รวมสิทธิ์ redistributable สำหรับข้อมูลหรือสื่อทุกอย่างของแบรนด์ ไฟล์นี้เป็น research/demo snapshot และยังต้องจัดทำกระบวนการอัปเดต สิทธิ์ข้อมูล และ field validation ก่อนยกระดับเป็น production dataset
+
+ทะเบียนโลโก้มี 168 อัตลักษณ์จากแหล่งทางการ 155 และ retailer 13 ครอบคลุมทุกชื่อแบรนด์ใน research records ชุดนี้ โดยไม่นับจำนวนโลโก้เป็นจำนวนร้าน ใช้ไฟล์ภายในเว็บ คงรูปทรง สี และสัดส่วนต้นฉบับ ตัดเฉพาะพื้นที่ว่างภายนอกเพื่อให้อ่านได้ในพื้นที่เล็ก และรักษาไฟล์ต้นทางตาม SHA-256 ดู [brand logo manifest](assets/brand-logos-manifest.json) และ [catalog](data/brand-logos.json) เครื่องหมายยังเป็นของเจ้าของแบรนด์ การแสดงเพื่อระบุตัวตนใน demo ไม่สื่อถึงการรับรองหรือสิทธิ์ใช้งานทั่วไป

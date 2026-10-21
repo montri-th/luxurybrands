@@ -1,0 +1,2472 @@
+{
+  "type": "FeatureCollection",
+  "name": "CityMETER analytical neighborhood cores",
+  "metadata": {
+    "version": "2026-10-21-r1",
+    "checkedOn": "2026-10-21",
+    "methodURL": "docs/NEIGHBORHOOD_METHOD.md",
+    "crs": "OGC:CRS84 / WGS84 longitude, latitude",
+    "coverage": "Selected Bangkok and Chiang Mai retail neighborhood cores only. Not a national neighborhood registry.",
+    "membership": "Point-in-polygon against fixed features, independent of filters; no nearest fallback.",
+    "attribution": "© OpenStreetMap contributors; ODbL 1.0",
+    "consensusEvidence": "No consumer survey or community boundary approval; named-place evidence and analyst-selected physical edges are separate."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "song-wat",
+      "properties": {
+        "id": "song-wat",
+        "name": "ทรงวาด",
+        "nameTh": "ทรงวาด",
+        "nameEn": "Song Wat core",
+        "center": [
+          100.50715,
+          13.73865
+        ],
+        "priority": 1,
+        "definition": "แกนย่านการค้าริมน้ำทรงวาดรอบกลุ่มร้านปัจจุบัน ระหว่างราชวงศ์–วานิช1–ทรงสวัสดิ์–ริมเจ้าพระยา ใช้ขอบเขตย่อยที่ชัดเจนและแยกจากเยาวราช/ตลาดน้อย",
+        "edges": "ตะวันตก: ราชวงศ์; เหนือ: วานิช1; ตะวันออก: ทรงสวัสดิ์และแนวเชื่อมถึงริมน้ำ; ใต้: ริมฝั่งเจ้าพระยา ตัดส่วนถนนทรงวาดทางตะวันออกของทรงสวัสดิ์ออกจาก core นี้",
+        "status": "candidate",
+        "checkedOn": "2026-10-21",
+        "confidence": "medium",
+        "nameConfidence": "high",
+        "edgeConfidence": "medium",
+        "boundaryType": "analytical_neighborhood_core",
+        "boundaryAuthority": "CityMETER analyst interpretation; not statutory, community-endorsed, or survey-measured",
+        "geometryMethod": "Simplified trace of named OSM road/canal/riverbank linework; explicit analyst-selected edges. No radius, hull, store-generated contour, or nearest-neighborhood assignment.",
+        "sourceURLs": [
+          "https://guide.michelin.com/th/en/article/travel/song-wat-bangkok-neighborhood-guide",
+          "https://www.openstreetmap.org/way/1553123377",
+          "https://www.openstreetmap.org/way/23610153",
+          "https://www.openstreetmap.org/way/862564212",
+          "https://www.openstreetmap.org/way/1010188106",
+          "https://www.openstreetmap.org/way/1010188107",
+          "https://www.openstreetmap.org/way/25707864",
+          "https://www.openstreetmap.org/way/24715224",
+          "https://www.openstreetmap.org/way/1507436733",
+          "https://www.openstreetmap.org/way/1507574343"
+        ],
+        "identitySourceURLs": [
+          "https://guide.michelin.com/th/en/article/travel/song-wat-bangkok-neighborhood-guide"
+        ],
+        "geometrySourceURLs": [
+          "https://www.openstreetmap.org/way/1553123377",
+          "https://www.openstreetmap.org/way/23610153",
+          "https://www.openstreetmap.org/way/862564212",
+          "https://www.openstreetmap.org/way/1010188106",
+          "https://www.openstreetmap.org/way/1010188107",
+          "https://www.openstreetmap.org/way/25707864",
+          "https://www.openstreetmap.org/way/24715224",
+          "https://www.openstreetmap.org/way/1507436733",
+          "https://www.openstreetmap.org/way/1507574343"
+        ],
+        "attribution": "© OpenStreetMap contributors; ODbL 1.0",
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5044866,
+              13.7387254
+            ],
+            [
+              100.5044866,
+              13.7385293
+            ],
+            [
+              100.5046774,
+              13.7385849
+            ],
+            [
+              100.505328,
+              13.7381932
+            ],
+            [
+              100.5059259,
+              13.7381359
+            ],
+            [
+              100.5060947,
+              13.7380309
+            ],
+            [
+              100.5067384,
+              13.7376714
+            ],
+            [
+              100.5071817,
+              13.7375287
+            ],
+            [
+              100.5078971,
+              13.737252
+            ],
+            [
+              100.5081646,
+              13.737092
+            ],
+            [
+              100.5084752,
+              13.7369327
+            ],
+            [
+              100.5090649,
+              13.7364448
+            ],
+            [
+              100.5092287,
+              13.7363057
+            ],
+            [
+              100.5098588,
+              13.7370416
+            ],
+            [
+              100.5099174,
+              13.7371227
+            ],
+            [
+              100.509441,
+              13.7380759
+            ],
+            [
+              100.509218,
+              13.7384074
+            ],
+            [
+              100.5084086,
+              13.7393409
+            ],
+            [
+              100.5077974,
+              13.7400147
+            ],
+            [
+              100.5061834,
+              13.7414211
+            ],
+            [
+              100.5061834,
+              13.74124
+            ],
+            [
+              100.5054357,
+              13.7403662
+            ],
+            [
+              100.5048139,
+              13.7395822
+            ],
+            [
+              100.5044866,
+              13.7387254
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "siam",
+      "properties": {
+        "id": "siam",
+        "name": "สยาม",
+        "nameTh": "สยาม",
+        "nameEn": "Siam",
+        "center": [
+          100.53365,
+          13.7467
+        ],
+        "priority": 2,
+        "definition": "สยามสแควร์และศูนย์การค้าฝั่งตรงข้ามพระราม1 รวมกลุ่มสยามพารากอน/สยามเซ็นเตอร์ ภายในเส้นถนนและคลองที่กำหนดไว้",
+        "edges": "ตะวันตก: พญาไท; เหนือ: คลองแสนแสบ; ตะวันออก: คลองอรชรและอังรีดูนังต์; ใต้: จุฬาลงกรณ์64",
+        "status": "desk-reviewed",
+        "checkedOn": "2026-10-21",
+        "confidence": "medium",
+        "nameConfidence": "high",
+        "edgeConfidence": "medium",
+        "boundaryType": "analytical_neighborhood_core",
+        "boundaryAuthority": "CityMETER analyst interpretation; not statutory, community-endorsed, or survey-measured",
+        "geometryMethod": "Simplified trace of named OSM road/canal/riverbank linework; explicit analyst-selected edges. No radius, hull, store-generated contour, or nearest-neighborhood assignment.",
+        "sourceURLs": [
+          "https://pmcu.co.th/contact/",
+          "https://www.openstreetmap.org/way/31999259",
+          "https://www.openstreetmap.org/way/173505927",
+          "https://www.openstreetmap.org/way/33646459",
+          "https://www.openstreetmap.org/way/31973446",
+          "https://www.openstreetmap.org/way/1121955373",
+          "https://www.openstreetmap.org/way/1442266367",
+          "https://www.openstreetmap.org/way/941201110",
+          "https://www.openstreetmap.org/way/33069215"
+        ],
+        "identitySourceURLs": [
+          "https://pmcu.co.th/contact/"
+        ],
+        "geometrySourceURLs": [
+          "https://www.openstreetmap.org/way/31999259",
+          "https://www.openstreetmap.org/way/173505927",
+          "https://www.openstreetmap.org/way/33646459",
+          "https://www.openstreetmap.org/way/31973446",
+          "https://www.openstreetmap.org/way/1121955373",
+          "https://www.openstreetmap.org/way/1442266367",
+          "https://www.openstreetmap.org/way/941201110",
+          "https://www.openstreetmap.org/way/33069215"
+        ],
+        "attribution": "© OpenStreetMap contributors; ODbL 1.0",
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5312231,
+              13.7492222
+            ],
+            [
+              100.5311889,
+              13.749004
+            ],
+            [
+              100.5309392,
+              13.7474213
+            ],
+            [
+              100.5308259,
+              13.7462824
+            ],
+            [
+              100.530724,
+              13.7456195
+            ],
+            [
+              100.5305061,
+              13.7442138
+            ],
+            [
+              100.5316901,
+              13.7441745
+            ],
+            [
+              100.5326403,
+              13.7440116
+            ],
+            [
+              100.5342486,
+              13.7437388
+            ],
+            [
+              100.5354635,
+              13.7435238
+            ],
+            [
+              100.5359235,
+              13.7452963
+            ],
+            [
+              100.5357085,
+              13.745536
+            ],
+            [
+              100.5361208,
+              13.7478794
+            ],
+            [
+              100.5363979,
+              13.7496288
+            ],
+            [
+              100.5356065,
+              13.7494067
+            ],
+            [
+              100.5344811,
+              13.7492014
+            ],
+            [
+              100.5337001,
+              13.7491264
+            ],
+            [
+              100.5327803,
+              13.7491037
+            ],
+            [
+              100.5319933,
+              13.7491504
+            ],
+            [
+              100.5312231,
+              13.7492222
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ratchaprasong",
+      "properties": {
+        "id": "ratchaprasong",
+        "name": "ราชประสงค์",
+        "nameTh": "ราชประสงค์",
+        "nameEn": "Ratchaprasong",
+        "center": [
+          100.5401,
+          13.7459
+        ],
+        "priority": 3,
+        "definition": "แกนย่านราชประสงค์รอบ centralwOrld–เกษร–อัมรินทร์และสี่แยกราชประสงค์ แยกจากสยามด้วยคลองอรชร และชิดลมด้วยถนนชิดลม",
+        "edges": "ตะวันตก: คลองอรชร/พระราม1/ราชดำริ; เหนือ: คลองแสนแสบ; ตะวันออก: ชิดลม–หลังสวน; ใต้: มหาดเล็กหลวง1 และแนวเชื่อมถึงหลังสวน",
+        "status": "candidate",
+        "checkedOn": "2026-10-21",
+        "confidence": "medium",
+        "nameConfidence": "high",
+        "edgeConfidence": "medium",
+        "boundaryType": "analytical_neighborhood_core",
+        "boundaryAuthority": "CityMETER analyst interpretation; not statutory, community-endorsed, or survey-measured",
+        "geometryMethod": "Simplified trace of named OSM road/canal/riverbank linework; explicit analyst-selected edges. No radius, hull, store-generated contour, or nearest-neighborhood assignment.",
+        "sourceURLs": [
+          "https://bkkdowntown.com/",
+          "https://www.openstreetmap.org/way/31999259",
+          "https://www.openstreetmap.org/way/173505927",
+          "https://www.openstreetmap.org/way/835280934",
+          "https://www.openstreetmap.org/way/206846596",
+          "https://www.openstreetmap.org/way/25655919",
+          "https://www.openstreetmap.org/way/693831980",
+          "https://www.openstreetmap.org/way/33058673"
+        ],
+        "identitySourceURLs": [
+          "https://bkkdowntown.com/"
+        ],
+        "geometrySourceURLs": [
+          "https://www.openstreetmap.org/way/31999259",
+          "https://www.openstreetmap.org/way/173505927",
+          "https://www.openstreetmap.org/way/835280934",
+          "https://www.openstreetmap.org/way/206846596",
+          "https://www.openstreetmap.org/way/25655919",
+          "https://www.openstreetmap.org/way/693831980",
+          "https://www.openstreetmap.org/way/33058673"
+        ],
+        "attribution": "© OpenStreetMap contributors; ODbL 1.0",
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5363979,
+              13.7496288
+            ],
+            [
+              100.5361208,
+              13.7478794
+            ],
+            [
+              100.5357085,
+              13.745536
+            ],
+            [
+              100.5361878,
+              13.7453305
+            ],
+            [
+              100.5387,
+              13.7449
+            ],
+            [
+              100.5401936,
+              13.7446402
+            ],
+            [
+              100.5398581,
+              13.7416548
+            ],
+            [
+              100.5424069,
+              13.7412449
+            ],
+            [
+              100.54339,
+              13.74129
+            ],
+            [
+              100.5438398,
+              13.7438859
+            ],
+            [
+              100.5438645,
+              13.744028
+            ],
+            [
+              100.5446061,
+              13.7486171
+            ],
+            [
+              100.5441996,
+              13.748643
+            ],
+            [
+              100.5427526,
+              13.7489096
+            ],
+            [
+              100.5418681,
+              13.7492218
+            ],
+            [
+              100.5410152,
+              13.7493341
+            ],
+            [
+              100.5385,
+              13.7495422
+            ],
+            [
+              100.5372141,
+              13.7496447
+            ],
+            [
+              100.5363979,
+              13.7496288
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "chit-lom-phloen-chit",
+      "properties": {
+        "id": "chit-lom-phloen-chit",
+        "name": "ชิดลม–เพลินจิต",
+        "nameTh": "ชิดลม–เพลินจิต",
+        "nameEn": "Chit Lom–Phloen Chit",
+        "center": [
+          100.546,
+          13.74565
+        ],
+        "priority": 4,
+        "definition": "แกนค้าปลีกชิดลม–เพลินจิตฝั่งเหนือถนนเพลินจิต ครอบคลุม Central Chidlom, Central Embassy และกลุ่มร้านในบล็อกเดียวกัน ไม่ขยายไปหลังสวน/วิทยุทั้งหมด",
+        "edges": "ตะวันตก: ถนนชิดลม; เหนือ: คลองแสนแสบ; ตะวันออก: ถนนวิทยุ; ใต้: ถนนเพลินจิต",
+        "status": "desk-reviewed",
+        "checkedOn": "2026-10-21",
+        "confidence": "medium",
+        "nameConfidence": "high",
+        "edgeConfidence": "medium",
+        "boundaryType": "analytical_neighborhood_core",
+        "boundaryAuthority": "CityMETER analyst interpretation; not statutory, community-endorsed, or survey-measured",
+        "geometryMethod": "Simplified trace of named OSM road/canal/riverbank linework; explicit analyst-selected edges. No radius, hull, store-generated contour, or nearest-neighborhood assignment.",
+        "sourceURLs": [
+          "https://www.centralembassy.com/directory/central-embassy-bk/level-1/",
+          "https://www.openstreetmap.org/way/206846596",
+          "https://www.openstreetmap.org/way/835280933",
+          "https://www.openstreetmap.org/way/782855362",
+          "https://www.openstreetmap.org/way/156261477",
+          "https://www.openstreetmap.org/way/936558235",
+          "https://www.openstreetmap.org/way/156985384"
+        ],
+        "identitySourceURLs": [
+          "https://www.centralembassy.com/directory/central-embassy-bk/level-1/"
+        ],
+        "geometrySourceURLs": [
+          "https://www.openstreetmap.org/way/206846596",
+          "https://www.openstreetmap.org/way/835280933",
+          "https://www.openstreetmap.org/way/782855362",
+          "https://www.openstreetmap.org/way/156261477",
+          "https://www.openstreetmap.org/way/936558235",
+          "https://www.openstreetmap.org/way/156985384"
+        ],
+        "attribution": "© OpenStreetMap contributors; ODbL 1.0",
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5438645,
+              13.744028
+            ],
+            [
+              100.5439441,
+              13.7440133
+            ],
+            [
+              100.5465,
+              13.74357
+            ],
+            [
+              100.5475581,
+              13.7433886
+            ],
+            [
+              100.5483344,
+              13.7478076
+            ],
+            [
+              100.54841,
+              13.74832
+            ],
+            [
+              100.5478896,
+              13.7483079
+            ],
+            [
+              100.5464358,
+              13.7484715
+            ],
+            [
+              100.5451484,
+              13.7485381
+            ],
+            [
+              100.5446061,
+              13.7486171
+            ],
+            [
+              100.5438645,
+              13.744028
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "phrom-phong",
+      "properties": {
+        "id": "phrom-phong",
+        "name": "พร้อมพงษ์",
+        "nameTh": "พร้อมพงษ์",
+        "nameEn": "Phrom Phong core",
+        "center": [
+          100.5695,
+          13.7307
+        ],
+        "priority": 5,
+        "definition": "พร้อมพงษ์ส่วนแกนค้าปลีกและถนนหลัง EM District รวม Emporium, EmQuartier, Emsphere, เบญจสิริ และสุขุมวิท24 ตอนล่าง ขอบเขตทางเหนือ/ตะวันออกเป็นเส้นตัดเชิงวิเคราะห์ ไม่ใช่ขอบเขตทางการ",
+        "edges": "ตะวันตก: สุขุมวิท31 ตอนล่าง–สุขุมวิท–สุขุมวิท22; เหนือ: พร้อมจิต/พร้อมศรี1/สุขุมวิท49-11; ตะวันออก: สุขุมวิท49 ถึงสุขุมวิท แล้วตามสุขุมวิทถึงสุขุมวิท26; ใต้: สุขุมวิท26–พระราม4",
+        "status": "candidate",
+        "checkedOn": "2026-10-21",
+        "confidence": "medium",
+        "nameConfidence": "high",
+        "edgeConfidence": "medium",
+        "boundaryType": "analytical_neighborhood_core",
+        "boundaryAuthority": "CityMETER analyst interpretation; not statutory, community-endorsed, or survey-measured",
+        "geometryMethod": "Simplified trace of named OSM road/canal/riverbank linework; explicit analyst-selected edges. No radius, hull, store-generated contour, or nearest-neighborhood assignment.",
+        "sourceURLs": [
+          "https://emdistrict.com/tourist/",
+          "https://www.thailandstarterkit.com/moving/the-big-phrom-phong-guide/",
+          "https://www.openstreetmap.org/way/1539939420",
+          "https://www.openstreetmap.org/way/24910882",
+          "https://www.openstreetmap.org/way/24910895",
+          "https://www.openstreetmap.org/way/25944878",
+          "https://www.openstreetmap.org/way/973299118",
+          "https://www.openstreetmap.org/way/973299119",
+          "https://www.openstreetmap.org/way/156261422",
+          "https://www.openstreetmap.org/way/156261434",
+          "https://www.openstreetmap.org/way/328942767",
+          "https://www.openstreetmap.org/way/820345538"
+        ],
+        "identitySourceURLs": [
+          "https://emdistrict.com/tourist/",
+          "https://www.thailandstarterkit.com/moving/the-big-phrom-phong-guide/"
+        ],
+        "geometrySourceURLs": [
+          "https://www.openstreetmap.org/way/1539939420",
+          "https://www.openstreetmap.org/way/24910882",
+          "https://www.openstreetmap.org/way/24910895",
+          "https://www.openstreetmap.org/way/25944878",
+          "https://www.openstreetmap.org/way/973299118",
+          "https://www.openstreetmap.org/way/973299119",
+          "https://www.openstreetmap.org/way/156261422",
+          "https://www.openstreetmap.org/way/156261434",
+          "https://www.openstreetmap.org/way/328942767",
+          "https://www.openstreetmap.org/way/820345538"
+        ],
+        "attribution": "© OpenStreetMap contributors; ODbL 1.0",
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5670157,
+              13.7376969
+            ],
+            [
+              100.5666769,
+              13.7357981
+            ],
+            [
+              100.5660364,
+              13.7330979
+            ],
+            [
+              100.5651731,
+              13.7335831
+            ],
+            [
+              100.5651144,
+              13.7300133
+            ],
+            [
+              100.5651185,
+              13.7268434
+            ],
+            [
+              100.5648126,
+              13.7240289
+            ],
+            [
+              100.5646013,
+              13.7216618
+            ],
+            [
+              100.5656213,
+              13.7208829
+            ],
+            [
+              100.5653486,
+              13.7197188
+            ],
+            [
+              100.5665805,
+              13.7192446
+            ],
+            [
+              100.567147,
+              13.7190104
+            ],
+            [
+              100.5679028,
+              13.7186984
+            ],
+            [
+              100.5684309,
+              13.7201212
+            ],
+            [
+              100.5700538,
+              13.7246003
+            ],
+            [
+              100.5690698,
+              13.7251358
+            ],
+            [
+              100.571075,
+              13.7294275
+            ],
+            [
+              100.571137,
+              13.7295203
+            ],
+            [
+              100.5753931,
+              13.7265026
+            ],
+            [
+              100.5760691,
+              13.730546
+            ],
+            [
+              100.5757129,
+              13.7306304
+            ],
+            [
+              100.5770947,
+              13.7347
+            ],
+            [
+              100.5769567,
+              13.7369959
+            ],
+            [
+              100.5740548,
+              13.7365123
+            ],
+            [
+              100.5717295,
+              13.7363479
+            ],
+            [
+              100.5717411,
+              13.7369444
+            ],
+            [
+              100.5701532,
+              13.7370859
+            ],
+            [
+              100.5680495,
+              13.7375608
+            ],
+            [
+              100.5670157,
+              13.7376969
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "thonglor",
+      "properties": {
+        "id": "thonglor",
+        "name": "ทองหล่อ",
+        "nameTh": "ทองหล่อ",
+        "nameEn": "Thonglor",
+        "center": [
+          100.5818,
+          13.734
+        ],
+        "priority": 6,
+        "definition": "เครือข่ายถนนรอบสุขุมวิท55/ทองหล่อ ระหว่างสุขุมวิท49–เอกมัย ใช้คลองแสนแสบและสุขุมวิทเป็นเส้นตัดด้านเหนือ/ใต้ พื้นที่รอยต่อ49และเอกมัยยังเป็น candidate",
+        "edges": "ตะวันตก: สุขุมวิท49; เหนือ: คลองแสนแสบ; ตะวันออก: สุขุมวิท63/เอกมัย; ใต้: สุขุมวิท ใช้เส้นถนนที่ลดรายละเอียดและจุดเชื่อมบริเวณคลอง",
+        "status": "candidate",
+        "checkedOn": "2026-10-21",
+        "confidence": "medium",
+        "nameConfidence": "high",
+        "edgeConfidence": "medium",
+        "boundaryType": "analytical_neighborhood_core",
+        "boundaryAuthority": "CityMETER analyst interpretation; not statutory, community-endorsed, or survey-measured",
+        "geometryMethod": "Simplified trace of named OSM road/canal/riverbank linework; explicit analyst-selected edges. No radius, hull, store-generated contour, or nearest-neighborhood assignment.",
+        "sourceURLs": [
+          "https://www.timeout.com/bangkok/things-to-do/things-to-do-in-thonglor",
+          "https://www.openstreetmap.org/way/156261451",
+          "https://www.openstreetmap.org/way/156591242",
+          "https://www.openstreetmap.org/way/225083453",
+          "https://www.openstreetmap.org/way/156261456",
+          "https://www.openstreetmap.org/way/1418856133",
+          "https://www.openstreetmap.org/way/300825127",
+          "https://www.openstreetmap.org/way/973299118",
+          "https://www.openstreetmap.org/way/973299119"
+        ],
+        "identitySourceURLs": [
+          "https://www.timeout.com/bangkok/things-to-do/things-to-do-in-thonglor"
+        ],
+        "geometrySourceURLs": [
+          "https://www.openstreetmap.org/way/156261451",
+          "https://www.openstreetmap.org/way/156591242",
+          "https://www.openstreetmap.org/way/225083453",
+          "https://www.openstreetmap.org/way/156261456",
+          "https://www.openstreetmap.org/way/1418856133",
+          "https://www.openstreetmap.org/way/300825127",
+          "https://www.openstreetmap.org/way/973299118",
+          "https://www.openstreetmap.org/way/973299119"
+        ],
+        "attribution": "© OpenStreetMap contributors; ODbL 1.0",
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5764381,
+              13.7448987
+            ],
+            [
+              100.5769567,
+              13.7369959
+            ],
+            [
+              100.5770947,
+              13.7347
+            ],
+            [
+              100.5757129,
+              13.7306304
+            ],
+            [
+              100.5760691,
+              13.730546
+            ],
+            [
+              100.5753931,
+              13.7265026
+            ],
+            [
+              100.57949,
+              13.723617
+            ],
+            [
+              100.5844339,
+              13.7201185
+            ],
+            [
+              100.5864616,
+              13.7308028
+            ],
+            [
+              100.5880934,
+              13.7358276
+            ],
+            [
+              100.58931,
+              13.7395736
+            ],
+            [
+              100.5900665,
+              13.7419025
+            ],
+            [
+              100.5902,
+              13.74245
+            ],
+            [
+              100.5858784,
+              13.743159
+            ],
+            [
+              100.5825,
+              13.7439
+            ],
+            [
+              100.5795,
+              13.74465
+            ],
+            [
+              100.5764381,
+              13.7448987
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ari",
+      "properties": {
+        "id": "ari",
+        "name": "อารีย์–อารีย์สัมพันธ์",
+        "nameTh": "อารีย์–อารีย์สัมพันธ์",
+        "nameEn": "Ari–Ari Samphan",
+        "center": [
+          100.5402,
+          13.7838
+        ],
+        "priority": 7,
+        "definition": "อารีย์และเครือข่ายอารีย์สัมพันธ์ระหว่างพหลโยธิน–พระราม6 โดยเลือกประดิพัทธ์เป็นขอบเหนือ และใช้ถนนย่อยต่อเนื่องด้านใต้เป็นเส้นตัดเชิงวิเคราะห์",
+        "edges": "ตะวันตก: พระราม6; เหนือ: ประดิพัทธ์; ตะวันออก: พหลโยธิน; ใต้: เส้นต่อเนื่องซอยศาสนา–อารีย์สัมพันธ์4–พระราม6ซอย30–อารีย์1–พหลโยธิน3 (รวมช่วงซอยเชื่อมที่ OSM ไม่ระบุชื่อ)",
+        "status": "candidate",
+        "checkedOn": "2026-10-21",
+        "confidence": "medium",
+        "nameConfidence": "high",
+        "edgeConfidence": "medium",
+        "boundaryType": "analytical_neighborhood_core",
+        "boundaryAuthority": "CityMETER analyst interpretation; not statutory, community-endorsed, or survey-measured",
+        "geometryMethod": "Simplified trace of named OSM road/canal/riverbank linework; explicit analyst-selected edges. No radius, hull, store-generated contour, or nearest-neighborhood assignment.",
+        "sourceURLs": [
+          "https://news.airbnb.com/wp-content/uploads/sites/4/2018/09/Airbnb-x-TBAA-Thailand-Neighbourhood-Guide-EN.pdf",
+          "https://www.openstreetmap.org/way/1486968255",
+          "https://www.openstreetmap.org/way/156251455",
+          "https://www.openstreetmap.org/way/189774022",
+          "https://www.openstreetmap.org/way/27696634",
+          "https://www.openstreetmap.org/way/32000151",
+          "https://www.openstreetmap.org/way/1111223131",
+          "https://www.openstreetmap.org/way/465100587",
+          "https://www.openstreetmap.org/way/1427233544",
+          "https://www.openstreetmap.org/way/185077898"
+        ],
+        "identitySourceURLs": [
+          "https://news.airbnb.com/wp-content/uploads/sites/4/2018/09/Airbnb-x-TBAA-Thailand-Neighbourhood-Guide-EN.pdf"
+        ],
+        "geometrySourceURLs": [
+          "https://www.openstreetmap.org/way/1486968255",
+          "https://www.openstreetmap.org/way/156251455",
+          "https://www.openstreetmap.org/way/189774022",
+          "https://www.openstreetmap.org/way/27696634",
+          "https://www.openstreetmap.org/way/32000151",
+          "https://www.openstreetmap.org/way/1111223131",
+          "https://www.openstreetmap.org/way/465100587",
+          "https://www.openstreetmap.org/way/1427233544",
+          "https://www.openstreetmap.org/way/185077898"
+        ],
+        "attribution": "© OpenStreetMap contributors; ODbL 1.0",
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.531754,
+              13.7766138
+            ],
+            [
+              100.5318091,
+              13.7765951
+            ],
+            [
+              100.531868,
+              13.7765751
+            ],
+            [
+              100.5320317,
+              13.776521
+            ],
+            [
+              100.5320556,
+              13.7765112
+            ],
+            [
+              100.5323584,
+              13.7764009
+            ],
+            [
+              100.5326163,
+              13.7763046
+            ],
+            [
+              100.5326942,
+              13.77626
+            ],
+            [
+              100.5327555,
+              13.7762329
+            ],
+            [
+              100.5328143,
+              13.7762113
+            ],
+            [
+              100.5329518,
+              13.7761636
+            ],
+            [
+              100.5331403,
+              13.7760667
+            ],
+            [
+              100.5332887,
+              13.7759765
+            ],
+            [
+              100.5334098,
+              13.7758955
+            ],
+            [
+              100.5334575,
+              13.7758609
+            ],
+            [
+              100.5337093,
+              13.7757051
+            ],
+            [
+              100.5337423,
+              13.7756847
+            ],
+            [
+              100.5338448,
+              13.7756213
+            ],
+            [
+              100.5338834,
+              13.7755974
+            ],
+            [
+              100.5339959,
+              13.7755301
+            ],
+            [
+              100.5341181,
+              13.775457
+            ],
+            [
+              100.534265,
+              13.7753607
+            ],
+            [
+              100.5344344,
+              13.7752332
+            ],
+            [
+              100.5345495,
+              13.7751292
+            ],
+            [
+              100.5346305,
+              13.775054
+            ],
+            [
+              100.5348134,
+              13.7749158
+            ],
+            [
+              100.5350947,
+              13.7747301
+            ],
+            [
+              100.535074,
+              13.7747002
+            ],
+            [
+              100.5353844,
+              13.7744975
+            ],
+            [
+              100.5354015,
+              13.7744972
+            ],
+            [
+              100.5354158,
+              13.7745034
+            ],
+            [
+              100.5354673,
+              13.7745871
+            ],
+            [
+              100.5360939,
+              13.7756039
+            ],
+            [
+              100.5362228,
+              13.7758007
+            ],
+            [
+              100.5363532,
+              13.7757706
+            ],
+            [
+              100.5364054,
+              13.7758585
+            ],
+            [
+              100.5368703,
+              13.7765767
+            ],
+            [
+              100.5370574,
+              13.7768896
+            ],
+            [
+              100.5372542,
+              13.7771991
+            ],
+            [
+              100.5375056,
+              13.777602
+            ],
+            [
+              100.5378278,
+              13.7781244
+            ],
+            [
+              100.5382522,
+              13.7787976
+            ],
+            [
+              100.5384358,
+              13.7786917
+            ],
+            [
+              100.5384878,
+              13.7786588
+            ],
+            [
+              100.5386227,
+              13.7785649
+            ],
+            [
+              100.5386942,
+              13.7785127
+            ],
+            [
+              100.5387975,
+              13.778436
+            ],
+            [
+              100.5389793,
+              13.7782892
+            ],
+            [
+              100.5391389,
+              13.7781309
+            ],
+            [
+              100.5392253,
+              13.7780285
+            ],
+            [
+              100.5392961,
+              13.7779446
+            ],
+            [
+              100.5393087,
+              13.7779297
+            ],
+            [
+              100.5397978,
+              13.777552
+            ],
+            [
+              100.5398757,
+              13.7774948
+            ],
+            [
+              100.5399765,
+              13.7774152
+            ],
+            [
+              100.5401097,
+              13.7773231
+            ],
+            [
+              100.5403919,
+              13.7771148
+            ],
+            [
+              100.5404176,
+              13.7770958
+            ],
+            [
+              100.540801,
+              13.7767971
+            ],
+            [
+              100.5408046,
+              13.7767942
+            ],
+            [
+              100.5410164,
+              13.7766292
+            ],
+            [
+              100.5410972,
+              13.7765497
+            ],
+            [
+              100.5411134,
+              13.7765338
+            ],
+            [
+              100.5409239,
+              13.7762679
+            ],
+            [
+              100.5406479,
+              13.7758902
+            ],
+            [
+              100.540443,
+              13.775619
+            ],
+            [
+              100.540391,
+              13.7755417
+            ],
+            [
+              100.5402231,
+              13.7752918
+            ],
+            [
+              100.539998,
+              13.7749568
+            ],
+            [
+              100.5400131,
+              13.7749468
+            ],
+            [
+              100.5400353,
+              13.7749322
+            ],
+            [
+              100.5412126,
+              13.7742304
+            ],
+            [
+              100.5412636,
+              13.7742005
+            ],
+            [
+              100.5412773,
+              13.7741921
+            ],
+            [
+              100.5412956,
+              13.7741826
+            ],
+            [
+              100.5417186,
+              13.7747838
+            ],
+            [
+              100.5423136,
+              13.7744837
+            ],
+            [
+              100.5425842,
+              13.7743831
+            ],
+            [
+              100.5426626,
+              13.7743545
+            ],
+            [
+              100.5427954,
+              13.7743128
+            ],
+            [
+              100.5431346,
+              13.7756627
+            ],
+            [
+              100.5449946,
+              13.7808276
+            ],
+            [
+              100.5459978,
+              13.7836403
+            ],
+            [
+              100.5481758,
+              13.7897273
+            ],
+            [
+              100.5480895,
+              13.7897847
+            ],
+            [
+              100.5417988,
+              13.7910922
+            ],
+            [
+              100.5383151,
+              13.7917914
+            ],
+            [
+              100.537846,
+              13.7918883
+            ],
+            [
+              100.5355229,
+              13.7860944
+            ],
+            [
+              100.5341262,
+              13.7826182
+            ],
+            [
+              100.5332987,
+              13.7805239
+            ],
+            [
+              100.5327383,
+              13.779113
+            ],
+            [
+              100.531754,
+              13.7766138
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "nimman",
+      "properties": {
+        "id": "nimman",
+        "name": "นิมมาน",
+        "nameTh": "นิมมาน",
+        "nameEn": "Nimman core",
+        "center": [
+          98.9669,
+          18.7974
+        ],
+        "priority": 8,
+        "definition": "กริดนิมมานระหว่างถนนคลองชลประทาน–สุเทพ–ศิริมังคลาจารย์–ห้วยแก้ว เลือกห้วยแก้วเป็นขอบเหนือที่ตรวจย้อนกลับได้ จึงยังไม่รวมบล็อก MAYA ฝั่งรินคำเหนือถนน แม้เจ้าของสถานที่จะเรียกตนเองว่าอยู่ในพื้นที่นิมมาน",
+        "edges": "ตะวันตก: ถนนคลองชลประทาน; ใต้: สุเทพ; ตะวันออก: ศิริมังคลาจารย์; เหนือ: ห้วยแก้ว",
+        "status": "desk-reviewed",
+        "checkedOn": "2026-10-21",
+        "confidence": "medium",
+        "nameConfidence": "high",
+        "edgeConfidence": "medium",
+        "boundaryType": "analytical_neighborhood_core",
+        "boundaryAuthority": "CityMETER analyst interpretation; not statutory, community-endorsed, or survey-measured",
+        "geometryMethod": "Simplified trace of named OSM road/canal/riverbank linework; explicit analyst-selected edges. No radius, hull, store-generated contour, or nearest-neighborhood assignment.",
+        "sourceURLs": [
+          "https://www.thailandtravel.or.jp/nimmanhaemin-street/",
+          "https://mayashoppingcenter.com/en/about-us/",
+          "https://www.openstreetmap.org/way/689206997",
+          "https://www.openstreetmap.org/way/689207005",
+          "https://www.openstreetmap.org/way/694361374",
+          "https://www.openstreetmap.org/way/381431263",
+          "https://www.openstreetmap.org/way/23025882",
+          "https://www.openstreetmap.org/way/697182261"
+        ],
+        "identitySourceURLs": [
+          "https://www.thailandtravel.or.jp/nimmanhaemin-street/",
+          "https://mayashoppingcenter.com/en/about-us/"
+        ],
+        "geometrySourceURLs": [
+          "https://www.openstreetmap.org/way/689206997",
+          "https://www.openstreetmap.org/way/689207005",
+          "https://www.openstreetmap.org/way/694361374",
+          "https://www.openstreetmap.org/way/381431263",
+          "https://www.openstreetmap.org/way/23025882",
+          "https://www.openstreetmap.org/way/697182261"
+        ],
+        "attribution": "© OpenStreetMap contributors; ODbL 1.0",
+        "limitations": "Selected southern core only. MAYA/Rin Kham is associated with Nimman but outside this road-delimited core; unassigned does not mean outside the broader perceived neighborhood."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              98.9618952,
+              18.7905524
+            ],
+            [
+              98.9639408,
+              18.7899882
+            ],
+            [
+              98.9704329,
+              18.7899797
+            ],
+            [
+              98.9707273,
+              18.7945149
+            ],
+            [
+              98.971184,
+              18.7989054
+            ],
+            [
+              98.9713262,
+              18.7994728
+            ],
+            [
+              98.9679761,
+              18.8013658
+            ],
+            [
+              98.9648569,
+              18.8028976
+            ],
+            [
+              98.9630369,
+              18.8038984
+            ],
+            [
+              98.9603074,
+              18.8053881
+            ],
+            [
+              98.9618472,
+              18.7962868
+            ],
+            [
+              98.9621847,
+              18.7948589
+            ],
+            [
+              98.9618528,
+              18.7937838
+            ],
+            [
+              98.9618952,
+              18.7905524
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "charoen-nakhon",
+      "properties": {
+        "id": "charoen-nakhon",
+        "name": "เจริญนคร",
+        "nameTh": "เจริญนคร",
+        "nameEn": "Charoen Nakhon riverside core",
+        "center": [
+          100.51020259988715,
+          13.72807219625752
+        ],
+        "priority": 9,
+        "definition": "แกนค้าปลีกเจริญนครริมแม่น้ำรอบ ICONSIAM ระหว่างถนนเจริญนคร–คลองสาน–คลองวัดทองเพลง เป็นส่วนย่อยของย่านเจริญนครที่กว้างกว่านี้",
+        "edges": "ตะวันตก: ถนนเจริญนคร; เหนือ: คลองสาน; ตะวันออก: ฝั่งตะวันตกของเจ้าพระยา; ใต้: คลองวัดทองเพลง จุดตัดทั้งสี่คำนวณจากเส้นต้นทาง",
+        "status": "candidate",
+        "checkedOn": "2026-10-21",
+        "confidence": "medium",
+        "nameConfidence": "high",
+        "edgeConfidence": "medium",
+        "boundaryType": "analytical_neighborhood_core",
+        "boundaryAuthority": "CityMETER analyst interpretation; not statutory, community-endorsed, or survey-measured",
+        "geometryMethod": "Simplified trace of named OSM road/canal/riverbank linework; explicit analyst-selected edges. No radius, hull, store-generated contour, or nearest-neighborhood assignment.",
+        "sourceURLs": [
+          "https://www.iconsiamhall.com/en/plan-your-visit",
+          "https://www.openstreetmap.org/way/630482758",
+          "https://www.openstreetmap.org/way/630482759",
+          "https://www.openstreetmap.org/way/1141461640",
+          "https://www.openstreetmap.org/way/749195391",
+          "https://www.openstreetmap.org/way/530762375",
+          "https://www.openstreetmap.org/way/1193762955",
+          "https://www.openstreetmap.org/way/1193762954",
+          "https://www.openstreetmap.org/way/1193789425"
+        ],
+        "identitySourceURLs": [
+          "https://www.iconsiamhall.com/en/plan-your-visit"
+        ],
+        "geometrySourceURLs": [
+          "https://www.openstreetmap.org/way/630482758",
+          "https://www.openstreetmap.org/way/630482759",
+          "https://www.openstreetmap.org/way/1141461640",
+          "https://www.openstreetmap.org/way/749195391",
+          "https://www.openstreetmap.org/way/530762375",
+          "https://www.openstreetmap.org/way/1193762955",
+          "https://www.openstreetmap.org/way/1193762954",
+          "https://www.openstreetmap.org/way/1193789425"
+        ],
+        "attribution": "© OpenStreetMap contributors; ODbL 1.0",
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.50905470931373,
+              13.725656605843705
+            ],
+            [
+              100.5092329,
+              13.7256596
+            ],
+            [
+              100.5094226,
+              13.7256628
+            ],
+            [
+              100.5101436,
+              13.7257128
+            ],
+            [
+              100.5105298,
+              13.7257211
+            ],
+            [
+              100.5113023,
+              13.7257461
+            ],
+            [
+              100.51149507931946,
+              13.725748820036973
+            ],
+            [
+              100.5114932,
+              13.7257757
+            ],
+            [
+              100.5114897,
+              13.7258254
+            ],
+            [
+              100.5117356,
+              13.7258366
+            ],
+            [
+              100.5117171,
+              13.7261452
+            ],
+            [
+              100.5117225,
+              13.7261998
+            ],
+            [
+              100.5117191,
+              13.7264693
+            ],
+            [
+              100.5117057,
+              13.7264956
+            ],
+            [
+              100.511692,
+              13.726714
+            ],
+            [
+              100.5116319,
+              13.7274442
+            ],
+            [
+              100.51162,
+              13.7276176
+            ],
+            [
+              100.511601,
+              13.7278641
+            ],
+            [
+              100.5115905,
+              13.7280058
+            ],
+            [
+              100.5115976,
+              13.7282304
+            ],
+            [
+              100.5115718,
+              13.7285078
+            ],
+            [
+              100.5115667,
+              13.7285438
+            ],
+            [
+              100.5115587,
+              13.7285809
+            ],
+            [
+              100.5114795,
+              13.7290509
+            ],
+            [
+              100.5114753,
+              13.7290663
+            ],
+            [
+              100.5114681,
+              13.7290927
+            ],
+            [
+              100.5114579,
+              13.7291299
+            ],
+            [
+              100.5113052,
+              13.7296881
+            ],
+            [
+              100.5113814,
+              13.7297208
+            ],
+            [
+              100.5114087,
+              13.7298025
+            ],
+            [
+              100.5114032,
+              13.7298788
+            ],
+            [
+              100.5113542,
+              13.7299005
+            ],
+            [
+              100.511218,
+              13.7303471
+            ],
+            [
+              100.5112129,
+              13.7303691
+            ],
+            [
+              100.5111734,
+              13.7304408
+            ],
+            [
+              100.51115103365092,
+              13.730487786671334
+            ],
+            [
+              100.5103319,
+              13.7302122
+            ],
+            [
+              100.5095163,
+              13.7300338
+            ],
+            [
+              100.5086695997743,
+              13.72962286321649
+            ],
+            [
+              100.5086802,
+              13.7295145
+            ],
+            [
+              100.5087033,
+              13.7292419
+            ],
+            [
+              100.5087548,
+              13.728622
+            ],
+            [
+              100.5087895,
+              13.7282993
+            ],
+            [
+              100.5088317,
+              13.7279328
+            ],
+            [
+              100.5088381,
+              13.7278483
+            ],
+            [
+              100.5088594,
+              13.7276852
+            ],
+            [
+              100.5088752,
+              13.7275146
+            ],
+            [
+              100.5088905,
+              13.7273617
+            ],
+            [
+              100.5089272,
+              13.7270241
+            ],
+            [
+              100.5089531,
+              13.7267443
+            ],
+            [
+              100.5089561,
+              13.7267133
+            ],
+            [
+              100.5090057,
+              13.7261943
+            ],
+            [
+              100.5090291,
+              13.72595
+            ],
+            [
+              100.5090459,
+              13.7257745
+            ],
+            [
+              100.50905,
+              13.725729
+            ],
+            [
+              100.50905470931373,
+              13.725656605843705
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "silom",
+      "properties": {
+        "id": "silom",
+        "name": "สีลม",
+        "nameTh": "สีลม",
+        "nameEn": "Silom core",
+        "center": [
+          100.53568995,
+          13.726371199999999
+        ],
+        "priority": 10,
+        "definition": "แกนค้าปลีกและธุรกิจสีลม รวมมุมสีลม–พระราม4 ศาลาแดง และถนนทางตะวันตกถึงนราธิวาสราชนครินทร์ สวนลุมพินีและ One Bangkok ยังอยู่นอกพื้นที่อีกฝั่งพระราม4",
+        "edges": "เหนือ: สุรวงศ์; ตะวันออกเฉียงเหนือ/ตะวันออก: พระราม4; ใต้: สาทรเหนือ; ตะวันตก: นราธิวาสราชนครินทร์ ต่อปลายช่องจราจรเฉพาะภายในทางแยกจริง",
+        "status": "candidate",
+        "checkedOn": "2026-10-21",
+        "confidence": "medium",
+        "nameConfidence": "high",
+        "edgeConfidence": "medium",
+        "boundaryType": "analytical_neighborhood_core",
+        "boundaryAuthority": "CityMETER analyst interpretation; not statutory, community-endorsed, or survey-measured",
+        "geometryMethod": "Simplified trace of named OSM road/canal/riverbank linework; explicit analyst-selected edges. No radius, hull, store-generated contour, or nearest-neighborhood assignment.",
+        "sourceURLs": [
+          "https://dusitresidences.com/location/",
+          "https://www.dusit.com/dusitthani-bangkok/th/experience/central-park-shopping-mall/",
+          "https://www.openstreetmap.org/way/825786361",
+          "https://www.openstreetmap.org/way/300803491",
+          "https://www.openstreetmap.org/way/545867363",
+          "https://www.openstreetmap.org/way/1136400027",
+          "https://www.openstreetmap.org/way/825786358",
+          "https://www.openstreetmap.org/way/1055970218",
+          "https://www.openstreetmap.org/way/462703099",
+          "https://www.openstreetmap.org/way/825786369",
+          "https://www.openstreetmap.org/way/1239018961",
+          "https://www.openstreetmap.org/way/461861538",
+          "https://www.openstreetmap.org/way/310348927",
+          "https://www.openstreetmap.org/way/1137525146",
+          "https://www.openstreetmap.org/way/1137525147",
+          "https://www.openstreetmap.org/way/463827797",
+          "https://www.openstreetmap.org/way/835280922",
+          "https://www.openstreetmap.org/way/545867358",
+          "https://www.openstreetmap.org/way/463827799",
+          "https://www.openstreetmap.org/way/825786364",
+          "https://www.openstreetmap.org/way/751483179",
+          "https://www.openstreetmap.org/way/1203987928",
+          "https://www.openstreetmap.org/way/154774059",
+          "https://www.openstreetmap.org/way/177961596",
+          "https://www.openstreetmap.org/way/1169298950",
+          "https://www.openstreetmap.org/way/154774001",
+          "https://www.openstreetmap.org/way/300803486",
+          "https://www.openstreetmap.org/way/461861534",
+          "https://www.openstreetmap.org/way/1121188721",
+          "https://www.openstreetmap.org/way/835280924"
+        ],
+        "identitySourceURLs": [
+          "https://dusitresidences.com/location/",
+          "https://www.dusit.com/dusitthani-bangkok/th/experience/central-park-shopping-mall/"
+        ],
+        "geometrySourceURLs": [
+          "https://www.openstreetmap.org/way/825786361",
+          "https://www.openstreetmap.org/way/300803491",
+          "https://www.openstreetmap.org/way/545867363",
+          "https://www.openstreetmap.org/way/1136400027",
+          "https://www.openstreetmap.org/way/825786358",
+          "https://www.openstreetmap.org/way/1055970218",
+          "https://www.openstreetmap.org/way/462703099",
+          "https://www.openstreetmap.org/way/825786369",
+          "https://www.openstreetmap.org/way/1239018961",
+          "https://www.openstreetmap.org/way/461861538",
+          "https://www.openstreetmap.org/way/310348927",
+          "https://www.openstreetmap.org/way/1137525146",
+          "https://www.openstreetmap.org/way/1137525147",
+          "https://www.openstreetmap.org/way/463827797",
+          "https://www.openstreetmap.org/way/835280922",
+          "https://www.openstreetmap.org/way/545867358",
+          "https://www.openstreetmap.org/way/463827799",
+          "https://www.openstreetmap.org/way/825786364",
+          "https://www.openstreetmap.org/way/751483179",
+          "https://www.openstreetmap.org/way/1203987928",
+          "https://www.openstreetmap.org/way/154774059",
+          "https://www.openstreetmap.org/way/177961596",
+          "https://www.openstreetmap.org/way/1169298950",
+          "https://www.openstreetmap.org/way/154774001",
+          "https://www.openstreetmap.org/way/300803486",
+          "https://www.openstreetmap.org/way/461861534",
+          "https://www.openstreetmap.org/way/1121188721",
+          "https://www.openstreetmap.org/way/835280924"
+        ],
+        "attribution": "© OpenStreetMap contributors; ODbL 1.0",
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.5272558,
+              13.7286196
+            ],
+            [
+              100.5271355,
+              13.7285058
+            ],
+            [
+              100.5272282,
+              13.7283005
+            ],
+            [
+              100.5272325,
+              13.7282932
+            ],
+            [
+              100.5275335,
+              13.7276574
+            ],
+            [
+              100.5281258,
+              13.7264758
+            ],
+            [
+              100.5281654,
+              13.7264018
+            ],
+            [
+              100.5282149,
+              13.7263013
+            ],
+            [
+              100.528241,
+              13.7262522
+            ],
+            [
+              100.5287221,
+              13.7253457
+            ],
+            [
+              100.528912,
+              13.7249879
+            ],
+            [
+              100.5289893,
+              13.7248423
+            ],
+            [
+              100.5289929,
+              13.7248356
+            ],
+            [
+              100.5290517,
+              13.7247032
+            ],
+            [
+              100.5291533,
+              13.7245056
+            ],
+            [
+              100.5292559,
+              13.7243061
+            ],
+            [
+              100.5294005,
+              13.7240248
+            ],
+            [
+              100.5294788,
+              13.7238726
+            ],
+            [
+              100.5295418,
+              13.72375
+            ],
+            [
+              100.5297051,
+              13.723428
+            ],
+            [
+              100.5297237,
+              13.7233866
+            ],
+            [
+              100.5298683,
+              13.7230958
+            ],
+            [
+              100.5302466,
+              13.7223259
+            ],
+            [
+              100.5303964,
+              13.7220255
+            ],
+            [
+              100.5303964,
+              13.7220255
+            ],
+            [
+              100.5308485,
+              13.7221585
+            ],
+            [
+              100.5313229,
+              13.7222961
+            ],
+            [
+              100.5315157,
+              13.7223526
+            ],
+            [
+              100.5315685,
+              13.7223692
+            ],
+            [
+              100.5317916,
+              13.7224303
+            ],
+            [
+              100.5320275,
+              13.7224994
+            ],
+            [
+              100.5322316,
+              13.722558
+            ],
+            [
+              100.5328732,
+              13.7227456
+            ],
+            [
+              100.5330747,
+              13.7228046
+            ],
+            [
+              100.5334294,
+              13.7229152
+            ],
+            [
+              100.5340284,
+              13.7230919
+            ],
+            [
+              100.5344777,
+              13.7232203
+            ],
+            [
+              100.5348014,
+              13.7233131
+            ],
+            [
+              100.5348894,
+              13.7233383
+            ],
+            [
+              100.535154,
+              13.723414
+            ],
+            [
+              100.5352072,
+              13.7234292
+            ],
+            [
+              100.5353328,
+              13.7234659
+            ],
+            [
+              100.5357578,
+              13.72359
+            ],
+            [
+              100.5357748,
+              13.723595
+            ],
+            [
+              100.5365894,
+              13.723838
+            ],
+            [
+              100.5367216,
+              13.7238814
+            ],
+            [
+              100.5368479,
+              13.7239185
+            ],
+            [
+              100.5372668,
+              13.7240399
+            ],
+            [
+              100.5374741,
+              13.7241022
+            ],
+            [
+              100.5377116,
+              13.7241735
+            ],
+            [
+              100.5379146,
+              13.7242345
+            ],
+            [
+              100.5381097,
+              13.7242927
+            ],
+            [
+              100.5383486,
+              13.7243657
+            ],
+            [
+              100.5386113,
+              13.724446
+            ],
+            [
+              100.5387403,
+              13.7244855
+            ],
+            [
+              100.5389155,
+              13.7245391
+            ],
+            [
+              100.5389287,
+              13.7245431
+            ],
+            [
+              100.5392586,
+              13.724644
+            ],
+            [
+              100.5395612,
+              13.7247366
+            ],
+            [
+              100.539903,
+              13.7248412
+            ],
+            [
+              100.5400393,
+              13.7248828
+            ],
+            [
+              100.5402823,
+              13.7249571
+            ],
+            [
+              100.5403766,
+              13.7249859
+            ],
+            [
+              100.540483,
+              13.7250185
+            ],
+            [
+              100.5409314,
+              13.7251556
+            ],
+            [
+              100.5414206,
+              13.7253052
+            ],
+            [
+              100.5414877,
+              13.7253257
+            ],
+            [
+              100.5416181,
+              13.7253656
+            ],
+            [
+              100.5416402,
+              13.7253721
+            ],
+            [
+              100.5417846,
+              13.7254148
+            ],
+            [
+              100.5421485,
+              13.7255224
+            ],
+            [
+              100.542494,
+              13.7256216
+            ],
+            [
+              100.5425251,
+              13.7256305
+            ],
+            [
+              100.5427875,
+              13.7257059
+            ],
+            [
+              100.5428176,
+              13.7257145
+            ],
+            [
+              100.542977,
+              13.7257603
+            ],
+            [
+              100.5433272,
+              13.7258609
+            ],
+            [
+              100.5437258,
+              13.7259753
+            ],
+            [
+              100.5437654,
+              13.7259867
+            ],
+            [
+              100.5439409,
+              13.7260513
+            ],
+            [
+              100.5439803,
+              13.7260668
+            ],
+            [
+              100.544009,
+              13.7260811
+            ],
+            [
+              100.5441318,
+              13.7261538
+            ],
+            [
+              100.5441847,
+              13.7261881
+            ],
+            [
+              100.5442444,
+              13.7262372
+            ],
+            [
+              100.5442444,
+              13.7262372
+            ],
+            [
+              100.5441277,
+              13.7262845
+            ],
+            [
+              100.5440229,
+              13.7263255
+            ],
+            [
+              100.5437372,
+              13.7264446
+            ],
+            [
+              100.5434991,
+              13.7265464
+            ],
+            [
+              100.5433392,
+              13.7266125
+            ],
+            [
+              100.5428787,
+              13.7268
+            ],
+            [
+              100.5428591,
+              13.7268083
+            ],
+            [
+              100.5426989,
+              13.726875
+            ],
+            [
+              100.5425471,
+              13.7269403
+            ],
+            [
+              100.5425138,
+              13.7269568
+            ],
+            [
+              100.5423565,
+              13.7270346
+            ],
+            [
+              100.5422632,
+              13.7270807
+            ],
+            [
+              100.5418593,
+              13.7272424
+            ],
+            [
+              100.5413508,
+              13.7274583
+            ],
+            [
+              100.5411793,
+              13.7275321
+            ],
+            [
+              100.5409816,
+              13.7276136
+            ],
+            [
+              100.5404967,
+              13.7278229
+            ],
+            [
+              100.5401718,
+              13.7279601
+            ],
+            [
+              100.5401077,
+              13.7279824
+            ],
+            [
+              100.5398486,
+              13.7280727
+            ],
+            [
+              100.5397226,
+              13.7281167
+            ],
+            [
+              100.539385,
+              13.7282573
+            ],
+            [
+              100.5392497,
+              13.728317
+            ],
+            [
+              100.539186,
+              13.7283438
+            ],
+            [
+              100.5387663,
+              13.7285195
+            ],
+            [
+              100.5387435,
+              13.728529
+            ],
+            [
+              100.5379276,
+              13.7288685
+            ],
+            [
+              100.5376988,
+              13.7289637
+            ],
+            [
+              100.5372593,
+              13.7291714
+            ],
+            [
+              100.5372127,
+              13.7291934
+            ],
+            [
+              100.5369986,
+              13.7292829
+            ],
+            [
+              100.5368269,
+              13.7293547
+            ],
+            [
+              100.5368154,
+              13.7293595
+            ],
+            [
+              100.536618,
+              13.7294402
+            ],
+            [
+              100.5365682,
+              13.7294606
+            ],
+            [
+              100.536448,
+              13.7295126
+            ],
+            [
+              100.5364049,
+              13.7295298
+            ],
+            [
+              100.535657,
+              13.7298404
+            ],
+            [
+              100.5350337,
+              13.7301061
+            ],
+            [
+              100.5347791,
+              13.7302143
+            ],
+            [
+              100.5342164,
+              13.7304539
+            ],
+            [
+              100.5339402,
+              13.7305715
+            ],
+            [
+              100.5339151,
+              13.7305822
+            ],
+            [
+              100.5338798,
+              13.7305972
+            ],
+            [
+              100.5338213,
+              13.7306221
+            ],
+            [
+              100.5335989,
+              13.7307169
+            ],
+            [
+              100.5335989,
+              13.7307169
+            ],
+            [
+              100.5335632,
+              13.7306332
+            ],
+            [
+              100.5335532,
+              13.7306206
+            ],
+            [
+              100.5335469,
+              13.7306128
+            ],
+            [
+              100.5335256,
+              13.7305863
+            ],
+            [
+              100.5335002,
+              13.7305628
+            ],
+            [
+              100.5334596,
+              13.7305252
+            ],
+            [
+              100.5334077,
+              13.7305033
+            ],
+            [
+              100.53331,
+              13.7304741
+            ],
+            [
+              100.5330764,
+              13.7304066
+            ],
+            [
+              100.5328601,
+              13.7303438
+            ],
+            [
+              100.5322705,
+              13.7301638
+            ],
+            [
+              100.5320491,
+              13.7300962
+            ],
+            [
+              100.531989,
+              13.7300777
+            ],
+            [
+              100.5316573,
+              13.7299755
+            ],
+            [
+              100.5313958,
+              13.7298949
+            ],
+            [
+              100.5312966,
+              13.7298643
+            ],
+            [
+              100.5311569,
+              13.7298212
+            ],
+            [
+              100.5310288,
+              13.7297817
+            ],
+            [
+              100.5308415,
+              13.729724
+            ],
+            [
+              100.5306097,
+              13.7296525
+            ],
+            [
+              100.5305426,
+              13.7296316
+            ],
+            [
+              100.530292,
+              13.7295537
+            ],
+            [
+              100.5302458,
+              13.7295393
+            ],
+            [
+              100.5301813,
+              13.7295193
+            ],
+            [
+              100.5300445,
+              13.7294767
+            ],
+            [
+              100.5298325,
+              13.7294108
+            ],
+            [
+              100.5297511,
+              13.7293855
+            ],
+            [
+              100.5295855,
+              13.729334
+            ],
+            [
+              100.5294817,
+              13.7293035
+            ],
+            [
+              100.5290892,
+              13.7291881
+            ],
+            [
+              100.5288648,
+              13.7291189
+            ],
+            [
+              100.5287295,
+              13.7290773
+            ],
+            [
+              100.5284735,
+              13.7289984
+            ],
+            [
+              100.528429,
+              13.7289847
+            ],
+            [
+              100.5282633,
+              13.7289337
+            ],
+            [
+              100.5281297,
+              13.7288925
+            ],
+            [
+              100.5280203,
+              13.7288584
+            ],
+            [
+              100.5278404,
+              13.7288022
+            ],
+            [
+              100.5278007,
+              13.7287898
+            ],
+            [
+              100.5274639,
+              13.7286846
+            ],
+            [
+              100.5273171,
+              13.7286387
+            ],
+            [
+              100.5272558,
+              13.7286196
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

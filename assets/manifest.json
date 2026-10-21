@@ -123,6 +123,36 @@
       "sha256": "5659ad38710b8804aff11b21e1663fc20ee14b16b654da430f770bc77cd58a4b",
       "bytes": 1794,
       "scope": "applied UI and categorical colors for this demo only"
+    },
+    {
+      "path": "assets/brand-logos.svg",
+      "sha256": "e8a64e69d522c7b5d57b23ddf5fa3654ebcfa77d7175eb24f33666a92a74ad51",
+      "bytes": 3939650,
+      "scope": "Brand identity sprite for store pins, lists and details; original approved logo bytes retained"
+    },
+    {
+      "path": "data/brand-logos.json",
+      "sha256": "c446c57523d3fd719e6f70034146578d5c3e394849ff1c15c4df6401e23eb3ac",
+      "bytes": 121210,
+      "scope": "Public brand identity registry, source hashes and viewport crops"
+    },
+    {
+      "path": "assets/brand-logos-manifest.json",
+      "sha256": "5192ee6536ab96ca1f05fc3d5f0bc56986bd20af6f6e43f49081c7ef50e6c1ab",
+      "bytes": 222230,
+      "scope": "Public brand asset/source/output/role manifest; publication basis is user-requested identity display"
+    },
+    {
+      "path": "assets/icons/material-nav-300.woff2",
+      "sha256": "d7e283106ed2898726b24504c4e0f5ad524292984a90a4d29553c7dcf53b9657",
+      "bytes": 2500,
+      "scope": "Selected UI navigation and help icons; Material Symbols Rounded, weight 300"
+    },
+    {
+      "path": "assets/icons/material-symbols-Apache-2.0.txt",
+      "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+      "bytes": 11357,
+      "scope": "Apache 2.0 license retained for the Material Symbols navigation/help icon subset"
     }
   ]
 }

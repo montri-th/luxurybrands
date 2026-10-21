@@ -13,7 +13,7 @@ export function filterRows(rows,f={}){
   if(f.channel&&r.channel!==f.channel)return false;
   if(f.venue&&r.venue!==f.venue)return false;
   if(f.mallId&&r.mallId!==f.mallId)return false;
-  if(f.clusterIds&&!f.clusterIds.has(r.id))return false;
+  if(f.neighborhoodIds&&!f.neighborhoodIds.has(r.id))return false;
   return !q||[r.brand,r.name,r.venue,r.neighborhood,r.province].some(v=>(v||'').toLocaleLowerCase().includes(q));
  });
 }
@@ -24,21 +24,11 @@ export function summarize(rows,shoppingCenters){
  const segments=Object.entries(SEGMENTS).map(([id,name])=>({id,name,count:rows.filter(r=>r.segment===id).length})).filter(r=>r.count);
  return {brands:new Set(rows.map(r=>r.brand)).size,pos:rows.length,mapped:rows.filter(hasPoint).length,centers,segments};
 }
-export function distanceMeters(a,b){const rad=Math.PI/180;const dLat=(b.latitude-a.latitude)*rad,dLon=(b.longitude-a.longitude)*rad;const s=Math.sin(dLat/2)**2+Math.cos(a.latitude*rad)*Math.cos(b.latitude*rad)*Math.sin(dLon/2)**2;return 6371008.8*2*Math.atan2(Math.sqrt(s),Math.sqrt(1-s));}
-// Connected components of points linked within radius. A chain may span further than radius.
-export function clusterRows(rows,radius=800){
- const points=rows.filter(hasPoint),parent=points.map((_,i)=>i),find=i=>parent[i]===i?i:(parent[i]=find(parent[i]));
- for(let i=0;i<points.length;i++)for(let j=i+1;j<points.length;j++)if(distanceMeters(points[i],points[j])<=radius){const a=find(i),b=find(j);if(a!==b)parent[b]=a;}
- const groups=new Map();points.forEach((r,i)=>{const key=find(i);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(r);});
- return [...groups.values()].map(rs=>{
-  const h=new Map();for(const r of rs){const n=r.neighborhood||r.venue;h.set(n,(h.get(n)||0)+1);}
-  const names=[...h.entries()].sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0]);
-  return {id:rs.map(r=>r.id).sort()[0],name:names.join(' · '),ids:new Set(rs.map(r=>r.id)),brands:new Set(rs.map(r=>r.brand)).size,pos:rs.length,sites:new Set(rs.map(r=>`${r.latitude.toFixed(5)},${r.longitude.toFixed(5)}`)).size,latitude:rs.reduce((s,r)=>s+r.latitude,0)/rs.length,longitude:rs.reduce((s,r)=>s+r.longitude,0)/rs.length};
- }).sort((a,b)=>b.brands-a.brands||b.pos-a.pos);
-}
 export function pointFeatures(rows){
- const grouped=new Map();for(const r of rows.filter(hasPoint)){const key=`${r.latitude.toFixed(5)},${r.longitude.toFixed(5)}`;if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(r);}
- return {type:'FeatureCollection',features:[...grouped].map(([key,rs])=>({type:'Feature',geometry:{type:'Point',coordinates:[rs[0].longitude,rs[0].latitude]},properties:{key,count:rs.length,ids:JSON.stringify(rs.map(r=>r.id)),closed:rs.every(isClosed)?1:0}}))};
+ // A declared store/counter record always owns its own feature. Co-location
+ // never changes its identity or the source coordinate; display offsets live
+ // exclusively in pins.js and are joined back with a leader line.
+ return {type:'FeatureCollection',features:rows.filter(hasPoint).map(r=>({type:'Feature',id:r.id,geometry:{type:'Point',coordinates:[r.longitude,r.latitude]},properties:{id:r.id,brand:r.brand,venue:r.venue,closed:isClosed(r)?1:0}}))};
 }
 export const safeURL=value=>{try{const u=new URL(value);return u.protocol==='https:'?u.href:'';}catch{return '';}};
 export function toCSV(rows){const headers=['id','brand','name','venue','province','segment','channel','status','origin','latitude','longitude','geometryRole','geometryStatus','coordinateSource','mallId','source','statusSource','checkedOn'];const quote=v=>{const s=v==null?'':String(v);return '"'+(/^[=+@\-]/.test(s)?"'"+s:s).replaceAll('"','""')+'"';};return '\uFEFF'+[headers,...rows.map(r=>headers.map(h=>r[h]))].map(a=>a.map(quote).join(',')).join('\r\n');}

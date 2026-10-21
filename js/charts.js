@@ -12,6 +12,9 @@
 
 const roots = new Map();
 const FONT = 'Bai Jamjuree';
+// The Label API has no fontVariantNumeric setting. The governed technical
+// face provides monospaced digits without inventing an unsupported option.
+const NUMBER_FONT = 'JetBrains Mono';
 const NUMBER = new Intl.NumberFormat('th-TH', { maximumFractionDigits: 0 });
 const PERCENT = new Intl.NumberFormat('th-TH', { maximumFractionDigits: 1 });
 const INSTRUCTIONS = 'ใช้ปุ่มลูกศรเลือกข้อมูล และกด Enter เพื่อกรอง';
@@ -118,14 +121,15 @@ function tooltip(root, palette, am5) {
     strokeOpacity: 1,
     cornerRadius: 5,
   });
-  tip.label.setAll({ fontFamily: FONT, fontSize: 12, fill: palette.text, maxWidth: 280, oversizedBehavior: 'wrap' });
+  tip.label.setAll({ fontFamily: FONT, fontWeight: '400', fontSize: 14, fill: palette.text, maxWidth: 280, oversizedBehavior: 'wrap' });
   return tip;
 }
 
 function styleRenderer(renderer, palette, axis, am5) {
   renderer.grid.template.setAll({ stroke: palette.grid, strokeOpacity: 1 });
   renderer.labels.template.setAll({
-    fontFamily: FONT,
+    fontFamily: axis === 'category' ? FONT : NUMBER_FONT,
+    fontWeight: '400',
     fontSize: 12,
     fill: axis === 'category' ? palette.text : palette.metadata,
     paddingTop: 5,
@@ -138,7 +142,7 @@ function setEmpty(element, message) {
   const paragraph = document.createElement('p');
   paragraph.className = 'chart-empty';
   paragraph.textContent = message;
-  paragraph.style.cssText = 'font-family:"Bai Jamjuree",sans-serif;font-size:12px;color:var(--text-metadata);padding:24px;text-align:center;';
+  paragraph.style.cssText = 'font-family:"Bai Jamjuree",sans-serif;font-weight:400;font-size:14px;color:var(--text-metadata);padding:24px;text-align:center;';
   element.replaceChildren(paragraph);
   return () => { if (paragraph.parentNode === element) paragraph.remove(); };
 }
@@ -149,7 +153,7 @@ function renderBars(root, element, rows, centers, palette, onSelect, am5, am5xy)
   const data = allData.slice(0, limit).map((center) => ({
     ...center,
     category: escapeAmText(center.name),
-    tooltip: `${escapeAmText(center.name)}\n${NUMBER.format(center.brands)} แบรนด์ไม่ซ้ำ · ${NUMBER.format(center.pos)} แถวจุดขาย\nกดเพื่อกรองศูนย์การค้านี้`,
+    tooltip: `${escapeAmText(center.name)}\n${NUMBER.format(center.brands)} แบรนด์ไม่ซ้ำ · ${NUMBER.format(center.pos)} รายการจุดขาย\nกดเพื่อกรองศูนย์การค้านี้`,
     columnSettings: { fill: palette.series[0].fill },
   }));
   if (!data.length) return false;
@@ -183,7 +187,7 @@ function renderBars(root, element, rows, centers, palette, onSelect, am5, am5xy)
     cornerRadiusTR: 3, cornerRadiusBR: 3,
     tooltipText: '{tooltip}', cursorOverStyle: 'pointer',
     focusable: true, hoverOnFocus: true, role: 'button', focusableGroup: 'luxury-center-bars',
-    ariaLabel: `{categoryY}: {brands} แบรนด์ไม่ซ้ำ และ {pos} แถวจุดขาย ${INSTRUCTIONS}`,
+    ariaLabel: `{categoryY}: {brands} แบรนด์ไม่ซ้ำ และ {pos} รายการจุดขาย ${INSTRUCTIONS}`,
   });
   series.columns.template.events.on('click', (event) => {
     const row = event.target.dataItem?.dataContext;
@@ -191,7 +195,7 @@ function renderBars(root, element, rows, centers, palette, onSelect, am5, am5xy)
   });
   series.bullets.push(() => am5.Bullet.new(root, {
     locationX: 1,
-    sprite: am5.Label.new(root, { text: '{valueX}', populateText: true, centerY: am5.p50, dx: 3, fontFamily: FONT, fontSize: 12, fill: palette.text }),
+    sprite: am5.Label.new(root, { text: '{valueX}', populateText: true, centerY: am5.p50, dx: 3, fontFamily: NUMBER_FONT, fontWeight: '400', fontSize: 12, fill: palette.text }),
   }));
   yAxis.data.setAll(data);
   series.data.setAll(data);
@@ -203,8 +207,9 @@ function renderTreemap(root, rows, segments, palette, onSelect, am5, am5hierarch
     ...segment,
     name: escapeAmText(segment.name),
     shareLabel: `${PERCENT.format(segment.share)}%`,
-    countLabel: `${NUMBER.format(segment.value)} แถว`,
-    tooltip: `${escapeAmText(segment.name)}\n${NUMBER.format(segment.value)} แถวจุดขาย · ${PERCENT.format(segment.share)}% ของ ${NUMBER.format(rows.length)} แถวที่เลือก\nกดเพื่อกรองกลุ่มนี้`,
+    countLabel: `${NUMBER.format(segment.value)} รายการ`,
+    countValueLabel: NUMBER.format(segment.value),
+    tooltip: `${escapeAmText(segment.name)}\n${NUMBER.format(segment.value)} รายการจุดขาย · ${PERCENT.format(segment.share)}% ของ ${NUMBER.format(rows.length)} รายการที่เลือก\nกดเพื่อกรองกลุ่มนี้`,
     rectangleSettings: { fill: segmentColor(palette, segment.id).fill },
     labelSettings: { fill: palette.onFill },
   }));
@@ -218,7 +223,7 @@ function renderTreemap(root, rows, segments, palette, onSelect, am5, am5hierarch
     nodePaddingOuter: 0, nodePaddingInner: 4,
     sort: 'descending',
     interpolationDuration: 0,
-    ariaLabel: 'สัดส่วนแถวจุดขายตามกลุ่มแบรนด์ ขนาดพื้นที่แทนจำนวนแถวจุดขาย',
+    ariaLabel: 'สัดส่วนรายการจุดขายตามกลุ่มแบรนด์ ขนาดพื้นที่แทนจำนวนรายการจุดขาย',
   }));
   series.rectangles.template.setAll({ templateField: 'rectangleSettings', stroke: palette.grid, strokeWidth: 1, strokeOpacity: 1, fillOpacity: 1, cornerRadiusTL: 4, cornerRadiusTR: 4, cornerRadiusBL: 4, cornerRadiusBR: 4 });
   series.get('colors').setAll({ colors: palette.series.map((color) => color.fill), step: 1 });
@@ -228,8 +233,8 @@ function renderTreemap(root, rows, segments, palette, onSelect, am5, am5hierarch
   series.labels.template.adapters.add('fill', () => palette.onFill);
   series.labels.template.setAll({
     templateField: 'labelSettings',
-    text: '{name}\n{countLabel} · {shareLabel}',
-    fontFamily: FONT, fontSize: 12, textAlign: 'center', oversizedBehavior: 'hide',
+    text: '{name}\n[fontFamily: JetBrains Mono]{countValueLabel}[/] รายการ · [fontFamily: JetBrains Mono]{shareLabel}[/]',
+    fontFamily: FONT, fontWeight: '400', fontSize: 12, textAlign: 'center', oversizedBehavior: 'hide',
     paddingLeft: 5, paddingRight: 5, paddingTop: 4, paddingBottom: 4,
     fill: palette.text,
   });
@@ -238,13 +243,13 @@ function renderTreemap(root, rows, segments, palette, onSelect, am5, am5hierarch
     cursorOverStyle: 'pointer', toggleKey: 'none',
     focusable: true, isMeasured: true, hoverOnFocus: true, role: 'button',
     focusableGroup: 'luxury-segment-nodes',
-    ariaLabel: `{name}: {value} แถวจุดขาย คิดเป็น {shareLabel} ${INSTRUCTIONS}`,
+    ariaLabel: `{name}: {value} รายการจุดขาย คิดเป็น {shareLabel} ${INSTRUCTIONS}`,
   });
   series.nodes.template.events.on('click', (event) => {
     const row = event.target.dataItem?.dataContext;
     if (row?.id) onSelect({ type: 'segment', value: row.id });
   });
-  series.data.setAll([{ name: 'แถวจุดขายที่เลือก', children: data }]);
+  series.data.setAll([{ name: 'รายการจุดขายที่เลือก', children: data }]);
   series.set('selectedDataItem', series.dataItems[0]);
   return true;
 }
@@ -252,7 +257,7 @@ function renderTreemap(root, rows, segments, palette, onSelect, am5, am5hierarch
 function renderScatter(root, rows, centers, palette, onSelect, am5, am5xy) {
   const data = presenceByCenter(rows, centers).map((center) => ({
     ...center,
-    tooltip: `${escapeAmText(center.name)}\nแกนนอน ${NUMBER.format(center.brands)} แบรนด์ไม่ซ้ำ\nแกนตั้ง ${NUMBER.format(center.pos)} แถวจุดขาย\nกดเพื่อกรองศูนย์การค้านี้`,
+    tooltip: `${escapeAmText(center.name)}\nแกนนอน ${NUMBER.format(center.brands)} แบรนด์ไม่ซ้ำ\nแกนตั้ง ${NUMBER.format(center.pos)} รายการจุดขาย\nกดเพื่อกรองศูนย์การค้านี้`,
     color: palette.series[0].fill,
   }));
   if (!data.length) return false;
@@ -260,7 +265,7 @@ function renderScatter(root, rows, centers, palette, onSelect, am5, am5xy) {
     panX: false, panY: false, wheelX: 'none', wheelY: 'none',
     paddingTop: 8, paddingLeft: 0, paddingRight: 12, paddingBottom: 0,
     focusable: true,
-    ariaLabel: `เปรียบเทียบศูนย์การค้า ${data.length} แห่ง แกนนอนจำนวนแบรนด์ไม่ซ้ำ แกนตั้งจำนวนแถวจุดขาย จุดที่มีค่าเท่ากันอาจซ้อนกัน ใช้ปุ่มลูกศรหรือดูตารางเพื่อเลือกรายศูนย์`,
+    ariaLabel: `เปรียบเทียบศูนย์การค้า ${data.length} แห่ง แกนนอนจำนวนแบรนด์ไม่ซ้ำ แกนตั้งจำนวนรายการจุดขาย จุดที่มีค่าเท่ากันอาจซ้อนกัน ใช้ปุ่มลูกศรหรือดูตารางเพื่อเลือกรายศูนย์`,
   }));
   const xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 45 });
   const yRenderer = am5xy.AxisRendererY.new(root, { minGridDistance: 35 });
@@ -268,8 +273,8 @@ function renderScatter(root, rows, centers, palette, onSelect, am5, am5xy) {
   styleRenderer(yRenderer, palette, 'value', am5);
   const xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, { renderer: xRenderer, min: 0, maxPrecision: 0, extraMax: 0.15, numberFormat: '#,###' }));
   const yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, { renderer: yRenderer, min: 0, maxPrecision: 0, extraMax: 0.15, numberFormat: '#,###' }));
-  xAxis.children.push(am5.Label.new(root, { text: 'แบรนด์ไม่ซ้ำ (แบรนด์)', x: am5.p50, centerX: am5.p50, fontFamily: FONT, fontSize: 12, fill: palette.metadata, paddingTop: 3 }));
-  yAxis.children.unshift(am5.Label.new(root, { text: 'แถวจุดขาย (แถว)', rotation: -90, y: am5.p50, centerX: am5.p50, fontFamily: FONT, fontSize: 12, fill: palette.metadata, paddingBottom: 3 }));
+  xAxis.children.push(am5.Label.new(root, { text: 'แบรนด์ไม่ซ้ำ (แบรนด์)', x: am5.p50, centerX: am5.p50, fontFamily: FONT, fontWeight: '400', fontSize: 12, fill: palette.metadata, paddingTop: 3 }));
+  yAxis.children.unshift(am5.Label.new(root, { text: 'จุดขาย (รายการ)', rotation: -90, y: am5.p50, centerX: am5.p50, fontFamily: FONT, fontWeight: '400', fontSize: 12, fill: palette.metadata, paddingBottom: 3 }));
   const series = chart.series.push(am5xy.LineSeries.new(root, { xAxis, yAxis, valueXField: 'brands', valueYField: 'pos', tooltip: tooltip(root, palette, am5), interpolationDuration: 0 }));
   series.strokes.template.set('visible', false);
   series.bullets.push((_root, _series, dataItem) => {
@@ -279,7 +284,7 @@ function renderScatter(root, rows, centers, palette, onSelect, am5, am5xy) {
       tooltipText: '{tooltip}', cursorOverStyle: 'pointer',
       focusable: true, isMeasured: true, hoverOnFocus: true, role: 'button',
       focusableGroup: 'luxury-center-points',
-      ariaLabel: `${escapeAmText(row.name)}: ${row.brands} แบรนด์ไม่ซ้ำ และ ${row.pos} แถวจุดขาย ${INSTRUCTIONS}`,
+      ariaLabel: `${escapeAmText(row.name)}: ${row.brands} แบรนด์ไม่ซ้ำ และ ${row.pos} รายการจุดขาย ${INSTRUCTIONS}`,
     });
     circle.events.on('click', () => onSelect({ type: 'venue', value: row.venue, mallId: row.id }));
     return am5.Bullet.new(root, { sprite: circle });
@@ -308,7 +313,7 @@ export function renderInsightChart({ elementId, view = 'centers', rows = [], cen
     return cleanup;
   }
   if (!rows.length) {
-    const cleanup = setEmpty(element, 'ไม่พบแถวจุดขายตามตัวกรองนี้');
+    const cleanup = setEmpty(element, 'ไม่พบรายการจุดขายตามตัวกรองนี้');
     roots.set(elementId, cleanup);
     return cleanup;
   }
@@ -328,7 +333,7 @@ export function renderInsightChart({ elementId, view = 'centers', rows = [], cen
     const palette = readPalette(element, am5);
     palette.segmentIndex = new Map(segments.map((segment, index) => [key(segment.id), index % 8]));
     const themeRules = am5.Theme.new(root);
-    themeRules.rule('Label').setAll({ fontFamily: FONT, fontSize: 12, fill: palette.text });
+    themeRules.rule('Label').setAll({ fontFamily: FONT, fontWeight: '400', fontSize: 12, fill: palette.text });
     // This chart family uses no transition animation, including reduced motion.
     themeRules.rule('Sprite').setAll({ stateAnimationDuration: 0 });
     root.setThemes([themeRules]);
