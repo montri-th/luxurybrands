@@ -5,7 +5,7 @@
 .pin-dot{display:block;width:100%;height:100%;border-radius:50%;background:var(--pin-fill);box-shadow:0 0 0 .7px var(--surface-card),0 0 0 1.2px var(--pin-ink)}
 .store-pin.is-closed .pin-dot{background:var(--surface-card);border:1px dashed var(--pin-ink);box-shadow:none}
 .store-pin.is-selected,.store-pin:hover,.store-pin:focus-visible{background:transparent;outline:2px solid var(--interaction-focus-ring);outline-offset:3px;z-index:5}
-.pin-brand-label{display:block;position:absolute;transform:translate(-50%,-50%);border:0;border-radius:2px;background:transparent;box-shadow:0 1px 2px #18232720;overflow:hidden;pointer-events:auto}
+.pin-brand-label{display:block;position:absolute;transform:translate(-50%,-50%);border:0;border-radius:2px;background:transparent;box-shadow:none;overflow:hidden;pointer-events:auto}
 .store-pin .brand-logo{width:100%;height:100%;border:0;border-radius:2px;filter:none;overflow:hidden}
 .store-pin.is-selected .pin-brand-label,.store-pin:hover .pin-brand-label{outline:2px solid var(--interaction-focus-ring);outline-offset:2px}
 .pin-leaders line{stroke:var(--text-primary);stroke-opacity:.8;stroke-width:1}.pin-leaders circle{fill:var(--surface-card);stroke:var(--text-primary);stroke-width:1.5}
@@ -13,5 +13,5 @@
 #category-key{pointer-events:auto}#category-key summary{cursor:pointer;text-decoration:underline;text-underline-offset:3px}#category-key>div{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;padding-top:9px}#category-key span{display:flex;align-items:center;gap:6px}.category-swatch{display:inline-block;width:8px;height:8px;flex:0 0 8px;border:1px solid var(--text-primary);border-radius:50%;background:var(--pin-fill)}
 .maplibregl-popup{z-index:7}
 
-@media(max-width:760px) and (orientation:portrait){#map-coverage{width:auto}.map-key{bottom:calc(var(--bottom-panel-height) + 66px);gap:5px 7px}}
-@media(max-width:760px) and (orientation:portrait){.mobile-close{position:sticky;top:-8px;z-index:2;background:var(--surface-card);box-shadow:0 4px 8px #1823270a}.map-key .legend-boundary{flex-shrink:0}}
+@media(max-width:760px) and (orientation:portrait){#map-coverage{width:auto}.map-key{bottom:calc(var(--bottom-panel-height) + 28px);gap:5px 7px}}
+@media(max-width:760px) and (orientation:portrait){.mobile-close{position:sticky;top:-8px;z-index:2;background:var(--surface-card);box-shadow:none}.map-key .legend-boundary{flex-shrink:0}}

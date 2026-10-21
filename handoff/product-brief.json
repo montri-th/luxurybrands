@@ -1,0 +1,211 @@
+{
+  "$schema": "./handoff.schema.json",
+  "schemaVersion": "1.0.0",
+  "documentType": "product-brief",
+  "productId": "citymeter-luxury-brands",
+  "updatedOn": "2026-10-22",
+  "language": "th-TH",
+  "productName": "CityMETER · Luxury Brands",
+  "repository": "https://github.com/montri-th/luxurybrands",
+  "liveUrl": "https://montri-th.github.io/luxurybrands/",
+  "job": "เข้าใจโครงสร้างทำเลของ luxury และ upscale street brands ผ่านย่าน แล้วเจาะศูนย์การค้า อาคาร และร้าน",
+  "audiences": [
+    "ทีมวางแผนขยายสาขาและกลยุทธ์ทำเล",
+    "ผู้พัฒนาศูนย์การค้าและอสังหาริมทรัพย์",
+    "นักวิเคราะห์เมืองและแบรนด์"
+  ],
+  "journey": [
+    "เห็นข้อค้นพบระดับย่านก่อนตัวกรอง",
+    "สำรวจกลุ่มย่านด้วยการกดครั้งเดียว",
+    "เทียบความหลากหลายและบุคลิกแบรนด์",
+    "เจาะย่าน อาคาร และร้าน",
+    "ตรวจรายละเอียดและแหล่งข้อมูล"
+  ],
+  "firstAha": {
+    "scope": "current filtered source rows before area focus",
+    "ranking": "top three fixed neighborhoods by distinct brand labels, POS count, stable ID",
+    "headlineTemplate": "{areaCount} ย่านรวม {sharePercent}% ของแบรนด์",
+    "numerator": "union of distinct source brand labels assigned to top neighborhoods",
+    "denominator": "all distinct brand labels in the filtered rows, including rows outside defined neighborhoods",
+    "action": "สำรวจ {areaCount} ย่าน",
+    "model": "js/area-insight.js#summarizeAreaInsight",
+    "filter": "js/area-insight.js#filterAreaRows",
+    "defaultSnapshot": {
+      "areas": [
+        "siam",
+        "phrom-phong",
+        "chit-lom-phloen-chit"
+      ],
+      "brands": 97,
+      "totalBrands": 113,
+      "sharePercent": 85.8,
+      "pos": 175,
+      "totalPos": 345,
+      "assignedPos": 244
+    },
+    "requirements": [
+      "No login, sharing or geolocation prerequisite",
+      "Core dataset and neighborhood boundaries enable area Aha; core counts/table still work without boundaries; optional map/chart vendors load separately",
+      "Same source-row set drives map, counters, charts and table",
+      "Returning to all clears only area focus"
+    ]
+  },
+  "data": {
+    "observationGrain": "one declared brand store/counter/POS observation; repeated source records are not silently merged",
+    "core": "data/luxury.json",
+    "neighborhoods": "data/neighborhoods.geojson",
+    "hostBuildings": "data/venue-buildings.geojson",
+    "brandLogos": "data/brand-logos.json",
+    "defaultFilter": {
+      "origin": "market_refresh",
+      "excludedStatuses": [
+        "permanently closed",
+        "closure_conflict_review"
+      ]
+    },
+    "snapshot": {
+      "observations": 565,
+      "mappedObservations": 562,
+      "defaultPOS": 345,
+      "defaultBrands": 113,
+      "definedNeighborhoods": 10,
+      "logoIdentities": 168
+    },
+    "closurePolicy": "Retain permanently closed records and factual closure status; exclude from default current view; never delete to improve counts",
+    "coordinatePolicy": "Preserve original geographic coordinates; any marker displacement is screen-space only"
+  },
+  "visualSystem": {
+    "release": "LDS 0.9.7",
+    "releaseId": "v0.9.7-owner.1",
+    "normativeSha256": "d3085cbc0a50195f1cbf0c77b1d77c0d19b84364daf2948eb367348d65432d96",
+    "fonts": {
+      "body": "Bai Jamjuree",
+      "headingLatin": "Arvo",
+      "headingThai": "IBM Plex Sans Thai Looped",
+      "numbers": "JetBrains Mono"
+    },
+    "mapStyles": {
+      "light": "https://tiles.openfreemap.org/styles/positron",
+      "dark": "https://tiles.openfreemap.org/styles/dark"
+    },
+    "icons": {
+      "asset": "assets/icons/material-nav-300.woff2",
+      "axes": {
+        "FILL": 0,
+        "wght": 300,
+        "GRAD": 0,
+        "opsz": 24
+      },
+      "allowed": [
+        "open_in_new",
+        "menu",
+        "close",
+        "light_mode",
+        "dark_mode",
+        "contrast",
+        "groups"
+      ],
+      "fallback": "visible semantic text label"
+    },
+    "layout": {
+      "headerPx": 48,
+      "desktopSidebar": "min(max(260px,25%),440px)",
+      "map": "fills remaining viewport",
+      "charts": "collapsed bottom tray, open on demand",
+      "mobile": "full map with compact first insight and bottom data sheet"
+    }
+  },
+  "invariants": [
+    {
+      "id": "INV01",
+      "rule": "One store observation owns one pin; no clustering or aggregation"
+    },
+    {
+      "id": "INV02",
+      "rule": "250 logo labels is a ceiling, never a quota; collision avoidance wins"
+    },
+    {
+      "id": "INV03",
+      "rule": "Preserve original logo artwork; use verified local sprite and restrained framing"
+    },
+    {
+      "id": "INV04",
+      "rule": "Default first insight concerns neighborhoods, not venues"
+    },
+    {
+      "id": "INV05",
+      "rule": "Never sum distinct brands across areas; use set union"
+    },
+    {
+      "id": "INV06",
+      "rule": "Keep generic caveats and workflow notes out of UI; retain provenance in documentation and real closure/error states"
+    },
+    {
+      "id": "INV07",
+      "rule": "No CSV download UI"
+    },
+    {
+      "id": "INV08",
+      "rule": "No decorative bracket or colored left rail; keep visible focus"
+    },
+    {
+      "id": "INV09",
+      "rule": "No fabricated coordinates, store openings, administrative boundaries or consumer behavior claims"
+    },
+    {
+      "id": "INV10",
+      "rule": "Every visible count and action must respect the same selected source rows"
+    }
+  ],
+  "chartContracts": [
+    {
+      "viewKey": "centers",
+      "title": "ย่านที่มีแบรนด์",
+      "question": "ย่านใดมีแบรนด์หลากหลาย",
+      "encoding": "horizontal bars",
+      "metric": "distinct brand labels per assigned neighborhood",
+      "action": {
+        "type": "neighborhood",
+        "id": "neighborhood ID"
+      }
+    },
+    {
+      "viewKey": "mix",
+      "title": "บุคลิกของย่าน",
+      "question": "ย่านใดเด่นแบรนด์กลุ่มไหน",
+      "encoding": "bubble matrix; circle area proportional to distinct brands; color identifies segment",
+      "metric": "distinct brand labels per neighborhood and segment",
+      "action": {
+        "type": "neighborhood",
+        "id": "neighborhood ID"
+      }
+    },
+    {
+      "viewKey": "compare",
+      "title": "แบรนด์เฉพาะ / ร่วม",
+      "question": "แต่ละย่านมีแบรนด์ต่างหรือซ้ำกับย่านอื่นเพียงใด",
+      "encoding": "stacked horizontal bars",
+      "metric": "brands assigned to exactly one versus multiple selected neighborhoods",
+      "reference": "all assigned neighborhoods in selected rows, before display top-N truncation",
+      "minimumAreas": 2,
+      "emptyAction": {
+        "type": "resetAreas"
+      }
+    }
+  ],
+  "delivery": {
+    "human": [
+      "README.md",
+      "PRODUCT_BRIEF.md",
+      "IMPLEMENTATION_PLAN.md"
+    ],
+    "machine": [
+      "product-brief.json",
+      "implementation-plan.json",
+      "handoff-manifest.json"
+    ],
+    "start": "npm start",
+    "test": "npm test",
+    "localUrl": "http://127.0.0.1:4173/"
+  }
+}

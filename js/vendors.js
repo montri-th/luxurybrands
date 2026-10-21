@@ -48,10 +48,6 @@ function xyChartExport() {
   return coreChartExport() && typeof value?.XYChart?.new === 'function' ? value : null;
 }
 
-function hierarchyChartExport() {
-  const value = browserWindow()?.am5hierarchy;
-  return coreChartExport() && typeof value?.Treemap?.new === 'function' ? value : null;
-}
 
 function verifiedExport(readExport) {
   try { return readExport(); }
@@ -188,16 +184,13 @@ export function loadMapLibrary() {
   return mapTask;
 }
 
-/** Core must execute before the XY/hierarchy chunks; the two chunks may load together. */
+/** Core executes before the XY chunk; all neighborhood views share this renderer. */
 export function loadChartLibraries() {
   if (chartTask) return chartTask;
   chartTask = loadScript(`${CHART_BASE}index.js`, 'ไลบรารีกราฟหลัก', coreChartExport)
     .then(async am5 => {
-      const [am5xy, am5hierarchy] = await Promise.all([
-        loadScript(`${CHART_BASE}xy.js`, 'ไลบรารีกราฟแกน', xyChartExport),
-        loadScript(`${CHART_BASE}hierarchy.js`, 'ไลบรารีกราฟสัดส่วน', hierarchyChartExport),
-      ]);
-      return {am5, am5xy, am5hierarchy};
+      const am5xy = await loadScript(`${CHART_BASE}xy.js`, 'ไลบรารีกราฟแกน', xyChartExport);
+      return {am5, am5xy};
     })
     .catch(error => {
       chartTask = null;

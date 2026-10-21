@@ -12,8 +12,8 @@ a.nav-decorated{justify-content:flex-start;vertical-align:middle}
 .theme-visible-label{font-size:12px;font-weight:600}
 .theme-control .nav-icon{margin-right:1px}
 .map-toolbar #open-help{pointer-events:auto}
-.usage-dialog{width:min(660px,calc(100vw - 32px));max-height:90dvh;margin:auto;padding:24px;background:var(--surface-card);color:var(--text-primary);border:1px solid var(--border-default);border-radius:16px;overflow:auto;overscroll-behavior:contain;box-shadow:0 12px 40px #18232728;font:400 14px/1.7 "Bai Jamjuree",sans-serif}
-.usage-dialog::backdrop{background:rgb(0 0 0 / .35)}
+.usage-dialog{width:min(660px,calc(100vw - 32px));max-height:90dvh;margin:auto;padding:24px;background:var(--surface-card);color:var(--text-primary);border:1px solid var(--border-default);border-radius:16px;overflow:auto;overscroll-behavior:contain;box-shadow:none;font:400 14px/1.7 "Bai Jamjuree",sans-serif}
+.usage-dialog::backdrop{background:var(--surface-canvas);opacity:.75}
 .help-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
 .help-heading h2{font-size:24px;line-height:1.4}
 .help-heading .eyebrow{font-size:12px}

@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CityMETER Luxury Brands developer contracts",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "documentType",
+    "productId",
+    "updatedOn"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "documentType": {
+      "enum": [
+        "product-brief",
+        "implementation-plan"
+      ]
+    },
+    "productId": {
+      "const": "citymeter-luxury-brands"
+    },
+    "updatedOn": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "documentType": {
+            "const": "product-brief"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "firstAha",
+          "data",
+          "visualSystem",
+          "invariants",
+          "chartContracts"
+        ],
+        "properties": {
+          "firstAha": {
+            "type": "object",
+            "required": [
+              "scope",
+              "ranking",
+              "numerator",
+              "denominator",
+              "action",
+              "model",
+              "filter",
+              "defaultSnapshot"
+            ]
+          },
+          "invariants": {
+            "type": "array",
+            "minItems": 10,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "rule"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "documentType": {
+            "const": "implementation-plan"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "architecture",
+          "selection",
+          "tasks",
+          "acceptanceCriteria",
+          "developerWorkflow",
+          "backlog"
+        ],
+        "properties": {
+          "tasks": {
+            "type": "array",
+            "minItems": 8,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "dependsOn",
+                "acceptanceCriteria",
+                "files",
+                "status"
+              ]
+            }
+          },
+          "acceptanceCriteria": {
+            "type": "array",
+            "minItems": 12,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "scenario",
+                "expected",
+                "verificationType"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

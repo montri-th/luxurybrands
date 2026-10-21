@@ -13,6 +13,7 @@ export function filterRows(rows,f={}){
   if(f.channel&&r.channel!==f.channel)return false;
   if(f.venue&&r.venue!==f.venue)return false;
   if(f.mallId&&r.mallId!==f.mallId)return false;
+  if(f.mallIds&&!f.mallIds.has(r.mallId))return false;
   if(f.neighborhoodIds&&!f.neighborhoodIds.has(r.id))return false;
   return !q||[r.brand,r.name,r.venue,r.neighborhood,r.province].some(v=>(v||'').toLocaleLowerCase().includes(q));
  });
@@ -23,6 +24,15 @@ export function summarize(rows,shoppingCenters){
  const centers=shoppingCenters.filter(c=>grouped.has(c.id)).map(c=>{const rs=grouped.get(c.id);return {...c,brands:new Set(rs.map(r=>r.brand)).size,pos:rs.length,venue:rs[0].venue,segments:[...new Set(rs.map(r=>r.segment))]};}).sort((a,b)=>b.brands-a.brands||a.name.localeCompare(b.name));
  const segments=Object.entries(SEGMENTS).map(([id,name])=>({id,name,count:rows.filter(r=>r.segment===id).length})).filter(r=>r.count);
  return {brands:new Set(rows.map(r=>r.brand)).size,pos:rows.length,mapped:rows.filter(hasPoint).length,centers,segments};
+}
+export function summarizeFirstInsight(rows=[],shoppingCenters=[]){
+ const selected=Array.isArray(rows)?rows:[],hosts=Array.isArray(shoppingCenters)?shoppingCenters:[];
+ const summary=summarize(selected,hosts),centers=summary.centers.slice(0,3);
+ const centerIds=centers.map(center=>center.id),ids=new Set(centerIds);
+ const topRows=selected.filter(row=>ids.has(row.mallId));
+ // A brand present in several centers contributes once to the coverage numerator.
+ const brands=new Set(topRows.map(row=>row.brand)).size,totalBrands=summary.brands;
+ return {centers,centerIds,brands,totalBrands,share:totalBrands?brands/totalBrands*100:0,pos:topRows.length,totalPos:selected.length};
 }
 export function pointFeatures(rows){
  // A declared store/counter record always owns its own feature. Co-location

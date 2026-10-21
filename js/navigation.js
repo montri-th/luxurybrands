@@ -28,16 +28,20 @@ function decorate(element,name){
  if(current)current.replaceWith(makeIcon(name));else element.prepend(makeIcon(name));
  element.classList.add('nav-decorated');
 }
+function removeDecoration(element){
+ if(!element)return;
+ for(const child of [...element.children])if(child.classList.contains('nav-icon'))child.remove();
+ element.classList.remove('nav-decorated');
+}
 function decorateNavigation(){
  const byId=(id,name)=>decorate(document.getElementById(id),name);
- byId('open-help','menu');byId('close-help','close');byId('mobile-panel','menu');
- byId('close-mobile-panel','close');byId('open-table','menu');byId('toggle-table','close');
+ byId('close-help','close');byId('mobile-panel','menu');
+ byId('close-mobile-panel','close');byId('toggle-table','close');
  byId('clear-selection','close');
- const insights=document.getElementById('toggle-insights');
- decorate(insights,insights?.getAttribute('aria-expanded')==='true'?'close':'menu');
+ for(const id of ['open-help','open-table','toggle-insights'])removeDecoration(document.getElementById(id));
  const mode=document.getElementById('theme');
  if(mode)decorate(mode.closest('label'),mode.value==='dark'?'dark_mode':mode.value==='light'?'light_mode':'contrast');
- decorate(document.querySelector('.method summary'),'menu');
+ removeDecoration(document.querySelector('.method summary'));
  for(const anchor of document.querySelectorAll('.source-link[target="_blank"],.method a[target="_blank"],.usage-dialog a[target="_blank"],.top-actions a[target="_blank"]')){
   // This glyph only marks destinations that really open a new browsing context.
   decorate(anchor,'open_in_new');
@@ -46,30 +50,30 @@ function decorateNavigation(){
  const titles={
   'fit-map':'ปรับแผนที่ให้เห็นจุดขายตามตัวกรองทั้งหมด',
   'bangkok-map':'กลับไปดูพื้นที่กรุงเทพฯ',
-  'toggle-centers':'แสดงหรือซ่อนอาคารจากแหล่งข้อมูลในมุมมอง 3D',
-  'toggle-neighborhoods':'แสดงหรือซ่อนขอบเขตย่านเสนอวิเคราะห์',
-  'mobile-panel':'เปิดข้อมูลและตัวกรอง โดยใช้ขอบเขตเดียวกับแผนที่และกราฟ',
-  'open-help':'เปิดวิธีใช้แผนที่ ตัวกรอง หลักฐาน และลิงก์เว็บสาธารณะ',
+  'toggle-centers':'แสดงหรือซ่อนอาคาร 3D',
+  'toggle-neighborhoods':'แสดงหรือซ่อนขอบเขตย่าน',
+  'mobile-panel':'เปิดข้อมูลและตัวกรอง',
+  'open-help':'เปิดวิธีใช้',
   'toggle-insights':'เปิดหรือย่อกราฟเปรียบเทียบตามตัวกรองปัจจุบัน',
   'open-table':'เปิดรายการจุดขายตามตัวกรองปัจจุบัน',
   'toggle-table':'ปิดตารางและกลับไปแผนที่',
   'search':'ค้นหาจากชื่อแบรนด์ จุดขาย ทำเล ย่าน หรือจังหวัด',
-  'cohort':'เลือกขอบเขตหลักฐานปัจจุบัน ประวัติเดิม หรือรายการปิดถาวร',
-  'segment':'กรองกลุ่มแบรนด์ตามนิยามวิจัย',
+  'cohort':'เลือกรายการปัจจุบัน ประวัติเดิม หรือร้านปิดถาวร',
+  'segment':'เลือกกลุ่มแบรนด์',
   'province':'กรองจุดขายตามจังหวัด',
   'channel':'แยกร้านในศูนย์การค้า ร้าน standalone เคาน์เตอร์ และรูปแบบอื่น',
   'venue':'กรองศูนย์การค้าหรือทำเลตามชื่อที่ระบุ',
-  'neighborhood':'กรองด้วยขอบเขตย่านเสนอวิเคราะห์',
+  'neighborhood':'เลือกย่าน',
   'prev-page':'ดูหน้าก่อนหน้าของตาราง',
   'next-page':'ดูหน้าถัดไปของตาราง',
-  'tab-centers':'เปรียบเทียบแบรนด์ไม่ซ้ำในศูนย์การค้าที่จับคู่ได้',
-  'tab-mix':'ดูสัดส่วนรายการจุดขายตามกลุ่มแบรนด์',
-  'tab-compare':'เปรียบเทียบจำนวนแบรนด์กับรายการจุดขายของศูนย์การค้า',
-  'tab-neighborhoods':'ดูรายการภายในขอบเขตย่านเสนอวิเคราะห์',
+  'tab-centers':'เปรียบเทียบแบรนด์ในแต่ละย่าน',
+  'tab-mix':'ดูบุคลิกของย่านผ่านกลุ่มแบรนด์',
+  'tab-compare':'เปรียบเทียบแบรนด์เฉพาะย่านและแบรนด์ที่พบร่วมกัน',
+  'tab-neighborhoods':'ดูจุดขายในแต่ละย่าน',
  };
  for(const [id,title]of Object.entries(titles)){const element=document.getElementById(id);if(element&&element.title!==title)element.title=title;}
  const reset=document.querySelector('#filters button[type="reset"]');
- if(reset)reset.title='ล้างตัวกรองและกลับไปชุดรายการที่ค้นใหม่';
+ if(reset)reset.title='ล้างตัวกรอง';
 }
 
 function installHelp(){

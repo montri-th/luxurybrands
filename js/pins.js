@@ -1,5 +1,5 @@
-import {hasPoint,isClosed,SEGMENTS} from './model.js?v=20261021-r4';
-import {brandLogoMarkup,getBrandLogo} from './brand-logos.js?v=20261021-r4';
+import {hasPoint,isClosed,SEGMENTS} from './model.js?v=20261021-r5';
+import {brandLogoMarkup,getBrandLogo} from './brand-logos.js?v=20261021-r5';
 
 export const MAX_LOGOS=250;
 const segmentIndex=new Map(Object.keys(SEGMENTS).map((id,i)=>[id,i+1]));
@@ -48,7 +48,7 @@ export function installStorePins(map,container,{onSelect,reservedBottom=()=>90}=
  const schedule=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(layout);};
  function layout(){
   const width=container.clientWidth,height=container.clientHeight,panel=container.closest('.map-panel'),rect=container.getBoundingClientRect();panel.classList.toggle('is-tight',height<480);
-  const blockers=[...panel.querySelectorAll('.map-toolbar button,.map-key,.map-note,.maplibregl-ctrl-top-right,.maplibregl-ctrl-bottom-right,.maplibregl-ctrl-bottom-left')].filter(e=>e.offsetWidth&&e.offsetHeight).map(e=>{const b=e.getBoundingClientRect();return{left:b.left-rect.left-3,right:b.right-rect.left+3,top:b.top-rect.top-3,bottom:b.bottom-rect.top+3};});
+  const blockers=[...panel.querySelectorAll('.map-toolbar button,.map-key,.map-note,#map-first-insight,.maplibregl-ctrl-top-right,.maplibregl-ctrl-bottom-right,.maplibregl-ctrl-bottom-left')].filter(e=>e.offsetWidth&&e.offsetHeight).map(e=>{const b=e.getBoundingClientRect();return{left:b.left-rect.left-3,right:b.right-rect.left+3,top:b.top-rect.top-3,bottom:b.bottom-rect.top+3};});
   const bounds={left:5,right:width-5,top:5,bottom:Math.max(6,height-reservedBottom()),exclusions:blockers};
   const projected=[];for(const e of entries){const p=map.project([e.row.longitude,e.row.latitude]);const visible=isSourceVisible(p,bounds);e.button.hidden=!visible;e.label.hidden=true;if(visible)projected.push({id:e.row.id,x:p.x,y:p.y,entry:e,brandKey:e.brandKey,hasLogo:e.hasLogo,logoRatio:e.logoRatio});}
   const zoom=map.getZoom(),pitch=zoom>=13?8:zoom>=11?5:zoom>=8?3:1.5,maxOffset=zoom>=13?36:zoom>=11?24:zoom>=8?14:8;
