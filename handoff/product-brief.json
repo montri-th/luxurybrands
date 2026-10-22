@@ -15,7 +15,7 @@
     "machine": "product-statement.json",
     "framework": "MBB v0.5.3 §7.2 + CityMETER Product Brief v6 §1.6 (Who → What → Which → How)"
   },
-  "job": "ถ้าจะเปิดร้านที่นี่ จะอยู่ข้างใคร — อ่านเมืองผ่านย่านในภาพ 3 มิติทันที แล้วเจาะลงถึงศูนย์การค้า อาคาร และจุดขายพร้อมหลักฐาน",
+  "job": "ถ้าจะเปิดร้านที่นี่ จะอยู่ข้างใคร — อ่านเมืองผ่านย่านในภาพ 3 มิติทันที แล้วเจาะลงถึงศูนย์การค้า อาคาร และสาขาพร้อมหลักฐาน",
   "audiences": [
     "ทีมขยายสาขาและ distributor ของแบรนด์หรู",
     "ทีม leasing / asset ของศูนย์การค้า",
@@ -47,7 +47,7 @@
       "eye preset re-based to pitch 75 / FOV 24 (horizon outside the frame) after the live MapLibre fill-extrusion defect",
       "city tier fades with distance from the focus (feature-state) and sits at 0.22 opacity; dark massing tokens lifted for contrast",
       "neighborhood fit fills the frame (maxZoom 17.5)",
-      "copy pass: สาขา replaces จุดขาย, no caveats on screen, metric tiles carry legend symbols"
+      "copy pass: สาขา replaces สาขา, no caveats on screen, metric tiles carry legend symbols"
     ]
   },
   "rowScopes": {
@@ -113,7 +113,7 @@
     "model": "js/area-insight.js#summarizeAreaInsight",
     "filter": "js/area-insight.js#filterAreaRows",
     "fallbacks": {
-      "noRows": "ไม่พบจุดขายตามตัวกรองนี้ + clear filter action",
+      "noRows": "ไม่พบสาขาตามตัวกรองนี้ + clear filter action",
       "rowsOutsideAllAreas": "explain rows are outside the ten defined cores and rank venues with profile-model.js#rankVenues; focus list empty, no quiet"
     },
     "defaultSnapshot": {

@@ -17,7 +17,7 @@
   "positioning": {
     "one_line_highlight": "แผนที่ย่านแบรนด์หรูของไทยที่บอกว่าใครอยู่ข้างใคร พร้อมหลักฐานรายร้าน เพื่อเลือกทำเลและ tenant mix ด้วยหลักฐาน ไม่ใช่ความจำ",
     "unique_advantage": "อ่านเป็นย่าน (แบรนด์ไม่ซ้ำ, exclusive/shared, บุคลิกตามกลุ่ม) บนฉากเมือง 3 มิติแบบ focus/quiet ที่พร้อมฉายในห้องประชุม พร้อมหลักฐานต่อรายการ",
-    "unique_vs_other_citymeter_datasets": "ชุดเดียวที่ลงถึงแบรนด์–จุดขายและ adjacency; Shopping Center ให้ host complexes และ GLA แต่ไม่รู้ว่าแบรนด์ใดอยู่ที่ไหน",
+    "unique_vs_other_citymeter_datasets": "ชุดเดียวที่ลงถึงแบรนด์–สาขาและ adjacency; Shopping Center ให้ host complexes และ GLA แต่ไม่รู้ว่าแบรนด์ใดอยู่ที่ไหน",
     "unique_vs_competitors": "locator/directory ทีละแหล่ง, Google Maps ทีละ POI, รายงาน PDF ไม่ลงรายแบรนด์ — ไม่มีแหล่งใดรวม ตรวจย้อนได้ และเทียบย่านได้"
   },
   "users": {

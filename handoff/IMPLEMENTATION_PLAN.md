@@ -21,7 +21,7 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | `js/scales.js` | LDS `count` LUT 41 ค่า, class projection, EVID-05 states | ห้าม interpolate สีใหม่; HEX เดียวกันสองธีม |
 | `js/map-style.js` | **ใหม่** basemap “paper” style v8 จาก `--basemap-*` tokens; anchors `DATA_FILL_BEFORE='waterway'`, `MASSING_BEFORE='water-name'` | สีมาจาก token เท่านั้น; ลำดับชั้นตาม brief; `name:th` ก่อน `name` |
 | `js/map-layers.js` | choropleth + outline + selected layers, focus/quiet, HTML labels | fill แทรกก่อน `waterway`, maxzoom 14.5 |
-| `js/pins.js` | หมุดรายจุดขาย, context pins, โลโก้ (zoom ≥ 14), keyboard | พิกัดต้นทางไม่เปลี่ยน; context pins ไม่มีโลโก้และไม่อยู่ใน tab order |
+| `js/pins.js` | หมุดรายสาขา, context pins, โลโก้ (zoom ≥ 14), keyboard | พิกัดต้นทางไม่เปลี่ยน; context pins ไม่มีโลโก้และไม่อยู่ใน tab order |
 | `js/buildings.js` | อาคารที่ตั้ง/parts, coverage, `displayedFeatures()` | สี `map.activeLayer`; แสดงทั้ง 2D/3D |
 | `js/massing.js` | **ใหม่** มวลอาคารสองชั้น: CITY (native, quiet) + FOCUS (decode tile → offset + fillet → extrude); ซ่อน twin ของอาคารที่ตั้ง | display-only; ความสูงจาก tile; ไม่ encode เมตริก |
 | `js/mvt.js` | **ใหม่** MVT reader + tile maths | ไม่มี dependency; parse หลาย layer ได้ (`r.pos = end`) |
@@ -75,7 +75,7 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | AC04 | optional GeoJSON/catalog ผิดรูป | counts/filter/table ใช้ได้; invalid geometry ไม่เข้าการคำนวณ |
 | AC05 | MapLibre timeout แล้วลองใหม่ | ข้อมูล ตาราง กราฟยังอยู่; ปุ่ม retry ใช้ได้; ไม่มี script ซ้อน |
 | AC06 | เปลี่ยนตัวกรอง เลือกย่าน focus auto/explicit/none ล้าง | pins/counters/table ใช้ `rows`; Aha/choropleth/charts ใช้ `scopeRows` พร้อมคำอธิบายขอบเขต; URL คืนสถานะได้ |
-| AC07 | จุดขายหลาย ID พิกัดเดียวกัน | ทุก ID มีหมุด; slot ใกล้ anchor; พิกัดไม่เปลี่ยน |
+| AC07 | สาขาหลาย ID พิกัดเดียวกัน | ทุก ID มีหมุด; slot ใกล้ anchor; พิกัดไม่เปลี่ยน |
 | AC08 | โลโก้หนาแน่น | ≤ 250, ต่างแบรนด์ก่อน, ไม่ทับ UI, ไม่มีโลโก้ต่ำกว่า zoom 14 หรือบน context pins |
 | AC09 | desktop/mobile, light/dark | header 48 px; แผง/sheet ตามสัญญา; popup อ่านได้; ไม่มี horizontal overflow ที่ 390 px; basemap ที่สร้างเองทั้งสองธีม |
 | AC10 | คีย์บอร์ด/reduced motion | focus เห็นชัด; หมุด กราฟ แผง toolbar help ใช้คีย์บอร์ดได้; context pins ไม่อยู่ใน tab order |
