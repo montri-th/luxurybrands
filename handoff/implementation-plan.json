@@ -139,7 +139,7 @@
       },
       {
         "path": "js/venue-xray.js",
-        "role": "custom 3D layer: the venue solid drawn on top of every massing tier (scissored depth clear + own depth test); walls/roof/edges; 64-bit matrix composed on the CPU"
+        "role": "custom 3D layer: the venue solid drawn on top of every massing tier (scissored depth clear + own depth test); walls/roof/edges; 64-bit matrix composed on the CPU; hitTest(point) for clicks and hover on the whole solid"
       },
       {
         "path": "js/vendor/earcut.js",
@@ -799,7 +799,7 @@
     {
       "id": "AC24",
       "scenario": "Venue always visible",
-      "expected": "At venue level in 3D the venue's host solid is visible from any bearing, pitch (≤ 75) and zoom ≥ 13, including when a taller building stands between the camera and the venue; clicking the solid selects the venue/store; the layer order is city/focus/occluder massing → host extrusion → venue-xray → water-name; in 2D the roof footprint remains",
+      "expected": "At venue level in 3D the venue's host solid is visible from any bearing, pitch (≤ 75) and zoom ≥ 13, including when a taller building stands between the camera and the venue; clicking any point of the solid (tall walls included) selects the venue, with a pointer cursor; the layer order is city/focus/occluder massing → host extrusion → venue-xray → water-name; in 2D the roof footprint remains",
       "verificationType": "browser",
       "result": "see VERIFICATION.md"
     },

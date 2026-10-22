@@ -690,7 +690,7 @@
     "devHook": "window.__citymeter (state, map, update, fitMap, fitPitched, applyPreset, buildMapStyle) — console tuning only, not an API"
   },
   "venueXrayContract": {
-    "module": "js/venue-xray.js#installVenueXray(map, {beforeId, toMercator, colors}) → {update(features, {colors}), setEnabled, dispose, count, enabled, failed}",
+    "module": "js/venue-xray.js#installVenueXray(map, {beforeId, toMercator, colors}) → {update(features, {colors}), setEnabled, hitTest(point), dispose, count, enabled, failed}",
     "layer": "venue-xray (type custom, renderingMode 3d), inserted before water-name after every fill-extrusion layer",
     "input": "host features of the venue being looked at (mall_ids / venue_names match) with render_as = extrusion; display_base_m / display_height_m",
     "geometry": "walls (two triangles per edge), roof via earcut (holes supported; js/vendor/earcut.js 3.2.4 ISC), edge lines; mercator coordinates relative to the centroid origin; z = MercatorCoordinate.z of the altitude",
@@ -698,7 +698,7 @@
     "depth": "scissored depth clear inside the venue screen box (device pixels, padded 4 px), then LEQUAL read-write depth test against itself only; polygon offset keeps edges on top",
     "visibility": "3D only (pitch > 0) and zoom ≥ 13 (XRAY_MIN_ZOOM); hidden with the 3D toggle; disabled at non-venue levels (empty feature set)",
     "colours": "faces map.activeLayer × shade (roof 1, walls 0.66–0.92 by orientation), edges map.selectedStroke — map roles, not data colours",
-    "interaction": "click/hover remain on luxury-venue-buildings-3d; MapLibre fill-extrusion hit-testing ignores what was drawn over it",
+    "interaction": "two paths: the style layer luxury-venue-buildings-3d (MapLibre hit-test, reliable near the footprint) and xray.hitTest(point) — point-in-triangle against the solid projected with the last frame matrix — wired in app.js on map click (opens the venue when not already there) and mousemove (pointer cursor); MapLibre alone misses tall walls away from the footprint (observed live 2026-10-22)",
     "failSafe": "a GL error disables the layer (failed = true) and the style host layer keeps drawing",
     "references": [
       "MapLibre GL JS CustomLayerInterface (renderingMode 3d, defaultProjectionData.mainMatrix)",

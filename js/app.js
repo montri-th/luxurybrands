@@ -616,6 +616,20 @@ function installSpatialLayers() {
   // The venue x-ray is the last 3D layer: always on top of host, massing and occluders.
   try { state.xray = installVenueXray(map, {beforeId: MASSING_BEFORE}); }
   catch (e) { state.xray = null; console.warn('Venue x-ray unavailable', e); }
+  // The solid is clickable everywhere it is drawn: MapLibre's own fill-extrusion query only finds a
+  // tall building near its footprint or along the camera ray, so the x-ray hit-tests its own triangles.
+  map.on('click', e => {
+    if (e.originalEvent?.__citymeterVenueBuildingHandled || !state.xray?.hitTest([e.point.x, e.point.y])) return;
+    const v = currentVenue();
+    if (!v) return;
+    e.originalEvent.__citymeterVenueBuildingHandled = true;
+    if (state.panel.mode !== 'venue') selectVenue(v.id, v.label);
+  });
+  map.on('mousemove', e => {
+    const over = Boolean(state.xray?.hitTest([e.point.x, e.point.y]));
+    if (over) { map.getCanvas().style.cursor = 'pointer'; state.xrayHover = true; }
+    else if (state.xrayHover) { state.xrayHover = false; if (!map.queryRenderedFeatures(e.point, {layers: [HOST_LAYERS.extrusion].filter(id => map.getLayer(id))}).length) map.getCanvas().style.cursor = ''; }
+  });
   updateSpatialLayers();
   if (!state.initialCameraDone) {
     state.initialCameraDone = true;

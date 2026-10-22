@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {buildSolid, screenBoxOf, mat4Multiply, mat4Translation, transformPoint, installVenueXray, XRAY_LAYER, XRAY_MIN_ZOOM} from '../js/venue-xray.js';
+import {buildSolid, screenBoxOf, solidHit, mat4Multiply, mat4Translation, transformPoint, installVenueXray, XRAY_LAYER, XRAY_MIN_ZOOM} from '../js/venue-xray.js';
 import {installMassing, CITY_LAYER, FOCUS_LAYER, OCCLUDER_LAYER} from '../js/massing.js';
 import {HOST_LAYERS} from '../js/buildings.js';
 
@@ -49,6 +49,14 @@ test('buildSolid handles holes, parts with a base and MultiPolygons; empty input
   assert.deepEqual(zs, [+(20e-7).toFixed(9), +(60e-7).toFixed(9)], 'base and top follow display_base_m / display_height_m');
   const e = buildSolid([], merc);
   assert.equal(e.count, 0); assert.equal(e.lineCount, 0);
+});
+
+test('solidHit finds a point on any projected wall or roof triangle', () => {
+  const s = buildSolid([square(20)], merc);
+  const scale = new Float64Array(16); scale[0] = 2e5; scale[5] = 2e5; scale[10] = 1; scale[15] = 1; // blow the tiny offsets up to clip space
+  // roof centre projects to (0,0) → screen centre
+  assert.equal(solidHit(s, scale, 400, 300, 200, 150), true);
+  assert.equal(solidHit(s, scale, 400, 300, 2, 2), false);
 });
 
 test('matrix helpers: translation composes and transformPoint divides by w', () => {
@@ -131,6 +139,16 @@ test('installVenueXray: custom 3D layer inserted before the anchor; draws only i
   assert.equal(calls.length, 0);
   xray.setEnabled(true); xray.update([]); def.render(gl, {defaultProjectionData: {mainMatrix: main}});
   assert.equal(calls.length, 0, 'no venue → nothing drawn');
+  // Hit test on the last drawn frame: identity matrix maps mercator offsets straight to clip space.
+  xray.update([square(20)]); map.getContainer = () => ({clientWidth: 400, clientHeight: 300});
+  const scaleM = new Float64Array(16); scaleM[0] = 2e5; scaleM[5] = 2e5; scaleM[10] = 1; scaleM[15] = 1; // tiny mercator offsets → ±55 px around the centre
+  const o = buildSolid([square(20)], merc).origin;
+  const big = mat4Multiply(scaleM, mat4Translation(-o[0], -o[1], 0)); // a view matrix centred on the venue, like MapLibre's
+  def.render(gl, {defaultProjectionData: {mainMatrix: big}});
+  assert.equal(xray.hitTest([190, 150]), true, 'inside the projected roof');
+  assert.equal(xray.hitTest([5, 5]), false);
+  xray.setEnabled(false); assert.equal(xray.hitTest([190, 150]), false);
+  xray.setEnabled(true);
   xray.dispose();
   assert.ok(!map.getLayer(XRAY_LAYER));
 });

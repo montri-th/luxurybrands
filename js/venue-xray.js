@@ -143,6 +143,24 @@ export function screenBoxOf(world, matrix, width, height, pad = 4) {
   return {x: x0, y: y0, width: x1 - x0, height: y1 - y0};
 }
 
+/** Point-in-triangle test of (x, y) device pixels against every triangle of the solid projected with `matrix`. */
+export function solidHit(solid, matrix, width, height, x, y) {
+  const P = solid.positions;
+  const proj = (i) => {
+    const [cx, cy, , w] = transformPoint(matrix, [P[i * 3], P[i * 3 + 1], P[i * 3 + 2]]);
+    return w > 0 ? [(cx + 1) / 2 * width, (1 - cy) / 2 * height] : null;
+  };
+  const sign = (a, b, c) => (a[0] - c[0]) * (b[1] - c[1]) - (b[0] - c[0]) * (a[1] - c[1]);
+  for (let t = 0; t < solid.count; t += 3) {
+    const a = proj(t), b = proj(t + 1), c = proj(t + 2);
+    if (!a || !b || !c) continue;
+    const d1 = sign([x, y], a, b), d2 = sign([x, y], b, c), d3 = sign([x, y], c, a);
+    const neg = d1 < 0 || d2 < 0 || d3 < 0, pos = d1 > 0 || d2 > 0 || d3 > 0;
+    if (!(neg && pos)) return true;
+  }
+  return false;
+}
+
 const VERTEX = `
 attribute vec3 a_pos; attribute float a_shade;
 uniform mat4 u_matrix;
@@ -169,6 +187,9 @@ function compile(gl, type, src) {
 export function installVenueXray(map, {beforeId, toMercator = null, colors = {}} = {}) {
   const merc = toMercator || ((lngLat, alt) => globalThis.maplibregl.MercatorCoordinate.fromLngLat(lngLat, alt));
   let solid = buildSolid([], merc), enabled = true, program = null, buffers = null, dirty = true;
+  // Last frame's matrix and drawing-buffer size → screen-space hit test (MapLibre's own
+  // fill-extrusion query only finds a tall building near its footprint or along the camera ray).
+  let lastMatrix = null, lastSize = [0, 0], lastDrawn = false;
   const palette = {fill: '#347DA8', stroke: '#176B82', ...colors};
   let features = [];
 
@@ -209,8 +230,10 @@ export function installVenueXray(map, {beforeId, toMercator = null, colors = {}}
       // 64-bit on the CPU: main × translate(origin); the shader only sees small offsets.
       const matrix = mat4Multiply(main, mat4Translation(solid.origin[0], solid.origin[1], solid.origin[2]));
       const width = gl.drawingBufferWidth, height = gl.drawingBufferHeight;
+      lastMatrix = matrix; lastSize = [width, height]; lastDrawn = false;
       const box = screenBoxOf(solid.world.map(p => [p[0] - solid.origin[0], p[1] - solid.origin[1], p[2]]), matrix, width, height);
       if (!box) return;
+      lastDrawn = true;
       gl.useProgram(program);
       const aPos = gl.getAttribLocation(program, 'a_pos'), aShade = gl.getAttribLocation(program, 'a_shade');
       gl.uniformMatrix4fv(gl.getUniformLocation(program, 'u_matrix'), false, Float32Array.from(matrix));
@@ -249,6 +272,17 @@ export function installVenueXray(map, {beforeId, toMercator = null, colors = {}}
     return {vertices: solid.count, lines: solid.lineCount, features: features.length};
   }
   function setEnabled(on) { enabled = Boolean(on); if (typeof map.triggerRepaint === 'function') map.triggerRepaint(); }
+  /**
+   * True when a CSS-pixel point of the map container lies on the drawn solid
+   * (any wall or roof triangle, projected with the last frame's matrix).
+   */
+  function hitTest(point) {
+    if (!enabled || !lastDrawn || !lastMatrix || !solid.count || !point) return false;
+    const container = typeof map.getContainer === 'function' ? map.getContainer() : null;
+    const cssW = container?.clientWidth || lastSize[0], cssH = container?.clientHeight || lastSize[1];
+    const x = point[0] * lastSize[0] / cssW, y = point[1] * lastSize[1] / cssH;
+    return solidHit(solid, lastMatrix, lastSize[0], lastSize[1], x, y);
+  }
   function dispose() { if (map.getLayer(XRAY_LAYER)) map.removeLayer(XRAY_LAYER); }
-  return {update, setEnabled, dispose, layerId: XRAY_LAYER, get count() { return solid.count; }, get enabled() { return enabled; }, get failed() { return failed; }};
+  return {update, setEnabled, hitTest, dispose, layerId: XRAY_LAYER, get count() { return solid.count; }, get enabled() { return enabled; }, get failed() { return failed; }};
 }
