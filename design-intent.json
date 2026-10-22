@@ -74,5 +74,5 @@
   "copy": "short natural Thai without on-screen caveats: แบรนด์ / สาขา (one point-of-sale record) / สถานที่ / ย่าน; legend symbols on metric tiles",
   "countryView": "provinces holding brands are framed and filled by their own count classes below zoom 9 (data/provinces.geojson, OpenGISData-Thailand CC BY 4.0), with ink-chip labels and a panel list; each is a drill-down into the จังหวัด filter",
   "venueVisibility": "host extrusion installed before every massing tier (MapLibre depth order = draw order) and drawn again on top by the venue x-ray custom layer (scissored depth clear) — visible and clickable at any pan, pitch or zoom",
-  "venueLogos": "identity support from the research sheet registry (50 files, verified sha256) in the venue heading, venue rows and store facts; the venue name stays the record"
+  "venueLogos": "identity support from the research sheet registry (sheet registry of 50 files; 33 verified sha256 in 0.5.0, 17 declared pending in meta.pending) in the venue heading, venue rows and store facts; the venue name stays the record"
 }

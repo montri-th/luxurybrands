@@ -58,7 +58,7 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | P17 | อาคารของสถานที่มองเห็นเสมอ: ติดตั้ง host ก่อนมวลอาคาร + venue x-ray + กล้อง fit ทั้งอาคาร | done | `tests/venue-xray.test.js` (geometry, scissored clear, draw-order contract); harness `dbg-xray-*`; live |
 | P18 | กรอบจังหวัด + drill-down (ข้อมูล ชั้น ป้าย legend รายการในแผง) | done | `tests/provinces.test.js`; harness `dbg-country/region/phuket`; live |
 | P19 | Pictogram บน metric tiles / หัวข้อ / ป้ายจังหวัด (ข้อยกเว้นทดลอง) | done | `tests/provinces.test.js` (contract ↔ manifest ↔ CSS); harness |
-| P21 | โลโก้สถานที่จากชีต research: ทะเบียน ไฟล์ตรวจแล้ว ตำแหน่งในแผง | done | `tests/venue-logos.test.js` (validation, lookup, markup, ทุกไฟล์ตรง sha256); live |
+| P21 | โลโก้สถานที่จากชีต research: ทะเบียน ไฟล์ตรวจแล้ว ตำแหน่งในแผง | done (ไฟล์ 33/50; ที่เหลือ N16) | `tests/venue-logos.test.js` (validation, lookup, markup, ทุกไฟล์ในทะเบียนตรง sha256, ทะเบียนบางส่วนต้องประกาศ `meta.pending`); live |
 | P22 | ตรวจ 0.5, release, live attestation, bundle | in progress | `VERIFICATION.md` (0.5), `RELEASE_RECEIPT.json` ใน bundle |
 | P20 | ตรวจ 0.4, release, live attestation, bundle | done | `VERIFICATION.md` (0.4: unit 92, harness, live 778a32a + 8b2e01b), `RELEASE_RECEIPT.json` ใน bundle |
 
@@ -81,6 +81,7 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | N13 | แทนกรอบจังหวัดจาก OpenGISData-Thailand ด้วยขอบเขตจังหวัดของ CityMETER production (แหล่งเดียวกับ `/v3/citymeter/{code}`) และต่อการกดกรอบเข้ากับ route ของ production | platform + data owner |
 | N14 | ขยาย x-ray ไปยังอาคารของร้านที่เลือกในระดับย่าน และ flow sheet บนมือถือ; วัดประสิทธิภาพ scissored clear บน GPU ต่ำ | frontend |
 | N15 | โลโก้สถานที่บนแผนที่ (ชิปที่จุดสถานที่ในโฟกัส zoom 13.5–16 จัดการชนกัน) และหาโลโก้ The Mall Ramkhamhaeng ที่ยังขาด | frontend + data owner |
+| N16 | ย้ายไฟล์โลโก้ที่เหลือ 17 ไฟล์ตาม `meta.pending` (sha256 ตามชีต) เข้าชุดติดตั้ง แล้วรัน `scripts/build-venue-logos.py` ใหม่ให้ทะเบียนเป็น `complete`; ไม่ต้องแก้โค้ด | data owner |
 
 ## เกณฑ์รับงาน
 

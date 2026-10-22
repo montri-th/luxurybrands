@@ -54,7 +54,7 @@
       "0.4: frameVenue fits footprint + roof vertices (camera.projectPoint), zooming out at most one level beyond the footprint fit",
       "0.4: province frames (data/provinces.geojson, js/provinces.js): count fill below zoom 9, outline to zoom 12, ink-chip labels below zoom 9.5, legend switch, panel list, selectProvince drill-down",
       "0.4: pictograms (Material Symbols Rounded subset, 8 glyphs) on metric tiles, section headings and province chips — test exception to LDS nav-7",
-      "0.5: venue logos (data/venue-logos.json, assets/venue-logos/, 50 files from the research sheet tab 10_VENUE_LOGOS) in the venue heading, venue rows and store facts; lookup by center id then exact label; role labels for shared marks"
+      "0.5: venue logos (data/venue-logos.json, assets/venue-logos/, 50 files recorded in the research sheet tab 10_VENUE_LOGOS; 33 verified in this release, 17 declared pending in meta.pending) in the venue heading, venue rows and store facts; lookup by center id then exact label; role labels for shared marks"
     ]
   },
   "rowScopes": {
@@ -455,7 +455,7 @@
     "closurePolicy": "Retain permanently closed records and factual closure status; exclude from the default current view; never delete to improve counts",
     "coordinatePolicy": "Preserve original geographic coordinates; marker displacement is screen-space only; precision is described from geometryRole/geometryStatus and never upgraded",
     "provinces": "data/provinces.geojson (metadata.version 2026-10-22-r1; OpenGISData-Thailand CC BY 4.0; context frames)",
-    "venueLogos": "data/venue-logos.json (meta.version 2026-10-22-r1; 50 assets, 81 venue labels, 39 centers; sha256 per file; no private URLs)"
+    "venueLogos": "data/venue-logos.json (meta.version 2026-10-22-r1; sheet: 50 files, 81 venue labels, 39 centers; this release: 33 assets verified → 57 labels and 29 centers with a logo, meta.pending lists the 17 files still to transfer; sha256 per file; no private URLs)"
   },
   "visualSystem": {
     "release": "LDS 0.9.7",

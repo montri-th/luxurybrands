@@ -101,7 +101,9 @@ def main(manifest_path, files_dir):
         manifest_files.append({'path': f'assets/venue-logos/{a["filename"]}', 'sha256': digest, 'bytes': len(raw), 'logoKey': a['logo_key'],
                                'sourcePage': public_url(v.get('source_page')), 'assetURL': public_url(v.get('asset_url')), 'status': v.get('status', ''), 'checkedOn': v.get('checked_on', m['checked_on'])})
     keys = {a['key'] for a in assets}
-    pending = [{'file': a['filename'], 'logoKey': a['logo_key'], 'reason': next((i['reason'] for i in issues if i['file'] == a['filename']), 'missing'),
+    # Files recorded in the sheet whose byte-exact copy has not reached the build yet (missing here, or a copy that
+    # failed the sheet's sha256): the venue keeps its name and shows no logo until the verified file arrives.
+    pending = [{'file': a['filename'], 'logoKey': a['logo_key'], 'reason': 'transfer_pending', 'sheetSha256': a['sha256'].lower(), 'bytes': a['bytes'],
                 'venues': [v['raw_label'] for v in m['venues'] if v.get('logo_key') == a['logo_key']]} for a in m['assets'] if a['logo_key'] not in keys]
     venues = [{'label': v['raw_label'], 'canonical': v.get('canonical_name', v['raw_label']), 'type': v.get('venue_type', ''), 'role': v.get('logo_role', 'none'),
                'key': v['logo_key'] if v.get('logo_key') in keys else None, 'status': v.get('status', '')} for v in m['venues']]

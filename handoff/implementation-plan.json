@@ -659,7 +659,8 @@
         "styles.css",
         "tests/venue-logos.test.js"
       ],
-      "status": "done"
+      "status": "done",
+      "note": "33 of 50 sheet files verified in 0.5.0; the registry declares the 17 pending files in meta.pending (venues show their name only); completing the set is N16 and needs no code change"
     },
     {
       "id": "P22",
@@ -970,6 +971,12 @@
       "id": "N15",
       "title": "Venue logos on the map (collision-managed chips at the venue point for focused venues, zoom 13.5–16) and the missing The Mall Ramkhamhaeng mark",
       "ownerRole": "frontend developer + data owner",
+      "status": "proposal"
+    },
+    {
+      "id": "N16",
+      "title": "Transfer the 17 pending venue-logo files (meta.pending, sha256 from the sheet) into the install set and rerun scripts/build-venue-logos.py so the registry becomes complete; no code change",
+      "ownerRole": "data owner",
       "status": "proposal"
     }
   ]

@@ -23,7 +23,9 @@
    {
     "file": "central-ladprao.png",
     "logoKey": "VL-912a70b5a14fb704",
-    "reason": "sha256 mismatch",
+    "reason": "transfer_pending",
+    "sheetSha256": "912a70b5a14fb704c32b9ada55089afcd71235ab6ef839750c7bd940740a38b2",
+    "bytes": 11496,
     "venues": [
      "Central Ladprao",
      "Central Lardprao"
@@ -32,7 +34,9 @@
    {
     "file": "central-rama-9.png",
     "logoKey": "VL-70d16b7422c4464d",
-    "reason": "sha256 mismatch",
+    "reason": "transfer_pending",
+    "sheetSha256": "70d16b7422c4464d33fa551e71b382ca15559440219ca4679be753a70c01f358",
+    "bytes": 11641,
     "venues": [
      "Central Rama 9",
      "Central Rama9"
@@ -41,7 +45,9 @@
    {
     "file": "central-bangna.png",
     "logoKey": "VL-8f8f3cb838c228cc",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "8f8f3cb838c228cc136e4427a8da7e11498bbe5aa334fe7bc04e944c17c77adf",
+    "bytes": 11840,
     "venues": [
      "Central Bangna"
     ]
@@ -49,7 +55,9 @@
    {
     "file": "central-rama-3.png",
     "logoKey": "VL-7d4d4aebc089a1fd",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "7d4d4aebc089a1fdef5860c1a3e12ef28229c821157cc8a15dd5876e616ec2e6",
+    "bytes": 10693,
     "venues": [
      "Central Rama 3",
      "Central Rama3"
@@ -58,7 +66,9 @@
    {
     "file": "central-korat.png",
     "logoKey": "VL-cdd4538ef0e0aaed",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "cdd4538ef0e0aaeda92e6ddc2152942aadc8caf6bdbd331a6d0167f9543a2238",
+    "bytes": 10366,
     "venues": [
      "Central Nakhon Ratchasima"
     ]
@@ -66,7 +76,9 @@
    {
     "file": "roast8ry.jpeg",
     "logoKey": "VL-ca929cabb397a37b",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "ca929cabb397a37b1e7d256e200d3673a65a1ac62cd1e9ffe04592ce96256666",
+    "bytes": 13897,
     "venues": [
      "ROAST8RY flagship building"
     ]
@@ -74,7 +86,9 @@
    {
     "file": "jungceylon.png",
     "logoKey": "VL-44c523460a825c8b",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "44c523460a825c8b72c9f4185aba8a197d44b7af0a426445f4660a0321174379",
+    "bytes": 23922,
     "venues": [
      "Jungceylon The Botanical",
      "Jungceylon The Jungle"
@@ -83,7 +97,9 @@
    {
     "file": "fashion-island.png",
     "logoKey": "VL-7237b47ac4bd7f68",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "7237b47ac4bd7f68d5c58eadbc0d970c218fc9eb7a48438e3e4938748a29541b",
+    "bytes": 11020,
     "venues": [
      "Fashion Island"
     ]
@@ -91,7 +107,9 @@
    {
     "file": "mall-site-header.svg",
     "logoKey": "VL-68ef52be5690270f",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "68ef52be5690270f255ff360c19a8d6fc6acb7aeb9a74e9323e803bdfafa4601",
+    "bytes": 15755,
     "venues": [
      "The Mall Lifestore Tha Phra"
     ]
@@ -99,7 +117,9 @@
    {
     "file": "robinson-department-store.jpeg",
     "logoKey": "VL-e561d18348bcce17",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "e561d18348bcce1774907ea329e102aa989cad06b68ee2b6010ed72e77d8e950",
+    "bytes": 12275,
     "venues": [
      "Robinson Rama 9"
     ]
@@ -107,7 +127,9 @@
    {
     "file": "iconsiam.svg",
     "logoKey": "VL-a3085cf548599cae",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "a3085cf548599caecc3c82c1452678ec404c678dbbcc0f40e15553c064f02011",
+    "bytes": 11159,
     "venues": [
      "ICONSIAM",
      "Iconsiam"
@@ -116,7 +138,9 @@
    {
     "file": "siam-square.svg",
     "logoKey": "VL-400861c42cc8af00",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "400861c42cc8af00e07bfd62fc8a1283dae30869e4ffc4a5b2305c545e0ce9ab",
+    "bytes": 23778,
     "venues": [
      "Siam Square"
     ]
@@ -124,7 +148,9 @@
    {
     "file": "siam-center.png",
     "logoKey": "VL-6229fc0e08b3146f",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "6229fc0e08b3146f0dfb66a14d19021dc6f054be855a419aedfd8c50d3216745",
+    "bytes": 15063,
     "venues": [
      "Siam Center",
      "Siam Centre"
@@ -133,7 +159,9 @@
    {
     "file": "siam-takashimaya.png",
     "logoKey": "VL-ab769de8d3ee9a2c",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "ab769de8d3ee9a2c3adc02b80e72217f7985fce6855219c5bd8cca0a9942ade0",
+    "bytes": 12450,
     "venues": [
      "Siam Takashimaya / ICONSIAM"
     ]
@@ -141,7 +169,9 @@
    {
     "file": "suvarnabhumi.svg",
     "logoKey": "VL-2b9d46a8392d7ded",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "2b9d46a8392d7dedd2fdf6d208b144efa77687ee5e12303935c73f57a1bcfeb0",
+    "bytes": 11137,
     "venues": [
      "Suvarnabhumi Airport",
      "Suvarnabhumi Airport, International Terminal"
@@ -150,7 +180,9 @@
    {
     "file": "siam-kempinski.svg",
     "logoKey": "VL-2b371b05e995339b",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "2b371b05e995339bb9061b08b23d9a0e0b1e82a32741aed9f1bf331d7863f6eb",
+    "bytes": 12377,
     "venues": [
      "Siam Kempinski Hotel"
     ]
@@ -158,7 +190,9 @@
    {
     "file": "siam-discovery.svg",
     "logoKey": "VL-51f8f7184a83ddaf",
-    "reason": "missing",
+    "reason": "transfer_pending",
+    "sheetSha256": "51f8f7184a83ddafd7aa1692a1dbb803cdbd2724fe433d4697093649625866b4",
+    "bytes": 26383,
     "venues": [
      "Siam Discovey"
     ]

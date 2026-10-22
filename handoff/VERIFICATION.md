@@ -4,11 +4,13 @@ Dataset snapshot: 2026-10-21. Levels are reported separately: unit tests, render
 
 ## Automated (unit) — 0.5
 
-`npm test` — **96/96 passed** (Node 22): the 92 tests of 0.4 plus `venue-logos.test.js` — registry validation (path traversal and bad mime rejected), lookup by center id then exact label (no fuzzy match on canonical names), markup (backplate colour, decorative alt, role caption), the venue panel with and without a registry, and the shipped registry: every asset in `assets/venue-logos/` matches its `data/venue-logos.json` sha256 and byte count, every link resolves, no Drive/private URLs.
+`npm test` — **96/96 passed** (Node 22): the 92 tests of 0.4 plus `venue-logos.test.js` — registry validation (path traversal and bad mime rejected), lookup by center id then exact label (no fuzzy match on canonical names), markup (backplate colour, decorative alt, role caption), the venue panel with and without a registry, and the shipped registry: every asset in `assets/venue-logos/` matches its `data/venue-logos.json` sha256 and byte count, every link resolves, no Drive/private URLs; a partial registry must declare itself (`meta.count + meta.pending.length === meta.expected`, no pending key carries an asset).
+
+**Registry state in 0.5.0: partial and declared.** The sheet records 50 files (81 venue labels, 39 centers). 33 files reached the install set byte-exact (sha256 as in the sheet) → 57 labels and 29 centers carry a logo; the 17 files in `meta.pending` (Central Ladprao, Rama 9, Bangna, Rama 3, Korat, ROAST8RY, Jungceylon, Fashion Island, The Mall Lifestore Tha Phra, Robinson Rama 9, ICONSIAM, Siam Square, Siam Center, Siam Takashimaya, Suvarnabhumi, Siam Kempinski, Siam Discovery) show the venue name only. Cause: the Drive connector returns files of this size as text that must be copied by hand, and the copies did not verify; completing the set is plan item N16 (transfer the verified files, rerun the build; no code change).
 
 ## Rendered harness — 0.5
 
-The six 0.4 scenarios re-run without application errors; `d-light-venue-two-point.png` / `d-dark-venue-two-point.png` now show the Siam Paragon mark in the venue heading, `d-light-neighborhood.png` the logos in the สถานที่ในย่าน rows.
+The six 0.4 scenarios re-run without application errors on the 0.5.0 working tree (`harness-0.5.log`); `d-light-venue-two-point.png` / `d-dark-venue-two-point.png` show the Siam Paragon mark on its stone backplate in the venue heading (same HEX in both themes), `d-light-store.png` / `d-dark-store.png` the venue mark beside สถานที่ in the store facts, `d-light-neighborhood.png` the logos in the สถานที่ในย่าน rows. `venue-logos-contact-light.png` / `-dark.png`: all 33 marks legible on their registry backplates (white marks on `#182327`, dark marks on `#E5E9E6`, opaque JPEGs on their own white).
 
 ## Live checks — 0.5 (Chrome on macOS, real tiles)
 
