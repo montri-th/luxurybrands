@@ -81,5 +81,6 @@ test('camera presets: 2D plan, 3D city overview, upright-vertical model close-up
   assert.equal(presetFor({view3d: true, mode: 'detail', twoPoint: true}), 'eye');
   assert.equal(CAMERA.plan.pitch, 0);
   assert.ok(CAMERA.model.fov < DEFAULT_FOV / 2, 'narrow field of view ≈ axonometric');
-  assert.ok(CAMERA.eye.pitch >= 80 && CAMERA.eye.shift > 0, 'two-point: near-horizontal camera with principal-point shift');
+  assert.ok(CAMERA.eye.pitch <= 90 - CAMERA.eye.fov / 2 - 2, 'two-point: the horizon stays outside the frame (MapLibre 5.6.2 draws fill-extrusion wrongly once it enters)');
+  assert.ok(CAMERA.eye.pitch >= 72 && CAMERA.eye.fov <= 26, 'strongly pitched, narrow field of view → verticals near-parallel');
 });

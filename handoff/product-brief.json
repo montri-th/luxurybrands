@@ -43,7 +43,11 @@
       "breadcrumb gains the venue level (CityMETER Shopping Center id); store is the panel heading, never a crumb",
       "venue level is its own focus: only the venue's rows carry detail (blue host, category pins, logos); other venues → quiet massing + grey context dots",
       "eye (two-point) is the venue-level camera by default (?cam=model opts out), framed on the venue's host building; SCENE.eye quiets the surroundings and makes occluding buildings see-through",
-      "context dots are grey regardless of category (CSS specificity fix)"
+      "context dots are grey regardless of category (CSS specificity fix)",
+      "eye preset re-based to pitch 75 / FOV 24 (horizon outside the frame) after the live MapLibre fill-extrusion defect",
+      "city tier fades with distance from the focus (feature-state) and sits at 0.22 opacity; dark massing tokens lifted for contrast",
+      "neighborhood fit fills the frame (maxZoom 17.5)",
+      "copy pass: สาขา replaces จุดขาย, no caveats on screen, metric tiles carry legend symbols"
     ]
   },
   "rowScopes": {
@@ -208,8 +212,8 @@
         "water": "#18333E",
         "park": "#16251F",
         "building": "#1C262B",
-        "massingQuiet": "#1F282D",
-        "massingFocus": "#34404A",
+        "massingQuiet": "#2A343A",
+        "massingFocus": "#4A5760",
         "road": "#293337",
         "roadCasing": "#33403D",
         "label": "#A6B5B1",
@@ -269,12 +273,12 @@
       "module": "massing.setScene('default'|'eye', targets)",
       "opacities": {
         "default": {
-          "city": 1,
+          "city": 0.22,
           "focus": 1,
           "occluder": 0.18
         },
         "eye": {
-          "city": 0.3,
+          "city": 0.16,
           "focus": 0.62,
           "occluder": 0.14
         }
@@ -282,6 +286,13 @@
       "occluderLayer": "focus-massing-occluding (same source as the focus tier; filter by unique feature ids; the focus tier excludes them)",
       "occlusionTest": "screen-space: a focus building whose box (ground vertices + tops lifted by height × local px/m × sin(pitch)) overlaps a target's box and whose mean ground y is larger (nearer the camera) is an occluder; recomputed on moveend and after each tile update; targets = the venue's host rings (buildings.js displayedFeatures filtered by mall_ids / venue_names) with display_height_m",
       "hostStaysOpaque": true
+    },
+    "distanceFade": {
+      "rule": "city-tier colour interpolates from --basemap-massing-quiet (fade 0) to --basemap-ground (fade 1, invisible) by distance from the nearest focus anchor (area centroid; every area when nothing is focused)",
+      "nearMetres": 500,
+      "farMetres": 2200,
+      "mechanism": "feature-state `fade` written once per building id after tiles load (querySourceFeatures on sourcedata/moveend); anchors change → states rebuilt",
+      "why": "MapLibre has no camera-distance expression and fill-extrusion-opacity is not data-driven"
     }
   },
   "cameraContract": {
@@ -308,11 +319,12 @@
         "when": "neighborhood in 3D (and venue level when มุมสถาปนิก is switched off) — near-axonometric, verticals upright"
       },
       "eye": {
-        "pitch": 82,
+        "pitch": 75,
         "bearing": 28,
-        "fov": 32,
-        "shift": 0.38,
-        "when": "venue level only (venue mode, or a store inside a venue): on by default, ?cam=model opts out; disabled elsewhere and in 2D; on mobile portrait it waits until the sheet closes"
+        "fov": 24,
+        "fitShift": 0.1,
+        "when": "venue level only (venue mode, or a store inside a venue): on by default, ?cam=model opts out; disabled elsewhere and in 2D; on mobile portrait it waits until the sheet closes",
+        "constraint": "MapLibre 5.6.2 draws fill-extrusion displaced or not at all once the horizon enters the viewport (pitch > 90 − fov/2) — verified live 2026-10-22 (pitch 73 ok, 76 displaced, 82 missing); the eye preset keeps the horizon just outside the frame (90 − 12 − 3 = 75)"
       }
     },
     "fitting": {
@@ -324,7 +336,7 @@
     },
     "maplibre": {
       "version": "5.6.2",
-      "requires": "setVerticalFieldOfView (≥ 4.7), maxPitch 85",
+      "requires": "setVerticalFieldOfView (≥ 4.7), maxPitch 85; keep pitch ≤ 90 − fov/2 − 3 for any fill-extrusion view",
       "orthographic": "not available in MapLibre; narrow FOV is the standard substitute"
     },
     "alternatives": "deck.gl custom projectionMatrix or three.js camera.setViewOffset give a true two-point camera; not adopted to keep a single MapLibre scene"
@@ -583,6 +595,10 @@
     {
       "id": "INV20",
       "rule": "At venue level only the venue's rows carry detail: its host building is the only blue one; other venues' buildings and pins become quiet context; the eye scene only changes massing opacity, never data"
+    },
+    {
+      "id": "INV21",
+      "rule": "On-screen copy is short and natural, without caveats: แบรนด์ = distinct brand labels, สาขา = one point-of-sale record, สถานที่ = venue; provenance, units and limits live in the data section, help and docs"
     }
   ],
   "chartContracts": [

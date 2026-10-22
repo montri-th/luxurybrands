@@ -4,7 +4,7 @@ Dataset snapshot: 2026-10-21. Levels are reported separately: unit tests, render
 
 ## Automated (unit)
 
-`npm test` — **80/80 passed** (Node 22) on the release working tree:
+`npm test` — **81/81 passed** (Node 22) on the release working tree:
 
 - area Aha, area membership, brand union, denominators (`area-insight.test.js`)
 - chart model: ranking, matrix cells incl. zero, exclusive/shared before top-N (`chart-model.test.js`)
@@ -13,7 +13,7 @@ Dataset snapshot: 2026-10-21. Levels are reported separately: unit tests, render
 - pins: bounded slots, logo ceiling and priority, co-location identities (`pins.test.js`)
 - **vector tiles**: MVT reader on a multi-layer fixture (`tests/fixtures/mvt-sample.pbf`), tile maths (`mvt.test.js`)
 - **geometry**: ring cleaning, clipping, outward offset, fillets that keep every original vertex inside the rounded ring (`geometry.test.js`)
-- **massing**: focus selection, lift, enclosure, hide_3d, host-twin removal and hiding, tile planning bound, rounding radius 3–12 m; `installMassing` on a fake map: onResult for applied/empty results, cached repeats, plan/3D visibility; **eye scene**: opacities, unique feature ids, screen-space occluders in front of a target only, restore on leaving (`massing.test.js`)
+- **massing**: focus selection, lift, enclosure, hide_3d, host-twin removal and hiding, tile planning bound, rounding radius 3–12 m; `installMassing` on a fake map: onResult for applied/empty results, cached repeats, plan/3D visibility; **eye scene**: opacities, unique feature ids, screen-space occluders in front of a target only, restore on leaving; **distance fade** via feature-state (near 0, mid partial, far 1, rebuilt on new anchors) (`massing.test.js`)
 - **basemap / camera / breadcrumb / provinces**: style structure and layer anchors, `--basemap-*` palette, camera presets, breadcrumb three- and four-level rules (venue inside a core, venue outside every core, plain venue label, store never a crumb, fold behind “…”), production province codes (`map-style.test.js`)
 - model, neighborhoods (incl. provinceCode), brand logos, first-insight compatibility
 
@@ -25,13 +25,13 @@ The test container cannot reach unpkg.com or tiles.openfreemap.org. The harness 
 
 | Viewport / theme | Flows checked | Result |
 |---|---|---|
-| 1280×800 light | first paint = city preset (z13.53, pitch 56, bearing 28) with auto focus `siam, phrom-phong, chit-lom-phloen-chit` (175 rows), crumb ประเทศไทย; ดูทุกย่าน; charts ranking/mix/compare (matrix cell widths all 89 px); Siam profile (model preset z15.91, pitch 60, FOV 14; 37 rounded focus buildings; crumbs ประเทศไทย › กรุงเทพมหานคร › สยาม); มุมสถาปนิก disabled in neighborhood mode; venue Siam Paragon → eye preset (z17.42, pitch 82, FOV 32) fitted on the host footprint, crumbs … › สยาม › Siam Paragon, toggle pressed, scene eye (focus opacity 0.62, city 0.3, 3 occluders see-through), only Paragon blue; toggle → model (pitch 60, FOV 14) and `?cam=model`; back → scene restored; store (crumbs end at Siam Paragon, heading A. Lange & Söhne, eye kept); 2D plan; table; crumb-country; help | pass — no page errors |
+| 1280×800 light | first paint = city preset (z13.53, pitch 56, bearing 28) with auto focus `siam, phrom-phong, chit-lom-phloen-chit` (175 rows), crumb ประเทศไทย; ดูทุกย่าน; charts ranking/mix/compare (matrix cell widths all 89 px); Siam profile (model preset z16.31 filling the frame, pitch 60, FOV 14; 37 rounded focus buildings; crumbs ประเทศไทย › กรุงเทพมหานคร › สยาม); มุมสถาปนิก disabled in neighborhood mode; venue Siam Paragon → eye preset (z17.53, pitch 75, FOV 24) fitted on the host footprint, crumbs … › สยาม › Siam Paragon, toggle pressed, scene eye (focus opacity 0.62, city 0.16, 3 occluders see-through), only Paragon blue; toggle → model (pitch 60, FOV 14) and `?cam=model`; back → scene restored; store (crumbs end at Siam Paragon, heading A. Lange & Söhne, eye kept); 2D plan; table; crumb-country; help | pass — no page errors |
 | 1280×800 dark | same flows after switching theme | pass — same data HEX, dark basemap tokens, readable matrix ink |
 | 390×844 light + dark (DPR 2, touch) | overview with compact map Aha; bottom sheet; neighborhood via ranking (plan while the sheet is open); charts and matrix in the tray; store via tap (crumbs fold to … › สยาม › Siam Paragon) | pass — no horizontal document overflow |
 | keyboard | Tab to the first focus pin, ArrowRight, Enter → store mode; context pins not focusable; matrix cell ink/background pairs read | pass |
 | states | `?segment=watches`, `?search=zzzz` (empty state + clear), `?neighborhood=siam&view=mix`, `?province=PKT` (crumbs ประเทศไทย › ภูเก็ต, venue ranking fallback), `?areas=all&view3d=0` (plan, every area filled) | pass |
 
-Fixed during this pass: context dots were taking the category colour because `logos.css` loads after `styles.css` (equal specificity) — now grey regardless of category.
+Fixed during this pass: context dots were taking the category colour because `logos.css` loads after `styles.css` (equal specificity) — now grey regardless of category. Found live (first 0.3 publish, commit 55c24ca): with the eye preset at pitch 82 / FOV 32, MapLibre 5.6.2 drew fill-extrusion displaced (pitch 76) or not at all (pitch 82) wherever the horizon was inside the viewport — reproduced with a plain test box, independent of opacity, padding, source maxzoom and theme; pitch 73 rendered correctly. The eye preset is now pitch 75 / FOV 24 (horizon outside the frame).
 
 Console: only Chromium software-WebGL notices and the expected missing-source-layer warnings of the synthetic tiles (landcover, landuse, aeroway, waterway, water_name are not generated); no application errors.
 

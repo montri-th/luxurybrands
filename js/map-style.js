@@ -34,7 +34,7 @@ const FALLBACK = {
   },
   dark: {
     ground: '#11191D', water: '#18333E', waterLine: '#1F3F4C', park: '#16251F', wood: '#14211C', grass: '#172620', sand: '#1C2328', aeroway: '#172126',
-    building: '#1C262B', buildingLine: '#2A3539', massingQuiet: '#1F282D', massingFocus: '#34404A',
+    building: '#1C262B', buildingLine: '#2A3539', massingQuiet: '#2A343A', massingFocus: '#4A5760',
     road: '#293337', roadCasing: '#33403D', motorwayCasing: '#46524F', tunnel: '#1A2327', rail: '#46524F', transit: '#5E6B67', path: '#293337',
     label: '#A6B5B1', labelQuiet: '#8D9D99', halo: '#11191D', sky: '#0D1418', horizon: '#172126', fog: '#11191D',
   },

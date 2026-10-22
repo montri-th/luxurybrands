@@ -132,6 +132,18 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
 .metrics.compact { grid-template-columns: repeat(4, 1fr); gap: 8px 6px; padding: 12px 0; margin-top: 12px; }
 .metrics.compact strong { font-size: 20px; }
 .metrics.compact span { font-size: 11px; }
+/* Metric tiles carry the legend symbols so the label can stay one word (pin = สาขา, blue block = สถานที่, outline = ย่าน, ring = แบรนด์). */
+.metric { position: relative; padding-left: 18px; }
+.metric-symbol { position: absolute; left: 0; top: 7px; width: 11px; height: 11px; box-sizing: border-box; }
+.metrics.compact .metric-symbol { top: 5px; }
+.sym-store { border-radius: 50%; background: var(--series-1-fill); border: 1px solid var(--map-marker-stroke); }
+.sym-venue { background: var(--map-active-layer); border: 1px solid var(--map-selected-stroke); transform: skewY(-12deg); }
+.sym-area { border: 2px solid var(--scale-count-4); border-radius: 2px; background: var(--scale-count-2); }
+.sym-brand { border-radius: 50%; border: 2.5px solid var(--text-secondary); }
+.sym-exclusive { border-radius: 50%; border: 2.5px solid var(--series-7-fill); }
+.sym-gla { border-radius: 2px; background: var(--border-emphasis); }
+.sym-plain { display: none; }
+.metric-plain, .metric-gla { padding-left: 18px; }
 
 /* Sections */
 .panel-section { display: grid; gap: 10px; }

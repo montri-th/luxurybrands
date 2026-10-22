@@ -24,7 +24,7 @@ Live: [Luxury Brands](https://montri-th.github.io/luxurybrands/) · Source: [Git
 
 ```sh
 npm start      # http://127.0.0.1:4173/
-npm test       # 80 unit tests บนข้อมูลจริงและ fixture tile
+npm test       # 81 unit tests บนข้อมูลจริงและ fixture tile
 ```
 
 เป็น static site ไม่มี build step ไม่ต้อง `npm install` ต้องมี Node ≥ 20 และ Python 3 แผนที่ต้องเข้าถึง unpkg.com (MapLibre) และ tiles.openfreemap.org (tiles + glyphs; basemap สร้างเองใน `js/map-style.js`) ส่วนกราฟไม่ใช้ไลบรารีภายนอก ถ้าเครื่องทดสอบถูกบล็อก ใช้ harness แบบ stub tiles ใน VERIFICATION การเปิด `index.html` เป็นไฟล์โดยตรงจะนำไปเว็บสาธารณะ
@@ -62,7 +62,7 @@ npm test       # 80 unit tests บนข้อมูลจริงและ fix
 ## ตรวจความครบก่อนรับช่วง
 
 1. `RELEASE_RECEIPT.json` ใน bundle ระบุ commit ที่เผยแพร่ ให้ `git checkout <commit>` แล้วเทียบ `handoff/handoff-manifest.json` กับไฟล์จริง (`npm run handoff:manifest` ต้องให้ hash เดิมบน working tree ที่สะอาด)
-2. `npm test` ต้องผ่าน 80/80
+2. `npm test` ต้องผ่าน 81/81
 3. `npm run verify:live` ต้องผ่านทุกไฟล์ที่เผยแพร่ (ดู `evidence/live-attestation.json` ใน bundle สำหรับผลตอนส่งมอบ)
 4. เปิด 390 px และ desktop ทั้งสองธีม ไล่ flow: 3D first Aha → ดูทุกย่าน → ย่าน (มุมโมเดล) → สถานที่ (มุมสถาปนิก, อาคารของสถานที่เท่านั้นสีน้ำเงิน) → ร้าน → ปิดมุมสถาปนิก → ปุ่ม 3D (แผนผัง) → breadcrumb 4 ระดับ → กราฟ (matrix ช่องเท่ากัน) → ตาราง → help
 

@@ -38,14 +38,14 @@ function ranking(element, model, select, selectedId) {
     const cls = classify(a.brands, classes);
     const pressed = a.id === selectedId;
     return `<li><button type="button" class="bar-row${pressed ? ' is-selected' : ''}" data-area="${esc(a.id)}" aria-pressed="${pressed}"
-      aria-label="อันดับ ${i + 1} ${esc(a.name)}: ${num(a.brands)} แบรนด์ไม่ซ้ำ, ${num(a.pos)} รายการจุดขาย กดเพื่อดูย่านนี้">
+      aria-label="อันดับ ${i + 1} ${esc(a.name)}: ${num(a.brands)} แบรนด์, ${num(a.pos)} สาขา กดเพื่อดูย่านนี้">
       <span class="bar-rank data-number" aria-hidden="true">${i + 1}</span>
       <span class="bar-label">${esc(a.name)}</span>
       <span class="bar-track" aria-hidden="true"><span class="bar-fill" style="width:${Math.max(2, Math.round((a.brands / max) * 100))}%;background:${cls.fill}"></span></span>
-      <span class="bar-value" aria-hidden="true"><b class="data-number">${num(a.brands)}</b><small>${num(a.pos)} จุดขาย</small></span>
+      <span class="bar-value" aria-hidden="true"><b class="data-number">${num(a.brands)}</b><small>${num(a.pos)} สาขา</small></span>
     </button></li>`;
   }).join('');
-  element.innerHTML = `<p class="chart-caption">${num(model.areaCount)} ย่านที่มีจุดขาย · เรียงตามแบรนด์ไม่ซ้ำ · หน่วย: แบรนด์ · สีตามระดับเดียวกับแผนที่</p><ol class="chart-bars">${rows}</ol>`;
+  element.innerHTML = `<p class="chart-caption">${num(model.areaCount)} ย่าน · จำนวนแบรนด์ · สีเดียวกับแผนที่</p><ol class="chart-bars">${rows}</ol>`;
   element.querySelectorAll('[data-area]').forEach(b => b.addEventListener('click', () => select({type: 'neighborhood', id: b.dataset.area})));
 }
 
@@ -63,15 +63,15 @@ function matrix(element, model, select, selectedId) {
         ? `background:${cls.fill};color:${cls.ink};box-shadow:inset 0 0 0 2px ${cls.outline}`
         : `background:${cls.fill};color:${cls.ink}`;
       return `<td><button type="button" class="matrix-cell is-${cls.state}" data-area="${esc(a.id)}" style="${style}"
-        aria-label="${esc(a.name)} × ${esc(s.name)}: ${num(brands)} แบรนด์ไม่ซ้ำ, ${num(pos)} รายการจุดขาย กดเพื่อดูย่านนี้"
-        title="${esc(a.name)} × ${esc(s.name)} — ${num(brands)} แบรนด์ · ${num(pos)} จุดขาย"><span class="data-number">${num(brands)}</span></button></td>`;
+        aria-label="${esc(a.name)} × ${esc(s.name)}: ${num(brands)} แบรนด์, ${num(pos)} สาขา กดเพื่อดูย่านนี้"
+        title="${esc(a.name)} × ${esc(s.name)} — ${num(brands)} แบรนด์ · ${num(pos)} สาขา"><span class="data-number">${num(brands)}</span></button></td>`;
     }).join('');
     return `<tr${pressed ? ' class="is-selected"' : ''}><th scope="row"><button type="button" class="matrix-row" data-area="${esc(a.id)}" aria-pressed="${pressed}">${esc(a.name)}<small class="data-number">${num(a.brands)}</small></button></th>${cells}</tr>`;
   }).join('');
   const legend = classes.classes.map(c => `<span class="legend-step"><i style="background:${c.fill}" aria-hidden="true"></i>${esc(c.label)}</span>`).join('');
   // Every cell is the same size on purpose: only the tint and the number carry meaning.
   const columns = `<colgroup><col class="matrix-head-col">${m.segments.map(() => '<col class="matrix-cell-col">').join('')}</colgroup>`;
-  element.innerHTML = `<p class="chart-caption">${num(m.areas.length)}/${num(m.totalAreas)} ย่าน · ${num(m.segments.length)}/${num(m.totalSegments)} กลุ่ม · ตัวเลข = แบรนด์ไม่ซ้ำในช่อง · สีเข้ม = มากกว่า · ช่องทุกช่องขนาดเท่ากัน ขนาดไม่มีความหมาย</p>
+  element.innerHTML = `<p class="chart-caption">${num(m.areas.length)}/${num(m.totalAreas)} ย่าน × ${num(m.segments.length)}/${num(m.totalSegments)} กลุ่ม · ตัวเลข = แบรนด์ · สีเข้ม = มากกว่า</p>
     <div class="matrix-scroll"><table class="matrix" style="--matrix-columns:${m.segments.length}">${columns}<thead><tr><th scope="col" class="matrix-corner">ย่าน · แบรนด์</th>${head}</tr></thead><tbody>${body}</tbody></table></div>
     <p class="chart-legend"><span class="legend-title">ระดับสี (แบรนด์ในช่อง, ${num(classes.classCount)} ระดับเท่าช่วง):</span>${legend}<span class="legend-step"><i class="legend-zero" aria-hidden="true"></i>0 = ไม่พบ</span></p>`;
   element.querySelectorAll('[data-area]').forEach(b => b.addEventListener('click', () => select({type: 'neighborhood', id: b.dataset.area})));
@@ -91,7 +91,7 @@ function compare(element, model, select, selectedId) {
       <span class="bar-value" aria-hidden="true"><b class="data-number">${num(a.brands)}</b><small>แบรนด์</small></span>
     </button></li>`;
   }).join('');
-  element.innerHTML = `<p class="chart-caption">เทียบ ${num(model.areaCount)} ย่านที่มีจุดขายในข้อมูลที่เลือก · หน่วย: แบรนด์</p>
+  element.innerHTML = `<p class="chart-caption">${num(model.areaCount)} ย่าน · จำนวนแบรนด์</p>
     <p class="chart-legend"><span class="legend-item"><i class="cue seg-exclusive">${CUES.hexagon}</i>เฉพาะย่านนี้</span><span class="legend-item"><i class="cue seg-shared">${CUES.dash}</i>พบในย่านอื่นด้วย</span></p>
     <ol class="chart-bars">${rows}</ol>`;
   element.querySelectorAll('[data-area]').forEach(b => b.addEventListener('click', () => select({type: 'neighborhood', id: b.dataset.area})));
@@ -110,12 +110,12 @@ export function renderInsightChart({elementId, view = 'centers', rows = [], segm
   const select = typeof onSelect === 'function' ? onSelect : () => {};
   element.replaceChildren();
   if (theme) element.dataset.chartTheme = theme;
-  const labels = {centers: 'ย่านเรียงตามจำนวนแบรนด์ไม่ซ้ำ', mix: 'กลุ่มแบรนด์ในแต่ละย่าน', compare: 'แบรนด์เฉพาะย่านและแบรนด์ที่พบร่วมกัน'};
+  const labels = {centers: 'ย่านเรียงตามจำนวนแบรนด์', mix: 'กลุ่มแบรนด์ในแต่ละย่าน', compare: 'แบรนด์เฉพาะย่านและแบรนด์ที่พบร่วมกัน'};
   element.setAttribute('aria-label', labels[view] || labels.centers);
-  if (!Array.isArray(rows) || !rows.length) { empty(element, 'ไม่พบรายการจุดขายตามตัวกรองนี้'); return () => element.replaceChildren(); }
+  if (!Array.isArray(rows) || !rows.length) { empty(element, 'ไม่พบสาขาตามตัวกรอง'); return () => element.replaceChildren(); }
   const model = buildNeighborhoodChartModel(rows, neighborhoods, segments);
   if (view === 'compare' && model.areaCount < 2) { empty(element, 'เลือกอย่างน้อย 2 ย่านเพื่อเปรียบเทียบ', 'ดูทุกย่าน', () => select({type: 'resetAreas'})); return () => element.replaceChildren(); }
-  if (!model.areaCount) { empty(element, 'ยังไม่มีย่านสำหรับกราฟนี้ ดูจุดขายบนแผนที่หรือตาราง'); return () => element.replaceChildren(); }
+  if (!model.areaCount) { empty(element, 'ไม่มีย่านในตัวกรองนี้'); return () => element.replaceChildren(); }
   try {
     if (view === 'mix') matrix(element, model, select, selectedAreaId);
     else if (view === 'compare') compare(element, model, select, selectedAreaId);

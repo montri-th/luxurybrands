@@ -36,7 +36,7 @@
   ],
   "validation": {
     "status": "release 0.3 verification recorded in handoff/VERIFICATION.md",
-    "unitTests": 80,
+    "unitTests": 81,
     "renderedHarness": "Playwright + vendored MapLibre + stub TileJSON + synthetic OpenMapTiles-schema tiles; 1280×800 and 390×844; light and dark",
     "liveChecks": "see handoff/VERIFICATION.md (0.3 section) — real-tile look confirmed only there",
     "scope": "Applied LDS assets, fonts and actual rendered interfaces. No blanket LDS, CVD, native-device or market-completeness claim."
@@ -52,14 +52,14 @@
     "basemap": "generated at runtime by js/map-style.js on https://tiles.openfreemap.org/planet (OpenMapTiles schema) with --basemap-* tokens; no hosted style URL; labels name:th first; no POI/housenumber/boundary labels; sky/fog fade the distance into the paper colour",
     "layerOrder": "landcover/water → data fill (before waterway) → 2D footprints → roads → massing + host buildings (before water-name) → labels → outlines/pins/logos",
     "massing": "city tier = native fill-extrusion from the building source-layer in --basemap-massing-quiet (3D only, zoom ≥ 13); focus tier = same tiles decoded, offset outward and corner-rounded so they enclose the original, in --basemap-massing-focus (display-only answer to maplibre-style-spec #1047); OSM twins of host buildings hidden by feature id",
-    "camera": "plan (pitch 0) · city (pitch 56, bearing 28) · model (pitch 60, FOV 14, near-axonometric) for a neighborhood · eye (pitch 82, FOV 32, principal-point shift 38% = two-point perspective) as the venue-level default, framed on the venue's host building; pitched fits keep every polygon vertex inside the padded viewport",
+    "camera": "plan (pitch 0) · city (pitch 56, bearing 28) · model (pitch 60, FOV 14, near-axonometric) for a neighborhood, fitted to fill the frame · eye (pitch 75, FOV 24 = two-point perspective with the horizon kept outside the frame; MapLibre 5.6.2 draws fill-extrusion wrongly once the horizon enters) as the venue-level default, framed on the venue's host building",
     "choropleth": "count family, five equal-interval classes from the current maximum, fill-opacity 1 beneath the basemap's first line layer, off at zoom ≥ 14.5, EVID-05 measured / measured_zero / out_of_scope",
     "pins": "one declared point-of-sale row per pin; zoom tiers <12 / 12–14 / ≥14; context pins grey and logo-less; screen displacement with leader lines, source coordinates unchanged",
     "logos": "≤ 250, only at zoom ≥ 14 and only inside the focus",
     "venues": "source building footprints/parts with explicit height provenance in map.activeLayer; unknown heights use a marked 3 m display slab; visible in plan and 3D",
     "neighborhoods": "frozen named analytical road/river envelopes with production province codes; no arbitrary radius components; no claimed consumer consensus",
     "breadcrumb": "ประเทศไทย › จังหวัด › ย่าน › สถานที่; province codes BKK PKT CMI SPK NBI CBI PTE UDN NMA as observed on landometer.com 2026-10-22; venue id = CityMETER Shopping Center id; ย่าน of a venue by point-in-polygon; store is the heading, not a crumb",
-    "venueLevel": "only the venue's rows carry detail (blue host, category pins, logos); other venues' buildings fall back to quiet massing and their pins to grey context dots; SCENE.eye lowers massing opacity (city 0.3 / focus 0.62) and buildings standing between the camera and the venue are drawn at 0.14 opacity"
+    "venueLevel": "only the venue's rows carry detail (blue host, category pins, logos); other venues' buildings fall back to quiet massing and their pins to grey context dots; SCENE.eye lowers massing opacity (city 0.16 / focus 0.62) and buildings standing between the camera and the venue are drawn at 0.14 opacity; the city tier is 0.22 elsewhere and fades to the ground tone by distance from the focus (500 → 2200 m)"
   },
   "brandIdentity": {
     "sources": "155 official brand sources; 13 retailers; source artwork embedded unchanged, outer whitespace cropped in viewport only",
@@ -68,5 +68,6 @@
   },
   "chartContract": {
     "matrix": "table-layout fixed with a colgroup; every cell the same size; caption says size carries no meaning; cell tint = count class"
-  }
+  },
+  "copy": "short natural Thai without on-screen caveats: แบรนด์ / สาขา (one point-of-sale record) / สถานที่ / ย่าน; legend symbols on metric tiles"
 }

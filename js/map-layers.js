@@ -168,8 +168,8 @@ export function installNeighborhoodLabels(map, container, {onSelect, reservedBot
       button.innerHTML = `<span class="label-name"></span><span class="label-count data-number" aria-hidden="true"></span>`;
       button.querySelector('.label-name').textContent = a.name;
       button.querySelector('.label-count').textContent = String(a.brands);
-      button.setAttribute('aria-label', `${a.name}: ${a.brands} แบรนด์ไม่ซ้ำ, ${a.pos} รายการจุดขาย กดเพื่อสำรวจย่าน`);
-      button.title = `${a.name} · ${a.brands} แบรนด์ · ${a.pos} จุดขาย`;
+      button.setAttribute('aria-label', `${a.name}: ${a.brands} แบรนด์, ${a.pos} สาขา กดเพื่อสำรวจย่าน`);
+      button.title = `${a.name} · ${a.brands} แบรนด์ · ${a.pos} สาขา`;
       button.setAttribute('aria-pressed', String(a.id === selectedId));
       if (a.state === 'measured_zero') { button.classList.add('is-zero'); }
       button.onclick = () => onSelect?.(a.id);

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {parseVectorTile, tileToLonLat} from '../js/mvt.js';
 import {pointInRing, signedArea} from '../js/geometry.js';
-import {shapeTile, tilesForRegions, roundingRadiusM, encloseOffsetM, outerRings, installMassing, HEIGHT_LIFT_M, MAX_TILES, CITY_LAYER, FOCUS_LAYER, FOCUS_SOURCE, OCCLUDER_LAYER, SCENE} from '../js/massing.js';
+import {shapeTile, tilesForRegions, roundingRadiusM, encloseOffsetM, outerRings, installMassing, HEIGHT_LIFT_M, MAX_TILES, CITY_LAYER, FOCUS_LAYER, FOCUS_SOURCE, OCCLUDER_LAYER, SCENE, FADE_NEAR_M, FADE_FAR_M} from '../js/massing.js';
 
 const tile = {z: 14, x: 12767, y: 7560};
 const layer = parseVectorTile(readFileSync(new URL('./fixtures/mvt-sample.pbf', import.meta.url))).layers.building;
@@ -74,6 +74,11 @@ function fakeMap() {
     getZoom: () => 15.5, getPitch: () => 82, on(e, h) { handlers[e] = h; }, off(e) { delete handlers[e]; }, fire(e) { handlers[e]?.(); },
     // Screen projection stand-in for a camera looking north: x grows with longitude, y grows as latitude DEcreases (south = nearer the camera = lower on screen).
     project: ([lon, lat]) => ({x: (lon - 100.5) * 4e5, y: (13.75 - lat) * 4e5}),
+    // City-tier buildings in "loaded tiles" and the feature-state they receive.
+    cityFeatures: [], featureState: {},
+    querySourceFeatures(src, opts) { return src === 'openmaptiles' && opts?.sourceLayer === 'building' ? this.cityFeatures : []; },
+    setFeatureState(ref, state) { this.featureState[ref.id] = {...(this.featureState[ref.id] || {}), ...state}; },
+    removeFeatureState() { this.featureState = {}; },
   };
 }
 
@@ -151,5 +156,34 @@ test('venue-level eye scene: surroundings quiet, buildings standing between the 
   massing.setScene('default', [target]);
   assert.equal(map.paint[CITY_LAYER]['fill-extrusion-opacity'], SCENE.default.city);
   assert.deepEqual(massing.occluders, []);
+  massing.dispose();
+});
+
+test('city tier fades with distance from the focus anchors: near → quiet tone, far → ground tone, re-stated when anchors change', async () => {
+  const map = fakeMap();
+  const lon0 = 100.5347, lat0 = 13.7466; // Siam anchor
+  const metres = m => m / 111320; // ≈ degrees of latitude
+  map.cityFeatures = [
+    {id: 1, geometry: {type: 'Polygon', coordinates: [[[lon0, lat0 + metres(100)], [lon0, lat0 + metres(120)], [lon0 + 0.0001, lat0 + metres(120)], [lon0, lat0 + metres(100)]]]}},
+    {id: 2, geometry: {type: 'Polygon', coordinates: [[[lon0, lat0 + metres(1300)], [lon0, lat0 + metres(1320)], [lon0 + 0.0001, lat0 + metres(1320)], [lon0, lat0 + metres(1300)]]]}},
+    {id: 3, geometry: {type: 'MultiPolygon', coordinates: [[[[lon0, lat0 + metres(5000)], [lon0, lat0 + metres(5020)], [lon0 + 0.0001, lat0 + metres(5020)], [lon0, lat0 + metres(5000)]]]]}},
+    {id: null, geometry: {type: 'Polygon', coordinates: [[[lon0, lat0], [lon0, lat0], [lon0, lat0], [lon0, lat0]]]}},
+  ];
+  const massing = installMassing(map, {beforeId: null, colors: {quiet: '#ECEDE8', focus: '#D9D7CD', ground: '#EEF1EE'}, tileUrl: () => '', fetchImpl: async () => ({ok: false, status: 404})});
+  const paint = map.layers.get(CITY_LAYER).paint['fill-extrusion-color'];
+  assert.deepEqual(paint.slice(0, 2), ['interpolate', ['linear']], 'city colour interpolates on feature-state fade');
+  assert.ok(JSON.stringify(paint).includes('#EEF1EE'), 'far end is the ground tone');
+  await massing.update({regions: [], hosts: [], anchors: [[lon0, lat0]], zoom: 14, enabled: true, city: true, latitude: 13.75});
+  assert.equal(map.featureState[1].fade, 0, 'inside FADE_NEAR_M → no fade');
+  const mid = map.featureState[2].fade;
+  assert.ok(mid > 0.3 && mid < 0.6, `between near and far → partial fade (${mid}); expected ≈ ${((1300 - FADE_NEAR_M) / (FADE_FAR_M - FADE_NEAR_M)).toFixed(2)}`);
+  assert.equal(map.featureState[3].fade, 1, 'beyond FADE_FAR_M → fully faded');
+  assert.equal(map.featureState.null, undefined, 'features without an id are skipped');
+  assert.equal(massing.faded, 3);
+  // Same anchors → nothing re-stated; new anchors → states rebuilt.
+  assert.equal(massing.updateFade(), 0);
+  massing.setAnchors([[lon0, lat0 + metres(5000)]]);
+  assert.equal(map.featureState[3].fade, 0, 'the far building is now next to the anchor');
+  assert.equal(map.featureState[1].fade, 1);
   massing.dispose();
 });

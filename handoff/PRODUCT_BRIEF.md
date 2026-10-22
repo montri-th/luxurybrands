@@ -13,7 +13,7 @@
 | Product statement ต้องเป็น winning strategy | เขียนใหม่ตาม Who/What/Which/How ของ MBB v0.5.3 + PB v6 §1.6 พร้อมป้ายหลักฐาน และ JSON | `PRODUCT_STATEMENT.md`, `handoff/product-statement.json` |
 | Breadcrumb เข้ากับ production | ประเทศไทย › จังหวัด › ย่าน › สถานที่ ด้วยรหัสจังหวัดของ production (BKK, PKT, CMI…) และ Shopping Center id ของ CityMETER เป็น id ของสถานที่ | `js/breadcrumb.js`, `js/model.js` (PROVINCES), `data/neighborhoods.geojson` (provinceCode) |
 | Matrix สับสนเรื่องขนาดช่อง | ตาราง `table-layout: fixed` ช่องเท่ากันทุกช่อง คำอธิบายระบุว่าขนาดไม่มีความหมาย | `js/charts.js`, `styles.css` |
-| 3D close-up แบบ 2-point perspective | preset `model` (FOV 14° → เส้นตั้งตั้งตรง) ในย่าน; ระดับสถานที่ใช้ preset `eye` (pitch 82° + principal-point shift) เป็นค่าเริ่มต้น จัดกรอบพอดีอาคารของสถานที่ อาคารรอบข้างจางมาก อาคารที่บังโปร่งใส; เฉพาะอาคารของสถานที่นั้นเป็นสีน้ำเงิน | `js/camera.js`, `js/massing.js` (SCENE, setScene), `js/app.js` (detailRows, frameVenue) |
+| 3D close-up แบบ 2-point perspective | preset `model` (FOV 14° → เส้นตั้งตั้งตรง) ในย่าน; ระดับสถานที่ใช้ preset `eye` (pitch 75°, FOV 24° — ขอบฟ้านอกจอ) เป็นค่าเริ่มต้น จัดกรอบพอดีอาคารของสถานที่ อาคารรอบข้างจางมาก อาคารที่บังโปร่งใส; เฉพาะอาคารของสถานที่นั้นเป็นสีน้ำเงิน | `js/camera.js`, `js/massing.js` (SCENE, setScene), `js/app.js` (detailRows, frameVenue) |
 | 3D styling แบบ simplified cartoon, focus/quiet | สองชั้นมวลอาคาร + อาคารที่ตั้งร้านสีน้ำเงิน; sky/fog ทำให้ระยะไกลจาง | `js/massing.js`, `js/map-style.js` (sky, light) |
 
 ## ผลิตภัณฑ์ช่วยตัดสินใจอะไร
@@ -104,7 +104,7 @@ Area focus มีสามโหมด (`state.focusAreaIds`, `state.autoFocus`)
 | FOCUS (detail) | tile เดียวกัน (URL เดียวกับที่ MapLibre โหลด → browser cache) ถอดด้วย `js/mvt.js` เฉพาะ tile ที่แตะย่านโฟกัส (≤ 9 tiles, z14) → เฉพาะอาคารที่ซ้อนทับ polygon ย่าน → ตัด buffer ที่ขอบ tile → **offset ออก d แล้วลบมุมโค้ง r** → extrude ที่ `render_height + 0.35 m` | สี `--basemap-massing-focus`; r = 4 px ในหน่วยเมตร (3–12 m), d = r/2.5 (≥ 1 m) คำนวณใหม่เมื่อข้าม zoom ระดับเต็ม | zoom ≥ 13; ในแผนผัง 2 มิติยังแสดงเป็น footprint มุมโค้งแบบแบน |
 | HOST (อาคารที่ตั้งร้าน) | `data/venue-buildings.geojson` (`js/buildings.js`) | สี `map.activeLayer`; เส้นขอบ `map.selectedStroke` | zoom ≥ 14 (extrusion), ≥ 12 (outline); ทั้ง 2D/3D |
 
-**ฉากระดับสถานที่ (`SCENE.eye`)**: เมื่อกล้องเป็น `eye` มวลอาคารเมืองลด opacity เป็น 0.3 และชั้นโฟกัสเป็น 0.62 (surroundings quiet มาก) ส่วนอาคารชั้นโฟกัสที่ยืนอยู่ระหว่างกล้องกับอาคารของสถานที่ (ทดสอบกล่องบนจอ: กล่องอาคารรวมความสูงซ้อนกล่องเป้าหมาย และพื้นอาคารอยู่ใกล้กล้องกว่า) ย้ายไปชั้น `focus-massing-occluding` ที่ opacity 0.14 = มองทะลุได้ คำนวณใหม่ทุก `moveend` และทุกครั้งที่ tile มาใหม่ อาคารของสถานที่ (HOST) ทึบเสมอ
+**ฉากระดับสถานที่ (`SCENE.eye`)**: เมื่อกล้องเป็น `eye` มวลอาคารเมืองลด opacity เป็น 0.16 (ปกติ 0.22 และจางลงตามระยะจากย่านโฟกัสจนหายไปที่ ~2.2 กม.) และชั้นโฟกัสเป็น 0.62 (surroundings quiet มาก) ส่วนอาคารชั้นโฟกัสที่ยืนอยู่ระหว่างกล้องกับอาคารของสถานที่ (ทดสอบกล่องบนจอ: กล่องอาคารรวมความสูงซ้อนกล่องเป้าหมาย และพื้นอาคารอยู่ใกล้กล้องกว่า) ย้ายไปชั้น `focus-massing-occluding` ที่ opacity 0.14 = มองทะลุได้ คำนวณใหม่ทุก `moveend` และทุกครั้งที่ tile มาใหม่ อาคารของสถานที่ (HOST) ทึบเสมอ
 
 การล้อมรอบ (enclosure) ทำให้ต้นฉบับใน CITY อยู่ภายในรูปโค้งของ FOCUS ทั้งก้อน จึงไม่มี z-fighting; อาคาร OSM ที่ซ้อนกับ HOST ถูกตัดจาก FOCUS และซ่อนใน CITY ด้วย `['!', ['in', ['id'], …]]` (feature id = OSM id) ความสูงเป็นบริบทจาก OSM/OpenMapTiles (มีค่า default เมื่อไม่มี tag) ไม่ใช่ข้ออ้างของชุดข้อมูล ข้อจำกัด: tile ของ OpenFreeMap รวมอาคารความสูงเดียวกันเป็น MultiPolygon เดียว จึงเลือกต่อหลังคาไม่ได้; ใน container ทดสอบที่ไม่มีเครือข่าย ใช้ tile สังเคราะห์ (ดู VERIFICATION)
 
@@ -115,7 +115,7 @@ Area focus มีสามโหมด (`state.focusAreaIds`, `state.autoFocus`)
 | `plan` | ปิด 3D (ปุ่ม “3D”) หรือกรอบกว้างกว่า 0.3° | pitch 0 |
 | `city` | ภาพรวม/first Aha ในโหมด 3D | pitch 56, bearing 28 (แกน สยาม→พร้อมพงษ์ นอนตามความกว้างจอ), FOV 36.87 |
 | `model` | ย่าน (และระดับสถานที่เมื่อปิดมุมสถาปนิก) ในโหมด 3D | pitch 60, bearing 28, **FOV 14** → ใกล้ axonometric เส้นตั้งตั้งตรง |
-| `eye` (“มุมสถาปนิก”) | ระดับสถานที่ (โหมดสถานที่ หรือร้านที่อยู่ในสถานที่) เป็นค่าเริ่มต้น; ปุ่มปิดได้ (`?cam=model`); ปิดใช้ในระดับอื่นและใน 2D; บนมือถือรอจน sheet ปิด | pitch 82, FOV 32, principal point เลื่อนขึ้น 38% ของความสูงจอ (view padding) = เปอร์สเปกทีฟ 2 จุด; `frameVenue` fit อาคารของสถานที่ (ทุกจุดยอด + headroom 26%) |
+| `eye` (“มุมสถาปนิก”) | ระดับสถานที่ (โหมดสถานที่ หรือร้านที่อยู่ในสถานที่) เป็นค่าเริ่มต้น; ปุ่มปิดได้ (`?cam=model`); ปิดใช้ในระดับอื่นและใน 2D; บนมือถือรอจน sheet ปิด | pitch 75, FOV 24 (ขอบฟ้าอยู่นอกจอ — MapLibre 5.6.2 วาด fill-extrusion ผิดเมื่อขอบฟ้าเข้าจอ) = เปอร์สเปกทีฟ 2 จุด; `frameVenue` fit อาคารของสถานที่ (ทุกจุดยอด + headroom 20%) |
 
 `fitPitched` เริ่มจาก `cameraForBounds` (flat) แล้วปรับ zoom ทีละ 0.1 จนทุกจุดยอดของ polygon อยู่ใน viewport ที่มี padding; บนเดสก์ท็อป padding ของมุมมอง 3D ไม่นับ legend; บนมือถือแนวตั้งเมื่อ sheet เปิดใช้ `plan` แล้วปรับเป็น 3D เมื่อปิด sheet MapLibre ไม่มีกล้อง orthographic — FOV แคบคือวิธีมาตรฐาน; `setVerticalFieldOfView` มีตั้งแต่ MapLibre 4.7
 

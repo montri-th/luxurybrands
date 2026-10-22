@@ -35,9 +35,18 @@ export const OCCLUDER_LAYER = 'focus-massing-occluding';
  * opaque because it is the data layer.
  */
 export const SCENE = Object.freeze({
-  default: {city: 1, focus: 1, occluder: 0.18},
-  eye: {city: 0.3, focus: 0.62, occluder: 0.14},
+  default: {city: 0.22, focus: 1, occluder: 0.18},
+  eye: {city: 0.16, focus: 0.62, occluder: 0.14},
 });
+/**
+ * Distance fade of the city tier (owner decision 2026-10-22: buildings outside
+ * the focus are almost transparent and fade out with distance). MapLibre has no
+ * camera-distance expression, so each building's distance to the nearest focus
+ * anchor (area centroid) is written to feature-state once; the colour then
+ * interpolates from the quiet tone to the ground tone (= invisible).
+ */
+export const FADE_NEAR_M = 500;
+export const FADE_FAR_M = 2200;
 export const TILE_ZOOM = 14;
 export const MAX_TILES = 9;
 export const HEIGHT_LIFT_M = 0.35;
@@ -126,7 +135,8 @@ export function tilesForRegions(regions, z = TILE_ZOOM, max = MAX_TILES) {
  * reads it from the same TileJSON MapLibre uses.
  */
 export function installMassing(map, {sourceId = 'openmaptiles', beforeId, colors, tileUrl, fetchImpl = (...a) => fetch(...a), onResult = null} = {}) {
-  const palette = {quiet: '#ECEBE5', focus: '#E6E3DA', ...colors};
+  const palette = {quiet: '#ECEBE5', focus: '#E6E3DA', ground: '#EEF1EE', ...colors};
+  const cityColor = () => ['interpolate', ['linear'], ['coalesce', ['feature-state', 'fade'], 1], 0, palette.quiet, 1, palette.ground];
   let enabled = true, hiddenIds = [], disposed = false, token = 0, lastKey = '', lastBucket = -1;
   let lastInput = {regions: [], hosts: [], latitude: 13.75};
   const cache = new Map();
@@ -137,10 +147,10 @@ export function installMassing(map, {sourceId = 'openmaptiles', beforeId, colors
       id: CITY_LAYER, type: 'fill-extrusion', source: sourceId, 'source-layer': 'building', minzoom: 13,
       filter: cityFilter(),
       paint: {
-        'fill-extrusion-color': palette.quiet,
+        'fill-extrusion-color': cityColor(),
         'fill-extrusion-height': ['coalesce', ['get', 'render_height'], 0],
         'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0],
-        'fill-extrusion-opacity': 1,
+        'fill-extrusion-opacity': SCENE.default.city,
         'fill-extrusion-vertical-gradient': true,
       },
     }, before);
@@ -196,9 +206,10 @@ export function installMassing(map, {sourceId = 'openmaptiles', beforeId, colors
    * regions: lon/lat outer rings of the focused neighborhoods; hosts: rings of
    * host buildings currently drawn by buildings.js; zoom: current map zoom.
    */
-  async function update({regions = lastInput.regions, hosts = lastInput.hosts, zoom = map.getZoom(), enabled: on = enabled, city = enabled, latitude = lastInput.latitude} = {}) {
+  async function update({regions = lastInput.regions, hosts = lastInput.hosts, zoom = map.getZoom(), enabled: on = enabled, city = enabled, latitude = lastInput.latitude, anchors: nextAnchors = null} = {}) {
     enabled = on;
     lastInput = {regions, hosts, latitude};
+    if (nextAnchors) setAnchors(nextAnchors);
     // In plan view (pitch 0) the focus tier still draws as flat rounded footprints; the city tier is hidden.
     if (map.getLayer(CITY_LAYER)) map.setLayoutProperty(CITY_LAYER, 'visibility', enabled && city ? 'visible' : 'none');
     for (const id of [FOCUS_LAYER, OCCLUDER_LAYER]) if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', enabled ? 'visible' : 'none');
@@ -241,9 +252,51 @@ export function installMassing(map, {sourceId = 'openmaptiles', beforeId, colors
 
   function retheme(next = {}) {
     Object.assign(palette, next);
-    if (map.getLayer(CITY_LAYER)) map.setPaintProperty(CITY_LAYER, 'fill-extrusion-color', palette.quiet);
+    if (map.getLayer(CITY_LAYER)) map.setPaintProperty(CITY_LAYER, 'fill-extrusion-color', cityColor());
     for (const id of [FOCUS_LAYER, OCCLUDER_LAYER]) if (map.getLayer(id)) map.setPaintProperty(id, 'fill-extrusion-color', palette.focus);
   }
+
+  /* ---------- distance fade of the city tier ---------- */
+  let anchors = [], anchorKey = '';
+  const stated = new Map(); // feature id → fade already written
+  const metresBetween = (a, b) => { const kx = 111320 * Math.cos(((a[1] + b[1]) / 2) * Math.PI / 180), ky = 110574; return Math.hypot((a[0] - b[0]) * kx, (a[1] - b[1]) * ky); };
+  const firstCoordinate = g => { let v = g?.coordinates; while (Array.isArray(v) && Array.isArray(v[0])) v = v[0]; return Array.isArray(v) && v.length >= 2 ? v : null; };
+  function fadeFor(point) {
+    if (!anchors.length) return 0;
+    let d = Infinity;
+    for (const a of anchors) d = Math.min(d, metresBetween(point, a));
+    return Math.min(1, Math.max(0, (d - FADE_NEAR_M) / (FADE_FAR_M - FADE_NEAR_M)));
+  }
+  /** Write fade for buildings in the loaded tiles that have not been stated yet (cheap, incremental). */
+  function updateFade() {
+    if (disposed || !map.getLayer(CITY_LAYER) || !map.getSource(sourceId)) return 0;
+    let features;
+    try { features = map.querySourceFeatures(sourceId, {sourceLayer: 'building'}); } catch { return 0; }
+    let n = 0;
+    for (const f of features) {
+      if (f.id == null || stated.has(f.id)) continue;
+      const p = firstCoordinate(f.geometry);
+      if (!p) continue;
+      const fade = Math.round(fadeFor(p) * 20) / 20;
+      try { map.setFeatureState({source: sourceId, sourceLayer: 'building', id: f.id}, {fade}); } catch { continue; }
+      stated.set(f.id, fade); n++;
+    }
+    return n;
+  }
+  /** New anchors (focus centroids) invalidate every stated value. */
+  function setAnchors(next = []) {
+    const key = next.map(a => a.map(v => +v.toFixed(5)).join(',')).join('|');
+    if (key === anchorKey) return;
+    anchorKey = key; anchors = next.filter(a => Array.isArray(a) && a.length >= 2);
+    stated.clear();
+    try { map.removeFeatureState({source: sourceId, sourceLayer: 'building'}); } catch {}
+    updateFade();
+  }
+  let fadeTimer = 0;
+  const scheduleFade = () => { clearTimeout(fadeTimer); fadeTimer = setTimeout(updateFade, 120); };
+  const onSourceData = e => { if (e.sourceId === sourceId && e.isSourceLoaded) scheduleFade(); };
+  map.on('sourcedata', onSourceData);
+  map.on('moveend', scheduleFade);
 
   /* ---------- scene (venue-level two-point view) and occlusion ---------- */
   let currentFeatures = [];
@@ -310,10 +363,14 @@ export function installMassing(map, {sourceId = 'openmaptiles', beforeId, colors
 
   function dispose() {
     disposed = true;
+    clearTimeout(fadeTimer);
     map.off('zoomend', onZoomEnd);
     map.off('moveend', onMoveEnd);
+    map.off('moveend', scheduleFade);
+    map.off('sourcedata', onSourceData);
+    try { map.removeFeatureState({source: sourceId, sourceLayer: 'building'}); } catch {}
     for (const id of [OCCLUDER_LAYER, FOCUS_LAYER, CITY_LAYER]) if (map.getLayer(id)) map.removeLayer(id);
     if (map.getSource(FOCUS_SOURCE)) map.removeSource(FOCUS_SOURCE);
   }
-  return {update, retheme, setScene, dispose, layerIds: {city: CITY_LAYER, focus: FOCUS_LAYER, occluder: OCCLUDER_LAYER}, get occluders() { return occluderIds.slice(); }};
+  return {update, retheme, setScene, setAnchors, updateFade, dispose, layerIds: {city: CITY_LAYER, focus: FOCUS_LAYER, occluder: OCCLUDER_LAYER}, get occluders() { return occluderIds.slice(); }, get faded() { return stated.size; }};
 }

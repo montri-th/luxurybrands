@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Luxury Brands · CityMETER</title>
-  <meta name="description" content="อ่านเมืองผ่านแบรนด์: ย่านใดรวมแบรนด์ luxury และ upscale street brands ไว้มากที่สุด แล้วเจาะลงศูนย์การค้า อาคาร และจุดขาย พร้อมหลักฐานตรวจสอบย้อนกลับ">
+  <meta name="description" content="ถ้าจะเปิดร้านที่นี่ จะอยู่ข้างใคร — แผนที่ 3 มิติของแบรนด์หรูในไทย: ย่าน ศูนย์การค้า และสาขา พร้อมหลักฐานทุกรายการ">
   <meta name="theme-color" content="#F6F7F3" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#11191D" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="Luxury Brands · CityMETER">
-  <meta property="og:description" content="ย่านใดรวมแบรนด์หรูไว้มากที่สุดในไทย — แผนที่ข้อมูลจุดขายรายร้านพร้อมหลักฐาน">
+  <meta property="og:description" content="ถ้าจะเปิดร้านที่นี่ จะอยู่ข้างใคร — แผนที่ 3 มิติของแบรนด์หรูในไทย: ย่าน ศูนย์การค้า และสาขา">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://montri-th.github.io/luxurybrands/">
   <style id="launch-critical-styles">
@@ -23,19 +23,19 @@
     .launch-card :focus-visible{outline:3px solid var(--interaction-focus-ring,#1D4497);outline-offset:3px}
     @media(max-width:420px){#launch-status{padding:16px}.launch-card{padding:20px}.launch-card h1{font-size:21px}}
   </style>
-  <script src="js/launch.js?v=20261022-r9"></script>
+  <script src="js/launch.js?v=20261022-r10"></script>
   <link rel="icon" href="assets/icons/icon-portfolio-32.png" sizes="32x32">
   <link rel="icon" href="assets/icons/icon-portfolio-16.png" sizes="16x16">
   <link rel="icon" href="assets/icons/icon-portfolio-48.png" sizes="48x48">
   <link rel="apple-touch-icon" href="assets/icons/icon-portfolio-180.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="stylesheet" href="assets/lds/build-kit/fonts.css?v=20261022-r9">
-  <link rel="stylesheet" href="assets/theme.css?v=20261022-r9">
-  <link rel="stylesheet" href="styles.css?v=20261022-r9">
-  <link rel="stylesheet" href="navigation.css?v=20261022-r9">
-  <link rel="stylesheet" href="logos.css?v=20261022-r9">
-  <script type="module" src="js/app.js?v=20261022-r9"></script>
-  <script type="module" src="js/navigation.js?v=20261022-r9"></script>
+  <link rel="stylesheet" href="assets/lds/build-kit/fonts.css?v=20261022-r10">
+  <link rel="stylesheet" href="assets/theme.css?v=20261022-r10">
+  <link rel="stylesheet" href="styles.css?v=20261022-r10">
+  <link rel="stylesheet" href="navigation.css?v=20261022-r10">
+  <link rel="stylesheet" href="logos.css?v=20261022-r10">
+  <script type="module" src="js/app.js?v=20261022-r10"></script>
+  <script type="module" src="js/navigation.js?v=20261022-r10"></script>
 </head>
 <body>
 <a class="skip" href="#panel">ข้ามไปแผงข้อมูล</a>
@@ -60,7 +60,7 @@
   <div class="launch-card">
     <p class="eyebrow">CITYMETER LUXURY BRANDS</p>
     <h1 id="launch-title">กำลังโหลดข้อมูล</h1>
-    <p id="launch-message">กำลังอ่านข้อมูลจุดขาย อาคาร และย่าน หากรอนาน สามารถเปิดเว็บสาธารณะได้จากลิงก์นี้</p>
+    <p id="launch-message">กำลังอ่านข้อมูลสาขา อาคาร และย่าน หากรอนาน เปิดเว็บสาธารณะได้จากลิงก์นี้</p>
     <p><a id="launch-public" href="https://montri-th.github.io/luxurybrands/">https://montri-th.github.io/luxurybrands/</a></p>
     <div class="launch-actions"><button id="launch-retry" type="button" hidden>ลองโหลดใหม่</button><a href="https://github.com/montri-th/luxurybrands" target="_blank" rel="noopener">ดูที่มาใน GitHub</a></div>
     <details id="launch-debug" hidden><summary>รายละเอียดเพื่อแจ้งปัญหา</summary><pre id="launch-diagnostics"></pre></details>
@@ -70,7 +70,7 @@
 
 <main class="workspace">
   <div class="map-column">
-    <section class="map-panel" aria-label="แผนที่ย่าน จุดขายรายร้าน และอาคาร">
+    <section class="map-panel" aria-label="แผนที่ย่าน สาขา และอาคาร">
       <div id="map"></div>
       <div id="map-failure" class="map-failure" hidden></div>
       <div class="map-toolbar" role="group" aria-label="เครื่องมือแผนที่">
@@ -85,12 +85,12 @@
       <section id="map-aha" class="map-aha" aria-label="ข้อค้นพบแรก" hidden></section>
       <div class="map-legend" id="map-legend" aria-label="คำอธิบายแผนที่">
         <div class="legend-block" id="legend-areas">
-          <span class="legend-title">ย่าน · แบรนด์ไม่ซ้ำ</span>
+          <span class="legend-title">ย่าน · จำนวนแบรนด์</span>
           <span class="legend-steps" id="legend-steps"></span>
         </div>
         <div class="legend-block legend-marks">
-          <span><i class="legend-pin" aria-hidden="true"></i>1 หมุด = 1 รายการจุดขาย</span>
-          <span class="legend-building-item"><i class="legend-building" aria-hidden="true"></i>อาคารที่ตั้งร้าน</span>
+          <span><i class="legend-pin" aria-hidden="true"></i>1 หมุด = 1 สาขา</span>
+          <span class="legend-building-item"><i class="legend-building" aria-hidden="true"></i>อาคารของสถานที่</span>
           <span class="legend-massing-item is-focus-item" title="รูปทรงอาคารจาก OpenStreetMap ผ่าน OpenFreeMap: ย่านที่โฟกัสแสดงมุมโค้งและโทนเข้มขึ้น ความสูงเป็นบริบท ไม่ใช่ผลรังวัด"><i class="legend-massing is-focus" aria-hidden="true"></i>อาคารในย่านโฟกัส</span>
           <span class="legend-massing-item is-quiet-item" title="อาคารอื่นทั่วเมืองจาก OpenStreetMap ผ่าน OpenFreeMap แสดงจางลงเป็นบริบท"><i class="legend-massing is-quiet" aria-hidden="true"></i>อาคารบริบท</span>
           <details id="category-key"><summary>สีประเภทแบรนด์</summary><div id="category-items"></div></details>
@@ -118,14 +118,14 @@
 
     <section id="results" class="results" aria-labelledby="results-title" hidden>
       <div class="results-heading">
-        <h2 id="results-title">รายการจุดขายตามขอบเขตที่เลือก</h2>
+        <h2 id="results-title">สาขาตามตัวกรอง</h2>
         <button id="toggle-table" type="button" aria-expanded="true" aria-controls="table-wrap">ปิดตาราง</button>
       </div>
       <div id="table-wrap">
-        <p class="hint">เลือกร้านเพื่อดูรายละเอียดและแหล่งข้อมูล · สถานะ วันที่ และพิกัดตามที่แหล่งข้อมูลระบุ</p>
+        <p class="hint">กดสาขาเพื่อดูรายละเอียดและหลักฐาน</p>
         <div class="table-scroll">
           <table>
-            <thead><tr><th scope="col">แบรนด์ / จุดขาย</th><th scope="col">ทำเล</th><th scope="col">ย่าน</th><th scope="col">สถานะ</th><th scope="col">พิกัด</th><th scope="col">แหล่งข้อมูล</th></tr></thead>
+            <thead><tr><th scope="col">แบรนด์ / สาขา</th><th scope="col">ทำเล</th><th scope="col">ย่าน</th><th scope="col">สถานะ</th><th scope="col">พิกัด</th><th scope="col">แหล่งข้อมูล</th></tr></thead>
             <tbody id="result-rows"></tbody>
           </table>
         </div>
@@ -141,7 +141,7 @@
       <div class="dataset-heading">
         <p class="eyebrow">CITYMETER · LOCATION</p>
         <h1 id="dataset-title" tabindex="-1">Luxury Brands</h1>
-        <p class="intro">ถ้าจะเปิดร้านที่นี่ จะอยู่ข้างใคร — อ่านเมืองผ่านย่าน แล้วเจาะลงถึงศูนย์การค้าและร้าน</p>
+        <p class="intro">ถ้าจะเปิดร้านที่นี่ จะอยู่ข้างใคร</p>
       </div>
       <form id="filters" class="filters" autocomplete="off">
         <label class="search-field">
@@ -169,20 +169,19 @@
 
 <dialog id="usage-help" class="usage-dialog" aria-labelledby="usage-help-title" aria-describedby="usage-help-intro">
   <div class="help-heading">
-    <div><p class="eyebrow">CITYMETER LUXURY BRANDS</p><h2 id="usage-help-title">อ่านเมืองผ่านแบรนด์อย่างไร</h2></div>
+    <div><p class="eyebrow">CITYMETER LUXURY BRANDS</p><h2 id="usage-help-title">วิธีใช้</h2></div>
     <button id="close-help" type="button">ปิดวิธีใช้</button>
   </div>
-  <p id="usage-help-intro" class="help-intro">เริ่มจากย่าน: หน้าแรกเปิดเป็นเมือง 3 มิติที่มีรายละเอียดเฉพาะ 3 ย่านที่มีแบรนด์มากที่สุด ส่วนอื่นเงียบลง เลือกย่านที่สนใจ แล้วเจาะลงศูนย์การค้าและร้าน ทุกมุมมองใช้ขอบเขตข้อมูลเดียวกัน</p>
+  <p id="usage-help-intro" class="help-intro">หน้าแรกคือเมือง 3 มิติที่โฟกัส 3 ย่านที่มีแบรนด์มากที่สุด — เลือกย่าน แล้วเจาะลงถึงศูนย์การค้าและสาขา</p>
   <ol class="help-steps">
-    <li><strong>อ่านข้อค้นพบแรก</strong><p>แผงด้านขวาสรุปว่าแบรนด์ที่เลือกกระจุกอยู่ในย่านใด แผนที่โฟกัส 3 ย่านนั้นให้แล้ว กดชื่อย่านเพื่อเปิดโปรไฟล์ หรือกด “ดูทุกย่าน” เพื่อยกระดับทุกย่านเท่ากัน</p></li>
-    <li><strong>เดินตามเส้นทางพื้นที่</strong><p>แถวบนของแผงคือ ประเทศไทย › จังหวัด › ย่าน แบบเดียวกับ CityMETER กดระดับใดก็ได้เพื่อถอยกลับ</p></li>
-    <li><strong>อ่านสีย่านบนแผนที่</strong><p>ย่านถูกระบายสีตามจำนวนแบรนด์ไม่ซ้ำ (ช่วงตัวเลขอยู่ในคำอธิบายมุมล่างซ้าย) ย่านนอกโฟกัสเหลือเพียงเส้นขอบ ซูมเข้าแล้วสีจะเปลี่ยนเป็นเส้นขอบ เพื่อให้เห็นหมุดรายร้านและอาคาร</p></li>
-    <li><strong>อ่านอาคาร</strong><p>อาคารทั้งเมืองเป็นรูปทรงจาก OpenStreetMap: ย่านที่โฟกัสแสดงมุมโค้งและโทนเข้มขึ้น ส่วนอื่นจางลง อาคารสีน้ำเงินคืออาคารที่ตั้งร้าน เลือกอาคารเพื่อดูร้านทั้งหมดในอาคารนั้น กด “3D” เพื่อสลับเป็นแผนผัง เมื่อเปิดสถานที่ (ศูนย์การค้า) แผนที่ใช้ “มุมสถาปนิก” — เปอร์สเปกทีฟ 2 จุดที่อาคารรอบข้างจางลงมาก และอาคารที่บังสถานที่กลายเป็นโปร่งใส ปิดปุ่มนี้เพื่อกลับเป็นมุมโมเดลเมือง</p></li>
-    <li><strong>เส้นทาง</strong><p>บรรทัดบนของแผงคือ ประเทศไทย › จังหวัด › ย่าน › สถานที่ กดระดับใดก็ได้เพื่อย้อนกลับ สถานที่ที่อยู่นอกย่านทั้ง 10 จะข้ามระดับย่าน ส่วนร้านเป็นหัวเรื่องของแผง ไม่ใช่ระดับเส้นทาง</p></li>
-    <li><strong>เลือกร้านบนแผนที่</strong><p>หนึ่งหมุดคือหนึ่งรายการจุดขาย สีหมุดคือกลุ่มแบรนด์ (ดู “สีประเภทแบรนด์”) เลือกหมุดเพื่อดูสถานะ หลักฐาน และระดับความแม่นของพิกัด</p></li>
-    <li><strong>เปรียบเทียบย่านด้วยกราฟและตาราง</strong><p>กด “เปิดกราฟ” เพื่อดูอันดับย่าน บุคลิกของย่านตามกลุ่มแบรนด์ และแบรนด์เฉพาะ/ร่วม หรือ “รายการ” เพื่อดูตารางพร้อมแหล่งข้อมูล</p></li>
+    <li><strong>ข้อค้นพบแรก</strong><p>แผงขวาบอกว่าแบรนด์กระจุกอยู่ย่านใด แผนที่โฟกัสย่านเหล่านั้นให้แล้ว · “ดูทุกย่าน” เปิดทุกย่านเท่ากัน</p></li>
+    <li><strong>เส้นทาง</strong><p>ประเทศไทย › จังหวัด › ย่าน › สถานที่ — กดระดับใดก็ได้เพื่อย้อนกลับ</p></li>
+    <li><strong>สีย่าน</strong><p>สีเข้ม = แบรนด์มาก (ช่วงตัวเลขอยู่ในคำอธิบายมุมล่างซ้าย) ย่านนอกโฟกัสเหลือเส้นขอบ</p></li>
+    <li><strong>อาคาร</strong><p>สีน้ำเงิน = อาคารของสถานที่ที่เปิดอยู่ · เทาเข้ม = อาคารในย่านโฟกัส · อาคารอื่นจางลงตามระยะ · “3D” สลับเป็นแผนผัง · “มุมสถาปนิก” คือมุมมองระดับสถานที่ที่อาคารรอบข้างโปร่งใส</p></li>
+    <li><strong>หมุด</strong><p>1 หมุด = 1 สาขา สีหมุด = กลุ่มแบรนด์ (ดู “สีประเภทแบรนด์”) กดหมุดเพื่อดูสถานะและหลักฐาน</p></li>
+    <li><strong>กราฟและตาราง</strong><p>“เปิดกราฟ” เทียบย่าน (อันดับ · กลุ่มแบรนด์ · เฉพาะ/ร่วม) · “รายการ” เปิดตารางสาขา</p></li>
   </ol>
-  <p class="help-keyboard"><strong>คีย์บอร์ด:</strong> ใช้ Tab ไปยังปุ่มและตัวกรอง ใช้ปุ่มลูกศรเลื่อนระหว่างหมุดที่มองเห็น กด Enter เพื่อเลือก และกด Escape เพื่อปิดวิธีใช้</p>
+  <p class="help-keyboard"><strong>คีย์บอร์ด:</strong> Tab ไปยังปุ่ม · ลูกศรเลื่อนระหว่างหมุด · Enter เลือก · Escape ปิด</p>
   <p class="help-links"><a href="https://montri-th.github.io/luxurybrands/" id="help-public-site">เว็บ Luxury Brands</a> · <a href="https://github.com/montri-th/luxurybrands" target="_blank" rel="noopener">ที่มาใน GitHub</a> · <a href="DATA_METHOD.md" target="_blank" rel="noopener">วิธีจัดทำข้อมูล</a></p>
 </dialog>
 

@@ -10,10 +10,14 @@
  *          like an axonometric drawing or a white massing model. MapLibre has
  *          no orthographic camera, but a narrow FOV is the standard way to get
  *          the look (setVerticalFieldOfView, MapLibre ≥ 4.7).
- *  eye   — two-point perspective: an almost horizontal camera (pitch 82°) whose
- *          principal point is shifted upward via view padding, so verticals are
+ *  eye   — two-point perspective for one venue: a strongly pitched camera
+ *          (pitch 75°) with a narrow field of view (24°), so verticals stay
  *          within a few degrees of upright while horizontals still converge —
- *          the classic architectural rendering camera. Presentation only.
+ *          the classic architectural rendering camera.
+ *          Constraint (verified live on MapLibre 5.6.2, 2026-10-22): once the
+ *          horizon enters the viewport (pitch > 90° − fov/2) fill-extrusion
+ *          layers are drawn displaced or not at all, so the eye preset keeps the
+ *          horizon just outside the frame: 90 − 24/2 − 3° margin = 75°.
  *
  * Fitting a pitched camera to a bounding box: MapLibre's cameraForBounds assumes
  * a flat view, so fitPitched starts from that answer and zooms out in 0.1 steps
@@ -25,7 +29,7 @@ export const CAMERA = Object.freeze({
   plan: {pitch: 0, bearing: 0, fov: DEFAULT_FOV},
   city: {pitch: 56, bearing: 28, fov: DEFAULT_FOV, fitShift: 0.2},
   model: {pitch: 60, bearing: 28, fov: 14, fitShift: 0.16},
-  eye: {pitch: 82, bearing: 28, fov: 32, shift: 0.38},
+  eye: {pitch: 75, bearing: 28, fov: 24, fitShift: 0.1},
 });
 // bearing 28°: the Siam → Chit Lom → Phrom Phong axis (azimuth ≈ 120°) runs left-to-right
 // across a wide screen; the compass control keeps north legible.

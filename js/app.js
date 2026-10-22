@@ -141,11 +141,20 @@ function update({fit = false} = {}) {
   renderPanel(s);
   renderLegend();
   updatePins();
-  if (state.loaded) { updateSpatialLayers(); if (fit) fitMap(); }
+  if (state.loaded) {
+    updateSpatialLayers();
+    if (fit) fitMap();
+    // Leaving or entering venue level without a fit (e.g. back from a venue): ease to the level's preset.
+    else if (state.lastPreset && cameraPreset() !== state.lastPreset) {
+      const f = selectedNeighborhood();
+      if (f && state.panel.mode === 'neighborhood') fitArea(f); else applyPreset(state.map, cameraPreset(), {animate: animate()});
+    }
+    state.lastPreset = cameraPreset();
+  }
   drawChart();
   renderTable();
   saveURL();
-  announce(`พบ ${num(s.pos)} รายการ ${num(s.brands)} แบรนด์ มีพิกัด ${num(s.mapped)} รายการ`);
+  announce(`พบ ${num(s.pos)} สาขา ${num(s.brands)} แบรนด์`);
 }
 
 /** Focused rows get full detail; the rest of the scope becomes quiet context dots. */
@@ -244,7 +253,7 @@ function renderMapAha(insight) {
   el.hidden = $('panel').classList.contains('is-open');
   const crumb = `<p class="map-aha-crumb">${esc(breadcrumbText(buildBreadcrumb({area: null, provinceName: $('province').value})))}</p>`;
   el.innerHTML = mode === 'explicit'
-    ? `<div>${crumb}<h2>กำลังสำรวจ ${num(insight.areas.length)} ย่าน</h2><p>${num(insight.brands)} แบรนด์ · ${num(insight.pos)} จุดขาย</p></div><button type="button" class="btn" data-action="clear-focus">ดูทุกย่าน</button>`
+    ? `<div>${crumb}<h2>กำลังสำรวจ ${num(insight.areas.length)} ย่าน</h2><p>${num(insight.brands)} แบรนด์ · ${num(insight.pos)} สาขา</p></div><button type="button" class="btn" data-action="clear-focus">ดูทุกย่าน</button>`
     : `<div>${crumb}<h2>${num(Math.round(insight.share))}% ของแบรนด์อยู่ใน ${num(insight.areas.length)} ย่าน</h2><p>${insight.areas.map(a => esc(a.name)).join(' · ')}</p></div>${mode === 'auto'
       ? '<button type="button" class="btn" data-action="clear-focus">ดูทุกย่าน</button>'
       : '<button type="button" class="btn primary" data-action="explore-top">โฟกัส</button>'}`;
@@ -290,7 +299,9 @@ function selectStore(id, {fly = true, showPopup = false, fromPin = false} = {}) 
   saveURL();
   if (state.loaded) { updatePins(); updateSpatialLayers(); }
   if (hasPoint(r) && state.loaded) {
-    if (fly) framePoint(state.map, [r.longitude, r.latitude], {preset: cameraPreset(), zoom: 16, offset: sheetOffset(), animate: animate()});
+    // A pin click keeps the camera unless the level's preset changed (e.g. model → eye when the store is inside a venue): then re-frame on the store.
+    if (fly || cameraPreset() !== state.lastPreset) framePoint(state.map, [r.longitude, r.latitude], {preset: cameraPreset(), zoom: 16, offset: sheetOffset(), animate: animate()});
+    state.lastPreset = cameraPreset();
     state.popup?.remove(); state.popup = null;
     if (showPopup && !mobilePortrait()) {
       const wrap = document.createElement('div'), h = document.createElement('h3'), p = document.createElement('p');
@@ -314,7 +325,7 @@ function selectVenue(mallId, venue) {
   saveURL();
   if (state.loaded) { updatePins(); updateSpatialLayers(); }
   const profile = buildVenueProfile(state.scopeRows, {mallId, venue, centers: state.data.centers, geojson: state.neighborhoods});
-  if (state.loaded) frameVenue(profile);
+  if (state.loaded) { frameVenue(profile); state.lastPreset = cameraPreset(); }
   openMobilePanel();
 }
 
@@ -330,7 +341,7 @@ function frameVenue(profile, {animate: anim = animate(), instant = false} = {}) 
     const pts = targets.flatMap(t => t.ring);
     const bounds = pts.reduce((b, p) => b.extend(p), new maplibregl.LngLatBounds(pts[0], pts[0]));
     const h = map.getContainer().clientHeight;
-    const headroom = Math.round(h * (preset === 'eye' ? 0.26 : 0.12));
+    const headroom = Math.round(h * (preset === 'eye' ? 0.2 : 0.12));
     fitPitched(map, bounds, {preset, points: pts, padding: {top: headroom, bottom: 48, left: 48, right: 48}, maxZoom: 17.6, minZoom: 14.5, animate: anim && !instant});
     return;
   }
@@ -402,7 +413,7 @@ function drawChart() {
   for (const b of document.querySelectorAll('[data-view]')) b.setAttribute('aria-selected', String(b.dataset.view === state.view));
   $('chart').setAttribute('aria-labelledby', 'tab-' + state.view);
   const narrowed = selectedNeighborhood() || state.focusIds.length;
-  $('chart-scope').textContent = `${num(state.scopeRows.length)} รายการในตัวกรอง${narrowed ? ' · เทียบทุกย่าน ไม่รวมการเลือกย่าน' : ''}`;
+  $('chart-scope').textContent = `${num(state.scopeRows.length)} สาขาในตัวกรอง${narrowed ? ' · ทุกย่าน' : ''}`;
   if ($('insight-content').hidden) return;
   chartDispose = renderInsightChart({elementId: 'chart', view: state.view, rows: state.scopeRows, segments: SEGMENT_LIST, neighborhoods: state.neighborhoods, theme: theme(), selectedAreaId: areaKey(selectedNeighborhood())}, selection => {
     if (selection.type === 'resetAreas') { $('neighborhood').value = ''; resetToOverview(); return; }
@@ -431,12 +442,12 @@ function renderTable() {
     const area = assignNeighborhood(r, state.neighborhoods);
     return `<tr><td><button type="button" class="row-name brand-row" data-id="${esc(r.id)}">${brandLogoMarkup(r.brand)}<span>${esc(r.brand)}</span></button><small>${esc(r.name)}</small></td>
       <td>${esc(r.venue)}<small>${esc(provinceByName(r.province)?.th || r.province)}</small></td>
-      <td>${area ? esc(area.properties.name) : '<span class="hint">นอกขอบเขตย่าน</span>'}</td>
+      <td>${area ? esc(area.properties.name) : '<span class="hint">นอกย่าน</span>'}</td>
       <td>${statusPill(describeStatus(r))}</td>
       <td><small class="data-number">${hasPoint(r) ? r.latitude.toFixed(5) + ', ' + r.longitude.toFixed(5) : 'ไม่มีพิกัด'}</small></td>
       <td class="links">${link(r.source, 'รายการ')}${link(r.statusSource, 'สถานะ')}${link(r.coordinateSource, 'พิกัด')}</td></tr>`;
-  }).join('') || '<tr><td colspan="6">ไม่พบรายการในขอบเขตที่เลือก ลองล้างตัวกรองหรือเลือกชุดข้อมูลอื่น</td></tr>';
-  $('page-label').textContent = state.rows.length ? `${num(start + 1)}–${num(Math.min(start + pageSize, state.rows.length))} / ${num(state.rows.length)}` : '0 รายการ';
+  }).join('') || '<tr><td colspan="6">ไม่พบสาขาตามตัวกรอง</td></tr>';
+  $('page-label').textContent = state.rows.length ? `${num(start + 1)}–${num(Math.min(start + pageSize, state.rows.length))} / ${num(state.rows.length)}` : '0 สาขา';
   $('prev-page').disabled = state.page === 0;
   $('next-page').disabled = start + pageSize >= state.rows.length;
   for (const b of $('result-rows').querySelectorAll('[data-id]')) b.onclick = () => { selectStore(b.dataset.id); $('panel').scrollTop = 0; };
@@ -476,7 +487,8 @@ function fitArea(feature, {instant = false} = {}) {
   const sheetOpen = mobilePortrait() && $('panel').classList.contains('is-open');
   const preset = sheetOpen ? 'plan' : cameraPreset();
   const pitched = preset !== 'plan' && !mobilePortrait();
-  fitPitched(state.map, featureBounds(feature, maplibregl.LngLatBounds), {preset, padding: pitched ? pitchedPadding() : cameraPadding(), maxZoom: 16, animate: animate() && !instant, points: vertices([feature]), shift: mobilePortrait() ? -0.08 : null});
+  // Fill the frame with the area outline: zoom is only bounded by the outline vertices and the chrome padding.
+  fitPitched(state.map, featureBounds(feature, maplibregl.LngLatBounds), {preset, padding: pitched ? pitchedPadding() : cameraPadding(), maxZoom: 17.5, animate: animate() && !instant, points: vertices([feature]), shift: mobilePortrait() ? -0.08 : null});
 }
 
 function fitMap({instant = false} = {}) {
@@ -507,9 +519,12 @@ function updateSpatialLayers() {
   state.labels?.update(model ? model.areas : [], {selectedId, visible: state.showNeighborhoods, LngLatBounds: maplibregl.LngLatBounds});
   const focusFeatures = feature ? [feature] : state.focusIds.map(areaById).filter(Boolean);
   const hostFeatures = state.buildings?.displayedFeatures() || [];
+  // City-tier fade anchors: the focused areas (or every area when nothing is focused) — far from them the city fades out.
+  const anchorFeatures = focusFeatures.length ? focusFeatures : state.neighborhoods.features;
   state.massing?.update({
     regions: focusFeatures.flatMap(outerRings),
     hosts: hostFeatures.flatMap(outerRings),
+    anchors: anchorFeatures.map(f => featureBounds(f, maplibregl.LngLatBounds).getCenter().toArray()),
     enabled: true, city: state.view3d, zoom: state.map.getZoom(), latitude: state.map.getCenter().lat,
   })?.catch(e => console.warn('Massing', e));
   // Venue-level two-point view: surroundings very quiet, buildings hiding the venue see-through.
@@ -533,7 +548,7 @@ function installSpatialLayers() {
   const palette = basemapPalette(theme());
   state.areaLayers = installNeighborhoodLayers(map, state.neighborhoods, {onSelect: id => selectNeighborhood(id, {fromMap: true})});
   state.massing = installMassing(map, {
-    beforeId: MASSING_BEFORE, colors: {quiet: palette.massingQuiet, focus: palette.massingFocus},
+    beforeId: MASSING_BEFORE, colors: {quiet: palette.massingQuiet, focus: palette.massingFocus, ground: palette.ground},
     tileUrl: t => (state.tileTemplate ? state.tileTemplate.replace('{z}', t.z).replace('{x}', t.x).replace('{y}', t.y) : ''),
     // Applied results (also zoom-triggered rebuilds) → status line and the dev hook.
     onResult: result => { state.massingResult = result; $('map-status').dataset.massing = `${result.features || 0}`; },
@@ -567,8 +582,8 @@ function initMap() {
       reservedBottom: bottomSpace,
       onSelect: r => selectStore(r.id, {fly: false, showPopup: true, fromPin: true}),
       onLayout: stats => {
-        const context = stats.contextPins ? ` · บริบทนอกส่วนที่เลือก ${num(stats.contextPins)} จุด` : '';
-        $('map-status').textContent = `${num(stats.visiblePins)} จุดขายในมุมมอง · โลโก้ ${num(stats.visibleLogos)}/${num(stats.logoLimit)}${context}`;
+        const context = stats.contextPins ? ` · บริบท ${num(stats.contextPins)}` : '';
+        $('map-status').textContent = `${num(stats.visiblePins)} สาขา · โลโก้ ${num(stats.visibleLogos)}/${num(stats.logoLimit)}${context}`;
       },
     });
     updatePins();
@@ -603,7 +618,7 @@ function toggle3d() {
   renderLegend();
   renderPanel();
   updateSpatialLayers();
-  if (state.map) applyPreset(state.map, cameraPreset(), {animate: animate()});
+  if (state.map) { applyPreset(state.map, cameraPreset(), {animate: animate()}); state.lastPreset = cameraPreset(); }
   saveURL();
 }
 
@@ -613,6 +628,7 @@ function toggleTwoPoint() {
   if (state.map && state.view3d) {
     if (state.panel.mode === 'venue') frameVenue(buildVenueProfile(state.scopeRows, {mallId: state.panel.id, venue: state.panel.venue, centers: state.data.centers, geojson: state.neighborhoods}));
     else applyPreset(state.map, cameraPreset(), {animate: animate()});
+    state.lastPreset = cameraPreset();
   }
   updateSpatialLayers();
   saveURL();
@@ -782,7 +798,7 @@ async function init() {
     window.dispatchEvent(new CustomEvent('citymeter:ready'));
     startMap();
   } catch (e) {
-    window.dispatchEvent(new CustomEvent('citymeter:load-error', {detail: {message: 'โหลดข้อมูลจุดขายไม่สำเร็จ กรุณาลองอีกครั้ง', resource: e.resource, status: e.status, phase: e.phase || 'startup', diagnostic: e.message}}));
+    window.dispatchEvent(new CustomEvent('citymeter:load-error', {detail: {message: 'โหลดข้อมูลสาขาไม่สำเร็จ กรุณาลองอีกครั้ง', resource: e.resource, status: e.status, phase: e.phase || 'startup', diagnostic: e.message}}));
     console.error(e);
   }
 }

@@ -656,7 +656,7 @@
     {
       "id": "AC18",
       "scenario": "Camera presets",
-      "expected": "model preset (FOV 14, upright verticals) for a neighborhood; at venue level the eye preset (pitch 82 / FOV 32 / 38% principal-point shift) is on by default, framed on the venue's host footprint with every vertex inside the padded viewport; the toggle switches to model and writes ?cam=model; the toggle is disabled in overview/neighborhood and in 2D; plan preset at pitch 0 when 3D is off",
+      "expected": "model preset (FOV 14, upright verticals) for a neighborhood, fitted to fill the frame with the area outline; at venue level the eye preset (pitch 75 / FOV 24, horizon outside the frame) is on by default, framed on the venue's host footprint; the toggle switches to model and writes ?cam=model; the toggle is disabled in overview/neighborhood and in 2D; plan preset at pitch 0 when 3D is off",
       "verificationType": "browser",
       "result": "see VERIFICATION.md"
     },
@@ -684,8 +684,15 @@
     {
       "id": "AC22",
       "scenario": "Venue-level focus and see-through scene",
-      "expected": "With a venue (or a store inside it) open, only that venue's host building is blue and only its rows keep category pins/logos; other rows are grey context dots; city massing opacity 0.3 and focus massing 0.62; focus buildings standing between the camera and the venue are drawn at 0.14 opacity; leaving venue level restores opacities and all hosts",
+      "expected": "With a venue (or a store inside it) open, only that venue's host building is blue and only its rows keep category pins/logos; other rows are grey context dots; city massing opacity 0.16 (0.22 elsewhere) and focus massing 0.62; focus buildings standing between the camera and the venue are drawn at 0.14 opacity; the city tier fades to the ground tone beyond ~2.2 km from the focus; leaving venue level restores opacities and all hosts",
       "verificationType": "unit-and-browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC23",
+      "scenario": "Copy",
+      "expected": "UI strings use แบรนด์ / สาขา / สถานที่ / ย่าน consistently, no caveat sentences in panel, charts, legend or help; metric tiles show legend symbols; Thai reads naturally at 390 px and desktop",
+      "verificationType": "browser",
       "result": "see VERIFICATION.md"
     }
   ],
@@ -759,6 +766,12 @@
       "title": "Validate the Who/What/Which/How hypotheses with the three user groups (statement §7)",
       "ownerRole": "product owner",
       "status": "requires owner decision"
+    },
+    {
+      "id": "N11",
+      "title": "Report the MapLibre fill-extrusion horizon defect upstream with a minimal repro (pitch > 90 − fov/2) and re-enable the sky in the eye preset once fixed",
+      "ownerRole": "frontend developer",
+      "status": "engineering backlog"
     }
   ]
 }

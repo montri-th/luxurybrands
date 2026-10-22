@@ -108,7 +108,7 @@ export function placeBrandLogos(points, bounds, {limit = MAX_LOGOS, width = 60, 
 export function installStorePins(map, container, {onSelect, onLayout, reservedBottom = () => 90} = {}) {
   const overlay = document.createElement('div');
   overlay.className = 'store-pin-overlay';
-  overlay.setAttribute('aria-label', 'หมุดรายจุดขาย ใช้ลูกศรเลือกหมุดถัดไป');
+  overlay.setAttribute('aria-label', 'หมุดสาขา ใช้ลูกศรเลือกหมุดถัดไป');
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.classList.add('pin-leaders');
   svg.setAttribute('aria-hidden', 'true');
