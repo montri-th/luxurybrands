@@ -37,9 +37,10 @@ Console: only Chromium software-WebGL notices and the expected missing-source-la
 
 ## Live checks (Chrome on macOS, real tiles)
 
-Recorded after the Pages run of the release commit — see the dated entries below. If this section still reads “pending”, the release has not been verified live and must not be reported as published.
+Recorded after the Pages run of each release commit (Chrome on macOS, 1512×804, OpenFreeMap tiles).
 
-- pending
+- **55c24ca (first 0.3 publish, 07:10 ICT):** 3D first Aha live (city preset z13.98, auto focus, 1,319 rounded focus buildings from real tiles, crumb ประเทศไทย); paper basemap in light and dark; Siam Paragon venue in the eye preset with 8 see-through occluders. **Defect found:** Central Chidlom venue showed no buildings — reproduced as a MapLibre 5.6.2 fill-extrusion defect once the horizon is inside the viewport (pitch 82 / FOV 32); a plain test box behaved the same, independent of opacity, padding, source maxzoom and theme; pitch 73 rendered correctly, 76 displaced.
+- **01c3f0e (0.3.1, 07:5x ICT):** `npm run verify:live` 79/79 files. Central Chidlom venue renders (eye preset z17.6, pitch 75, FOV 24; blue host, grey focus massing, city 0.16; 377 city buildings fade-stated; status “22 สาขา · โลโก้ 8/250 · บริบท 28”; crumbs ประเทศไทย › กรุงเทพมหานคร › ชิดลม–เพลินจิต › Central Chidlom). Dark theme overview after crumb-country: city preset z13.98, 1,319 focus buildings, 387 fade-stated buildings, city opacity 0.22, concise copy (86% ของแบรนด์อยู่ใน 3 ย่านนี้ · 97 จาก 113 แบรนด์ · 175 จาก 345 สาขา), metric tiles with legend symbols. Not re-checked live in 0.3.1: mobile width (harness only), keyboard tour (harness only).
 
 ## Live byte attestation
 
