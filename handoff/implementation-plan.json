@@ -677,7 +677,7 @@
         "handoff/handoff-manifest.json",
         "RELEASE_RECEIPT.json (bundle envelope)"
       ],
-      "status": "in_progress"
+      "status": "done"
     }
   ],
   "acceptanceCriteria": [

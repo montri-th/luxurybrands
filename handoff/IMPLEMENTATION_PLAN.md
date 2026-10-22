@@ -59,7 +59,7 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | P18 | กรอบจังหวัด + drill-down (ข้อมูล ชั้น ป้าย legend รายการในแผง) | done | `tests/provinces.test.js`; harness `dbg-country/region/phuket`; live |
 | P19 | Pictogram บน metric tiles / หัวข้อ / ป้ายจังหวัด (ข้อยกเว้นทดลอง) | done | `tests/provinces.test.js` (contract ↔ manifest ↔ CSS); harness |
 | P21 | โลโก้สถานที่จากชีต research: ทะเบียน ไฟล์ตรวจแล้ว ตำแหน่งในแผง | done (ไฟล์ 33/50; ที่เหลือ N16) | `tests/venue-logos.test.js` (validation, lookup, markup, ทุกไฟล์ในทะเบียนตรง sha256, ทะเบียนบางส่วนต้องประกาศ `meta.pending`); live |
-| P22 | ตรวจ 0.5, release, live attestation, bundle | in progress | `VERIFICATION.md` (0.5), `RELEASE_RECEIPT.json` ใน bundle |
+| P22 | ตรวจ 0.5, release, live attestation, bundle | done | `VERIFICATION.md` (0.5: live checks บน 8be2af5, attestation 122/122 บน 8be2af5 และ b6ac5dd), `RELEASE_RECEIPT.json` ใน bundle |
 | P20 | ตรวจ 0.4, release, live attestation, bundle | done | `VERIFICATION.md` (0.4: unit 92, harness, live 778a32a + 8b2e01b), `RELEASE_RECEIPT.json` ใน bundle |
 
 ## งานถัดไปที่แนะนำ (backlog สำหรับ vibe coding)
