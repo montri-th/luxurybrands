@@ -47,7 +47,7 @@
       "eye preset re-based to pitch 75 / FOV 24 (horizon outside the frame) after the live MapLibre fill-extrusion defect",
       "city tier fades with distance from the focus (feature-state) and sits at 0.22 opacity; dark massing tokens lifted for contrast",
       "neighborhood fit fills the frame (maxZoom 17.5)",
-      "copy pass: สาขา replaces สาขา, no caveats on screen, metric tiles carry legend symbols"
+      "copy pass: สาขา replaces จุดขาย (one point-of-sale record), no caveats on screen, metric tiles carry legend symbols"
     ]
   },
   "rowScopes": {
@@ -96,20 +96,20 @@
         "state": "state.autoFocus = false, state.focusAreaIds = []"
       }
     },
-    "visibleCue": "chart scope caption appends ‘เทียบทุกย่าน ไม่รวมการเลือกย่าน’ whenever rows ≠ scopeRows; counters show ‘ในโฟกัส’ plus a ‘ทั้งหมดในตัวกรอง’ note when focus narrows rows"
+    "visibleCue": "chart scope caption appends ‘ทุกย่าน’ whenever rows ≠ scopeRows; counters are labelled ‘ในโฟกัส’ when focus narrows rows"
   },
   "firstAha": {
     "scope": "baseRows (scopeRows narrowed by a selected neighborhood when present)",
     "ranking": "top three fixed neighborhoods by distinct brand labels, POS count, stable ID",
-    "headlineTemplate": "{sharePercent}% ของแบรนด์ที่เลือกอยู่ใน {areaCount} ย่านนี้",
+    "headlineTemplate": "{sharePercent}% ของแบรนด์อยู่ใน {areaCount} ย่านนี้",
     "numerator": "union of distinct source brand labels assigned to the top neighborhoods",
     "denominator": "all distinct brand labels in baseRows, including rows outside defined neighborhoods",
     "secondaryFinding": "neighborhood with the most exclusive brands within scopeRows (profile-model.js#buildOverviewInsights)",
     "defaultFocus": "auto",
     "defaultCamera": "city preset, fitPitched over the union bounds of the focused areas with every polygon vertex inside the padded viewport (legend ignored in 3D padding)",
-    "mapCue": "แผนที่แสดงรายละเอียดและอาคาร 3 มิติเฉพาะ {areaCount} ย่านนี้ ส่วนอื่นเป็นบริบทที่เงียบลง",
-    "action": "ดูทุกย่าน (clears auto focus → ?areas=all); เปรียบเทียบย่าน",
-    "explicitAction": "สำรวจ {areaCount} ย่านนี้ (shown only when focus mode is none)",
+    "mapCue": "(removed in 0.3.1 — the map itself shows the focus; the legend explains focus vs context)",
+    "action": "ดูทุกย่าน (clears auto focus → ?areas=all); เปรียบเทียบย่าน; area names in the Aha copy are links",
+    "explicitAction": "โฟกัส {areaCount} ย่านนี้ (shown only when focus mode is none)",
     "model": "js/area-insight.js#summarizeAreaInsight",
     "filter": "js/area-insight.js#filterAreaRows",
     "fallbacks": {
@@ -159,7 +159,7 @@
       },
       "venue": {
         "focus": "only the venue's own rows: category pins, logos, host building(s) in map.activeLayer; camera = eye preset framed on the host footprint(s)",
-        "quiet": "other venues' rows are grey context dots; their host buildings are not drawn as data and fall back to quiet/focus massing; SCENE.eye lowers massing opacity (city 0.3, focus 0.62) and buildings between the camera and the venue move to the 0.14-opacity occluder layer"
+        "quiet": "other venues' rows are grey context dots; their host buildings are not drawn as data and fall back to quiet/focus massing; SCENE.eye lowers massing opacity (city 0.16, focus 0.62) and buildings between the camera and the venue move to the 0.14-opacity occluder layer; the city tier also fades to the ground tone with distance from the focus"
       }
     },
     "choropleth": {
@@ -332,7 +332,8 @@
       "method": "start from cameraForBounds (flat), apply preset pitch/bearing/FOV, zoom out in 0.1 steps until every point (polygon vertices when given, else bbox corners) projects inside the padded viewport, then zoom in while they still fit; jumps are computed without rendering and the final camera is animated",
       "padding": "desktop 3D padding ignores the legend; mobile portrait with the sheet open uses plan, then re-frames in 3D on sheet close",
       "bearing": "28° so the Siam → Chit Lom → Phrom Phong axis runs left-to-right on wide screens",
-      "venue": "frameVenue: fitPitched over the venue's host footprint vertices with top headroom 26% (eye) / 12% (model), maxZoom 17.6, minZoom 14.5; falls back to framePoint(zoom 16) when no host building is displayed or on mobile portrait"
+      "venue": "frameVenue: fitPitched over the venue's host footprint vertices with top headroom 20% (eye) / 12% (model), maxZoom 17.6, minZoom 14.5; falls back to framePoint(zoom 16) when no host building is displayed or on mobile portrait",
+      "neighborhood": "fitArea: fitPitched over the area outline vertices, maxZoom 17.5 so the outline fills the frame"
     },
     "maplibre": {
       "version": "5.6.2",
