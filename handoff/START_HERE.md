@@ -6,7 +6,7 @@
 
 เข้าโฟลเดอร์ `source` แล้วรัน `npm test` และ `npm start` เปิด http://127.0.0.1:4173/
 
-ชุดนี้มี source code (ES modules อ่านง่าย มีคอมเมนต์สัญญาทุกโมดูล), datasets, verified assets, 91 unit tests, JSON Schema 1.3.0, acceptance criteria AC01–AC26, สคริปต์สร้าง manifest/bundle และตรวจ live bytes อ่าน `source/AGENTS.md` ก่อนแก้ไข
+ชุดนี้มี source code (ES modules อ่านง่าย มีคอมเมนต์สัญญาทุกโมดูล), datasets, verified assets, 92 unit tests, JSON Schema 1.3.0, acceptance criteria AC01–AC26, สคริปต์สร้าง manifest/bundle และตรวจ live bytes อ่าน `source/AGENTS.md` ก่อนแก้ไข
 
 เว็บจริง: https://montri-th.github.io/luxurybrands/
 Repository: https://github.com/montri-th/luxurybrands

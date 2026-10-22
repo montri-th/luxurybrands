@@ -37,7 +37,7 @@
   ],
   "validation": {
     "status": "release 0.4 verification recorded in handoff/VERIFICATION.md",
-    "unitTests": 91,
+    "unitTests": 92,
     "renderedHarness": "Playwright + vendored MapLibre + stub TileJSON + synthetic OpenMapTiles-schema tiles; 1280×800 and 390×844; light and dark",
     "liveChecks": "see handoff/VERIFICATION.md (0.4 section) — real-tile look confirmed only there",
     "scope": "Applied LDS assets, fonts and actual rendered interfaces. No blanket LDS, CVD, native-device or market-completeness claim."

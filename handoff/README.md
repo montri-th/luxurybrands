@@ -24,7 +24,7 @@ Live: [Luxury Brands](https://montri-th.github.io/luxurybrands/) · Source: [Git
 
 ```sh
 npm start      # http://127.0.0.1:4173/
-npm test       # 91 unit tests บนข้อมูลจริงและ fixture tile
+npm test       # 92 unit tests บนข้อมูลจริงและ fixture tile
 ```
 
 เป็น static site ไม่มี build step ไม่ต้อง `npm install` ต้องมี Node ≥ 20 และ Python 3 แผนที่ต้องเข้าถึง unpkg.com (MapLibre) และ tiles.openfreemap.org (tiles + glyphs; basemap สร้างเองใน `js/map-style.js`) ส่วนกราฟไม่ใช้ไลบรารีภายนอก ถ้าเครื่องทดสอบถูกบล็อก ใช้ harness แบบ stub tiles ใน VERIFICATION การเปิด `index.html` เป็นไฟล์โดยตรงจะนำไปเว็บสาธารณะ

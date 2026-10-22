@@ -56,7 +56,7 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | P17 | อาคารของสถานที่มองเห็นเสมอ: ติดตั้ง host ก่อนมวลอาคาร + venue x-ray + กล้อง fit ทั้งอาคาร | done | `tests/venue-xray.test.js` (geometry, scissored clear, draw-order contract); harness `dbg-xray-*`; live |
 | P18 | กรอบจังหวัด + drill-down (ข้อมูล ชั้น ป้าย legend รายการในแผง) | done | `tests/provinces.test.js`; harness `dbg-country/region/phuket`; live |
 | P19 | Pictogram บน metric tiles / หัวข้อ / ป้ายจังหวัด (ข้อยกเว้นทดลอง) | done | `tests/provinces.test.js` (contract ↔ manifest ↔ CSS); harness |
-| P20 | ตรวจ 0.4, release, live attestation, bundle | in progress | `VERIFICATION.md` (0.4), `RELEASE_RECEIPT.json` ใน bundle |
+| P20 | ตรวจ 0.4, release, live attestation, bundle | done | `VERIFICATION.md` (0.4: unit 92, harness, live 778a32a + 8b2e01b), `RELEASE_RECEIPT.json` ใน bundle |
 
 ## งานถัดไปที่แนะนำ (backlog สำหรับ vibe coding)
 
@@ -111,7 +111,7 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 
 ```sh
 npm start        # http://127.0.0.1:4173/
-npm test         # 91 unit tests บนข้อมูลจริงและ fixture tile
+npm test         # 92 unit tests บนข้อมูลจริงและ fixture tile
 npm run handoff:manifest   # เขียน handoff/handoff-manifest.json จาก bytes จริง
 npm run handoff:bundle     # + dist/CityMETER-Luxury-Brands-Developer-Handoff.zip
 npm run verify:live        # เทียบ SHA-256 ของไฟล์บน GitHub Pages กับ manifest
