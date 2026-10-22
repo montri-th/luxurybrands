@@ -249,15 +249,17 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
 
 /* Neighborhood labels */
 #neighborhood-labels { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
-.neighborhood-label { position: absolute; transform: translate(-50%, -50%); pointer-events: auto; display: inline-flex; align-items: center; gap: 6px; min-height: 0; padding: 3px 4px 3px 9px; font: 600 12px/1.3 var(--font-body); color: var(--text-primary); background: color-mix(in srgb, var(--surface-card) 94%, transparent); border: 1px solid var(--border-emphasis); border-radius: 999px; max-width: 190px; white-space: nowrap; }
+.neighborhood-label { position: absolute; transform: translate(-50%, -50%); pointer-events: auto; display: inline-flex; align-items: center; gap: 7px; min-height: 0; padding: 4px 5px 4px 10px; font: 700 12px/1.3 var(--font-display); letter-spacing: 0; color: var(--area-label-ink); background: var(--area-label-bg); border: 1px solid var(--area-label-border); border-radius: 6px; max-width: 200px; white-space: nowrap; box-shadow: 0 1px 2px rgba(0, 0, 0, .18); }
+.neighborhood-label::before { content: ""; width: 8px; height: 8px; flex: 0 0 8px; border: 1.5px solid var(--area-label-ink); border-radius: 2px; opacity: .85; }
 .neighborhood-label .label-name { overflow: hidden; text-overflow: ellipsis; }
-.neighborhood-label .label-count { font-size: 11px; min-width: 22px; padding: 1px 6px; border-radius: 999px; background: var(--text-primary); color: var(--surface-card); text-align: center; }
-.neighborhood-label.is-zero .label-count { background: transparent; color: var(--text-metadata); border: 1.5px solid var(--data-zero-outline); }
+.neighborhood-label .label-count { font: 400 11px/1.3 var(--font-mono); min-width: 22px; padding: 1px 6px; border-radius: 4px; background: var(--area-label-ink); color: var(--area-label-bg); text-align: center; }
+.neighborhood-label.is-zero .label-count { background: transparent; color: var(--area-label-ink); border: 1.5px solid var(--data-zero-outline); }
 .neighborhood-label:hover { border-color: var(--map-hover-stroke); }
 .neighborhood-label.is-selected { border: 2px solid var(--map-selected-stroke); }
-/* Quiet labels for areas outside the focused part: smaller, metadata ink, no solid badge. */
-.neighborhood-label.is-quiet { font-weight: 400; font-size: 11px; color: var(--text-metadata); border-color: var(--border-default); background: color-mix(in srgb, var(--surface-card) 80%, transparent); }
-.neighborhood-label.is-quiet .label-count { background: transparent; color: var(--text-metadata); border: 1px solid var(--border-default); }
+.neighborhood-label:focus-visible { outline: 2px solid var(--interaction-focus-ring); outline-offset: 2px; }
+.neighborhood-label.is-quiet { font-weight: 600; font-size: 11px; opacity: .72; box-shadow: none; }
+.neighborhood-label.is-quiet::before { opacity: .6; }
+.neighborhood-label.is-quiet .label-count { background: transparent; color: var(--area-label-ink); border: 1px solid var(--area-label-ink); opacity: .8; }
 
 /* Pins */
 .store-pin-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 3; overflow: hidden; }

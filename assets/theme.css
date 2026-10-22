@@ -121,6 +121,10 @@
   --basemap-sky: #F6F7F3;
   --basemap-horizon: #DCE1DD;
   --basemap-fog: #EEF1EE;
+  /* Neighborhood (ย่าน) label chip — ink chip so it never reads as a brand logo box */
+  --area-label-bg: #182327;
+  --area-label-ink: #F6F7F3;
+  --area-label-border: #182327;
 }
 
 :root[data-theme="dark"] {
@@ -216,4 +220,7 @@
   --basemap-sky: #0D1418;
   --basemap-horizon: #172126;
   --basemap-fog: #11191D;
+  --area-label-bg: #182327;
+  --area-label-ink: #F6F7F3;
+  --area-label-border: #8D9D99;
 }

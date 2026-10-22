@@ -47,7 +47,8 @@
       "eye preset re-based to pitch 75 / FOV 24 (horizon outside the frame) after the live MapLibre fill-extrusion defect",
       "city tier fades with distance from the focus (feature-state) and sits at 0.22 opacity; dark massing tokens lifted for contrast",
       "neighborhood fit fills the frame (maxZoom 17.5)",
-      "copy pass: สาขา replaces จุดขาย (one point-of-sale record), no caveats on screen, metric tiles carry legend symbols"
+      "copy pass: สาขา replaces จุดขาย (one point-of-sale record), no caveats on screen, metric tiles carry legend symbols",
+      "neighborhood labels restyled as ink chips distinct from logo boxes (owner feedback 2026-10-22)"
     ]
   },
   "rowScopes": {
@@ -176,7 +177,8 @@
     },
     "hostBuildings": "map.activeLayer role (light #347DA8 / dark #65B6DB), only for rows in focus, extrusion zoom ≥ 14, outline zoom ≥ 12, visible in both plan and 3D",
     "logos": "zoom ≥ 14, rows in focus only, ≤ 250 (js/pins.js LOGO_MIN_ZOOM, MAX_LOGOS)",
-    "detailRows": "js/app.js#detailRows: venueLevel() ? rows of the current venue (mallId, else venue label) : rows"
+    "detailRows": "js/app.js#detailRows: venueLevel() ? rows of the current venue (mallId, else venue label) : rows",
+    "areaLabels": "ink chips (--area-label-bg/ink/border, display font, area square glyph, light count badge) so they never read as brand logo boxes; quiet = 72% opacity; hidden below zoom 11.5"
   },
   "basemapContract": {
     "generator": "js/map-style.js#buildMapStyle(theme, {palette, tileJSON, glyphs}) — a MapLibre style v8 object built at runtime; no hosted style URL",

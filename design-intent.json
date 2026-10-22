@@ -59,7 +59,8 @@
     "venues": "source building footprints/parts with explicit height provenance in map.activeLayer; unknown heights use a marked 3 m display slab; visible in plan and 3D",
     "neighborhoods": "frozen named analytical road/river envelopes with production province codes; no arbitrary radius components; no claimed consumer consensus",
     "breadcrumb": "ประเทศไทย › จังหวัด › ย่าน › สถานที่; province codes BKK PKT CMI SPK NBI CBI PTE UDN NMA as observed on landometer.com 2026-10-22; venue id = CityMETER Shopping Center id; ย่าน of a venue by point-in-polygon; store is the heading, not a crumb",
-    "venueLevel": "only the venue's rows carry detail (blue host, category pins, logos); other venues' buildings fall back to quiet massing and their pins to grey context dots; SCENE.eye lowers massing opacity (city 0.16 / focus 0.62) and buildings standing between the camera and the venue are drawn at 0.14 opacity; the city tier is 0.22 elsewhere and fades to the ground tone by distance from the focus (500 → 2200 m)"
+    "venueLevel": "only the venue's rows carry detail (blue host, category pins, logos); other venues' buildings fall back to quiet massing and their pins to grey context dots; SCENE.eye lowers massing opacity (city 0.16 / focus 0.62) and buildings standing between the camera and the venue are drawn at 0.14 opacity; the city tier is 0.22 elsewhere and fades to the ground tone by distance from the focus (500 → 2200 m)",
+    "areaLabels": "ink chips (--area-label-* tokens, display font, square area glyph, light count badge) clearly distinct from the white logo boxes; quiet labels at 72% opacity"
   },
   "brandIdentity": {
     "sources": "155 official brand sources; 13 retailers; source artwork embedded unchanged, outer whitespace cropped in viewport only",
