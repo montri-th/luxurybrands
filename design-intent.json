@@ -1,6 +1,6 @@
 {
   "artifact": "CityMETER Luxury Brands — 3D-first, neighborhood-first retail presence map",
-  "productVersion": "0.4.0",
+  "productVersion": "0.5.0",
   "updatedOn": "2026-10-22",
   "ldsVersion": "0.9.7",
   "release": "v0.9.7-owner.1",
@@ -36,10 +36,10 @@
     "empty, map-failure and load-error paths with actions"
   ],
   "validation": {
-    "status": "release 0.4 verification recorded in handoff/VERIFICATION.md",
-    "unitTests": 92,
+    "status": "release 0.5 verification recorded in handoff/VERIFICATION.md",
+    "unitTests": 96,
     "renderedHarness": "Playwright + vendored MapLibre + stub TileJSON + synthetic OpenMapTiles-schema tiles; 1280×800 and 390×844; light and dark",
-    "liveChecks": "see handoff/VERIFICATION.md (0.4 section) — real-tile look confirmed only there",
+    "liveChecks": "see handoff/VERIFICATION.md (0.5 and 0.4 sections) — real-tile look confirmed only there",
     "scope": "Applied LDS assets, fonts and actual rendered interfaces. No blanket LDS, CVD, native-device or market-completeness claim."
   },
   "layoutContract": {
@@ -73,5 +73,6 @@
   },
   "copy": "short natural Thai without on-screen caveats: แบรนด์ / สาขา (one point-of-sale record) / สถานที่ / ย่าน; legend symbols on metric tiles",
   "countryView": "provinces holding brands are framed and filled by their own count classes below zoom 9 (data/provinces.geojson, OpenGISData-Thailand CC BY 4.0), with ink-chip labels and a panel list; each is a drill-down into the จังหวัด filter",
-  "venueVisibility": "host extrusion installed before every massing tier (MapLibre depth order = draw order) and drawn again on top by the venue x-ray custom layer (scissored depth clear) — visible and clickable at any pan, pitch or zoom"
+  "venueVisibility": "host extrusion installed before every massing tier (MapLibre depth order = draw order) and drawn again on top by the venue x-ray custom layer (scissored depth clear) — visible and clickable at any pan, pitch or zoom",
+  "venueLogos": "identity support from the research sheet registry (50 files, verified sha256) in the venue heading, venue rows and store facts; the venue name stays the record"
 }

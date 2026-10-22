@@ -16,6 +16,7 @@
  */
 import {SEGMENTS, SEGMENT_SHORT, hasPoint} from './model.js';
 import {brandLogoMarkup, getBrandLogo} from './brand-logos.js';
+import {venueLogoMarkup, getVenueLogo} from './venue-logos.js';
 
 const NUMBER = new Intl.NumberFormat('th-TH', {maximumFractionDigits: 0});
 export const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
@@ -112,7 +113,7 @@ export function renderOverview({insight, overview, summary, focusMode = 'auto', 
     ${overview.outsidePos ? `<p class="hint">อีก ${num(overview.outsidePos)} สาขาอยู่นอกย่านที่นิยามไว้</p>` : ''}
   </section>` : (venues.length ? `<section class="panel-section" aria-labelledby="venue-rank-title">
     <div class="section-heading">${heading('venue', 'สถานที่เรียงตามแบรนด์', 'venue-rank-title')}<span class="hint">${num(venues.length)} แห่ง</span></div>
-    <ul class="venue-list">${venues.slice(0, 10).map(c => `<li><button type="button" class="venue-row" data-action="select-venue" data-id="${esc(c.mallId)}" data-value="${esc(c.venue)}" aria-label="${esc(c.name)} ${num(c.brands)} แบรนด์ ${num(c.pos)} สาขา"><span class="venue-name">${esc(c.name)}<small>${esc(c.type || c.province || 'ทำเล')}</small></span><span class="venue-count data-number">${num(c.brands)}<small>แบรนด์</small></span></button></li>`).join('')}</ul>
+    <ul class="venue-list">${venues.slice(0, 10).map(c => `<li><button type="button" class="venue-row${getVenueLogo({mallId: c.mallId, venue: c.venue}) ? ' has-logo' : ''}" data-action="select-venue" data-id="${esc(c.mallId)}" data-value="${esc(c.venue)}" aria-label="${esc(c.name)} ${num(c.brands)} แบรนด์ ${num(c.pos)} สาขา">${venueLogoMarkup({mallId: c.mallId, venue: c.venue}, {size: 'sm'})}<span class="venue-name">${esc(c.name)}<small>${esc(c.type || c.province || 'ทำเล')}</small></span><span class="venue-count data-number">${num(c.brands)}<small>แบรนด์</small></span></button></li>`).join('')}</ul>
   </section>` : '');
   // Country level: the provinces that hold brands, each a drill-down (the map shows them as frames).
   const provinceList = provinces.length > 1 ? `<section class="panel-section" aria-labelledby="province-title">
@@ -136,8 +137,8 @@ export function renderNeighborhood(profile) {
   const p = profile;
   const statusText = p.status === 'desk-reviewed' ? 'ตรวจบนโต๊ะแล้ว' : p.status === 'candidate' ? 'ขอบเขตรอทบทวน' : p.status;
   const venues = p.venues.length ? `<section class="panel-section"><div class="section-heading">${heading('venue', 'สถานที่ในย่าน')}<span class="hint">${num(p.venues.length)} แห่ง</span></div>
-    <ul class="venue-list">${p.venues.slice(0, 12).map(v => `<li><button type="button" class="venue-row" data-action="select-venue" data-id="${esc(v.mallId)}" data-value="${esc(v.name)}" aria-label="${esc(v.name)} ${num(v.brands)} แบรนด์ ${num(v.pos)} สาขา">
-      <span class="venue-name">${esc(v.name)}<small>${esc(v.type || (v.mallId ? 'ศูนย์การค้า' : 'ทำเล / อาคาร'))}</small></span>
+    <ul class="venue-list">${p.venues.slice(0, 12).map(v => `<li><button type="button" class="venue-row${getVenueLogo({mallId: v.mallId, venue: v.name}) ? ' has-logo' : ''}" data-action="select-venue" data-id="${esc(v.mallId)}" data-value="${esc(v.name)}" aria-label="${esc(v.name)} ${num(v.brands)} แบรนด์ ${num(v.pos)} สาขา">
+      ${venueLogoMarkup({mallId: v.mallId, venue: v.name}, {size: 'sm'})}<span class="venue-name">${esc(v.name)}<small>${esc(v.type || (v.mallId ? 'ศูนย์การค้า' : 'ทำเล / อาคาร'))}</small></span>
       <span class="venue-count data-number">${num(v.brands)}<small>แบรนด์</small></span></button></li>`).join('')}</ul>
     ${p.venues.length > 12 ? `<p class="hint">+ อีก ${num(p.venues.length - 12)} แห่งในตาราง</p>` : ''}</section>` : '';
   const chips = (list, kind) => list.map(b => {
@@ -171,9 +172,11 @@ export function renderNeighborhood(profile) {
 export function renderVenue(v) {
   if (!v) return '';
   const rows = v.rows.map(r => `<li><button type="button" class="brand-row" data-action="select-store" data-id="${esc(r.id)}">${brandLogoMarkup(r.brand)}<span><strong>${esc(r.brand)}</strong><br><span class="small muted">${esc(r.name || r.venue)}</span></span></button></li>`).join('');
-  return `<section class="detail-head">
+  const logo = getVenueLogo({mallId: v.mallId, venue: v.name});
+  return `<section class="detail-head venue${logo ? ' has-venue-logo' : ''}">
       <button type="button" class="btn quiet back" data-action="back">กลับ</button>
-      <p class="eyebrow">${esc(v.type || 'สถานที่')}${v.area ? ` · <button type="button" class="link-button" data-action="select-area" data-id="${esc(v.area.id)}">${esc(v.area.name)}</button>` : ''}</p>
+      ${logo ? venueLogoMarkup({mallId: v.mallId, venue: v.name}, {size: 'lg', className: 'detail-venue-logo', decorative: false}) : ''}
+      <p class="eyebrow">${esc(v.type || 'สถานที่')}${v.area ? ` · <button type="button" class="link-button" data-action="select-area" data-id="${esc(v.area.id)}">${esc(v.area.name)}</button>` : ''}${logo?.roleLabel ? ` · <span class="venue-logo-role">${esc(logo.roleLabel)}</span>` : ''}</p>
       <h2>${esc(v.name)}</h2>${v.nameTh ? `<p class="subtle">${esc(v.nameTh)} · ${esc(v.province)}</p>` : `<p class="subtle">${esc(v.province)}</p>`}
       <div class="metrics compact">${metricTile(v.brands, 'แบรนด์', 'brand')}${metricTile(v.pos, 'สาขา', 'store')}${v.gla ? metricTile(v.gla, 'GLA ตร.ม.', 'gla') : ''}</div>
       ${v.source ? `<p class="links">${link(v.source, 'ศูนย์การค้านี้ใน CityMETER')}</p>` : ''}
@@ -198,7 +201,7 @@ export function renderStore(d) {
       <p class="subtle">${esc(r.name || r.venue)}</p>
       <p class="store-status">${statusPill(d.status)}</p>
       <dl class="facts">
-        <dt>สถานที่</dt><dd>${d.center ? `<button type="button" class="link-button" data-action="select-venue" data-id="${esc(r.mallId)}" data-value="${esc(r.venue)}">${esc(r.venue)}</button>` : esc(r.venue)} · ${esc(r.province)}</dd>
+        <dt>สถานที่</dt><dd class="fact-venue">${venueLogoMarkup({mallId: r.mallId, venue: r.venue}, {size: 'md'})}<span>${d.center ? `<button type="button" class="link-button" data-action="select-venue" data-id="${esc(r.mallId)}" data-value="${esc(r.venue)}">${esc(r.venue)}</button>` : esc(r.venue)} · ${esc(r.province)}</span></dd>
         <dt>ย่าน</dt><dd>${d.area ? `<button type="button" class="link-button" data-action="select-area" data-id="${esc(d.area.id)}">${esc(d.area.name)}</button>` : 'นอกย่านที่นิยามไว้'}</dd>
         <dt>รูปแบบ</dt><dd>${esc(d.channel)}</dd>
         <dt>พิกัด</dt><dd><span class="data-number">${esc(coords)}</span><br><span class="hint" title="${esc(d.geometry.note)}">${esc(d.geometry.label)}${d.coLocated ? ` · ร่วมพิกัดกับอีก ${num(d.coLocated)} สาขา` : ''}</span></dd>

@@ -1,6 +1,6 @@
 # CityMETER Luxury Brands — Product Brief
 
-รุ่นส่งต่อ 0.4 · ปรับเอกสาร 22 ตุลาคม 2569 · ข้อมูลตรวจถึง 21 ตุลาคม 2569 · ใช้คู่กับ [product-brief.json](product-brief.json)
+รุ่นส่งต่อ 0.5 · ปรับเอกสาร 22 ตุลาคม 2569 · ข้อมูลตรวจถึง 21 ตุลาคม 2569 · ใช้คู่กับ [product-brief.json](product-brief.json)
 
 เอกสารนี้กำหนดประสบการณ์ที่ทีมพัฒนาต้องรักษาและต่อยอด เจตนาผลิตภัณฑ์และ winning strategy อยู่ใน [PRODUCT_STATEMENT.md](../PRODUCT_STATEMENT.md) (+ [product-statement.json](product-statement.json)); brief ฉบับนี้คือสัญญาของหน้าจอรุ่นปัจจุบัน หาก machine contract กับเอกสารนี้ขัดกัน ให้ถือ JSON เป็นหลักและแก้ทั้งสองฉบับพร้อมกัน
 
@@ -23,6 +23,12 @@
 | อาคารของสถานที่ยังถูกอาคารอื่นบัง ต้องมองเห็นและกดได้เสมอ ไม่ว่าจะ pan / tilt / zoom | สาเหตุ: MapLibre ให้ชั้น fill-extrusion ทุกชั้นทดสอบความลึกร่วมกัน และชั้นโปร่งใสยังเขียน depth → อาคารบริบทที่โปร่ง 84 % ยังตัดอาคารของสถานที่ที่วาดทีหลังทิ้งได้ แก้สองชั้น: (1) ติดตั้งชั้นอาคารของสถานที่ **ก่อน** มวลอาคารทุกชั้น (ลำดับวาด = ลำดับความลึก) (2) ชั้น **venue x-ray** (custom layer) วาดรูปทรงของสถานที่ทับทุกอย่างในรอบ 3D โดยล้าง depth เฉพาะกรอบของสถานที่แล้ววาดใหม่ด้วย depth ของตัวเอง — แนวทาง “see-through selection” ของ 3D viewer (three.js depthTest=false, Cesium disableDepthTestDistance) การกดยังใช้ชั้น fill-extrusion เดิมบวก hit-test ของ x-ray เอง (ทุกจุดของรูปทรง); กล้องจัดกรอบทั้งอาคารรวมหลังคา | `js/venue-xray.js`, `js/vendor/earcut.js`, `js/app.js` (installSpatialLayers, frameVenue), `js/camera.js` (projectPoint, apply:false) |
 | ดูทั้งประเทศแล้วแทบไม่เห็นอะไร ต้องมีกรอบจังหวัดที่มีข้อมูลให้เจาะลง | กรอบจังหวัดของ 9 จังหวัดที่มีสาขา: ต่ำกว่า zoom 9 ระบายสีด้วย `count` (แบรนด์ไม่ซ้ำต่อจังหวัด ระดับของตัวเอง legend สลับตาม) สูงกว่านั้นเหลือเส้นกรอบจนถึง zoom 12; ป้ายชิปจังหวัดกดได้; รายการ “จังหวัดที่มีแบรนด์” ในแผง; กดแล้ว = ตัวกรองจังหวัด + breadcrumb + กล้องไปที่ข้อมูลของจังหวัด | `data/provinces.geojson`, `js/provinces.js`, `js/map-layers.js` (installAreaLabels), `js/app.js` (selectProvince, renderLegend), `scripts/extract-provinces.mjs` |
 | pictogram จริงบน metric tiles (ทดลองที่งานนี้ก่อน แล้วค่อยปรับ LDS) | ชุดย่อย Material Symbols Rounded 8 glyph (FILL 0 / wght 300) แยกไฟล์จาก nav-7 ที่อนุมัติ (bytes เดิมไม่เปลี่ยน): แบรนด์ diamond · สาขา storefront · สถานที่ local_mall · ย่าน map · จังหวัด location_city · เฉพาะย่าน star · GLA square_foot · กลุ่มแบรนด์ category ใช้บน metric tiles หัวข้อส่วนในแผง และป้ายจังหวัด ซ่อนจนกว่าฟอนต์โหลด ข้อความยังเป็นตัวความหมาย | `assets/icons/material-pictogram-300.woff2` (+ `.json`), `js/navigation.js` (PICTOGRAM_CONTRACT), `js/panel.js` (metricTile, heading), `styles.css`, `scripts/build-pictogram-font.py` |
+
+## สิ่งที่เปลี่ยนในรุ่น 0.5 (โลโก้สถานที่จากชีต research)
+
+| คำสั่ง | สิ่งที่ทำ | ที่อยู่ในโค้ด |
+|---|---|---|
+| เมื่อทะเบียนโลโก้ venue ในชีตพร้อม ให้นำมาใช้บนเว็บ | ทะเบียน `data/venue-logos.json` (50 ไฟล์ · 81 ชื่อ venue · 39 ศูนย์การค้า) + ไฟล์ใน `assets/venue-logos/` ตรวจ sha256 ครบ; โลโก้แสดงที่หัวแผงสถานที่ (ขนาดใหญ่ + บทบาทเมื่อเป็นโลโก้โครงการแม่/เครือ), แถวรายการสถานที่ (ภาพรวม/ย่าน) และช่อง “สถานที่” ของร้าน; ค้นหาด้วย Shopping Center id ก่อน แล้วชื่อ venue ตรงตัว ไม่ fuzzy; ชื่อสถานที่ยังเป็นตัวระบุหลัก | `js/venue-logos.js`, `js/panel.js`, `styles.css`, `scripts/build-venue-logos.py`, `assets/venue-logos-manifest.json` |
 
 ## ผลิตภัณฑ์ช่วยตัดสินใจอะไร
 
@@ -47,6 +53,7 @@
 | อาคารที่ตั้ง | `data/venue-buildings.geojson` | รูปทรงอาคารที่ตั้งและ building parts พร้อมที่มาความสูง |
 | มวลอาคารเมือง | OpenFreeMap tiles (`building` source-layer) | บริบท 3 มิติทั้งเมือง (quiet) และวัตถุดิบของอาคารมุมโค้งในย่านโฟกัส; ไม่ใช่ข้อมูลของชุดนี้ |
 | อัตลักษณ์แบรนด์ | `data/brand-logos.json`, `assets/brand-logos.svg` | โลโก้ต้นฉบับที่อนุมัติและ alias |
+| อัตลักษณ์สถานที่ | `data/venue-logos.json`, `assets/venue-logos/` | โลโก้ศูนย์การค้า/ห้าง/โครงการ 50 ไฟล์ พร้อมบทบาท (เฉพาะสถานที่ / โครงการแม่ / แบนเนอร์เครือ); ไม่เปลี่ยนตัวตนหรือข้อมูลร้าน |
 
 ค่าเริ่มต้นใช้ cohort `refresh` (market_refresh ยกเว้น permanently closed และ closure_conflict_review) ประวัติเดิมและรายการปิดถาวรยังเลือกดูได้ รายการที่ไม่มีพิกัดอยู่ในตารางและจำนวน แต่ไม่สร้างตำแหน่งขึ้นใหม่
 
@@ -169,6 +176,7 @@ Area focus มีสามโหมด (`state.focusAreaIds`, `state.autoFocus`)
 | คำอธิบายแผนที่ (ระดับ) | < zoom 9 “จังหวัด · จำนวนแบรนด์” (ระดับของจังหวัด) · ≥ 9 “ย่าน · จำนวนแบรนด์”; ซ่อนช่วงค่าเมื่อ zoom ≥ 14.5 |
 | Pictogram | metric tiles, หัวข้อส่วน และป้ายจังหวัดใช้ชุดย่อย Material Symbols Rounded 8 glyph (`PICTOGRAM_CONTRACT`); ตกแต่ง (aria-hidden) ข้อความคือความหมาย; ซ่อนจนกว่าฟอนต์โหลด (`pictograms-ready`) |
 | รายการจังหวัด | แผงภาพรวมระดับประเทศ: “จังหวัดที่มีแบรนด์” เรียงตามแบรนด์ พร้อม swatch ระดับสี กด = เจาะลงจังหวัด |
+| โลโก้สถานที่ | กล่องพื้นรอง (สีจากทะเบียน) ที่หัวแผงสถานที่ (56 px), แถวสถานที่ (28 px), ช่องสถานที่ของร้าน (36 px); alt ว่างเมื่อตกแต่ง; บทบาทโลโก้แสดงเป็นข้อความเมื่อไม่ใช่โลโก้เฉพาะสถานที่; ไม่มีโลโก้ = ไม่มีกล่อง |
 | คำอธิบายแผนที่ | ช่วงค่า choropleth, หมุด, อาคารที่ตั้ง, อาคารโฟกัส/บริบท (ซ่อนบริบทเมื่อ 2D), สีประเภท; ซ่อนช่วงค่าเมื่อ zoom ≥ 14.5 |
 | ตาราง | overlay เหนือถาดกราฟ, คอลัมน์ย่าน จังหวัด (ชื่อไทย) สถานะจริง, ลิงก์หลักฐาน, ไม่มี CSV |
 | ข้อความ | ไม่มี caveat banner, research badge, workflow residue; คงสถานะปิดจริง วันที่ แหล่งข้อมูล หน่วยนับ |

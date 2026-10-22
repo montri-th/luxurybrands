@@ -1,8 +1,8 @@
 # CityMETER Luxury Brands — Implementation Plan
 
-รุ่นส่งต่อ 0.4 · ปรับเอกสาร 22 ตุลาคม 2569 · ข้อมูลตรวจถึง 21 ตุลาคม 2569 · ใช้คู่กับ [PRODUCT_BRIEF.md](PRODUCT_BRIEF.md), [PRODUCT_STATEMENT.md](../PRODUCT_STATEMENT.md) และ [implementation-plan.json](implementation-plan.json)
+รุ่นส่งต่อ 0.5 · ปรับเอกสาร 22 ตุลาคม 2569 · ข้อมูลตรวจถึง 21 ตุลาคม 2569 · ใช้คู่กับ [PRODUCT_BRIEF.md](PRODUCT_BRIEF.md), [PRODUCT_STATEMENT.md](../PRODUCT_STATEMENT.md) และ [implementation-plan.json](implementation-plan.json)
 
-รุ่น 0.3 เปลี่ยนประสบการณ์แรกเป็น **เมือง 3 มิติที่โฟกัส 3 ย่านอันดับต้นทันที** บน basemap กระดาษที่สร้างเอง มีมวลอาคารสองชั้น (เมืองเงียบ / ย่านโฟกัสมุมโค้ง) กล้องแบบโมเดลเมืองและมุมสถาปนิก breadcrumb ที่ใช้รหัสจังหวัดของ production และตาราง matrix ช่องเท่ากัน พร้อม Product Statement ที่เขียนใหม่เป็น winning strategy รุ่น 0.4 (รอบสองของวันเดียวกัน) แก้ให้อาคารของสถานที่มองเห็นและกดได้เสมอ (ลำดับวาดของชั้น 3D + venue x-ray) เพิ่มกรอบจังหวัดพร้อม drill-down สำหรับมุมมองทั้งประเทศ และ pictogram จริงบน metric tiles (ข้อยกเว้นทดลองจาก LDS nav-7) เป้าหมายของแผนนี้คือให้ developer หรือ coding agent รับช่วงต่อได้โดยไม่ต้องเดาสถานะ และรู้ว่าอะไรคือ display-only กับอะไรคือข้อมูล
+รุ่น 0.3 เปลี่ยนประสบการณ์แรกเป็น **เมือง 3 มิติที่โฟกัส 3 ย่านอันดับต้นทันที** บน basemap กระดาษที่สร้างเอง มีมวลอาคารสองชั้น (เมืองเงียบ / ย่านโฟกัสมุมโค้ง) กล้องแบบโมเดลเมืองและมุมสถาปนิก breadcrumb ที่ใช้รหัสจังหวัดของ production และตาราง matrix ช่องเท่ากัน พร้อม Product Statement ที่เขียนใหม่เป็น winning strategy รุ่น 0.4 (รอบสองของวันเดียวกัน) แก้ให้อาคารของสถานที่มองเห็นและกดได้เสมอ (ลำดับวาดของชั้น 3D + venue x-ray) เพิ่มกรอบจังหวัดพร้อม drill-down สำหรับมุมมองทั้งประเทศ และ pictogram จริงบน metric tiles (ข้อยกเว้นทดลองจาก LDS nav-7) รุ่น 0.5 นำโลโก้สถานที่จากทะเบียนของชีต research มาใช้ในแผง รายการ และรายละเอียดร้าน เป้าหมายของแผนนี้คือให้ developer หรือ coding agent รับช่วงต่อได้โดยไม่ต้องเดาสถานะ และรู้ว่าอะไรคือ display-only กับอะไรคือข้อมูล
 
 ## สถาปัตยกรรมที่มีจริง
 
@@ -38,6 +38,8 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | `js/navigation.js` | approved icons, `PICTOGRAM_CONTRACT`, toolbar titles, help dialog | visible labels, Escape, focus return; pictogram แสดงเมื่อฟอนต์โหลด (`pictograms-ready`) |
 | `styles.css`, `logos.css`, `navigation.css`, `assets/theme.css` | layout/panel/map chrome/charts/crumbs/toolbar, logo vars, icons/help, LDS tokens + **basemap tokens** | token-only colours |
 | `scripts/build-handoff.mjs`, `scripts/verify-live.mjs` | manifest + ZIP, live byte attestation | hash จาก bytes จริง; ตรวจ live ก่อนอ้างว่าเผยแพร่ |
+| `js/venue-logos.js` | **ใหม่ 0.5** ทะเบียนโลโก้สถานที่: ตรวจ record, ค้นด้วย center id / ชื่อตรงตัว, markup กล่องพื้นรอง + บทบาท | ไม่ fuzzy; ชื่อสถานที่ยังเป็นตัวตน; ทะเบียนหายแค่ไม่มีกล่อง |
+| `scripts/build-venue-logos.py` | สร้าง `data/venue-logos.json`, `assets/venue-logos/`, `assets/venue-logos-manifest.json` จาก manifest ของชีต | ตรวจ sha256 ก่อนคัดลอก; วิเคราะห์พื้นรองจากงานศิลป์ |
 | `scripts/extract-provinces.mjs`, `scripts/build-pictogram-font.py` | สร้าง `data/provinces.geojson` (จาก OpenGISData-Thailand) และฟอนต์ pictogram 8 glyph (จาก Material Symbols Rounded) | บันทึก provenance (commit, sha256, วันที่) ใน metadata/manifest |
 
 ## แผนงานและสถานะ
@@ -56,6 +58,8 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | P17 | อาคารของสถานที่มองเห็นเสมอ: ติดตั้ง host ก่อนมวลอาคาร + venue x-ray + กล้อง fit ทั้งอาคาร | done | `tests/venue-xray.test.js` (geometry, scissored clear, draw-order contract); harness `dbg-xray-*`; live |
 | P18 | กรอบจังหวัด + drill-down (ข้อมูล ชั้น ป้าย legend รายการในแผง) | done | `tests/provinces.test.js`; harness `dbg-country/region/phuket`; live |
 | P19 | Pictogram บน metric tiles / หัวข้อ / ป้ายจังหวัด (ข้อยกเว้นทดลอง) | done | `tests/provinces.test.js` (contract ↔ manifest ↔ CSS); harness |
+| P21 | โลโก้สถานที่จากชีต research: ทะเบียน ไฟล์ตรวจแล้ว ตำแหน่งในแผง | done | `tests/venue-logos.test.js` (validation, lookup, markup, ทุกไฟล์ตรง sha256); live |
+| P22 | ตรวจ 0.5, release, live attestation, bundle | in progress | `VERIFICATION.md` (0.5), `RELEASE_RECEIPT.json` ใน bundle |
 | P20 | ตรวจ 0.4, release, live attestation, bundle | done | `VERIFICATION.md` (0.4: unit 92, harness, live 778a32a + 8b2e01b), `RELEASE_RECEIPT.json` ใน bundle |
 
 ## งานถัดไปที่แนะนำ (backlog สำหรับ vibe coding)
@@ -76,6 +80,7 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | N12 | ลงทะเบียนชุด pictogram 8 glyph (บทบาท สี) ใน LDS เมื่อเจ้าของอนุมัติผลทดลอง แล้วยกเลิกข้อยกเว้น | design system owner |
 | N13 | แทนกรอบจังหวัดจาก OpenGISData-Thailand ด้วยขอบเขตจังหวัดของ CityMETER production (แหล่งเดียวกับ `/v3/citymeter/{code}`) และต่อการกดกรอบเข้ากับ route ของ production | platform + data owner |
 | N14 | ขยาย x-ray ไปยังอาคารของร้านที่เลือกในระดับย่าน และ flow sheet บนมือถือ; วัดประสิทธิภาพ scissored clear บน GPU ต่ำ | frontend |
+| N15 | โลโก้สถานที่บนแผนที่ (ชิปที่จุดสถานที่ในโฟกัส zoom 13.5–16 จัดการชนกัน) และหาโลโก้ The Mall Ramkhamhaeng ที่ยังขาด | frontend + data owner |
 
 ## เกณฑ์รับงาน
 
@@ -105,13 +110,14 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | AC24 | อาคารของสถานที่มองเห็นเสมอ | ที่ระดับสถานที่ใน 3D เห็นรูปทรงสีน้ำเงินของสถานที่จากทุก bearing, pitch (≤ 75) และ zoom ≥ 13 แม้มีอาคารสูงกว่าคั่นระหว่างกล้องกับสถานที่; กดที่รูปทรงได้ทุกจุด รวมผนังตึกสูงที่ hit-test ของ MapLibre ไม่เจอ (จากระดับร้าน → เปิดสถานที่; เคอร์เซอร์ pointer); ลำดับชั้น city/focus/occluder → host extrusion → venue-xray → water-name; ใน 2D ยังเห็น footprint |
 | AC25 | มุมมองทั้งประเทศ | zoom < 9 จังหวัดที่มีแบรนด์มีกรอบระบายสีพร้อม legend “จังหวัด · จำนวนแบรนด์” และป้ายชิป; กดกรอบ/ป้าย/รายการในแผงแล้วได้ตัวกรองจังหวัด breadcrumb และกล้อง; zoom ≥ 9 กรอบเหลือเส้นและ legend กลับเป็นย่าน; เลือกจังหวัดแล้วกรอบอื่น quiet |
 | AC26 | Pictogram | metric tiles หัวข้อ และป้ายจังหวัดแสดง pictogram 8 แบบเมื่อฟอนต์โหลดแล้วเท่านั้น (`pictograms-ready`); ไม่มีฟอนต์ ข้อความอ่านได้เหมือนเดิม; nav-7 bytes ไม่เปลี่ยน |
+| AC27 | โลโก้สถานที่ | สถานที่ที่มีลิงก์ในทะเบียนแสดงโลโก้ที่หัวแผง (พร้อมคำบอกบทบาทเมื่อเป็นโลโก้โครงการแม่/เครือ) แถวรายการสถานที่ และช่องสถานที่ของร้าน; ไม่มีลิงก์ = ไม่มีกล่อง; ทุกไฟล์ตรง sha256 ของทะเบียน; ไม่มีลิงก์ Drive; ชื่อสถานที่ไม่เปลี่ยน |
 | AC22 | โฟกัสระดับสถานที่ + ฉากมองทะลุ | เปิดสถานที่ (หรือร้านในสถานที่) แล้วเฉพาะอาคารของสถานที่นั้นเป็นสีน้ำเงิน เฉพาะแถวของสถานที่มีหมุดสีประเภท/โลโก้ แถวอื่นเป็นจุดเทา; มวลอาคารเมือง opacity 0.16 (ปกติ 0.22 + จางตามระยะ) ชั้นโฟกัส 0.62; อาคารที่ยืนระหว่างกล้องกับสถานที่วาดที่ 0.14; ออกจากระดับสถานที่แล้วคืนค่าทั้งหมด |
 
 ## วิธีพัฒนาและทดสอบ
 
 ```sh
 npm start        # http://127.0.0.1:4173/
-npm test         # 92 unit tests บนข้อมูลจริงและ fixture tile
+npm test         # 96 unit tests บนข้อมูลจริงและ fixture tile
 npm run handoff:manifest   # เขียน handoff/handoff-manifest.json จาก bytes จริง
 npm run handoff:bundle     # + dist/CityMETER-Luxury-Brands-Developer-Handoff.zip
 npm run verify:live        # เทียบ SHA-256 ของไฟล์บน GitHub Pages กับ manifest

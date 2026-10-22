@@ -37,6 +37,7 @@ import {installVenueBuildings, HOST_LAYERS} from './buildings.js';
 import {installVenueXray} from './venue-xray.js';
 import {assignNeighborhood} from './neighborhoods.js';
 import {configureBrandLogos, brandLogoMarkup} from './brand-logos.js';
+import {configureVenueLogos} from './venue-logos.js';
 import {installNeighborhoodLayers, installNeighborhoodLabels, installAreaLabels, buildAreaModel, featureBounds} from './map-layers.js';
 import {installProvinceLayers, buildProvinceModel, provinceBounds, PROVINCE_FILL_MAX_ZOOM, PROVINCE_LABEL_MAX_ZOOM} from './provinces.js';
 import {buildOverviewInsights, buildNeighborhoodProfile, buildStoreDetail, buildVenueProfile, describeStatus, rankVenues} from './profile-model.js';
@@ -834,7 +835,7 @@ function wireEvents() {
 
 async function init() {
   try {
-    const resources = ['data/luxury.json', 'data/neighborhoods.geojson', 'data/venue-buildings.geojson', 'data/brand-logos.json', 'data/provinces.geojson'];
+    const resources = ['data/luxury.json', 'data/neighborhoods.geojson', 'data/venue-buildings.geojson', 'data/brand-logos.json', 'data/provinces.geojson', 'data/venue-logos.json'];
     const results = await Promise.allSettled(resources.map(fetchJSON));
     if (results[0].status === 'rejected') throw results[0].reason;
     state.data = results[0].value;
@@ -851,6 +852,9 @@ async function init() {
     state.provinces = results[4].status === 'fulfilled' ? results[4].value : {type: 'FeatureCollection', features: []};
     const coverage = configureBrandLogos(results[3].status === 'fulfilled' ? results[3].value : {brands: []}, state.data.rows);
     if (!coverage.complete) console.warn('Brand logo coverage', coverage);
+    // Venue logos are optional identity support: a missing or invalid registry only means no venue logos.
+    const venueLogos = configureVenueLogos(results[5].status === 'fulfilled' ? results[5].value : {assets: []});
+    if (!venueLogos.complete) console.warn('Venue logo registry', venueLogos);
 
     options('segment', Object.keys(SEGMENTS), SEGMENTS);
     options('channel', state.data.rows.map(r => r.channel), CHANNELS);

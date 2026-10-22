@@ -3,7 +3,7 @@
   "schemaVersion": "1.3.0",
   "documentType": "product-brief",
   "productId": "citymeter-luxury-brands",
-  "productVersion": "0.4.0",
+  "productVersion": "0.5.0",
   "updatedOn": "2026-10-22",
   "datasetCheckedOn": "2026-10-21",
   "language": "th-TH",
@@ -53,7 +53,8 @@
       "0.4: venue x-ray custom layer (js/venue-xray.js) draws the venue solid over everything in the 3D pass with a scissored depth clear; click/hover stay on the style layer",
       "0.4: frameVenue fits footprint + roof vertices (camera.projectPoint), zooming out at most one level beyond the footprint fit",
       "0.4: province frames (data/provinces.geojson, js/provinces.js): count fill below zoom 9, outline to zoom 12, ink-chip labels below zoom 9.5, legend switch, panel list, selectProvince drill-down",
-      "0.4: pictograms (Material Symbols Rounded subset, 8 glyphs) on metric tiles, section headings and province chips — test exception to LDS nav-7"
+      "0.4: pictograms (Material Symbols Rounded subset, 8 glyphs) on metric tiles, section headings and province chips — test exception to LDS nav-7",
+      "0.5: venue logos (data/venue-logos.json, assets/venue-logos/, 50 files from the research sheet tab 10_VENUE_LOGOS) in the venue heading, venue rows and store facts; lookup by center id then exact label; role labels for shared marks"
     ]
   },
   "rowScopes": {
@@ -453,7 +454,8 @@
     },
     "closurePolicy": "Retain permanently closed records and factual closure status; exclude from the default current view; never delete to improve counts",
     "coordinatePolicy": "Preserve original geographic coordinates; marker displacement is screen-space only; precision is described from geometryRole/geometryStatus and never upgraded",
-    "provinces": "data/provinces.geojson (metadata.version 2026-10-22-r1; OpenGISData-Thailand CC BY 4.0; context frames)"
+    "provinces": "data/provinces.geojson (metadata.version 2026-10-22-r1; OpenGISData-Thailand CC BY 4.0; context frames)",
+    "venueLogos": "data/venue-logos.json (meta.version 2026-10-22-r1; 50 assets, 81 venue labels, 39 centers; sha256 per file; no private URLs)"
   },
   "visualSystem": {
     "release": "LDS 0.9.7",
@@ -625,6 +627,10 @@
     {
       "id": "INV24",
       "rule": "Pictograms are decorative: every tile and heading keeps its text label; the nav-7 approved subset stays byte-identical and the pictogram subset is a declared test exception"
+    },
+    {
+      "id": "INV25",
+      "rule": "Venue logos identify, never decide: lookup by center id or exact label only, the venue name stays the record, and shared or parent-complex marks carry their role"
     }
   ],
   "chartContracts": [
@@ -753,5 +759,22 @@
     },
     "usage": "metric tiles (js/panel.js#metricTile), section headings (js/panel.js#heading), province label chips; CSS .pictogram / .pic-<role>; colour follows the mark (store = pin, venue = host building, exclusive = series 7)",
     "accessibility": "aria-hidden decorative glyphs; the text label is the meaning; hidden until document.fonts reports the face (pictograms-ready), display:none when unavailable"
+  },
+  "venueLogoContract": {
+    "module": "js/venue-logos.js#configureVenueLogos(catalog) → coverage; getVenueLogo({mallId, venue}); venueLogoMarkup(ref, {size, className, decorative})",
+    "registry": "data/venue-logos.json — assets[] {key VL-…, file assets/venue-logos/<name>, mime, bytes, sha256, width, height, background, sourcePage, sourceKind}; centers[] {id (CityMETER Shopping Center id), key, role}; venues[] {label (exact row label), canonical, type, role, key, status}",
+    "source": "research sheet “CityMETER Luxury Brands Thailand — Market Refresh 2026-10-21”, tab 10_VENUE_LOGOS, checked 2026-10-22; files verified by sha256 against 00_venue_logo_manifest.json by scripts/build-venue-logos.py; provenance per file in assets/venue-logos-manifest.json (official pages only, no Drive links)",
+    "lookup": "mallId → centers link first (39), else exact normalized venue label (NFKC, trimmed, case-folded, whitespace collapsed); never fuzzy; canonical names are not lookup keys",
+    "roles": {
+      "venue_specific": "no caption",
+      "parent_complex": "โลโก้โครงการแม่",
+      "shared_department_store_banner": "โลโก้ห้างสรรพสินค้าในเครือ",
+      "shared_chain_banner": "โลโก้เครือ",
+      "none": "no logo"
+    },
+    "placement": "venue heading (lg, 56 px, alt = โลโก้ <name>, role caption in the eyebrow), overview and neighborhood venue rows (sm, 28 px, decorative), store facts สถานที่ (md, 36 px, decorative)",
+    "backing": "per-asset background from the artwork: transparent → #E5E9E6 (LDS surface-soft stone), light transparent → #182327, opaque → #FFFFFF; artwork bytes unchanged; same box on both themes",
+    "invariants": "the venue name stays the identity; a logo never changes a row, label, coordinate or status; a missing registry only removes the boxes; collecting files is not a trademark licence",
+    "notInScope": "venue logos on the map (backlog N15)"
   }
 }

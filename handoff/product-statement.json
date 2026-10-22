@@ -3,7 +3,7 @@
   "schemaVersion": "1.3.0",
   "documentType": "product-statement",
   "productId": "citymeter-luxury-brands",
-  "productVersion": "0.4.0",
+  "productVersion": "0.5.0",
   "updatedOn": "2026-10-22",
   "humanDocument": "../PRODUCT_STATEMENT.md",
   "standard": "Product Brief — CityMETER v6 §1.6.3 metadata block; Master Brand Brief v0.5.3 §7.2 / §3.7",
@@ -331,7 +331,7 @@
   "hypotheses_to_validate": [
     {
       "hypothesis": "ผู้ใช้สามกลุ่มถาม ‘ใครอยู่ข้างใคร’ และเริ่มจากย่าน",
-      "test": "สัมภาษณ์ 3–5 คนต่อกลุ่มด้วย demo 0.4",
+      "test": "สัมภาษณ์ 3–5 คนต่อกลุ่มด้วย demo 0.5",
       "criterion": "≥ 2 ใน 3 กลุ่มยืนยัน trigger และใช้โปรไฟล์ย่านก่อนตาราง"
     },
     {

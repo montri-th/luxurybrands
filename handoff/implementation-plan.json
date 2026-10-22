@@ -3,7 +3,7 @@
   "schemaVersion": "1.3.0",
   "documentType": "implementation-plan",
   "productId": "citymeter-luxury-brands",
-  "productVersion": "0.4.0",
+  "productVersion": "0.5.0",
   "updatedOn": "2026-10-22",
   "brief": "product-brief.json",
   "statement": "product-statement.json",
@@ -156,6 +156,14 @@
       {
         "path": "scripts/build-pictogram-font.py",
         "role": "builds the 8-glyph Material Symbols Rounded pictogram subset + manifest"
+      },
+      {
+        "path": "js/venue-logos.js",
+        "role": "venue logo registry: validation, lookup by center id / exact label, markup with backplate and role"
+      },
+      {
+        "path": "scripts/build-venue-logos.py",
+        "role": "builds data/venue-logos.json + assets/venue-logos/ + assets/venue-logos-manifest.json from the research manifest; sha256 verification, background analysis (PIL / headless Chromium for SVG)"
       }
     ]
   },
@@ -632,6 +640,43 @@
         "evidence/ (bundle envelope)"
       ],
       "status": "done"
+    },
+    {
+      "id": "P21",
+      "title": "Venue logos from the research sheet (registry, verified files, panel placements)",
+      "dependsOn": [
+        "P08"
+      ],
+      "acceptanceCriteria": [
+        "AC27"
+      ],
+      "files": [
+        "data/venue-logos.json",
+        "assets/venue-logos/",
+        "assets/venue-logos-manifest.json",
+        "js/venue-logos.js",
+        "js/panel.js",
+        "styles.css",
+        "tests/venue-logos.test.js"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P22",
+      "title": "0.5 verification, release, live attestation and handoff bundle",
+      "dependsOn": [
+        "P21"
+      ],
+      "acceptanceCriteria": [
+        "AC12",
+        "AC27"
+      ],
+      "files": [
+        "handoff/VERIFICATION.md",
+        "handoff/handoff-manifest.json",
+        "RELEASE_RECEIPT.json (bundle envelope)"
+      ],
+      "status": "in_progress"
     }
   ],
   "acceptanceCriteria": [
@@ -816,12 +861,19 @@
       "expected": "Metric tiles, section headings and province chips show the 8 pictograms only after the font loads (pictograms-ready); without the font the text labels read unchanged; nav-7 subset bytes unchanged (sha256 d7e28310…)",
       "verificationType": "browser + unit",
       "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC27",
+      "scenario": "Venue logos",
+      "expected": "A venue with a registry link shows its logo in the heading (with the role caption for parent-complex / shared marks), in overview and neighborhood venue rows and in the store facts; venues without a link show no box; every asset file matches its registry sha256; no Drive or private URLs in the registry; the venue name is unchanged everywhere",
+      "verificationType": "browser + unit",
+      "result": "see VERIFICATION.md"
     }
   ],
   "developerWorkflow": [
     "Read AGENTS.md, then handoff/README.md, PRODUCT_STATEMENT.md and the paired human/machine briefs",
     "Run npm test before changes; keep the three row scopes, the focus modes and the panel action contract",
-    "Change one bounded task at a time; preserve invariant IDs INV01–INV24",
+    "Change one bounded task at a time; preserve invariant IDs INV01–INV25",
     "Validate calculations with real dataset fixtures in tests/; tile-dependent code uses tests/fixtures/mvt-sample.pbf",
     "Review rendered Thai/English at 390 px and desktop in both themes; use the stub-tile harness when CDN/tiles are blocked, then confirm the real-tile look live",
     "Tune camera and massing live via window.__citymeter in the console before changing constants",
@@ -913,6 +965,12 @@
       "title": "Extend the x-ray to the selected store's host building at neighborhood level and to the mobile portrait sheet flow; profile the scissored clear on low-end GPUs",
       "ownerRole": "frontend developer",
       "status": "engineering backlog"
+    },
+    {
+      "id": "N15",
+      "title": "Venue logos on the map (collision-managed chips at the venue point for focused venues, zoom 13.5–16) and the missing The Mall Ramkhamhaeng mark",
+      "ownerRole": "frontend developer + data owner",
+      "status": "proposal"
     }
   ]
 }

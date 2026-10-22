@@ -1,0 +1,552 @@
+{
+ "checkedOn": "2026-10-22",
+ "source": "CityMETER Luxury Brands Thailand — Market Refresh 2026-10-21, tab 10_VENUE_LOGOS (checked 2026-10-22)",
+ "status": "partial: 33 of 50 files verified; 17 pending transfer (venues keep their name, no logo shown)",
+ "files": [
+  {
+   "path": "assets/venue-logos/central-department-store.svg",
+   "sha256": "70d04c26cd9ea94d674bff0f291741c729c545d9f9df67e79a87f11110d92eaf",
+   "bytes": 6227,
+   "logoKey": "VL-70d04c26cd9ea94d",
+   "sourcePage": "https://www.central.co.th/en/store",
+   "assetURL": "https://www.central.co.th/logo.svg",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/centralworld.svg",
+   "sha256": "964e9772a643cc1a3d26142e525a0fc45d2212db1785339b97cee7281e46af9e",
+   "bytes": 7854,
+   "logoKey": "VL-964e9772a643cc1a",
+   "sourcePage": "https://www.centralworld.co.th/en",
+   "assetURL": "https://www.centralworld.co.th/images/design/site-logo.svg",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-embassy.png",
+   "sha256": "30a48c241e543d3429f68ecbd0551c5652a663ca5f87805a63b24c1b6b8ca69d",
+   "bytes": 8882,
+   "logoKey": "VL-30a48c241e543d34",
+   "sourcePage": "https://www.centralembassy.com/",
+   "assetURL": "https://www.centralembassy.com/wp-content/uploads/2021/08/logo-ce-1.png",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-phuket.svg",
+   "sha256": "98b18935c14e8f234582341c7b3848f65369ca1fe07ba5e34a780a17521986b3",
+   "bytes": 1949,
+   "logoKey": "VL-98b18935c14e8f23",
+   "sourcePage": "https://www.centralphuket.com/en",
+   "assetURL": "https://www.centralphuket.com/img/logo_b.svg",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-pinklao.svg",
+   "sha256": "24c15d6d64ba6d33d3780b504ed50dc9b5bc5a39a1e5ed786256e81b6304093f",
+   "bytes": 3406,
+   "logoKey": "VL-24c15d6d64ba6d33",
+   "sourcePage": "https://www.centralpinklao.com/en",
+   "assetURL": "https://www.centralpinklao.com/img/PKO/logo.svg",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-udon.png",
+   "sha256": "12cffc2d062173735fc6c44cea35b2263c3c216891f9afb501706df75608cb21",
+   "bytes": 9811,
+   "logoKey": "VL-12cffc2d06217373",
+   "sourcePage": "https://shoppingcenter.centralpattana.co.th/branch/central-udon/",
+   "assetURL": "https://shoppingcenter.centralpattana.co.th/images/default-source/central-udon/common/032-udon-logo3f17cf31-2815-4098-894c-3feed19a6f5d.png?sfvrsn=1e0641e4_3",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-eastville.png",
+   "sha256": "efd695c415e925566cfc27ecff8e5b5d36171fb48805365cdb4a1aa6324a9929",
+   "bytes": 9591,
+   "logoKey": "VL-efd695c415e92556",
+   "sourcePage": "https://shoppingcenter.centralpattana.co.th/branch/central-eastville/",
+   "assetURL": "https://shoppingcenter.centralpattana.co.th/images/default-source/central-eastville/common/009-eastville-logo.png?sfvrsn=5d605430_2",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-rama-2.png",
+   "sha256": "d39b6051df36a55a6c0e5339d423a359f64b5880285da5bf42f6c09cf729bf42",
+   "bytes": 10423,
+   "logoKey": "VL-d39b6051df36a55a",
+   "sourcePage": "https://shoppingcenter.centralpattana.co.th/branch/central-rama-2/",
+   "assetURL": "https://shoppingcenter.centralpattana.co.th/images/default-source/central-rama-2/common/021-rama2-logo3d4c4a13-e573-42a0-bb70-c875f273dea9.png?sfvrsn=4205a478_3",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-pattaya.png",
+   "sha256": "1ed9cfc96f7d3e57407b15f682f05a34e6b710d4b6e7b76bb9e90393b3ae1924",
+   "bytes": 9898,
+   "logoKey": "VL-1ed9cfc96f7d3e57",
+   "sourcePage": "https://shoppingcenter.centralpattana.co.th/branch/central-pattaya/",
+   "assetURL": "https://shoppingcenter.centralpattana.co.th/images/default-source/central-pattaya/common/018-pattaya-logo06fbecca-43fd-4166-b401-64315bb82630.png?sfvrsn=5795724c_3",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-chaengwattana.png",
+   "sha256": "68b350ecebc0bc80ecb2e0206a7f537b523029fa8566eab44168db4252dc2e6f",
+   "bytes": 9480,
+   "logoKey": "VL-68b350ecebc0bc80",
+   "sourcePage": "https://shoppingcenter.centralpattana.co.th/branch/central-chaengwattana/",
+   "assetURL": "https://shoppingcenter.centralpattana.co.th/images/default-source/central-chaengwattana/common/003-chaengwattana-logo.png?sfvrsn=1754ad05_2",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-chiangmai.png",
+   "sha256": "894e587d0e5407183d4ddbe77b0723a196095d3249d72545f2d80b63170a8781",
+   "bytes": 81998,
+   "logoKey": "VL-894e587d0e540718",
+   "sourcePage": "https://shoppingcenter.centralpattana.co.th/branch/central-chiangmai/",
+   "assetURL": "https://shoppingcenter.centralpattana.co.th/images/default-source/central-chiangmai/common/central_chiangmai_logo.png?sfvrsn=4b828f37_0",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-salaya.png",
+   "sha256": "1b39cffe4ab6c7707d7e0e2220d9333ca1b991fb9f20339e4ec801787c5b85f9",
+   "bytes": 11120,
+   "logoKey": "VL-1b39cffe4ab6c770",
+   "sourcePage": "https://shoppingcenter.centralpattana.co.th/branch/central-salaya/",
+   "assetURL": "https://shoppingcenter.centralpattana.co.th/images/default-source/central-salaya/common/027-salaya-logo.png?sfvrsn=45505a81_2",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-westville.svg",
+   "sha256": "96b134a4f6fc55f62a10b77602fe6a83bb04423c45fd3eab4fce322e9f068ef9",
+   "bytes": 2543,
+   "logoKey": "VL-96b134a4f6fc55f6",
+   "sourcePage": "https://www.centralwestville.com/en",
+   "assetURL": "https://www.centralwestville.com/img/RCP/logo.svg",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-westgate.png",
+   "sha256": "6de57f80a77409ee930379ef453b26db11bda6c816d631d7f0e9eaec48774e5f",
+   "bytes": 11088,
+   "logoKey": "VL-6de57f80a77409ee",
+   "sourcePage": "https://shoppingcenter.centralpattana.co.th/branch/central-westgate/",
+   "assetURL": "https://shoppingcenter.centralpattana.co.th/images/default-source/central-westgate/common/033-westgate.png?sfvrsn=aa875000_2",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/central-village.svg",
+   "sha256": "f219ca8874ce865a8158ba5d1babc66f4d31c184abc01b2ec74fd5258a26d76a",
+   "bytes": 10417,
+   "logoKey": "VL-f219ca8874ce865a",
+   "sourcePage": "https://www.centralvillageoutlet.com/en",
+   "assetURL": "https://www.centralvillageoutlet.com/img/SVB/logo.svg",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/megabangna.png",
+   "sha256": "c17dd33ce8df782c1725b4d774195d77b1cd371a37ea155fda8b9340d5d5b469",
+   "bytes": 4886,
+   "logoKey": "VL-c17dd33ce8df782c",
+   "sourcePage": "https://www.mega-bangna.com/",
+   "assetURL": "https://www.mega-bangna.com/public/assets/images/logo.png",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/mall-ngam.jpeg",
+   "sha256": "45edcb7d24732ff46e433be271c982d680588bc5b8f071fca63088e927c7824b",
+   "bytes": 7480,
+   "logoKey": "VL-45edcb7d24732ff4",
+   "sourcePage": "https://page.line.me/424smzdz",
+   "assetURL": "https://profile.line-scdn.net/0hzDLCttINJWtxOjl8e-JaPE1_KwYGFCMjCV1oC1Y7eggOAzI7RV06BV09KQ5dX2E1RA45WF06eglb/preview",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/one-nimman.png",
+   "sha256": "3d94a67bd70b6945c12430849aa021fecae43bd067eca5962ee4b77622ed5f33",
+   "bytes": 8446,
+   "logoKey": "VL-3d94a67bd70b6945",
+   "sourcePage": "https://www.onenimman.com/",
+   "assetURL": "https://www.onenimman.com/images/logo.png",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/maya.png",
+   "sha256": "044c6cfa77d04799d04b062251997ea8467d62665b73b3c570dd285b2764cd7a",
+   "bytes": 9208,
+   "logoKey": "VL-044c6cfa77d04799",
+   "sourcePage": "https://mayashoppingcenter.com/",
+   "assetURL": "https://mayashoppingcenter.com/api/image/61841058da9e5.png",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/silom-complex.png",
+   "sha256": "3777db826c685e0de5e5cbbb207d63a0cc839a28b9c809524c92276f30b2aa93",
+   "bytes": 1964,
+   "logoKey": "VL-3777db826c685e0d",
+   "sourcePage": "https://www.silomcomplex.co.th/en/home",
+   "assetURL": "https://www.silomcomplex.co.th/images/logo/logo.png",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/mall-bangkae.jpeg",
+   "sha256": "4224f1181abdf19c762133eaec9f0cb1cb8204f64625c909747982e40d615db7",
+   "bytes": 6641,
+   "logoKey": "VL-4224f1181abdf19c",
+   "sourcePage": "https://page.line.me/776txukp",
+   "assetURL": "https://profile.line-scdn.net/0hKdhXDl2PFEtVIQhcX7FrHGlkGiYiDxIDLU8JKnUpSnt9RlIUahRSeid1SHx_EAQVa05ceXFyQitw/preview",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/mall-bangkapi.jpeg",
+   "sha256": "8d0862e76043aca6bb439862bd43a455920f0697d364e7fb8663c208e6082028",
+   "bytes": 7095,
+   "logoKey": "VL-8d0862e76043aca6",
+   "sourcePage": "https://page.line.me/713peczi",
+   "assetURL": "https://profile.line-scdn.net/0h9D8fqmJBZmsFH3p8D74ZPDlaaAZyMWAjfX4tWnJKbAt6fCJqai5-WXQePl8rLiQ0Oy4hBHQXP1J6/preview",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/siam-paragon.svg",
+   "sha256": "23d26775dffb6c5015ab40810622702f0ea757c1aeef2252a0f82ed7e4650504",
+   "bytes": 9927,
+   "logoKey": "VL-23d26775dffb6c50",
+   "sourcePage": "https://www.siamparagon.co.th/?lang=en",
+   "assetURL": "https://www.siamparagon.co.th/?lang=en#header-inline-logo-svg",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/emporium.png",
+   "sha256": "40582615aaa65da1ef560942bb87592837ccb03850ba6a64678aa0b9d26e92f0",
+   "bytes": 3961,
+   "logoKey": "VL-40582615aaa65da1",
+   "sourcePage": "https://www.emporium.co.th/",
+   "assetURL": "https://www.emporium.co.th/wp-content/uploads/2025/02/Isolation_Mode-2.png",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/emquartier.png",
+   "sha256": "9cb3ef869b85148c1fe313fbfe01994b446eebe60c37cba4bd652cdc3c446e0d",
+   "bytes": 4393,
+   "logoKey": "VL-9cb3ef869b85148c",
+   "sourcePage": "https://www.emquartier.co.th/",
+   "assetURL": "https://www.emquartier.co.th/wp-content/uploads/2025/01/site-logo-1.webp",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/siam-premium-outlets.svg",
+   "sha256": "05448176db1ec9ec916f1be6f150402981ae996e2a10d7c306421b6c4e80c704",
+   "bytes": 6792,
+   "logoKey": "VL-05448176db1ec9ec",
+   "sourcePage": "https://www.siampremiumoutlets.com/",
+   "assetURL": "https://www.siampremiumoutlets.com/images/logo.svg",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/emsphere.svg",
+   "sha256": "fe0d35ecaf8544da3c45765274dff2fe5a795c1b706ff09afb4411fa14eede9e",
+   "bytes": 1857,
+   "logoKey": "VL-fe0d35ecaf8544da",
+   "sourcePage": "https://emsphere.co.th/",
+   "assetURL": "https://emsphere.co.th/wp-content/uploads/2023/12/site-logo.svg",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/one-bangkok.png",
+   "sha256": "7dd80f34276c58b51f10c36a915f56d4eee3b1bd04430ebba30e62d305a61d4c",
+   "bytes": 1279,
+   "logoKey": "VL-7dd80f34276c58b5",
+   "sourcePage": "https://www.onebangkok.com/en/",
+   "assetURL": "https://www.onebangkok.com/content/experience-fragments/onebangkok_v2/en/header/master/_jcr_content/root/header/logo.coreimg.png/1710903780913/logo-one-black.png",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/paragon-department-store.png",
+   "sha256": "cf8cb807541b5f3587e29c96944d720bf4996286b5839504221ea057850d4f49",
+   "bytes": 41709,
+   "logoKey": "VL-cf8cb807541b5f35",
+   "sourcePage": "https://www.paragondepartmentstore.com/",
+   "assetURL": "https://www.paragondepartmentstore.com/wp-content/uploads/2018/07/logo.png",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/king-power.svg",
+   "sha256": "b4f1270b38aecf50021fabe53808aadbe1edb0caff92aca4037400c11be79ee6",
+   "bytes": 9777,
+   "logoKey": "VL-b4f1270b38aecf50",
+   "sourcePage": "https://www.kingpower.com/",
+   "assetURL": "https://s3-ap-southeast-1.amazonaws.com/kpc-prod-web-static/frontend/img/svg/v2/logo-kingpower.svg",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/dusit-central-park.svg",
+   "sha256": "8a8cd8d752f15540657a4f921d2ab4812d368fc0c23af2d2db99b32c0fcb8b6c",
+   "bytes": 3409,
+   "logoKey": "VL-8a8cd8d752f15540",
+   "sourcePage": "https://dusitcentralpark.com/",
+   "assetURL": "https://dusitcentralpark.com/wp-content/uploads/2024/10/dcp_logo_white.svg",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/gaysorn-village.png",
+   "sha256": "41f6c18aa0d086c26843f6710f45611a08f10721920efdbe5515a7f7a48ea845",
+   "bytes": 9711,
+   "logoKey": "VL-41f6c18aa0d086c2",
+   "sourcePage": "https://www.gaysornvillage.com/en/",
+   "assetURL": "https://www.gaysornvillage.com/wp-content/uploads/2024/01/logo-footer.webp",
+   "status": "downloaded_official",
+   "checkedOn": "2026-10-22"
+  },
+  {
+   "path": "assets/venue-logos/prime-mansion-31.jpeg",
+   "sha256": "43f44bcf121da1d65ed273f07cc10cd68871c6c8efac2ec9d87ada9040ac7db9",
+   "bytes": 5681,
+   "logoKey": "VL-43f44bcf121da1d6",
+   "sourcePage": "https://propertyhub.in.th/en/condo-for-rent/project-prime-mansion-sukhumvit-31",
+   "assetURL": "https://bcdn.propertyhub.in.th/pictures/201602/20160220/tPqKyxavLSJduULkewe7/eacf0be6.jpg",
+   "status": "downloaded_other",
+   "checkedOn": "2026-10-22"
+  }
+ ],
+ "pending": [
+  {
+   "file": "central-ladprao.png",
+   "logoKey": "VL-912a70b5a14fb704",
+   "reason": "sha256 mismatch",
+   "venues": [
+    "Central Ladprao",
+    "Central Lardprao"
+   ]
+  },
+  {
+   "file": "central-rama-9.png",
+   "logoKey": "VL-70d16b7422c4464d",
+   "reason": "sha256 mismatch",
+   "venues": [
+    "Central Rama 9",
+    "Central Rama9"
+   ]
+  },
+  {
+   "file": "central-bangna.png",
+   "logoKey": "VL-8f8f3cb838c228cc",
+   "reason": "missing",
+   "venues": [
+    "Central Bangna"
+   ]
+  },
+  {
+   "file": "central-rama-3.png",
+   "logoKey": "VL-7d4d4aebc089a1fd",
+   "reason": "missing",
+   "venues": [
+    "Central Rama 3",
+    "Central Rama3"
+   ]
+  },
+  {
+   "file": "central-korat.png",
+   "logoKey": "VL-cdd4538ef0e0aaed",
+   "reason": "missing",
+   "venues": [
+    "Central Nakhon Ratchasima"
+   ]
+  },
+  {
+   "file": "roast8ry.jpeg",
+   "logoKey": "VL-ca929cabb397a37b",
+   "reason": "missing",
+   "venues": [
+    "ROAST8RY flagship building"
+   ]
+  },
+  {
+   "file": "jungceylon.png",
+   "logoKey": "VL-44c523460a825c8b",
+   "reason": "missing",
+   "venues": [
+    "Jungceylon The Botanical",
+    "Jungceylon The Jungle"
+   ]
+  },
+  {
+   "file": "fashion-island.png",
+   "logoKey": "VL-7237b47ac4bd7f68",
+   "reason": "missing",
+   "venues": [
+    "Fashion Island"
+   ]
+  },
+  {
+   "file": "mall-site-header.svg",
+   "logoKey": "VL-68ef52be5690270f",
+   "reason": "missing",
+   "venues": [
+    "The Mall Lifestore Tha Phra"
+   ]
+  },
+  {
+   "file": "robinson-department-store.jpeg",
+   "logoKey": "VL-e561d18348bcce17",
+   "reason": "missing",
+   "venues": [
+    "Robinson Rama 9"
+   ]
+  },
+  {
+   "file": "iconsiam.svg",
+   "logoKey": "VL-a3085cf548599cae",
+   "reason": "missing",
+   "venues": [
+    "ICONSIAM",
+    "Iconsiam"
+   ]
+  },
+  {
+   "file": "siam-square.svg",
+   "logoKey": "VL-400861c42cc8af00",
+   "reason": "missing",
+   "venues": [
+    "Siam Square"
+   ]
+  },
+  {
+   "file": "siam-center.png",
+   "logoKey": "VL-6229fc0e08b3146f",
+   "reason": "missing",
+   "venues": [
+    "Siam Center",
+    "Siam Centre"
+   ]
+  },
+  {
+   "file": "siam-takashimaya.png",
+   "logoKey": "VL-ab769de8d3ee9a2c",
+   "reason": "missing",
+   "venues": [
+    "Siam Takashimaya / ICONSIAM"
+   ]
+  },
+  {
+   "file": "suvarnabhumi.svg",
+   "logoKey": "VL-2b9d46a8392d7ded",
+   "reason": "missing",
+   "venues": [
+    "Suvarnabhumi Airport",
+    "Suvarnabhumi Airport, International Terminal"
+   ]
+  },
+  {
+   "file": "siam-kempinski.svg",
+   "logoKey": "VL-2b371b05e995339b",
+   "reason": "missing",
+   "venues": [
+    "Siam Kempinski Hotel"
+   ]
+  },
+  {
+   "file": "siam-discovery.svg",
+   "logoKey": "VL-51f8f7184a83ddaf",
+   "reason": "missing",
+   "venues": [
+    "Siam Discovey"
+   ]
+  }
+ ],
+ "issues": [
+  {
+   "file": "central-ladprao.png",
+   "reason": "sha256 mismatch"
+  },
+  {
+   "file": "central-rama-9.png",
+   "reason": "sha256 mismatch"
+  },
+  {
+   "file": "central-bangna.png",
+   "reason": "missing"
+  },
+  {
+   "file": "central-rama-3.png",
+   "reason": "missing"
+  },
+  {
+   "file": "central-korat.png",
+   "reason": "missing"
+  },
+  {
+   "file": "roast8ry.jpeg",
+   "reason": "missing"
+  },
+  {
+   "file": "jungceylon.png",
+   "reason": "missing"
+  },
+  {
+   "file": "fashion-island.png",
+   "reason": "missing"
+  },
+  {
+   "file": "mall-site-header.svg",
+   "reason": "missing"
+  },
+  {
+   "file": "robinson-department-store.jpeg",
+   "reason": "missing"
+  },
+  {
+   "file": "iconsiam.svg",
+   "reason": "missing"
+  },
+  {
+   "file": "siam-square.svg",
+   "reason": "missing"
+  },
+  {
+   "file": "siam-center.png",
+   "reason": "missing"
+  },
+  {
+   "file": "siam-takashimaya.png",
+   "reason": "missing"
+  },
+  {
+   "file": "suvarnabhumi.svg",
+   "reason": "missing"
+  },
+  {
+   "file": "siam-kempinski.svg",
+   "reason": "missing"
+  },
+  {
+   "file": "siam-discovery.svg",
+   "reason": "missing"
+  }
+ ]
+}

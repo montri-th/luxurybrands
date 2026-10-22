@@ -1,4 +1,22 @@
-# Verification record — release 0.4 (2026-10-22)
+# Verification record — release 0.5 (2026-10-22)
+
+Dataset snapshot: 2026-10-21. Levels are reported separately: unit tests, rendered harness, live browser checks and live byte attestation. None of them is a blanket LDS, accessibility or market-completeness certificate. The 0.4, 0.3 and 0.2 records are kept below for continuity.
+
+## Automated (unit) — 0.5
+
+`npm test` — **96/96 passed** (Node 22): the 92 tests of 0.4 plus `venue-logos.test.js` — registry validation (path traversal and bad mime rejected), lookup by center id then exact label (no fuzzy match on canonical names), markup (backplate colour, decorative alt, role caption), the venue panel with and without a registry, and the shipped registry: every asset in `assets/venue-logos/` matches its `data/venue-logos.json` sha256 and byte count, every link resolves, no Drive/private URLs.
+
+## Rendered harness — 0.5
+
+The six 0.4 scenarios re-run without application errors; `d-light-venue-two-point.png` / `d-dark-venue-two-point.png` now show the Siam Paragon mark in the venue heading, `d-light-neighborhood.png` the logos in the สถานที่ในย่าน rows.
+
+## Live checks — 0.5 (Chrome on macOS, real tiles)
+
+_Recorded after the Pages run of the 0.5 commit — see the entry below once attested._
+
+---
+
+# Verification record — release 0.4 (2026-10-22) — retained record
 
 Dataset snapshot: 2026-10-21. Levels are reported separately: unit tests, rendered harness, live browser checks and live byte attestation. None of them is a blanket LDS, accessibility or market-completeness certificate. The 0.3 and 0.2 records are kept below for continuity.
 
