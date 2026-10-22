@@ -1,0 +1,23 @@
+name: fetch-venue-logos
+# One-off tooling: re-fetch venue logo files from their public source URLs (recorded in the research
+# sheet) on a runner with open egress, verify them against the recorded sha256, and expose the verified
+# files as a workflow artifact. No deploy, no commit.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch and verify
+        run: python3 tools/fetch-venue-logos.py tools/venue-logo-sources.json fetched
+      - uses: actions/upload-artifact@v4
+        with:
+          name: venue-logos-fetched
+          path: fetched
+          if-no-files-found: error
+          retention-days: 1
