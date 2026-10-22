@@ -153,6 +153,24 @@
       "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
       "bytes": 11357,
       "scope": "Apache 2.0 license retained for the Material Symbols navigation/help icon subset"
+    },
+    {
+      "path": "assets/icons/material-pictogram-300.woff2",
+      "sha256": "33d9084bbd26b976d5c42002a0c669618573c21123567247816e9e694671c7b0",
+      "bytes": 1732,
+      "scope": "Metric-tile and heading pictograms (8 glyphs); Material Symbols Rounded, weight 300; test exception to LDS nav-7 approved by the owner 2026-10-22"
+    },
+    {
+      "path": "assets/icons/material-pictogram-300.json",
+      "sha256": "4c11a626e406c14932e620a2b1e85ae8dce3e1caf391d02d59a543f7e63f73e7",
+      "bytes": 1260,
+      "scope": "Pictogram subset manifest: glyph roles, codepoints, axes, source font hash"
+    },
+    {
+      "path": "data/provinces.geojson",
+      "sha256": "3f99aa1b276342d907f8dade4add44f723e9b7c7bbe0cde93de3003fcc34ca96",
+      "bytes": 85619,
+      "scope": "Province frames for the 9 dataset provinces; OpenGISData-Thailand (CC BY 4.0, DOPA-credited); context and drill-down, not an administrative authority"
     }
   ]
 }

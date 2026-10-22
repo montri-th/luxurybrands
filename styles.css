@@ -133,17 +133,46 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
 .metrics.compact strong { font-size: 20px; }
 .metrics.compact span { font-size: 11px; }
 /* Metric tiles carry the legend symbols so the label can stay one word (pin = สาขา, blue block = สถานที่, outline = ย่าน, ring = แบรนด์). */
-.metric { position: relative; padding-left: 18px; }
-.metric-symbol { position: absolute; left: 0; top: 7px; width: 11px; height: 11px; box-sizing: border-box; }
-.metrics.compact .metric-symbol { top: 5px; }
-.sym-store { border-radius: 50%; background: var(--series-1-fill); border: 1px solid var(--map-marker-stroke); }
-.sym-venue { background: var(--map-active-layer); border: 1px solid var(--map-selected-stroke); transform: skewY(-12deg); }
-.sym-area { border: 2px solid var(--scale-count-4); border-radius: 2px; background: var(--scale-count-2); }
-.sym-brand { border-radius: 50%; border: 2.5px solid var(--text-secondary); }
-.sym-exclusive { border-radius: 50%; border: 2.5px solid var(--series-7-fill); }
-.sym-gla { border-radius: 2px; background: var(--border-emphasis); }
-.sym-plain { display: none; }
-.metric-plain, .metric-gla { padding-left: 18px; }
+/* Pictograms — Material Symbols Rounded subset (FILL 0 / wght 300 / GRAD 0 / opsz 24), Apache-2.0.
+   Test exception to the LDS nav-7 rule approved by the owner 2026-10-22; nav-7 bytes unchanged.
+   The glyph is decorative (aria-hidden); the text label carries the meaning. Hidden until the font loads. */
+@font-face {
+  font-family: "LDS Material Symbols Rounded Pictogram";
+  src: url("assets/icons/material-pictogram-300.woff2") format("woff2");
+  font-style: normal; font-weight: 300; font-display: block;
+  unicode-range: U+EAD5, U+EA12, U+E54C, U+E55B, U+E7F1, U+F09A, U+EA49, U+E72C;
+}
+.pictogram { display: inline-block; width: 20px; height: 20px; font: 300 20px/1 "LDS Material Symbols Rounded Pictogram"; font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24; letter-spacing: normal; text-transform: none; font-synthesis: none; vertical-align: -4px; visibility: hidden; color: var(--text-secondary); }
+.pictograms-ready .pictogram { visibility: visible; }
+.pictograms-unavailable .pictogram { display: none; }
+.pic-brand::before { content: "\EAD5"; }
+.pic-store::before { content: "\EA12"; }
+.pic-venue::before { content: "\E54C"; }
+.pic-area::before { content: "\E55B"; }
+.pic-province::before { content: "\E7F1"; }
+.pic-exclusive::before { content: "\F09A"; }
+.pic-gla::before { content: "\EA49"; }
+.pic-segment::before { content: "\E72C"; }
+.pic-plain { display: none; }
+/* Pictogram colour follows the mark it stands for: store = pin, venue = host building, exclusive = series 7. */
+.pic-store { color: var(--series-1-fill); }
+.pic-venue { color: var(--map-active-layer); }
+.pic-exclusive { color: var(--series-7-fill); }
+.pic-area, .pic-province { color: var(--scale-count-4); }
+.section-heading h3 .pictogram { width: 18px; height: 18px; font-size: 18px; margin-right: 6px; vertical-align: -3px; }
+.metric { position: relative; padding-left: 26px; }
+.metric-symbol { position: absolute; left: 0; top: 4px; }
+.metrics.compact .metric-symbol { top: 2px; }
+.metric-plain { padding-left: 0; }
+/* Province drill-down list (country level) */
+.province-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.province-row { display: grid; grid-template-columns: 12px 1fr auto; align-items: center; gap: 10px; width: 100%; padding: 7px 8px; border: 1px solid transparent; border-radius: var(--radius-sm); background: transparent; color: inherit; text-align: left; font: inherit; cursor: pointer; }
+.province-row:hover { background: var(--surface-alt); border-color: var(--border-default); }
+.province-row:focus-visible { outline: 2px solid var(--interaction-focus-ring); outline-offset: 1px; }
+.province-swatch { display: block; width: 12px; height: 12px; border: 1px solid var(--border-default); border-radius: 2px; }
+.province-name { font-weight: 600; }
+.province-count { display: flex; flex-direction: column; align-items: flex-end; font-size: 15px; line-height: 1.1; }
+.province-count small { font: 400 11px/1.2 var(--font-body); color: var(--text-secondary); }
 
 /* Sections */
 .panel-section { display: grid; gap: 10px; }
@@ -248,18 +277,21 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
 .map-aha { display: none; }
 
 /* Neighborhood labels */
-#neighborhood-labels { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
-.neighborhood-label { position: absolute; transform: translate(-50%, -50%); pointer-events: auto; display: inline-flex; align-items: center; gap: 7px; min-height: 0; padding: 4px 5px 4px 10px; font: 700 12px/1.3 var(--font-display); letter-spacing: 0; color: var(--area-label-ink); background: var(--area-label-bg); border: 1px solid var(--area-label-border); border-radius: 6px; max-width: 200px; white-space: nowrap; box-shadow: 0 1px 2px rgba(0, 0, 0, .18); }
-.neighborhood-label::before { content: ""; width: 8px; height: 8px; flex: 0 0 8px; border: 1.5px solid var(--area-label-ink); border-radius: 2px; opacity: .85; }
-.neighborhood-label .label-name { overflow: hidden; text-overflow: ellipsis; }
-.neighborhood-label .label-count { font: 400 11px/1.3 var(--font-mono); min-width: 22px; padding: 1px 6px; border-radius: 4px; background: var(--area-label-ink); color: var(--area-label-bg); text-align: center; }
-.neighborhood-label.is-zero .label-count { background: transparent; color: var(--area-label-ink); border: 1.5px solid var(--data-zero-outline); }
-.neighborhood-label:hover { border-color: var(--map-hover-stroke); }
-.neighborhood-label.is-selected { border: 2px solid var(--map-selected-stroke); }
-.neighborhood-label:focus-visible { outline: 2px solid var(--interaction-focus-ring); outline-offset: 2px; }
-.neighborhood-label.is-quiet { font-weight: 600; font-size: 11px; opacity: .72; box-shadow: none; }
-.neighborhood-label.is-quiet::before { opacity: .6; }
-.neighborhood-label.is-quiet .label-count { background: transparent; color: var(--area-label-ink); border: 1px solid var(--area-label-ink); opacity: .8; }
+.area-labels { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+.neighborhood-label, .province-label { position: absolute; transform: translate(-50%, -50%); pointer-events: auto; display: inline-flex; align-items: center; gap: 7px; min-height: 0; padding: 4px 5px 4px 10px; font: 700 12px/1.3 var(--font-display); letter-spacing: 0; color: var(--area-label-ink); background: var(--area-label-bg); border: 1px solid var(--area-label-border); border-radius: 6px; max-width: 200px; white-space: nowrap; box-shadow: 0 1px 2px rgba(0, 0, 0, .18); }
+.neighborhood-label::before, .province-label::before { content: ""; width: 8px; height: 8px; flex: 0 0 8px; border: 1.5px solid var(--area-label-ink); border-radius: 2px; opacity: .85; }
+.neighborhood-label .label-name, .province-label .label-name { overflow: hidden; text-overflow: ellipsis; }
+.neighborhood-label .label-count, .province-label .label-count { font: 400 11px/1.3 var(--font-mono); min-width: 22px; padding: 1px 6px; border-radius: 4px; background: var(--area-label-ink); color: var(--area-label-bg); text-align: center; }
+.neighborhood-label.is-zero .label-count, .province-label.is-zero .label-count { background: transparent; color: var(--area-label-ink); border: 1.5px solid var(--data-zero-outline); }
+.neighborhood-label:hover, .province-label:hover { border-color: var(--map-hover-stroke); }
+.neighborhood-label.is-selected, .province-label.is-selected { border: 2px solid var(--map-selected-stroke); }
+.neighborhood-label:focus-visible, .province-label:focus-visible { outline: 2px solid var(--interaction-focus-ring); outline-offset: 2px; }
+.neighborhood-label.is-quiet, .province-label.is-quiet { font-weight: 600; font-size: 11px; opacity: .72; box-shadow: none; }
+.neighborhood-label.is-quiet::before, .province-label.is-quiet::before { opacity: .6; }
+.province-label::before { border-radius: 50%; }
+.province-label { padding-left: 9px; }
+.pictograms-ready .province-label::before { content: "\E7F1"; width: 14px; height: 14px; flex-basis: 14px; border: 0; border-radius: 0; font: 300 14px/1 "LDS Material Symbols Rounded Pictogram"; opacity: 1; }
+.neighborhood-label.is-quiet .label-count, .province-label.is-quiet .label-count { background: transparent; color: var(--area-label-ink); border: 1px solid var(--area-label-ink); opacity: .8; }
 
 /* Pins */
 .store-pin-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 3; overflow: hidden; }
@@ -424,7 +456,7 @@ td small { display: block; color: var(--text-metadata); font-size: 12px; margin-
   .insight-heading button { padding: 5px 9px; }
   .results { padding: 8px 10px; max-height: 75%; }
   .results-heading h2 { font-size: 14px; }
-  .neighborhood-label { max-width: 150px; font-size: 11px; }
+  .neighborhood-label, .province-label { max-width: 150px; font-size: 11px; }
   .bar-row { grid-template-columns: 16px minmax(70px, 110px) minmax(0, 1fr) 70px; gap: 6px; }
   .bar-row.stacked { grid-template-columns: minmax(70px, 110px) minmax(0, 1fr) 54px; }
   .map-failure { inset: 25% 12px; }

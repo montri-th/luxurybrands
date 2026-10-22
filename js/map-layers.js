@@ -119,12 +119,19 @@ export function installNeighborhoodLayers(map, geojson, {onSelect} = {}) {
 
 /**
  * HTML labels for the defined neighborhoods: name + distinct-brand badge.
- * Collision-managed against each other and the map chrome; hidden below z12.
+ * Collision-managed against each other and the map chrome; hidden below z11.5.
+ * installAreaLabels is the general form (province frames reuse it with their
+ * own class, zoom window and wording).
  */
-export function installNeighborhoodLabels(map, container, {onSelect, reservedBottom = () => 0} = {}) {
+export function installNeighborhoodLabels(map, container, options = {}) {
+  return installAreaLabels(map, container, {className: 'neighborhood-label', hostId: 'neighborhood-labels', hostLabel: 'ย่านบนแผนที่', minZoom: 11.5, maxZoom: Infinity, verb: 'กดเพื่อสำรวจย่าน', ...options});
+}
+
+export function installAreaLabels(map, container, {onSelect, reservedBottom = () => 0, className = 'area-label', hostId = 'area-labels', hostLabel = 'พื้นที่บนแผนที่', minZoom = 0, maxZoom = Infinity, verb = 'กดเพื่อสำรวจ', detailZoomClass = true} = {}) {
   const host = document.createElement('div');
-  host.id = 'neighborhood-labels';
-  host.setAttribute('aria-label', 'ย่านบนแผนที่');
+  host.id = hostId;
+  host.className = 'area-labels';
+  host.setAttribute('aria-label', hostLabel);
   container.append(host);
   let labels = [], frame = 0;
   const overlaps = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
@@ -137,11 +144,12 @@ export function installNeighborhoodLabels(map, container, {onSelect, reservedBot
       .map(e => { const b = e.getBoundingClientRect(); return {left: b.left - rect.left - 4, right: b.right - rect.left + 4, top: b.top - rect.top - 4, bottom: b.bottom - rect.top + 4}; });
     const placed = [];
     const zoom = map.getZoom();
-    panel.classList.toggle('is-detail-zoom', zoom >= FILL_MAX_ZOOM);
+    if (detailZoomClass) panel.classList.toggle('is-detail-zoom', zoom >= FILL_MAX_ZOOM);
+    const inWindow = zoom >= minZoom && zoom < maxZoom;
     for (const e of labels) {
       const p = map.project(e.center);
       const baseY = p.y;
-      e.button.hidden = !(e.visible && zoom >= 11.5 && p.x > 0 && p.x < width && baseY > 48 && baseY < height);
+      e.button.hidden = !(e.visible && inWindow && p.x > 0 && p.x < width && baseY > 48 && baseY < height);
       if (e.button.hidden) continue;
       const w = e.button.offsetWidth, h = e.button.offsetHeight;
       let position = null;
@@ -164,11 +172,11 @@ export function installNeighborhoodLabels(map, container, {onSelect, reservedBot
     for (const a of areas) {
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = `neighborhood-label is-${a.state}${a.id === selectedId ? ' is-selected' : ''}${a.quiet ? ' is-quiet' : ''}`;
+      button.className = `${className} is-${a.state}${a.id === selectedId ? ' is-selected' : ''}${a.quiet ? ' is-quiet' : ''}`;
       button.innerHTML = `<span class="label-name"></span><span class="label-count data-number" aria-hidden="true"></span>`;
       button.querySelector('.label-name').textContent = a.name;
       button.querySelector('.label-count').textContent = String(a.brands);
-      button.setAttribute('aria-label', `${a.name}: ${a.brands} แบรนด์, ${a.pos} สาขา กดเพื่อสำรวจย่าน`);
+      button.setAttribute('aria-label', `${a.name}: ${a.brands} แบรนด์, ${a.pos} สาขา ${verb}`);
       button.title = `${a.name} · ${a.brands} แบรนด์ · ${a.pos} สาขา`;
       button.setAttribute('aria-pressed', String(a.id === selectedId));
       if (a.state === 'measured_zero') { button.classList.add('is-zero'); }

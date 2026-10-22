@@ -90,6 +90,10 @@ snapshot นี้มี 60 host footprints และ 53 building parts จา�
 
 ความสูงและรูปทรงจาก OSM เป็นบริบทที่ความครอบคลุมต่างกันรายพื้นที่ (OpenFreeMap รวมอาคารความสูงเดียวกันเป็น MultiPolygon เดียว) ห้ามนำไปอ้างเป็นความสูงจริง จำนวนชั้น หรือข้อเท็จจริงของร้าน รายการตรวจความครอบคลุมรายย่านอยู่ใน backlog N09
 
+## กรอบจังหวัด (บริบทสำหรับมุมมองทั้งประเทศ)
+
+ตั้งแต่รุ่น 0.4 `data/provinces.geojson` เก็บกรอบของ 9 จังหวัดที่มีสาขาในชุดข้อมูล ที่มาคือ `provinces.geojson` ของ [OpenGISData-Thailand](https://github.com/chingchai/OpenGISData-Thailand) (ผู้เผยแพร่ระบุว่าขอบเขตการปกครองอ้างอิงกรมการปกครอง; สัญญาอนุญาต CC BY 4.0) ดึงเมื่อ 22 ต.ค. 2569 ที่ commit `fafcea179cda88b689f5697c3866a449e79cd298` (sha256 ของไฟล์ต้นทาง `310c3adf…011c0`) ด้วย `scripts/extract-provinces.mjs`: เลือกเฉพาะจังหวัดใน `js/model.js#PROVINCES` (จับคู่ด้วยชื่อไทย) ปัดพิกัดเป็น 5 ตำแหน่ง ไม่ simplify, id = รหัสจังหวัดของ production, `dopaCode` = รหัส 2 หลักของ DOPA (กรุงเทพมหานคร 10, ภูเก็ต 83 …) กรอบใช้เป็นบริบทและทางเดิน (ระบายสีตามจำนวนแบรนด์ไม่ซ้ำต่อจังหวัดต่ำกว่า zoom 9, กดเพื่อเจาะลง) ไม่ใช่การยืนยันขอบเขตการปกครอง และอาจต่างจากขอบเขตที่ CityMETER production ใช้ (backlog N13) attribution แสดงใน control ของแผนที่
+
 ## รหัสจังหวัดและ breadcrumb
 
 ย่านทั้ง 10 มี `provinceCode` / `provinceName` ใน `data/neighborhoods.geojson` (metadata.version 2026-10-22-r2; geometry ไม่เปลี่ยน) รหัสตรงกับ path ของ CityMETER production ที่สังเกตเมื่อ 22 ต.ค. 2569 (`/v3/citymeter/BKK`, `/PKT`, `/CMI`, `/SPK`, `/NBI`, `/CBI`, `/PTE`, `/UDN`, `/NMA`) ระดับที่สามของ production เข้ารหัสชนิดใน path (`/L/{locale uuid}`, `/M/{dopa code}`) ย่านของชุดนี้ยังไม่ใช่ Locale จึงเสนอ `/N/{neighborhood id}` เป็นทางเลือกระหว่างรอลงทะเบียน (Inference — ยังไม่ได้ทำใน production) ระดับที่สี่คือสถานที่: ศูนย์การค้าที่จับคู่แล้วใช้ `centers[].id` ซึ่งเป็น Shopping Center id ของ CityMETER (`externalId` SC-…, source `landometer.com/api/v2/citymeter-v3/shopping-center/detail/{id}`) จึงเสนอ `/V/{center id}` ต่อท้าย; สถานที่ที่ไม่มี id ใช้ป้ายชื่อ venue ตามข้อมูล ระดับย่านของสถานที่ตัดสินด้วย point-in-polygon ของจุดตัวแทนสถานที่ (พิกัดศูนย์ หรือแถวแรกที่มีพิกัด) ไม่ใช่ชื่อ สถานที่นอกย่านทั้ง 10 จึงไม่มีระดับย่าน

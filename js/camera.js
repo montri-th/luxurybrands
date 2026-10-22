@@ -64,10 +64,29 @@ export function boundsCorners(b) {
   return [[b.getWest(), b.getSouth()], [b.getEast(), b.getSouth()], [b.getEast(), b.getNorth()], [b.getWest(), b.getNorth()]];
 }
 
+/**
+ * Screen position of [lng, lat, altitudeMetres]. MapLibre's map.project() is
+ * ground-only, so elevated points (roof vertices) go through the transform's
+ * view-projection matrix (world pixels, z in metres → clip space), exactly as
+ * fill-extrusion vertices do. Falls back to map.project for ground points.
+ */
+export function projectPoint(map, point) {
+  const [lng, lat, alt = 0] = point;
+  const t = map.transform;
+  const M = t?.modelViewProjectionMatrix;
+  if (!alt || !M || !Number.isFinite(t.worldSize) || !globalThis.maplibregl?.MercatorCoordinate) return map.project([lng, lat]);
+  const mc = globalThis.maplibregl.MercatorCoordinate.fromLngLat([lng, lat]);
+  const x = mc.x * t.worldSize, y = mc.y * t.worldSize, z = alt;
+  const w = M[3] * x + M[7] * y + M[11] * z + M[15];
+  if (!(w > 0)) return {x: NaN, y: NaN};
+  const cx = (M[0] * x + M[4] * y + M[8] * z + M[12]) / w, cy = (M[1] * x + M[5] * y + M[9] * z + M[13]) / w;
+  return {x: (cx + 1) / 2 * t.width, y: (1 - cy) / 2 * t.height};
+}
+
 function cornersInside(map, corners, padding) {
   const w = map.getContainer().clientWidth, h = map.getContainer().clientHeight;
   return corners.every(c => {
-    const p = map.project(c);
+    const p = c.length > 2 && c[2] ? projectPoint(map, c) : map.project([c[0], c[1]]);
     return p.x >= padding.left && p.x <= w - padding.right && p.y >= padding.top && p.y <= h - padding.bottom;
   });
 }
@@ -75,9 +94,11 @@ function cornersInside(map, corners, padding) {
 /**
  * Frame `bounds` under a preset. Computes the final camera with instantaneous
  * jumps (no frame is rendered in between), restores the start camera and then
- * animates to the result. Returns the camera used.
+ * animates to the result. Returns the camera used. `points` may carry a third
+ * value (altitude in metres) so a building's roof is framed, not only its
+ * footprint. `apply: false` only computes the target and restores the start.
  */
-export function fitPitched(map, bounds, {preset = 'city', padding = {top: 24, bottom: 24, left: 24, right: 24}, maxZoom = 16, animate = true, duration = 650, minZoom = 10, points = null, shift = null} = {}) {
+export function fitPitched(map, bounds, {preset = 'city', padding = {top: 24, bottom: 24, left: 24, right: 24}, maxZoom = 16, animate = true, duration = 650, minZoom = 10, points = null, shift = null, apply = true} = {}) {
   const p = CAMERA[preset] || CAMERA.plan;
   const start = {center: map.getCenter(), zoom: map.getZoom(), pitch: map.getPitch(), bearing: map.getBearing(), padding: map.getPadding()};
   setFov(map, p.fov);
@@ -105,6 +126,7 @@ export function fitPitched(map, bounds, {preset = 'city', padding = {top: 24, bo
     zoom = Math.round(zoom * 100) / 100;
   }
   const target = {center: map.getCenter(), zoom, pitch: p.pitch, bearing: p.bearing, padding: view};
+  if (!apply) { map.jumpTo(start); return target; }
   if (animate) { map.jumpTo(start); map.easeTo({...target, duration}); } else map.jumpTo(target);
   return target;
 }

@@ -10,6 +10,23 @@ export const NAV_GLYPHS = Object.freeze({
   open_in_new: '', menu: '', close: '',
   light_mode: '', dark_mode: '', contrast: '', groups: '',
 });
+/**
+ * Metric-tile pictograms (test exception approved by the owner 2026-10-22; to be
+ * registered in LDS if it proves itself). Same family and axes as nav-7, a
+ * separate subset so the approved nav-7 bytes stay unchanged. Roles → glyphs:
+ * brand diamond · store storefront · venue local_mall · area map ·
+ * province location_city · exclusive star · gla square_foot · segment category.
+ */
+export const PICTOGRAM_CONTRACT = Object.freeze({
+  family: 'LDS Material Symbols Rounded Pictogram',
+  file: 'assets/icons/material-pictogram-300.woff2', bytes: 1732,
+  sha256: '33d9084bbd26b976d5c42002a0c669618573c21123567247816e9e694671c7b0',
+  manifest: 'assets/icons/material-pictogram-300.json',
+  axes: Object.freeze({FILL: 0, wght: 300, GRAD: 0, opsz: 24}),
+  glyphs: Object.freeze({brand: '\uEAD5', store: '\uEA12', venue: '\uE54C', area: '\uE55B', province: '\uE7F1', exclusive: '\uF09A', gla: '\uEA49', segment: '\uE72C'}),
+  status: 'test exception to LDS nav-7 (owner 2026-10-22)',
+  fallback: 'Text labels carry the meaning; pictograms stay hidden until the font has loaded.',
+});
 export const NAV_ICON_CONTRACT = Object.freeze({
   assetId: 'icon.material-symbols-rounded.nav-7.300.01',
   file: 'assets/icons/material-nav-300.woff2', bytes: 2500,
@@ -114,7 +131,10 @@ export function installNavigation() {
     document.fonts.load('300 24px "LDS Material Symbols Rounded Nav"', '')
       .then(faces => { document.documentElement.classList.add(faces.length ? 'nav-icons-ready' : 'nav-icons-unavailable'); })
       .catch(() => document.documentElement.classList.add('nav-icons-unavailable'));
-  } else document.documentElement.classList.add('nav-icons-unavailable');
+    document.fonts.load('300 20px "LDS Material Symbols Rounded Pictogram"', PICTOGRAM_CONTRACT.glyphs.store)
+      .then(faces => { document.documentElement.classList.add(faces.length ? 'pictograms-ready' : 'pictograms-unavailable'); })
+      .catch(() => document.documentElement.classList.add('pictograms-unavailable'));
+  } else document.documentElement.classList.add('nav-icons-unavailable', 'pictograms-unavailable');
   return () => observer.disconnect();
 }
 

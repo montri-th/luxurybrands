@@ -1,4 +1,39 @@
-# Verification record — release 0.3 (2026-10-22)
+# Verification record — release 0.4 (2026-10-22)
+
+Dataset snapshot: 2026-10-21. Levels are reported separately: unit tests, rendered harness, live browser checks and live byte attestation. None of them is a blanket LDS, accessibility or market-completeness certificate. The 0.3 and 0.2 records are kept below for continuity.
+
+## Automated (unit) — 0.4
+
+`npm test` — **91/91 passed** (Node 22) on the release working tree: the 81 tests of 0.3 plus
+
+- **venue x-ray** (`venue-xray.test.js`): solid geometry for a closed ring (walls, roof, edges, origin-relative offsets, shade range, top/base heights), holes / parts with a base / MultiPolygons, 64-bit matrix helpers, scissor box (padded, full-screen when a vertex is behind the camera, null when nothing projects), the custom layer on a fake map + fake GL (inserted before the anchor, renderingMode 3d, draws solid + edges only in 3D from zoom 13, scissored depth clear before the draw, nothing drawn when disabled or empty, dispose) and the **draw-order contract**: `installMassing({beforeId: host extrusion})` yields city → focus → occluder → host → water-name.
+- **provinces** (`provinces.test.js`): `data/provinces.geojson` (one frame per dataset province, production codes as ids, DOPA codes, closed rings inside Thailand, provenance metadata), `buildProvinceModel` (brands/rows per province, count classes, measured_zero under a narrow filter), `installProvinceLayers` (fill under the first basemap line, zoom windows, attribution, quiet frames with a selected province, click → onSelect, bounds, dispose), overview panel province list and pictogram markup, and the **pictogram contract**: `PICTOGRAM_CONTRACT` ↔ `material-pictogram-300.json` (glyph codepoints, sha256, bytes) ↔ `styles.css` `.pic-*` rules.
+
+Machine contracts validate against `handoff.schema.json` **1.3.0** (adds `venueXrayContract`, `provinceContract`, `pictogramContract` to the product brief; ajv 2020-12, 2026-10-22).
+
+## Rendered harness — 0.4
+
+Same harness as 0.3 (vendored MapLibre 5.6.2, stub TileJSON, synthetic tiles). All six scenarios (desktop light/dark, mobile light/dark, a11y, states) pass without application errors; the 0.3 flows and figures are unchanged (first paint city preset z13.53 / auto focus 175 rows; Siam profile model preset z16.31 with 37 rounded buildings; Siam Paragon eye preset z17.5 / pitch 75 / FOV 24, 3 occluders; matrix cells 89 px; mobile without horizontal overflow; keyboard pin tour; states). New evidence:
+
+| Check | Result |
+|---|---|
+| Venue x-ray, Central Embassy (`dbg-xray-embassy.png`) | podium (23.1 m) and tower (179 m) drawn as one blue shaded solid with edges on top of the synthetic massing; `__citymeter.state.xray` = 180 vertices, enabled, not failed; layer order city-massing → focus-massing-3d → focus-massing-occluding → luxury-venue-buildings-3d → venue-xray (custom layers are not listed by `getStyle().layers`; `map.getLayer('venue-xray')` exists); whole-mass fit: roof inside the frame at z17.0 |
+| Rotated / tilted (`dbg-xray-rotated.png`, bearing 120, pitch 60) | solid stays visible and correctly self-occluded; context blocks that would cover it are overdrawn |
+| X-ray off (`dbg-xray-off.png`) | style host layer alone (tinted by context) — the fallback path |
+| Siam Paragon dark (`d-dark-venue-two-point.png`) | light-blue solid (dark activeLayer) with edges; pictograms on tiles and headings |
+| Country view (`dbg-country.png`, z4.94, `?areas=all` + ดูทั้งหมด) | 9 province frames filled (BKK 112 brands darkest … 1-brand provinces lightest), legend “จังหวัด · จำนวนแบรนด์” 1–22 … 90–112, 9 province chips with the city glyph, panel list “จังหวัดที่มีแบรนด์ 9 จังหวัด”, `pictograms-ready` |
+| Region (`dbg-region.png`, z9.6) | frames outline-only, legend back to ย่าน, neighborhoods visible, no province chips |
+| Drill-down (`dbg-phuket.png`) | panel row ภูเก็ต → `?province=PKT`, crumbs ประเทศไทย › ภูเก็ต, z13.09, 21 สาขา, venue ranking fallback |
+
+Console: as in 0.3 (software-WebGL notices, synthetic-tile missing-source-layer warnings); no application errors; no WebGL errors from the custom layer.
+
+## Live checks — 0.4 (Chrome on macOS, real tiles)
+
+_Recorded after the Pages run of the 0.4 commit — see the entry below once attested._
+
+---
+
+# Verification record — release 0.3 (2026-10-22) — retained record
 
 Dataset snapshot: 2026-10-21. Levels are reported separately: unit tests, rendered harness, live browser checks and live byte attestation. None of them is a blanket LDS, accessibility or market-completeness certificate. The 0.2 record is kept at the end for continuity.
 

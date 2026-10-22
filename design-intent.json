@@ -1,6 +1,6 @@
 {
   "artifact": "CityMETER Luxury Brands — 3D-first, neighborhood-first retail presence map",
-  "productVersion": "0.3.0",
+  "productVersion": "0.4.0",
   "updatedOn": "2026-10-22",
   "ldsVersion": "0.9.7",
   "release": "v0.9.7-owner.1",
@@ -13,7 +13,8 @@
     "thaiHeadings": "IBM Plex Sans Thai Looped 700",
     "latinHeadings": "Arvo 700",
     "dataAndMetrics": "JetBrains Mono 400; tabular numerals; normal tracking",
-    "navigation": "Material Symbols Rounded approved nav-7 subset; FILL 0 / wght 300 / GRAD 0 / opsz 24"
+    "navigation": "Material Symbols Rounded approved nav-7 subset; FILL 0 / wght 300 / GRAD 0 / opsz 24",
+    "pictograms": "Material Symbols Rounded 8-glyph pictogram subset (assets/icons/material-pictogram-300.woff2); FILL 0 / wght 300 / GRAD 0 / opsz 24; test exception to nav-7 approved by the owner 2026-10-22"
   },
   "colors": {
     "applied": "assets/theme.css — foundation pairs, semantic states, map roles (activeLayer, selectedStroke, markerHalo, markerStroke), data states (noData, zero), categorical series 1–10 (landometer-series-10-v8 soft), count classes, basemap-only tokens (--basemap-*) for the generated paper basemap and massing",
@@ -23,7 +24,7 @@
   "firstAha": "share of distinct brands held by the top three neighborhoods, computed per selection; the map opens in the 3D city preset with those three areas focused automatically and the rest of the city quiet",
   "focusAndQuiet": {
     "ownerInstruction": "2026-10-22: show detail only for the focused part; keep the rest quiet; the first view is 3D with the top-3 areas focused; style classy and simplified like an architectural model",
-    "implementation": "app.js focus modes (auto/explicit/none); map-layers.js filled/quiet properties; pins.js context pins; massing.js quiet city tier vs rounded focus tier; camera.js presets"
+    "implementation": "app.js focus modes (auto/explicit/none); map-layers.js filled/quiet properties; pins.js context pins; massing.js quiet city tier vs rounded focus tier; camera.js presets; venue-xray.js keeps the venue solid visible on top of the 3D pass; provinces.js frames below zoom 9"
   },
   "geometryAndMetricContract": "brand–POS observation rows, source status, host representative geometry and coordinate precision remain explicit; distinct brands never summed across areas",
   "accessibility": [
@@ -35,10 +36,10 @@
     "empty, map-failure and load-error paths with actions"
   ],
   "validation": {
-    "status": "release 0.3 verification recorded in handoff/VERIFICATION.md",
-    "unitTests": 81,
+    "status": "release 0.4 verification recorded in handoff/VERIFICATION.md",
+    "unitTests": 91,
     "renderedHarness": "Playwright + vendored MapLibre + stub TileJSON + synthetic OpenMapTiles-schema tiles; 1280×800 and 390×844; light and dark",
-    "liveChecks": "see handoff/VERIFICATION.md (0.3 section) — real-tile look confirmed only there",
+    "liveChecks": "see handoff/VERIFICATION.md (0.4 section) — real-tile look confirmed only there",
     "scope": "Applied LDS assets, fonts and actual rendered interfaces. No blanket LDS, CVD, native-device or market-completeness claim."
   },
   "layoutContract": {
@@ -70,5 +71,7 @@
   "chartContract": {
     "matrix": "table-layout fixed with a colgroup; every cell the same size; caption says size carries no meaning; cell tint = count class"
   },
-  "copy": "short natural Thai without on-screen caveats: แบรนด์ / สาขา (one point-of-sale record) / สถานที่ / ย่าน; legend symbols on metric tiles"
+  "copy": "short natural Thai without on-screen caveats: แบรนด์ / สาขา (one point-of-sale record) / สถานที่ / ย่าน; legend symbols on metric tiles",
+  "countryView": "provinces holding brands are framed and filled by their own count classes below zoom 9 (data/provinces.geojson, OpenGISData-Thailand CC BY 4.0), with ink-chip labels and a panel list; each is a drill-down into the จังหวัด filter",
+  "venueVisibility": "host extrusion installed before every massing tier (MapLibre depth order = draw order) and drawn again on top by the venue x-ray custom layer (scissored depth clear) — visible and clickable at any pan, pitch or zoom"
 }

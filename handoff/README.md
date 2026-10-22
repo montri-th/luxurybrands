@@ -1,6 +1,6 @@
 # เริ่มงานต่อ — CityMETER Luxury Brands
 
-รุ่นส่งต่อ 0.3 · ปรับล่าสุด 22 ตุลาคม 2569 · ข้อมูลตรวจถึง 21 ตุลาคม 2569
+รุ่นส่งต่อ 0.4 · ปรับล่าสุด 22 ตุลาคม 2569 · ข้อมูลตรวจถึง 21 ตุลาคม 2569
 
 ชุดนี้ส่งต่อให้ developer หรือ coding agent พัฒนาต่อจาก repository ที่ใช้งานจริง หลักของรุ่นนี้คือ **เห็นเมือง 3 มิติที่โฟกัส 3 ย่านอันดับต้นก่อน แสดงรายละเอียดเฉพาะส่วนที่ focus ส่วนอื่นให้เงียบ** บน basemap กระดาษที่สร้างเอง และทำให้ Product Statement เป็น winning strategy ที่ทุกส่วนของผลิตภัณฑ์ต้องรับใช้
 
@@ -11,7 +11,7 @@ Live: [Luxury Brands](https://montri-th.github.io/luxurybrands/) · Source: [Git
 | คนอ่าน | เครื่องอ่าน | ใช้ทำอะไร |
 |---|---|---|
 | [../PRODUCT_STATEMENT.md](../PRODUCT_STATEMENT.md) | [product-statement.json](product-statement.json) | Winning strategy: Who / What / Which / How, quality bar, ป้ายหลักฐาน, hypotheses — อ่านก่อนเปลี่ยนสิ่งที่หน้าแรกบอก |
-| [PRODUCT_BRIEF.md](PRODUCT_BRIEF.md) | [product-brief.json](product-brief.json) | เป้าหมาย ผู้ใช้ ขอบเขตข้อมูลสามชั้น + focus modes, 3D first Aha, สัญญาแผนที่ focus/quiet, basemap, massing, camera, breadcrumb, แผงสี่โหมด, กราฟ, invariants INV01–INV19 |
+| [PRODUCT_BRIEF.md](PRODUCT_BRIEF.md) | [product-brief.json](product-brief.json) | เป้าหมาย ผู้ใช้ ขอบเขตข้อมูลสามชั้น + focus modes, 3D first Aha, สัญญาแผนที่ focus/quiet, basemap, massing, camera, breadcrumb, venue x-ray, กรอบจังหวัด, pictogram, แผงสี่โหมด, กราฟ, invariants INV01–INV24 |
 | [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) | [implementation-plan.json](implementation-plan.json) | โมดูลและข้อต่อ (รวมโมดูลใหม่ map-style / massing / mvt / geometry / camera / breadcrumb), งาน P01–P16, backlog N01–N10, acceptance AC01–AC21, วิธีทดสอบและ release |
 | [VERIFICATION.md](VERIFICATION.md) | [handoff-manifest.json](handoff-manifest.json) | ผลตรวจแยกระดับ (unit / rendered / live) และ hash ของทุกไฟล์ |
 | README นี้ | [handoff.schema.json](handoff.schema.json) | สัญญาโครงสร้างของ JSON ทั้งสี่ (schema 1.2.0) |
@@ -24,7 +24,7 @@ Live: [Luxury Brands](https://montri-th.github.io/luxurybrands/) · Source: [Git
 
 ```sh
 npm start      # http://127.0.0.1:4173/
-npm test       # 81 unit tests บนข้อมูลจริงและ fixture tile
+npm test       # 91 unit tests บนข้อมูลจริงและ fixture tile
 ```
 
 เป็น static site ไม่มี build step ไม่ต้อง `npm install` ต้องมี Node ≥ 20 และ Python 3 แผนที่ต้องเข้าถึง unpkg.com (MapLibre) และ tiles.openfreemap.org (tiles + glyphs; basemap สร้างเองใน `js/map-style.js`) ส่วนกราฟไม่ใช้ไลบรารีภายนอก ถ้าเครื่องทดสอบถูกบล็อก ใช้ harness แบบ stub tiles ใน VERIFICATION การเปิด `index.html` เป็นไฟล์โดยตรงจะนำไปเว็บสาธารณะ

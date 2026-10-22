@@ -2,7 +2,7 @@
 
 **Live demo: [montri-th.github.io/luxurybrands](https://montri-th.github.io/luxurybrands/)** · [Source repository](https://github.com/montri-th/luxurybrands)
 
-ถ้าจะเปิดร้านที่นี่ จะอยู่ข้างใคร: เห็นก่อนว่าแบรนด์ luxury, upscale streetwear, Thai designers และ curated retailers กระจุกอยู่ย่านใดในประเทศไทย ในภาพเมือง 3 มิติที่โฟกัส 3 ย่านอันดับต้นทันที แล้วเจาะลงถึงศูนย์การค้า อาคาร และหมุดรายสาขาพร้อมหลักฐานรายรายการ รุ่น 0.3 (22 ต.ค. 2569) เพิ่ม basemap กระดาษที่สร้างเอง มวลอาคารทั้งเมืองแบบเงียบ อาคารมุมโค้งในย่านโฟกัส กล้องแบบโมเดลเมือง/มุมสถาปนิก breadcrumb ที่เข้ากับ CityMETER production และ Product Statement แบบ winning strategy
+ถ้าจะเปิดร้านที่นี่ จะอยู่ข้างใคร: เห็นก่อนว่าแบรนด์ luxury, upscale streetwear, Thai designers และ curated retailers กระจุกอยู่ย่านใดในประเทศไทย ในภาพเมือง 3 มิติที่โฟกัส 3 ย่านอันดับต้นทันที แล้วเจาะลงถึงศูนย์การค้า อาคาร และหมุดรายสาขาพร้อมหลักฐานรายรายการ รุ่น 0.3 (22 ต.ค. 2569) เพิ่ม basemap กระดาษที่สร้างเอง มวลอาคารทั้งเมืองแบบเงียบ อาคารมุมโค้งในย่านโฟกัส กล้องแบบโมเดลเมือง/มุมสถาปนิก breadcrumb ที่เข้ากับ CityMETER production และ Product Statement แบบ winning strategy · รุ่น 0.4 (22 ต.ค. 2569) อาคารของสถานที่มองเห็นและกดได้เสมอ (venue x-ray) กรอบจังหวัดพร้อม drill-down เมื่อดูทั้งประเทศ และ pictogram บน metric tiles
 
 **Research snapshot: 21 Oct 2026 · Record grain: brand–point of sale · Artifact status: public research demo, not production.**
 

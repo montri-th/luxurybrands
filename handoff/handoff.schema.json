@@ -13,8 +13,10 @@
       "enum": [
         "1.0.0",
         "1.1.0",
-        "1.2.0"
-      ]
+        "1.2.0",
+        "1.3.0"
+      ],
+      "description": "1.3.0 adds venueXrayContract, provinceContract and pictogramContract to the product brief"
     },
     "documentType": {
       "enum": [
@@ -345,7 +347,10 @@
           "cameraContract",
           "basemapContract",
           "massingContract",
-          "breadcrumbContract"
+          "breadcrumbContract",
+          "venueXrayContract",
+          "provinceContract",
+          "pictogramContract"
         ],
         "properties": {
           "cameraContract": {
@@ -381,6 +386,15 @@
               "demoQuery",
               "provinceCodes"
             ]
+          },
+          "venueXrayContract": {
+            "type": "object"
+          },
+          "provinceContract": {
+            "type": "object"
+          },
+          "pictogramContract": {
+            "type": "object"
           }
         }
       }

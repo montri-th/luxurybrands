@@ -1,9 +1,9 @@
 {
   "$schema": "./handoff.schema.json",
-  "schemaVersion": "1.2.0",
+  "schemaVersion": "1.3.0",
   "documentType": "implementation-plan",
   "productId": "citymeter-luxury-brands",
-  "productVersion": "0.3.0",
+  "productVersion": "0.4.0",
   "updatedOn": "2026-10-22",
   "brief": "product-brief.json",
   "statement": "product-statement.json",
@@ -43,7 +43,7 @@
     "modules": [
       {
         "path": "js/app.js",
-        "role": "orchestration, row scopes and focus modes, panel modes, breadcrumb, URL state, map lifecycle, camera calls, spatial layer install"
+        "role": "orchestration, row scopes and focus modes, panel modes, breadcrumb, URL state, map lifecycle, camera calls, spatial layer install; draw-order install (host → massing → x-ray), selectProvince, legend switch by zoom"
       },
       {
         "path": "js/model.js",
@@ -75,7 +75,7 @@
       },
       {
         "path": "js/map-layers.js",
-        "role": "choropleth, outlines, focus/quiet, HTML labels"
+        "role": "choropleth, outlines, focus/quiet, HTML labels; installAreaLabels (generic ink-chip labels: neighborhoods and provinces)"
       },
       {
         "path": "js/pins.js",
@@ -83,7 +83,7 @@
       },
       {
         "path": "js/buildings.js",
-        "role": "host building extrusions, coverage, displayedFeatures()"
+        "role": "host building extrusions, coverage, displayedFeatures(); exports HOST_LAYERS"
       },
       {
         "path": "js/massing.js",
@@ -99,7 +99,7 @@
       },
       {
         "path": "js/camera.js",
-        "role": "camera presets plan/city/model/eye, principal-point shift, vertex-based pitched fitting"
+        "role": "camera presets plan/city/model/eye, principal-point shift, vertex-based pitched fitting; projectPoint (altitude-aware screen projection), fitPitched apply:false"
       },
       {
         "path": "js/breadcrumb.js",
@@ -123,7 +123,7 @@
       },
       {
         "path": "js/navigation.js",
-        "role": "approved icons, toolbar titles and help dialog"
+        "role": "approved icons, toolbar titles and help dialog; PICTOGRAM_CONTRACT + pictograms-ready font gate"
       },
       {
         "path": "js/launch.js",
@@ -136,6 +136,26 @@
       {
         "path": "scripts/verify-live.mjs",
         "role": "live byte attestation"
+      },
+      {
+        "path": "js/venue-xray.js",
+        "role": "custom 3D layer: the venue solid drawn on top of every massing tier (scissored depth clear + own depth test); walls/roof/edges; 64-bit matrix composed on the CPU"
+      },
+      {
+        "path": "js/vendor/earcut.js",
+        "role": "earcut 3.2.4 (ISC) vendored for roof triangulation"
+      },
+      {
+        "path": "js/provinces.js",
+        "role": "province frames: model (brands per province, count classes), fill/outline/selected layers with zoom windows, bounds helper"
+      },
+      {
+        "path": "scripts/extract-provinces.mjs",
+        "role": "builds data/provinces.geojson from OpenGISData-Thailand with provenance metadata"
+      },
+      {
+        "path": "scripts/build-pictogram-font.py",
+        "role": "builds the 8-glyph Material Symbols Rounded pictogram subset + manifest"
       }
     ]
   },
@@ -530,6 +550,87 @@
         "RELEASE_RECEIPT.json (bundle envelope)",
         "evidence/ (bundle envelope)"
       ],
+      "status": "done"
+    },
+    {
+      "id": "P17",
+      "title": "Venue always visible: host layer before massing (draw order = depth order) + venue x-ray custom layer + whole-mass framing",
+      "dependsOn": [
+        "P11",
+        "P12"
+      ],
+      "acceptanceCriteria": [
+        "AC24"
+      ],
+      "files": [
+        "js/venue-xray.js",
+        "js/vendor/earcut.js",
+        "js/buildings.js",
+        "js/massing.js (beforeId)",
+        "js/app.js",
+        "js/camera.js",
+        "tests/venue-xray.test.js"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P18",
+      "title": "Province frames for the country view with drill-down (data, layers, labels, legend switch, panel list)",
+      "dependsOn": [
+        "P14"
+      ],
+      "acceptanceCriteria": [
+        "AC25"
+      ],
+      "files": [
+        "data/provinces.geojson",
+        "scripts/extract-provinces.mjs",
+        "js/provinces.js",
+        "js/map-layers.js",
+        "js/app.js",
+        "js/panel.js",
+        "styles.css",
+        "tests/provinces.test.js"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P19",
+      "title": "Pictograms on metric tiles, headings and province chips (Material Symbols Rounded subset, test exception)",
+      "dependsOn": [],
+      "acceptanceCriteria": [
+        "AC26"
+      ],
+      "files": [
+        "assets/icons/material-pictogram-300.woff2",
+        "assets/icons/material-pictogram-300.json",
+        "scripts/build-pictogram-font.py",
+        "js/navigation.js",
+        "js/panel.js",
+        "styles.css"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P20",
+      "title": "0.4 verification, release, live attestation and handoff bundle",
+      "dependsOn": [
+        "P17",
+        "P18",
+        "P19"
+      ],
+      "acceptanceCriteria": [
+        "AC12",
+        "AC24",
+        "AC25",
+        "AC26"
+      ],
+      "files": [
+        "handoff/VERIFICATION.md",
+        "handoff/handoff-manifest.json",
+        "RELEASE_RECEIPT.json (bundle envelope)",
+        "evidence/ (bundle envelope)"
+      ],
       "status": "in_progress"
     }
   ],
@@ -694,17 +795,39 @@
       "expected": "UI strings use แบรนด์ / สาขา / สถานที่ / ย่าน consistently, no caveat sentences in panel, charts, legend or help; metric tiles show legend symbols; Thai reads naturally at 390 px and desktop",
       "verificationType": "browser",
       "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC24",
+      "scenario": "Venue always visible",
+      "expected": "At venue level in 3D the venue's host solid is visible from any bearing, pitch (≤ 75) and zoom ≥ 13, including when a taller building stands between the camera and the venue; clicking the solid selects the venue/store; the layer order is city/focus/occluder massing → host extrusion → venue-xray → water-name; in 2D the roof footprint remains",
+      "verificationType": "browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC25",
+      "scenario": "Country view",
+      "expected": "With the whole country on screen (zoom < 9) the provinces holding brands show filled frames with the count legend “จังหวัด · จำนวนแบรนด์” and labelled chips; clicking a frame, chip or the panel row sets the จังหวัด filter, the breadcrumb and the camera; above zoom 9 frames become outlines and the legend returns to neighborhoods; a province filter leaves the other frames quiet",
+      "verificationType": "browser + unit",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC26",
+      "scenario": "Pictograms",
+      "expected": "Metric tiles, section headings and province chips show the 8 pictograms only after the font loads (pictograms-ready); without the font the text labels read unchanged; nav-7 subset bytes unchanged (sha256 d7e28310…)",
+      "verificationType": "browser + unit",
+      "result": "see VERIFICATION.md"
     }
   ],
   "developerWorkflow": [
     "Read AGENTS.md, then handoff/README.md, PRODUCT_STATEMENT.md and the paired human/machine briefs",
     "Run npm test before changes; keep the three row scopes, the focus modes and the panel action contract",
-    "Change one bounded task at a time; preserve invariant IDs INV01–INV19",
+    "Change one bounded task at a time; preserve invariant IDs INV01–INV24",
     "Validate calculations with real dataset fixtures in tests/; tile-dependent code uses tests/fixtures/mvt-sample.pbf",
     "Review rendered Thai/English at 390 px and desktop in both themes; use the stub-tile harness when CDN/tiles are blocked, then confirm the real-tile look live",
     "Tune camera and massing live via window.__citymeter in the console before changing constants",
     "Publish only authorized changes; wait for the Pages run; run verify:live before reporting a release",
-    "Regenerate the manifest and bundle from final bytes; never hand-edit hashes"
+    "Regenerate the manifest and bundle from final bytes; never hand-edit hashes",
+    "3D layer order is a contract: host extrusion first, massing tiers inserted before it, venue-xray last — check with map.getStyle().layers / map.getLayer after any spatial change"
   ],
   "backlog": [
     {
@@ -769,7 +892,25 @@
     },
     {
       "id": "N11",
-      "title": "Report the MapLibre fill-extrusion horizon defect upstream with a minimal repro (pitch > 90 − fov/2) and re-enable the sky in the eye preset once fixed",
+      "title": "Report the MapLibre fill-extrusion horizon defect upstream with a minimal repro (pitch > 90 − fov/2) and re-enable the sky in the eye preset once fixed; note the separate draw-order/depth behaviour (translucent extrusions write depth) fixed in 0.4",
+      "ownerRole": "frontend developer",
+      "status": "engineering backlog"
+    },
+    {
+      "id": "N12",
+      "title": "Register the pictogram set (8 glyphs, roles and colours) in LDS once the owner approves the test; retire the test exception",
+      "ownerRole": "design system owner",
+      "status": "awaiting owner evaluation"
+    },
+    {
+      "id": "N13",
+      "title": "Replace the OpenGISData-Thailand province frames with the production CityMETER province boundaries (same source as /v3/citymeter/{code}) and wire the frame click to the production route",
+      "ownerRole": "platform + data owner",
+      "status": "proposal"
+    },
+    {
+      "id": "N14",
+      "title": "Extend the x-ray to the selected store's host building at neighborhood level and to the mobile portrait sheet flow; profile the scissored clear on low-end GPUs",
       "ownerRole": "frontend developer",
       "status": "engineering backlog"
     }

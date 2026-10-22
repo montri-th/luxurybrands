@@ -9,6 +9,8 @@
 const SOURCE = 'luxury-venue-buildings';
 const EXTRUSION = 'luxury-venue-buildings-3d';
 const OUTLINE = 'luxury-venue-buildings-outline';
+/** Layer ids, exported so the massing tiers can be inserted BEFORE the host extrusion (draw order = depth order). */
+export const HOST_LAYERS = Object.freeze({extrusion: EXTRUSION, outline: OUTLINE, source: SOURCE});
 const active = new WeakMap();
 
 function list(value) {

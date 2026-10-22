@@ -1,6 +1,6 @@
 # CityMETER Luxury Brands — Product Brief
 
-รุ่นส่งต่อ 0.3 · ปรับเอกสาร 22 ตุลาคม 2569 · ข้อมูลตรวจถึง 21 ตุลาคม 2569 · ใช้คู่กับ [product-brief.json](product-brief.json)
+รุ่นส่งต่อ 0.4 · ปรับเอกสาร 22 ตุลาคม 2569 · ข้อมูลตรวจถึง 21 ตุลาคม 2569 · ใช้คู่กับ [product-brief.json](product-brief.json)
 
 เอกสารนี้กำหนดประสบการณ์ที่ทีมพัฒนาต้องรักษาและต่อยอด เจตนาผลิตภัณฑ์และ winning strategy อยู่ใน [PRODUCT_STATEMENT.md](../PRODUCT_STATEMENT.md) (+ [product-statement.json](product-statement.json)); brief ฉบับนี้คือสัญญาของหน้าจอรุ่นปัจจุบัน หาก machine contract กับเอกสารนี้ขัดกัน ให้ถือ JSON เป็นหลักและแก้ทั้งสองฉบับพร้อมกัน
 
@@ -15,6 +15,14 @@
 | Matrix สับสนเรื่องขนาดช่อง | ตาราง `table-layout: fixed` ช่องเท่ากันทุกช่อง คำอธิบายระบุว่าขนาดไม่มีความหมาย | `js/charts.js`, `styles.css` |
 | 3D close-up แบบ 2-point perspective | preset `model` (FOV 14° → เส้นตั้งตั้งตรง) ในย่าน; ระดับสถานที่ใช้ preset `eye` (pitch 75°, FOV 24° — ขอบฟ้านอกจอ) เป็นค่าเริ่มต้น จัดกรอบพอดีอาคารของสถานที่ อาคารรอบข้างจางมาก อาคารที่บังโปร่งใส; เฉพาะอาคารของสถานที่นั้นเป็นสีน้ำเงิน | `js/camera.js`, `js/massing.js` (SCENE, setScene), `js/app.js` (detailRows, frameVenue) |
 | 3D styling แบบ simplified cartoon, focus/quiet | สองชั้นมวลอาคาร + อาคารที่ตั้งร้านสีน้ำเงิน; sky/fog ทำให้ระยะไกลจาง | `js/massing.js`, `js/map-style.js` (sky, light) |
+
+## สิ่งที่เปลี่ยนในรุ่น 0.4 (คำสั่งเจ้าของ 22 ต.ค. รอบสอง)
+
+| คำสั่ง | สิ่งที่ทำ | ที่อยู่ในโค้ด |
+|---|---|---|
+| อาคารของสถานที่ยังถูกอาคารอื่นบัง ต้องมองเห็นและกดได้เสมอ ไม่ว่าจะ pan / tilt / zoom | สาเหตุ: MapLibre ให้ชั้น fill-extrusion ทุกชั้นทดสอบความลึกร่วมกัน และชั้นโปร่งใสยังเขียน depth → อาคารบริบทที่โปร่ง 84 % ยังตัดอาคารของสถานที่ที่วาดทีหลังทิ้งได้ แก้สองชั้น: (1) ติดตั้งชั้นอาคารของสถานที่ **ก่อน** มวลอาคารทุกชั้น (ลำดับวาด = ลำดับความลึก) (2) ชั้น **venue x-ray** (custom layer) วาดรูปทรงของสถานที่ทับทุกอย่างในรอบ 3D โดยล้าง depth เฉพาะกรอบของสถานที่แล้ววาดใหม่ด้วย depth ของตัวเอง — แนวทาง “see-through selection” ของ 3D viewer (three.js depthTest=false, Cesium disableDepthTestDistance) การกดยังใช้ชั้น fill-extrusion เดิม; กล้องจัดกรอบทั้งอาคารรวมหลังคา | `js/venue-xray.js`, `js/vendor/earcut.js`, `js/app.js` (installSpatialLayers, frameVenue), `js/camera.js` (projectPoint, apply:false) |
+| ดูทั้งประเทศแล้วแทบไม่เห็นอะไร ต้องมีกรอบจังหวัดที่มีข้อมูลให้เจาะลง | กรอบจังหวัดของ 9 จังหวัดที่มีสาขา: ต่ำกว่า zoom 9 ระบายสีด้วย `count` (แบรนด์ไม่ซ้ำต่อจังหวัด ระดับของตัวเอง legend สลับตาม) สูงกว่านั้นเหลือเส้นกรอบจนถึง zoom 12; ป้ายชิปจังหวัดกดได้; รายการ “จังหวัดที่มีแบรนด์” ในแผง; กดแล้ว = ตัวกรองจังหวัด + breadcrumb + กล้องไปที่ข้อมูลของจังหวัด | `data/provinces.geojson`, `js/provinces.js`, `js/map-layers.js` (installAreaLabels), `js/app.js` (selectProvince, renderLegend), `scripts/extract-provinces.mjs` |
+| pictogram จริงบน metric tiles (ทดลองที่งานนี้ก่อน แล้วค่อยปรับ LDS) | ชุดย่อย Material Symbols Rounded 8 glyph (FILL 0 / wght 300) แยกไฟล์จาก nav-7 ที่อนุมัติ (bytes เดิมไม่เปลี่ยน): แบรนด์ diamond · สาขา storefront · สถานที่ local_mall · ย่าน map · จังหวัด location_city · เฉพาะย่าน star · GLA square_foot · กลุ่มแบรนด์ category ใช้บน metric tiles หัวข้อส่วนในแผง และป้ายจังหวัด ซ่อนจนกว่าฟอนต์โหลด ข้อความยังเป็นตัวความหมาย | `assets/icons/material-pictogram-300.woff2` (+ `.json`), `js/navigation.js` (PICTOGRAM_CONTRACT), `js/panel.js` (metricTile, heading), `styles.css`, `scripts/build-pictogram-font.py` |
 
 ## ผลิตภัณฑ์ช่วยตัดสินใจอะไร
 
@@ -77,7 +85,7 @@ Area focus มีสามโหมด (`state.focusAreaIds`, `state.autoFocus`)
 | หน้าแรก (auto focus) | 3 ย่านอันดับต้น: สี `count`, ป้าย + ตัวนับ, หมุดสีประเภท, อาคารที่ตั้ง, มวลอาคารมุมโค้ง (zoom ≥ 13) | ย่านอื่นเส้นขอบบาง ป้ายจาง; รายการนอก focus เป็นจุดเทาเล็ก; มวลอาคารจางทั้งเมือง; ไม่มีโลโก้ต่ำกว่า zoom 14 |
 | ดูทุกย่าน (`areas=all`) | ทุกย่านระบายสี | หมุดเป็นจุดเล็กตาม zoom; มวลอาคารจาง; ไม่มีอาคารมุมโค้ง |
 | เลือกย่านเดียว | ย่านนั้นคงสี (ต่ำกว่า zoom 14.5) เส้นขอบเลือก อาคารที่ตั้ง มวลอาคารมุมโค้ง หมุดสีประเภท โลโก้ | เหมือนหน้าแรก |
-| เปิดสถานที่ (ศูนย์การค้า) | เฉพาะแถวของสถานที่นั้น: หมุดสีประเภท โลโก้ และอาคารที่ตั้งสีน้ำเงินเฉพาะอาคารของสถานที่นั้น; กล้อง `eye` จัดกรอบพอดีอาคาร | ร้านของสถานที่อื่นเป็นจุดเทา อาคารของสถานที่อื่นถอยเป็นมวลอาคารเงียบ; มวลอาคารทั้งหมดโปร่งลง (SCENE.eye) และอาคารที่บังสถานที่โปร่งใส |
+| เปิดสถานที่ (ศูนย์การค้า) | เฉพาะแถวของสถานที่นั้น: หมุดสีประเภท โลโก้ และอาคารที่ตั้งสีน้ำเงินเฉพาะอาคารของสถานที่นั้น **มองเห็นเสมอ** (venue x-ray วาดทับทุกอย่างในรอบ 3D) และกดได้; กล้อง `eye` จัดกรอบทั้งอาคารรวมหลังคา | ร้านของสถานที่อื่นเป็นจุดเทา อาคารของสถานที่อื่นถอยเป็นมวลอาคารเงียบ; มวลอาคารทั้งหมดโปร่งลง (SCENE.eye) และอาคารที่บังสถานที่โปร่งใส |
 | เลือกร้าน | หมุดที่เลือกมีวงเน้น เส้นชี้พิกัดต้นทาง popup บนเดสก์ท็อป | ตาม focus ปัจจุบัน (ร้านในศูนย์ = ระดับสถานที่) |
 
 กติกาที่ต้องรักษา:
@@ -106,6 +114,12 @@ Area focus มีสามโหมด (`state.focusAreaIds`, `state.autoFocus`)
 
 **ฉากระดับสถานที่ (`SCENE.eye`)**: เมื่อกล้องเป็น `eye` มวลอาคารเมืองลด opacity เป็น 0.16 (ปกติ 0.22 และจางลงตามระยะจากย่านโฟกัสจนหายไปที่ ~2.2 กม.) และชั้นโฟกัสเป็น 0.62 (surroundings quiet มาก) ส่วนอาคารชั้นโฟกัสที่ยืนอยู่ระหว่างกล้องกับอาคารของสถานที่ (ทดสอบกล่องบนจอ: กล่องอาคารรวมความสูงซ้อนกล่องเป้าหมาย และพื้นอาคารอยู่ใกล้กล้องกว่า) ย้ายไปชั้น `focus-massing-occluding` ที่ opacity 0.14 = มองทะลุได้ คำนวณใหม่ทุก `moveend` และทุกครั้งที่ tile มาใหม่ อาคารของสถานที่ (HOST) ทึบเสมอ
 
+**ลำดับวาด = ลำดับความลึก**: MapLibre ให้ชั้น fill-extrusion ทุกชั้นใช้ depth buffer ร่วมกัน และชั้นโปร่งใสวาดสองรอบ (depth ก่อน สีทีหลัง — `draw_fill_extrusion.ts`) อาคารบริบทที่โปร่งแค่ 16 % จึงยังตัดอาคารของสถานที่ที่วาดทีหลังทิ้งได้ทั้งก้อน (พบจริงที่ Central Embassy 22 ต.ค.) ชั้นอาคารของสถานที่จึงติดตั้งก่อน แล้วมวลอาคารถูกแทรก **ก่อนหน้า** มัน (`installMassing({beforeId: HOST_LAYERS.extrusion})`) ทุกชั้นที่โปร่งใสจึงผสมสีทับอาคารของสถานที่แทนที่จะลบทิ้ง
+
+## อาคารของสถานที่มองเห็นเสมอ (`js/venue-xray.js`)
+
+ที่ระดับสถานที่ custom layer `venue-xray` (renderingMode `3d`, แทรกก่อน `water-name` หลังมวลอาคารทุกชั้น) วาดรูปทรงของอาคารของสถานที่ (ผนัง + หลังคาจาก earcut + เส้นขอบ) ทับทุกอย่าง: ล้าง depth buffer เฉพาะกรอบจอของสถานที่ (scissored clear) แล้ววาดใหม่ด้วย depth test ของตัวเองจึงบังตัวเองถูกต้อง จึงมองเห็นเสมอไม่ว่าจะ pan / tilt / zoom (zoom ≥ 13, เฉพาะ 3D) สีคือ `map.activeLayer` / เส้น `map.selectedStroke` แรเงาตามทิศผนังให้เห็นมิติ พิกัดเก็บสัมพัทธ์กับจุดกำเนิดและคูณเมทริกซ์ 64 บิตของ MapLibre บน CPU ตามตัวอย่าง three.js ของ MapLibre (ไม่สั่น) การกดและ hover ยังอยู่บนชั้น fill-extrusion เดิม (hit-test ของ MapLibre ไม่ขึ้นกับสิ่งที่วาดทับ) ถ้า GL ผิดพลาดชั้นปิดตัวเองและชั้นเดิมยังแสดง อ้างอิง: MapLibre CustomLayerInterface, three.js `material.depthTest = false` (selection highlight), Cesium `disableDepthTestDistance`
+
 การล้อมรอบ (enclosure) ทำให้ต้นฉบับใน CITY อยู่ภายในรูปโค้งของ FOCUS ทั้งก้อน จึงไม่มี z-fighting; อาคาร OSM ที่ซ้อนกับ HOST ถูกตัดจาก FOCUS และซ่อนใน CITY ด้วย `['!', ['in', ['id'], …]]` (feature id = OSM id) ความสูงเป็นบริบทจาก OSM/OpenMapTiles (มีค่า default เมื่อไม่มี tag) ไม่ใช่ข้ออ้างของชุดข้อมูล ข้อจำกัด: tile ของ OpenFreeMap รวมอาคารความสูงเดียวกันเป็น MultiPolygon เดียว จึงเลือกต่อหลังคาไม่ได้; ใน container ทดสอบที่ไม่มีเครือข่าย ใช้ tile สังเคราะห์ (ดู VERIFICATION)
 
 ## กล้อง (`js/camera.js`)
@@ -115,13 +129,17 @@ Area focus มีสามโหมด (`state.focusAreaIds`, `state.autoFocus`)
 | `plan` | ปิด 3D (ปุ่ม “3D”) หรือกรอบกว้างกว่า 0.3° | pitch 0 |
 | `city` | ภาพรวม/first Aha ในโหมด 3D | pitch 56, bearing 28 (แกน สยาม→พร้อมพงษ์ นอนตามความกว้างจอ), FOV 36.87 |
 | `model` | ย่าน (และระดับสถานที่เมื่อปิดมุมสถาปนิก) ในโหมด 3D | pitch 60, bearing 28, **FOV 14** → ใกล้ axonometric เส้นตั้งตั้งตรง |
-| `eye` (“มุมสถาปนิก”) | ระดับสถานที่ (โหมดสถานที่ หรือร้านที่อยู่ในสถานที่) เป็นค่าเริ่มต้น; ปุ่มปิดได้ (`?cam=model`); ปิดใช้ในระดับอื่นและใน 2D; บนมือถือรอจน sheet ปิด | pitch 75, FOV 24 (ขอบฟ้าอยู่นอกจอ — MapLibre 5.6.2 วาด fill-extrusion ผิดเมื่อขอบฟ้าเข้าจอ) = เปอร์สเปกทีฟ 2 จุด; `frameVenue` fit อาคารของสถานที่ (ทุกจุดยอด + headroom 20%) |
+| `eye` (“มุมสถาปนิก”) | ระดับสถานที่ (โหมดสถานที่ หรือร้านที่อยู่ในสถานที่) เป็นค่าเริ่มต้น; ปุ่มปิดได้ (`?cam=model`); ปิดใช้ในระดับอื่นและใน 2D; บนมือถือรอจน sheet ปิด | pitch 75, FOV 24 (ขอบฟ้าอยู่นอกจอ — MapLibre 5.6.2 วาด fill-extrusion ผิดเมื่อขอบฟ้าเข้าจอ) = เปอร์สเปกทีฟ 2 จุด; `frameVenue` fit ทั้งอาคารของสถานที่: จุดยอดพื้น + จุดยอดหลังคา (`projectPoint` ฉายจุดที่มีความสูงผ่านเมทริกซ์ของ MapLibre) ซูมออกได้ไม่เกิน 1 ระดับจาก fit ของ footprint |
 
 `fitPitched` เริ่มจาก `cameraForBounds` (flat) แล้วปรับ zoom ทีละ 0.1 จนทุกจุดยอดของ polygon อยู่ใน viewport ที่มี padding; บนเดสก์ท็อป padding ของมุมมอง 3D ไม่นับ legend; บนมือถือแนวตั้งเมื่อ sheet เปิดใช้ `plan` แล้วปรับเป็น 3D เมื่อปิด sheet MapLibre ไม่มีกล้อง orthographic — FOV แคบคือวิธีมาตรฐาน; `setVerticalFieldOfView` มีตั้งแต่ MapLibre 4.7
 
 ## Breadcrumb และความเข้ากันได้กับ production
 
 แถวบนของแผง: **ประเทศไทย › จังหวัด › ย่าน › สถานที่** (`js/breadcrumb.js`) รหัสจังหวัดตรงกับ path ของ production ที่สังเกตเมื่อ 22 ต.ค. 2569 (`/v3/citymeter/BKK`, `/PKT`, `/CMI`, `/SPK`, `/NBI`, `/CBI`, `/PTE`, `/UDN`, `/NMA`) และระดับที่สามของ production เข้ารหัสชนิดใน path (`/L/{locale uuid}` = Locale, `/M/{dopa code}` = เทศบาล) ย่านของชุดนี้ยังไม่ใช่ Locale จึงเสนอ `/N/{neighborhood id}` ในระหว่างที่ยังไม่ลงทะเบียน ระดับที่สี่คือสถานที่: ศูนย์การค้าที่จับคู่แล้วใช้ Shopping Center id ของ CityMETER (`centers[].id`) จึงเสนอ `/V/{center id}`; demo (static) ใช้ `?province=BKK&neighborhood=siam&place=<id>` และรับทั้งรหัสและชื่อจังหวัดใน URL เก่า กติกา: ระดับย่านของสถานที่มาจาก point-in-polygon ของจุดตัวแทนสถานที่ (ไม่ใช่ชื่อ) สถานที่นอกย่านทั้ง 10 ข้ามระดับย่าน ร้านเป็นหัวเรื่องของแผง ไม่ใช่ crumb บนจอแคบเมื่อมี 4 ระดับ ระดับบนพับไว้หลัง “…” (ปุ่มขยาย) โดยสองระดับสุดท้ายเห็นเสมอ
+
+## กรอบจังหวัด (country view)
+
+`data/provinces.geojson` คือกรอบของ 9 จังหวัดที่มีสาขา (OpenGISData-Thailand, CC BY 4.0, อ้างอิงกรมการปกครอง; id = รหัสจังหวัดของ production, `dopaCode` = รหัส 2 หลักของ DOPA) `js/provinces.js` ระบายสีตาม `count` (แบรนด์ไม่ซ้ำต่อจังหวัด จากแถวที่ผ่านตัวกรองทุกตัว **ยกเว้น** ตัวกรองจังหวัด จึงนับของทุกกรอบได้เสมอ) ต่ำกว่า zoom 9 (`PROVINCE_FILL_MAX_ZOOM`) เหลือเส้นกรอบถึง zoom 12 กรอบที่เลือกเป็นเส้นทึบถึง zoom 13; เลือกจังหวัดแล้วกรอบอื่น quiet (เส้นขอบ ไม่ระบายสี) ป้ายชิปจังหวัด (`installAreaLabels`, class `province-label`, glyph location_city) แสดงต่ำกว่า zoom 9.5 คำอธิบายแผนที่สลับเป็น “จังหวัด · จำนวนแบรนด์” ต่ำกว่า zoom 9 แผงภาพรวมที่ระดับประเทศมีรายการ “จังหวัดที่มีแบรนด์” การกดกรอบ ป้าย หรือรายการ = `selectProvince(code)` → ตัวกรองจังหวัด + breadcrumb ประเทศไทย › จังหวัด + กล้องไปที่ข้อมูลของจังหวัด (`?province=CODE`) กรอบเป็นบริบทและทางเดิน ไม่ใช่ขอบเขตการปกครองที่ยืนยัน EVID-05: จังหวัดในชุดกรอบที่ไม่มีแบรนด์ในตัวกรอง = measured_zero (สีต่ำสุด + เส้นศูนย์) จังหวัดนอกชุดข้อมูล = out_of_scope (ไม่วาด)
 
 ## แผงอ่านข้อมูล
 
@@ -147,6 +165,10 @@ Area focus มีสามโหมด (`state.focusAreaIds`, `state.autoFocus`)
 | หมุด | หนึ่งหมุดต่อรายการ; ขนาด 3 ระดับตาม zoom (<12, 12–14, ≥14); context dots สีเทา |
 | โลโก้ | เฉพาะ zoom ≥ 14 และเฉพาะรายการใน focus; ≤ 250; ไม่ทับหมุด ป้าย หรือ UI |
 | ป้ายย่าน | ชิปหมึกเข้ม (`--area-label-*`, ฟอนต์หัวเรื่อง, สัญลักษณ์สี่เหลี่ยมย่าน + ตัวนับแบรนด์พื้นสว่าง) ให้แยกจากกล่องโลโก้สีขาวทันที; กดได้; quiet = โปร่ง 72% เมื่ออยู่นอก focus; ซ่อน < zoom 11.5 |
+| ป้ายจังหวัด | ชิปแบบเดียวกัน glyph location_city + ตัวนับแบรนด์; แสดง < zoom 9.5; กด = เจาะลงจังหวัด |
+| คำอธิบายแผนที่ (ระดับ) | < zoom 9 “จังหวัด · จำนวนแบรนด์” (ระดับของจังหวัด) · ≥ 9 “ย่าน · จำนวนแบรนด์”; ซ่อนช่วงค่าเมื่อ zoom ≥ 14.5 |
+| Pictogram | metric tiles, หัวข้อส่วน และป้ายจังหวัดใช้ชุดย่อย Material Symbols Rounded 8 glyph (`PICTOGRAM_CONTRACT`); ตกแต่ง (aria-hidden) ข้อความคือความหมาย; ซ่อนจนกว่าฟอนต์โหลด (`pictograms-ready`) |
+| รายการจังหวัด | แผงภาพรวมระดับประเทศ: “จังหวัดที่มีแบรนด์” เรียงตามแบรนด์ พร้อม swatch ระดับสี กด = เจาะลงจังหวัด |
 | คำอธิบายแผนที่ | ช่วงค่า choropleth, หมุด, อาคารที่ตั้ง, อาคารโฟกัส/บริบท (ซ่อนบริบทเมื่อ 2D), สีประเภท; ซ่อนช่วงค่าเมื่อ zoom ≥ 14.5 |
 | ตาราง | overlay เหนือถาดกราฟ, คอลัมน์ย่าน จังหวัด (ชื่อไทย) สถานะจริง, ลิงก์หลักฐาน, ไม่มี CSV |
 | ข้อความ | ไม่มี caveat banner, research badge, workflow residue; คงสถานะปิดจริง วันที่ แหล่งข้อมูล หน่วยนับ |
@@ -156,7 +178,7 @@ Area focus มีสามโหมด (`state.focusAreaIds`, `state.autoFocus`)
 
 LDS **0.9.7 / v0.9.7-owner.1**, `standalone-0.9.7-r1`, normative SHA-256 `d3085cbc0a50195f1cbf0c77b1d77c0d19b84364daf2948eb367348d65432d96` ค่าที่ใช้จริงอยู่ใน `assets/theme.css` (foundation pairs, semantic states, map roles, data states, series 1–10, count classes, **basemap-only tokens**) และ `js/scales.js` (LUT 41 ค่าของ `count`)
 
-หัวเรื่อง Arvo / IBM Plex Sans Thai Looped 700, เนื้อหา Bai Jamjuree 400/600, ตัวเลข JetBrains Mono tabular, ไอคอน Material Symbols Rounded nav-7 FILL 0 / wght 300 (ปุ่ม 3D/มุมสถาปนิกใช้ข้อความ เพราะไม่มี glyph ที่อนุมัติ) ไม่มี decorative bracket หรือ colored left rail คง focus ring ธีม auto/light/dark ไม่เปลี่ยนความหมายข้อมูล Location-Intelligence-Profile ไม่นำมาใช้ (ไม่มีเมตริกธุรกิจในชุดนี้)
+หัวเรื่อง Arvo / IBM Plex Sans Thai Looped 700, เนื้อหา Bai Jamjuree 400/600, ตัวเลข JetBrains Mono tabular, ไอคอน Material Symbols Rounded nav-7 FILL 0 / wght 300 (ปุ่ม 3D/มุมสถาปนิกใช้ข้อความ เพราะไม่มี glyph ที่อนุมัติ) **ข้อยกเว้นทดลอง (เจ้าของ 22 ต.ค. 2569)**: pictogram 8 glyph จากตระกูลเดียวกัน (`assets/icons/material-pictogram-300.woff2`, sha256 `33d9084b…71c7b0`) ใช้ในงานนี้ก่อน ถ้าดีจึงลงทะเบียนใน LDS; nav-7 bytes ไม่เปลี่ยน ไม่มี decorative bracket หรือ colored left rail คง focus ring ธีม auto/light/dark ไม่เปลี่ยนความหมายข้อมูล Location-Intelligence-Profile ไม่นำมาใช้ (ไม่มีเมตริกธุรกิจในชุดนี้)
 
 ## ที่มาของเจตนาผลิตภัณฑ์
 

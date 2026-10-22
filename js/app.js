@@ -28,15 +28,17 @@
  * Resilience: core data first; the map (MapLibre, CDN) and optional datasets
  * are independent and retryable; charts are vendor-free.
  */
-import {SEGMENTS, CHANNELS, COHORTS, PROVINCES, provinceByName, provinceNameFrom, filterRows, summarize, hasPoint, isClosed} from './model.js';
+import {SEGMENTS, CHANNELS, COHORTS, PROVINCES, provinceByName, provinceByCode, provinceNameFrom, filterRows, summarize, hasPoint, isClosed} from './model.js';
 import {summarizeAreaInsight, filterAreaRows} from './area-insight.js';
 import {renderInsightChart} from './charts.js';
 import {loadMapLibrary} from './vendors.js';
 import {installStorePins} from './pins.js';
-import {installVenueBuildings} from './buildings.js';
+import {installVenueBuildings, HOST_LAYERS} from './buildings.js';
+import {installVenueXray} from './venue-xray.js';
 import {assignNeighborhood} from './neighborhoods.js';
 import {configureBrandLogos, brandLogoMarkup} from './brand-logos.js';
-import {installNeighborhoodLayers, installNeighborhoodLabels, buildAreaModel, featureBounds} from './map-layers.js';
+import {installNeighborhoodLayers, installNeighborhoodLabels, installAreaLabels, buildAreaModel, featureBounds} from './map-layers.js';
+import {installProvinceLayers, buildProvinceModel, provinceBounds, PROVINCE_FILL_MAX_ZOOM, PROVINCE_LABEL_MAX_ZOOM} from './provinces.js';
 import {buildOverviewInsights, buildNeighborhoodProfile, buildStoreDetail, buildVenueProfile, describeStatus, rankVenues} from './profile-model.js';
 import {renderOverview, renderNeighborhood, renderVenue, renderStore, renderFilterChips, statusPill, link, esc, num} from './panel.js';
 import {buildMapStyle, basemapPalette, TILEJSON_URL, MASSING_BEFORE} from './map-style.js';
@@ -52,14 +54,15 @@ const mobilePortrait = () => matchMedia('(max-width: 760px) and (orientation: po
 const SEGMENT_LIST = Object.entries(SEGMENTS).map(([id, name]) => ({id, name}));
 
 const state = {
-  data: null, neighborhoods: null, buildingData: null,
+  data: null, neighborhoods: null, buildingData: null, provinces: null,
   scopeRows: [], baseRows: [], rows: [],
   view: 'centers', page: 0,
   focusAreaIds: [], autoFocus: true, focusIds: [], selectedId: '',
   panel: {mode: 'overview', id: '', venue: ''}, history: [],
   map: null, loaded: false, mapTheme: '', popup: null, initialCameraDone: false, tileTemplate: '',
   view3d: true, twoPoint: true, showNeighborhoods: true,
-  pins: null, buildings: null, massing: null, areaLayers: null, labels: null, areaModel: null,
+  pins: null, buildings: null, massing: null, xray: null, areaLayers: null, labels: null, areaModel: null,
+  provinceLayers: null, provinceLabels: null, provinceModel: null,
 };
 
 /* ---------- helpers ---------- */
@@ -105,9 +108,10 @@ function applyTheme() {
   try { localStorage.setItem('citymeter-luxury-theme', value); } catch {}
   if (state.map && next !== state.mapTheme) {
     state.loaded = false;
+    state.xray?.dispose(); state.xray = null;
     state.buildings?.dispose(); state.buildings = null;
     state.massing?.dispose(); state.massing = null;
-    state.areaLayers = null;
+    state.areaLayers = null; state.provinceLayers = null;
     state.mapTheme = next;
     state.map.setStyle(buildMapStyle(next), {diff: false});
   }
@@ -234,14 +238,14 @@ function renderPanel(summary = summarize(state.rows, state.data.centers)) {
   if (!html) {
     const insight = summarizeAreaInsight(focusMode() === 'explicit' ? state.rows : state.baseRows, state.neighborhoods);
     const overview = buildOverviewInsights(state.baseRows, state.neighborhoods, SEGMENT_LIST);
-    html = renderOverview({insight, overview, summary, focusMode: focusMode(), areaModel: state.areaModel, asOf: state.data.meta?.asOf || '', venues: overview.areaCount ? [] : rankVenues(state.rows, state.data.centers), view3d: state.view3d});
+    html = renderOverview({insight, overview, summary, focusMode: focusMode(), areaModel: state.areaModel, asOf: state.data.meta?.asOf || '', venues: overview.areaCount ? [] : rankVenues(state.rows, state.data.centers), view3d: state.view3d, provinces: $('province').value ? [] : (state.provinceModel?.provinces || buildProvinceModelSafe()).filter(p => p.brands > 0).sort((a, b) => b.brands - a.brands || b.pos - a.pos)});
     renderMapAha(insight);
   } else {
     $('map-aha').hidden = true;
   }
   view.innerHTML = html;
   view.dataset.mode = mode;
-  const key = `${mode}:${state.panel.id}:${state.panel.venue}`;
+  const key = `${mode}:${state.panel.id}:${state.panel.venue}:${$('province').value}`;
   if (key !== renderPanel.lastKey) $('panel').scrollTop = 0;
   renderPanel.lastKey = key;
 }
@@ -330,19 +334,25 @@ function selectVenue(mallId, venue) {
 }
 
 /**
- * Frame the venue: its host building(s) when the data layer has them (every
- * footprint vertex inside the padded viewport, with headroom for the building's
- * height under the near-horizontal eye camera), else the venue point.
+ * Frame the venue: its host building(s) when the data layer has them — every
+ * footprint vertex AND every roof vertex (vertex + display height) inside the
+ * padded viewport, so the whole solid is in the frame; a very tall tower may
+ * push the camera out by at most one zoom level beyond the footprint fit so the
+ * pins stay readable (the x-ray keeps the mass visible either way). Else the
+ * venue point.
  */
 function frameVenue(profile, {animate: anim = animate(), instant = false} = {}) {
   const map = state.map, preset = cameraPreset();
   const targets = venueTargets(state.buildings?.displayedFeatures() || []);
   if (targets.length && preset !== 'plan' && !mobilePortrait()) {
-    const pts = targets.flatMap(t => t.ring);
-    const bounds = pts.reduce((b, p) => b.extend(p), new maplibregl.LngLatBounds(pts[0], pts[0]));
+    const ground = targets.flatMap(t => t.ring.map(([lng, lat]) => [lng, lat, 0]));
+    const roof = targets.flatMap(t => t.ring.map(([lng, lat]) => [lng, lat, t.height]));
+    const bounds = ground.reduce((b, p) => b.extend([p[0], p[1]]), new maplibregl.LngLatBounds([ground[0][0], ground[0][1]], [ground[0][0], ground[0][1]]));
     const h = map.getContainer().clientHeight;
-    const headroom = Math.round(h * (preset === 'eye' ? 0.2 : 0.12));
-    fitPitched(map, bounds, {preset, points: pts, padding: {top: headroom, bottom: 48, left: 48, right: 48}, maxZoom: 17.6, minZoom: 14.5, animate: anim && !instant});
+    const padding = {top: Math.round(h * (preset === 'eye' ? 0.12 : 0.1)), bottom: 48, left: 48, right: 48};
+    const foot = fitPitched(map, bounds, {preset, points: ground, padding, maxZoom: 17.6, minZoom: 14.5, apply: false});
+    const minZoom = Math.max(14.5, (foot?.zoom ?? 17.6) - 1);
+    fitPitched(map, bounds, {preset, points: [...ground, ...roof], padding, maxZoom: 17.6, minZoom, animate: anim && !instant});
     return;
   }
   if (profile && Number.isFinite(profile.latitude)) framePoint(map, [profile.longitude, profile.latitude], {preset, zoom: 16, offset: sheetOffset(), animate: anim && !instant});
@@ -352,6 +362,19 @@ function frameVenue(profile, {animate: anim = animate(), instant = false} = {}) 
 function exploreTop() { state.autoFocus = true; state.focusAreaIds = []; update({fit: true}); closeMobilePanel(); }
 /** Show every area with detail (no quiet context) — ?areas=all. */
 function clearFocus() { state.autoFocus = false; state.focusAreaIds = []; update({fit: true}); }
+
+/** Drill down into a province frame: the จังหวัด filter, overview panel, camera on the province's rows. */
+function selectProvince(code) {
+  const name = provinceNameFrom(code);
+  if (!name || ![...$('province').options].some(o => o.value === name)) return;
+  $('province').value = name;
+  $('neighborhood').value = '';
+  state.focusAreaIds = [];
+  state.panel = overviewPanel();
+  state.history = [];
+  update({fit: true});
+  announce(`จังหวัด${provinceByName(name)?.th || name}`);
+}
 
 function resetToOverview({fit = true} = {}) {
   state.focusAreaIds = [];
@@ -384,6 +407,7 @@ function onPanelAction(event) {
     case 'clear-filter': clearFilter(id); break;
     case 'crumb-country': $('province').value = ''; $('neighborhood').value = ''; resetToOverview(); break;
     case 'crumb-province': { const name = provinceNameFrom(id); if ([...$('province').options].some(o => o.value === name)) $('province').value = name; $('neighborhood').value = ''; resetToOverview(); break; }
+    case 'select-province': selectProvince(id); break;
     case 'crumb-area': selectNeighborhood(id); break;
     case 'crumb-venue': selectVenue(id, value); break;
     case 'crumb-expand': { const ol = target.closest('.crumbs'); ol.classList.add('is-expanded'); target.setAttribute('aria-expanded', 'true'); ol.querySelector('.crumb:not(.crumb-more)')?.focus({preventScroll: true}); break; }
@@ -393,16 +417,22 @@ function onPanelAction(event) {
 }
 
 /* ---------- legend ---------- */
+/** Country/region zooms read the province frames; from PROVINCE_FILL_MAX_ZOOM the neighborhoods carry the scale. */
+const provinceZoom = () => Boolean(state.provinceModel) && (state.map?.getZoom?.() ?? 12) < PROVINCE_FILL_MAX_ZOOM;
 function renderLegend() {
-  const model = state.areaModel;
+  const atProvince = provinceZoom();
+  const model = atProvince ? state.provinceModel : state.areaModel;
   const steps = $('legend-steps');
-  if (!model || !model.classes.classes.length) { steps.innerHTML = `<span class="hint">ไม่มีย่านที่มีแบรนด์ในตัวกรองนี้</span>`; }
+  $('legend-title').textContent = atProvince ? 'จังหวัด · จำนวนแบรนด์' : 'ย่าน · จำนวนแบรนด์';
+  const unit = atProvince ? 'จังหวัด' : 'ย่าน';
+  if (!model || !model.classes.classes.length) { steps.innerHTML = `<span class="hint">ไม่มี${unit}ที่มีแบรนด์ในตัวกรองนี้</span>`; }
   else {
     steps.innerHTML = model.classes.classes.map(c => `<span class="legend-step"><i style="background:${c.fill}" aria-hidden="true"></i>${esc(c.label)}</span>`).join('') +
-      (model.zeroCount ? `<span class="legend-step" title="ย่านที่นิยามไว้แต่ไม่พบแบรนด์ในตัวกรองนี้"><i class="legend-zero" aria-hidden="true"></i>0</span>` : '');
-    $('legend-areas').title = `แบรนด์ไม่ซ้ำต่อย่าน · ${model.classes.classCount} ระดับเท่าช่วง จากค่าสูงสุด ${model.classes.max} · นอกขอบเขตย่านไม่ระบายสี · สีเดียวกันทั้งสองธีม`;
+      (model.zeroCount ? `<span class="legend-step" title="${unit}ที่นิยามไว้แต่ไม่พบแบรนด์ในตัวกรองนี้"><i class="legend-zero" aria-hidden="true"></i>0</span>` : '');
+    $('legend-areas').title = `แบรนด์ไม่ซ้ำต่อ${unit} · ${model.classes.classCount} ระดับเท่าช่วง จากค่าสูงสุด ${model.classes.max} · นอกขอบเขต${unit}ไม่ระบายสี · สีเดียวกันทั้งสองธีม`;
   }
   document.querySelector('.map-panel').classList.toggle('is-3d', state.view3d);
+  document.querySelector('.map-panel').classList.toggle('is-province-zoom', atProvince);
 }
 
 /* ---------- charts ---------- */
@@ -510,9 +540,21 @@ function fitMap({instant = false} = {}) {
   fitPitched(state.map, b, {preset, padding: pitched ? pitchedPadding() : cameraPadding(), maxZoom: 15, animate: animate() && !instant, points, shift: mobilePortrait() && !wide ? -0.12 : null});
 }
 
+/** Rows for the province frames: the current filters WITHOUT the province filter, so every frame keeps its own count. */
+const provinceScopeRows = () => filterRows(state.data.rows, {...values(), province: '', neighborhoodIds: null});
+const selectedProvinceCode = () => provinceByName($('province').value)?.code || '';
+function buildProvinceModelSafe() {
+  try { return state.provinces?.features?.length ? buildProvinceModel(provinceScopeRows(), state.provinces).provinces : []; } catch { return []; }
+}
+
 function updateSpatialLayers() {
   if (!state.loaded) return;
   const feature = selectedNeighborhood();
+  const code = selectedProvinceCode();
+  const pm = state.provinceLayers?.update({rows: provinceScopeRows(), selectedCode: code, visible: true}) || null;
+  state.provinceModel = pm;
+  state.provinceLabels?.update(pm ? pm.provinces : [], {selectedId: code, visible: true, LngLatBounds: maplibregl.LngLatBounds});
+  if (pm) renderLegend();
   state.buildings?.update({rows: detailRows(), enabled: true, theme: theme()});
   const selectedId = areaKey(feature);
   const model = state.areaLayers?.update({rows: state.scopeRows, selectedId, visible: state.showNeighborhoods, focusIds: state.focusIds});
@@ -529,30 +571,33 @@ function updateSpatialLayers() {
   })?.catch(e => console.warn('Massing', e));
   // Venue-level two-point view: surroundings very quiet, buildings hiding the venue see-through.
   state.massing?.setScene(cameraPreset() === 'eye' ? 'eye' : 'default', venueTargets(hostFeatures));
+  // Venue x-ray: the venue's own solid is always drawn on top in 3D (never hidden by massing).
+  const hostColors = () => { const s = getComputedStyle(document.documentElement); return {fill: s.getPropertyValue('--map-active-layer').trim(), stroke: s.getPropertyValue('--map-selected-stroke').trim()}; };
+  state.xray?.update(venueLevel() ? venueHostFeatures(hostFeatures).filter(f => f.properties?.render_as === 'extrusion') : [], {colors: hostColors()});
+  state.xray?.setEnabled(state.view3d);
   state.pins?.layout();
 }
 
-/** Host building rings (+ display height) of the venue being looked at — the occlusion targets. */
-function venueTargets(hostFeatures) {
+const asList = value => Array.isArray(value) ? value : (typeof value === 'string' ? (() => { try { const x = JSON.parse(value); return Array.isArray(x) ? x : []; } catch { return []; } })() : []);
+/** Host building features (footprint + parts) of the venue being looked at. */
+function venueHostFeatures(hostFeatures) {
   const v = currentVenue();
   if (!v) return [];
-  const asList = value => Array.isArray(value) ? value : (typeof value === 'string' ? (() => { try { const x = JSON.parse(value); return Array.isArray(x) ? x : []; } catch { return []; } })() : []);
-  return hostFeatures
-    .filter(f => (v.id && asList(f.properties?.mall_ids).includes(v.id)) || asList(f.properties?.venue_names).includes(v.label))
-    .flatMap(f => outerRings(f).map(ring => ({ring, height: Number(f.properties?.display_height_m) || 3})));
+  return hostFeatures.filter(f => (v.id && asList(f.properties?.mall_ids).includes(v.id)) || asList(f.properties?.venue_names).includes(v.label));
+}
+/** Host building rings (+ display height) of the venue being looked at — the occlusion and framing targets. */
+function venueTargets(hostFeatures) {
+  return venueHostFeatures(hostFeatures).flatMap(f => outerRings(f).map(ring => ({ring, height: Number(f.properties?.display_height_m) || 3})));
 }
 
 function installSpatialLayers() {
   const map = state.map;
   state.loaded = true;
   const palette = basemapPalette(theme());
+  state.provinceLayers = state.provinces?.features?.length ? installProvinceLayers(map, state.provinces, {onSelect: code => selectProvince(code)}) : null;
   state.areaLayers = installNeighborhoodLayers(map, state.neighborhoods, {onSelect: id => selectNeighborhood(id, {fromMap: true})});
-  state.massing = installMassing(map, {
-    beforeId: MASSING_BEFORE, colors: {quiet: palette.massingQuiet, focus: palette.massingFocus, ground: palette.ground},
-    tileUrl: t => (state.tileTemplate ? state.tileTemplate.replace('{z}', t.z).replace('{x}', t.x).replace('{y}', t.y) : ''),
-    // Applied results (also zoom-triggered rebuilds) → status line and the dev hook.
-    onResult: result => { state.massingResult = result; $('map-status').dataset.massing = `${result.features || 0}`; },
-  });
+  // Draw order is depth order in MapLibre's 3D pass: the host (data) layer is installed first and the
+  // massing tiers are inserted BEFORE it, so a translucent context building can never cut the venue away.
   state.buildings = installVenueBuildings(map, state.buildingData, {
     rows: state.rows, enabled: true, theme: theme(), beforeId: MASSING_BEFORE,
     onSelect: selection => {
@@ -562,6 +607,15 @@ function installSpatialLayers() {
       else selectVenue(rs[0].mallId, rs[0].venue);
     },
   });
+  state.massing = installMassing(map, {
+    beforeId: map.getLayer(HOST_LAYERS.extrusion) ? HOST_LAYERS.extrusion : MASSING_BEFORE, colors: {quiet: palette.massingQuiet, focus: palette.massingFocus, ground: palette.ground},
+    tileUrl: t => (state.tileTemplate ? state.tileTemplate.replace('{z}', t.z).replace('{x}', t.x).replace('{y}', t.y) : ''),
+    // Applied results (also zoom-triggered rebuilds) → status line and the dev hook.
+    onResult: result => { state.massingResult = result; $('map-status').dataset.massing = `${result.features || 0}`; },
+  });
+  // The venue x-ray is the last 3D layer: always on top of host, massing and occluders.
+  try { state.xray = installVenueXray(map, {beforeId: MASSING_BEFORE}); }
+  catch (e) { state.xray = null; console.warn('Venue x-ray unavailable', e); }
   updateSpatialLayers();
   if (!state.initialCameraDone) {
     state.initialCameraDone = true;
@@ -578,6 +632,8 @@ function initMap() {
     state.map = new maplibregl.Map({container: 'map', center: BANGKOK.center, zoom: BANGKOK.zoom, pitch: 0, maxPitch: 85, attributionControl: {compact: true}, style: buildMapStyle(state.mapTheme)});
     state.map.addControl(new maplibregl.NavigationControl({showCompass: true, visualizePitch: true}), 'top-right');
     state.labels = installNeighborhoodLabels(state.map, $('map'), {onSelect: id => selectNeighborhood(id, {fromMap: true}), reservedBottom: bottomSpace});
+    state.provinceLabels = installAreaLabels(state.map, $('map'), {className: 'province-label', hostId: 'province-labels', hostLabel: 'จังหวัดบนแผนที่', minZoom: 0, maxZoom: PROVINCE_LABEL_MAX_ZOOM, verb: 'กดเพื่อดูจังหวัด', detailZoomClass: false, onSelect: code => selectProvince(code), reservedBottom: bottomSpace});
+    state.map.on('zoomend', () => { if (state.loaded) renderLegend(); });
     state.pins = installStorePins(state.map, $('map'), {
       reservedBottom: bottomSpace,
       onSelect: r => selectStore(r.id, {fly: false, showPopup: true, fromPin: true}),
@@ -593,8 +649,8 @@ function initMap() {
     fetch(TILEJSON_URL).then(r => r.json()).then(j => { state.tileTemplate = j.tiles?.[0] || ''; if (state.loaded) updateSpatialLayers(); }).catch(e => console.warn('TileJSON', e));
   } catch (e) {
     state.loaded = false; state.initialCameraDone = false;
-    for (const cleanup of [() => state.pins?.dispose(), () => state.labels?.dispose(), () => state.buildings?.dispose(), () => state.massing?.dispose(), () => state.map?.remove()]) { try { cleanup(); } catch (err) { console.warn('Map cleanup', err); } }
-    state.map = null; state.pins = null; state.labels = null; state.buildings = null; state.massing = null; state.areaLayers = null;
+    for (const cleanup of [() => state.pins?.dispose(), () => state.labels?.dispose(), () => state.provinceLabels?.dispose(), () => state.xray?.dispose(), () => state.buildings?.dispose(), () => state.massing?.dispose(), () => state.map?.remove()]) { try { cleanup(); } catch (err) { console.warn('Map cleanup', err); } }
+    state.map = null; state.pins = null; state.labels = null; state.provinceLabels = null; state.buildings = null; state.massing = null; state.xray = null; state.areaLayers = null; state.provinceLayers = null; state.provinceModel = null;
     throw e;
   }
 }
@@ -673,6 +729,7 @@ function validOptionalFeatureCollection(value, kind) {
     if (f?.type !== 'Feature' || !p || typeof p !== 'object' || Array.isArray(p)) return false;
     if (!(g?.type === 'Polygon' ? polygon(g.coordinates) : g?.type === 'MultiPolygon' && Array.isArray(g.coordinates) && g.coordinates.length > 0 && g.coordinates.every(polygon))) return false;
     if (kind === 'neighborhood') { const id = f.id || p.id; return typeof id === 'string' && !!id.trim() && typeof p.name === 'string' && !!p.name.trim(); }
+    if (kind === 'province') { const code = f.id || p.code; return typeof code === 'string' && !!provinceByCode(code) && typeof p.name === 'string' && !!p.name.trim(); }
     return p.outlet_ids == null || (Array.isArray(p.outlet_ids) && p.outlet_ids.every(id => typeof id === 'string'));
   });
 }
@@ -763,11 +820,11 @@ function wireEvents() {
 
 async function init() {
   try {
-    const resources = ['data/luxury.json', 'data/neighborhoods.geojson', 'data/venue-buildings.geojson', 'data/brand-logos.json'];
+    const resources = ['data/luxury.json', 'data/neighborhoods.geojson', 'data/venue-buildings.geojson', 'data/brand-logos.json', 'data/provinces.geojson'];
     const results = await Promise.allSettled(resources.map(fetchJSON));
     if (results[0].status === 'rejected') throw results[0].reason;
     state.data = results[0].value;
-    for (const [index, kind] of [[1, 'neighborhood'], [2, 'building']]) {
+    for (const [index, kind] of [[1, 'neighborhood'], [2, 'building'], [4, 'province']]) {
       if (results[index].status === 'fulfilled' && !validOptionalFeatureCollection(results[index].value, kind)) {
         const error = new Error('Invalid optional polygon FeatureCollection');
         error.resource = resources[index]; error.phase = 'data-schema';
@@ -777,6 +834,7 @@ async function init() {
     }
     state.neighborhoods = results[1].status === 'fulfilled' ? results[1].value : {type: 'FeatureCollection', features: []};
     state.buildingData = results[2].status === 'fulfilled' ? results[2].value : {type: 'FeatureCollection', features: []};
+    state.provinces = results[4].status === 'fulfilled' ? results[4].value : {type: 'FeatureCollection', features: []};
     const coverage = configureBrandLogos(results[3].status === 'fulfilled' ? results[3].value : {brands: []}, state.data.rows);
     if (!coverage.complete) console.warn('Brand logo coverage', coverage);
 

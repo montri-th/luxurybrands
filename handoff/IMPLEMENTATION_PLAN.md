@@ -1,8 +1,8 @@
 # CityMETER Luxury Brands — Implementation Plan
 
-รุ่นส่งต่อ 0.3 · ปรับเอกสาร 22 ตุลาคม 2569 · ข้อมูลตรวจถึง 21 ตุลาคม 2569 · ใช้คู่กับ [PRODUCT_BRIEF.md](PRODUCT_BRIEF.md), [PRODUCT_STATEMENT.md](../PRODUCT_STATEMENT.md) และ [implementation-plan.json](implementation-plan.json)
+รุ่นส่งต่อ 0.4 · ปรับเอกสาร 22 ตุลาคม 2569 · ข้อมูลตรวจถึง 21 ตุลาคม 2569 · ใช้คู่กับ [PRODUCT_BRIEF.md](PRODUCT_BRIEF.md), [PRODUCT_STATEMENT.md](../PRODUCT_STATEMENT.md) และ [implementation-plan.json](implementation-plan.json)
 
-รุ่น 0.3 เปลี่ยนประสบการณ์แรกเป็น **เมือง 3 มิติที่โฟกัส 3 ย่านอันดับต้นทันที** บน basemap กระดาษที่สร้างเอง มีมวลอาคารสองชั้น (เมืองเงียบ / ย่านโฟกัสมุมโค้ง) กล้องแบบโมเดลเมืองและมุมสถาปนิก breadcrumb ที่ใช้รหัสจังหวัดของ production และตาราง matrix ช่องเท่ากัน พร้อม Product Statement ที่เขียนใหม่เป็น winning strategy เป้าหมายของแผนนี้คือให้ developer หรือ coding agent รับช่วงต่อได้โดยไม่ต้องเดาสถานะ และรู้ว่าอะไรคือ display-only กับอะไรคือข้อมูล
+รุ่น 0.3 เปลี่ยนประสบการณ์แรกเป็น **เมือง 3 มิติที่โฟกัส 3 ย่านอันดับต้นทันที** บน basemap กระดาษที่สร้างเอง มีมวลอาคารสองชั้น (เมืองเงียบ / ย่านโฟกัสมุมโค้ง) กล้องแบบโมเดลเมืองและมุมสถาปนิก breadcrumb ที่ใช้รหัสจังหวัดของ production และตาราง matrix ช่องเท่ากัน พร้อม Product Statement ที่เขียนใหม่เป็น winning strategy รุ่น 0.4 (รอบสองของวันเดียวกัน) แก้ให้อาคารของสถานที่มองเห็นและกดได้เสมอ (ลำดับวาดของชั้น 3D + venue x-ray) เพิ่มกรอบจังหวัดพร้อม drill-down สำหรับมุมมองทั้งประเทศ และ pictogram จริงบน metric tiles (ข้อยกเว้นทดลองจาก LDS nav-7) เป้าหมายของแผนนี้คือให้ developer หรือ coding agent รับช่วงต่อได้โดยไม่ต้องเดาสถานะ และรู้ว่าอะไรคือ display-only กับอะไรคือข้อมูล
 
 ## สถาปัตยกรรมที่มีจริง
 
@@ -20,21 +20,25 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | `js/profile-model.js` | โปรไฟล์ย่าน สถานที่ ร้าน การมีอยู่ของแบรนด์ อันดับสถานที่ ระดับความแม่นพิกัด | pure; ใช้ `scopeRows` เป็นฐานเทียบ; ไม่ยกระดับความแม่น |
 | `js/scales.js` | LDS `count` LUT 41 ค่า, class projection, EVID-05 states | ห้าม interpolate สีใหม่; HEX เดียวกันสองธีม |
 | `js/map-style.js` | **ใหม่** basemap “paper” style v8 จาก `--basemap-*` tokens; anchors `DATA_FILL_BEFORE='waterway'`, `MASSING_BEFORE='water-name'` | สีมาจาก token เท่านั้น; ลำดับชั้นตาม brief; `name:th` ก่อน `name` |
-| `js/map-layers.js` | choropleth + outline + selected layers, focus/quiet, HTML labels | fill แทรกก่อน `waterway`, maxzoom 14.5 |
+| `js/map-layers.js` | choropleth + outline + selected layers, focus/quiet, HTML labels (`installAreaLabels` ใช้ร่วมย่าน/จังหวัด) | fill แทรกก่อน `waterway`, maxzoom 14.5; ป้ายจังหวัด < z9.5 |
 | `js/pins.js` | หมุดรายสาขา, context pins, โลโก้ (zoom ≥ 14), keyboard | พิกัดต้นทางไม่เปลี่ยน; context pins ไม่มีโลโก้และไม่อยู่ใน tab order |
-| `js/buildings.js` | อาคารที่ตั้ง/parts, coverage, `displayedFeatures()` | สี `map.activeLayer`; แสดงทั้ง 2D/3D |
+| `js/buildings.js` | อาคารที่ตั้ง/parts, coverage, `displayedFeatures()`, `HOST_LAYERS` | สี `map.activeLayer`; แสดงทั้ง 2D/3D; **ติดตั้งก่อนมวลอาคาร** (ลำดับวาด = ลำดับความลึก) |
+| `js/venue-xray.js` | **ใหม่ 0.4** custom layer 3D: รูปทรงของสถานที่ (ผนัง/หลังคา earcut/เส้นขอบ) วาดทับทุกชั้นด้วย scissored depth clear + depth test ของตัวเอง; เมทริกซ์ 64 บิตคูณบน CPU | ชั้นสุดท้ายของรอบ 3D; เฉพาะ 3D และ zoom ≥ 13; การกดอยู่ที่ชั้น fill-extrusion เดิม; GL error → ปิดตัวเอง |
+| `js/vendor/earcut.js` | earcut 3.2.4 (ISC) สำหรับหลังคา | ไม่แก้ไขต้นฉบับ |
+| `js/provinces.js` | **ใหม่ 0.4** โมเดลและชั้นกรอบจังหวัด (fill < z9, outline < z12, selected < z13), `buildProvinceModel`, `provinceBounds` | นับจากแถวที่ไม่ใช้ตัวกรองจังหวัด; measured_zero/out_of_scope ตาม EVID-05; ไม่ใช่ขอบเขตการปกครองที่ยืนยัน |
 | `js/massing.js` | **ใหม่** มวลอาคารสองชั้น: CITY (native, quiet) + FOCUS (decode tile → offset + fillet → extrude); ซ่อน twin ของอาคารที่ตั้ง | display-only; ความสูงจาก tile; ไม่ encode เมตริก |
 | `js/mvt.js` | **ใหม่** MVT reader + tile maths | ไม่มี dependency; parse หลาย layer ได้ (`r.pos = end`) |
 | `js/geometry.js` | **ใหม่** cleanRing, clipRingToBox, offsetRing, roundRing (enclosing cap), pointInRing, ringsIntersect | รูปโค้งต้องล้อมต้นฉบับเสมอ |
-| `js/camera.js` | **ใหม่** presets `plan/city/model/eye`, `fitPitched` (vertex-based), `applyPreset`, `shiftPadding` | ไม่ขยับข้อมูล; FOV แคบคือ axonometric; padding shift คือ 2-point |
+| `js/camera.js` | presets `plan/city/model/eye`, `fitPitched` (vertex-based, จุดที่มีความสูงผ่าน `projectPoint`, `apply:false` คำนวณอย่างเดียว), `applyPreset`, `shiftPadding` | ไม่ขยับข้อมูล; FOV แคบคือ axonometric; padding shift คือ 2-point; ระดับสถานที่ fit ทั้งอาคารรวมหลังคา |
 | `js/breadcrumb.js` | **ใหม่** crumbs ประเทศไทย › จังหวัด › ย่าน, `document.title` | ไม่สร้าง Locale/municipality id |
 | `js/charts.js` | ranking / fixed-layout matrix / compare เป็น HTML+SVG | ทุก mark เป็น `<button>`; matrix ช่องเท่ากัน + caption |
-| `js/panel.js` | HTML ของแผงทุกโหมด (focus mode cue, ดูทุกย่าน), ชิปตัวกรอง | pure strings; ปุ่มทุกตัวมี `data-action` |
+| `js/panel.js` | HTML ของแผงทุกโหมด (focus mode cue, ดูทุกย่าน, รายการจังหวัด), ชิปตัวกรอง, `metricTile`/`heading` พร้อม pictogram | pure strings; ปุ่มทุกตัวมี `data-action` (+ `select-province`) |
 | `js/vendors.js` | loader ของ MapLibre JS/CSS พร้อม timeout/retry | — |
 | `js/brand-logos.js` | approved identity, aliases, safe local sprite | ไม่ fuzzy-match |
-| `js/navigation.js` | approved icons, toolbar titles, help dialog | visible labels, Escape, focus return |
+| `js/navigation.js` | approved icons, `PICTOGRAM_CONTRACT`, toolbar titles, help dialog | visible labels, Escape, focus return; pictogram แสดงเมื่อฟอนต์โหลด (`pictograms-ready`) |
 | `styles.css`, `logos.css`, `navigation.css`, `assets/theme.css` | layout/panel/map chrome/charts/crumbs/toolbar, logo vars, icons/help, LDS tokens + **basemap tokens** | token-only colours |
 | `scripts/build-handoff.mjs`, `scripts/verify-live.mjs` | manifest + ZIP, live byte attestation | hash จาก bytes จริง; ตรวจ live ก่อนอ้างว่าเผยแพร่ |
+| `scripts/extract-provinces.mjs`, `scripts/build-pictogram-font.py` | สร้าง `data/provinces.geojson` (จาก OpenGISData-Thailand) และฟอนต์ pictogram 8 glyph (จาก Material Symbols Rounded) | บันทึก provenance (commit, sha256, วันที่) ใน metadata/manifest |
 
 ## แผนงานและสถานะ
 
@@ -48,7 +52,11 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | P13 | 3D-first auto focus (top-3) + ดูทุกย่าน + cue ในแผง | done | harness desktop/mobile ทั้งสองธีม |
 | P14 | Breadcrumb 4 ระดับ (ประเทศไทย › จังหวัด › ย่าน › สถานที่) + `PROVINCES` + `provinceCode` ใน GeoJSON + Shopping Center id เป็น id สถานที่ + URL `province=CODE` | done | `tests/map-style.test.js` (breadcrumb/provinces/venue rules), `tests/neighborhoods.test.js` |
 | P15 | Matrix ช่องเท่ากัน (`table-layout: fixed`, `<colgroup>`) + caption | done | rendered check |
-| P16 | ตรวจ 0.3, release, live attestation, bundle | in progress | `VERIFICATION.md` (0.3), `RELEASE_RECEIPT.json` ใน bundle |
+| P16 | ตรวจ 0.3, release, live attestation, bundle | done | `VERIFICATION.md` (0.3), receipt 0.3.1 |
+| P17 | อาคารของสถานที่มองเห็นเสมอ: ติดตั้ง host ก่อนมวลอาคาร + venue x-ray + กล้อง fit ทั้งอาคาร | done | `tests/venue-xray.test.js` (geometry, scissored clear, draw-order contract); harness `dbg-xray-*`; live |
+| P18 | กรอบจังหวัด + drill-down (ข้อมูล ชั้น ป้าย legend รายการในแผง) | done | `tests/provinces.test.js`; harness `dbg-country/region/phuket`; live |
+| P19 | Pictogram บน metric tiles / หัวข้อ / ป้ายจังหวัด (ข้อยกเว้นทดลอง) | done | `tests/provinces.test.js` (contract ↔ manifest ↔ CSS); harness |
+| P20 | ตรวจ 0.4, release, live attestation, bundle | in progress | `VERIFICATION.md` (0.4), `RELEASE_RECEIPT.json` ใน bundle |
 
 ## งานถัดไปที่แนะนำ (backlog สำหรับ vibe coding)
 
@@ -64,6 +72,10 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | N08 | งบประมาณประสิทธิภาพ 3D บนมือถือ: decode tile บน worker, ลดจำนวน tile ของ focus tier, กล้องตาม reduced-motion | frontend |
 | N09 | ตรวจความครอบคลุมความสูงอาคาร OSM ในย่านโฟกัส (ค่า default เมื่อไม่มี tag) และบันทึกรายย่าน | data/field |
 | N10 | ทดสอบสมมติฐาน Who/What/Which/How กับผู้ใช้สามกลุ่ม (statement §7) | product owner |
+| N11 | รายงาน defect ขอบฟ้าของ MapLibre ต้นน้ำพร้อม repro และแยกให้ชัดจากพฤติกรรม depth ของชั้นโปร่งใสที่แก้แล้วใน 0.4 | frontend |
+| N12 | ลงทะเบียนชุด pictogram 8 glyph (บทบาท สี) ใน LDS เมื่อเจ้าของอนุมัติผลทดลอง แล้วยกเลิกข้อยกเว้น | design system owner |
+| N13 | แทนกรอบจังหวัดจาก OpenGISData-Thailand ด้วยขอบเขตจังหวัดของ CityMETER production (แหล่งเดียวกับ `/v3/citymeter/{code}`) และต่อการกดกรอบเข้ากับ route ของ production | platform + data owner |
+| N14 | ขยาย x-ray ไปยังอาคารของร้านที่เลือกในระดับย่าน และ flow sheet บนมือถือ; วัดประสิทธิภาพ scissored clear บน GPU ต่ำ | frontend |
 
 ## เกณฑ์รับงาน
 
@@ -90,19 +102,22 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | AC19 | breadcrumb | ประเทศไทย › จังหวัด › ย่าน › สถานที่ อยู่บนสุดของแผง; `province` ใน URL = รหัส production; crumb สถานที่ถือ Shopping Center id; สถานที่นอกย่านข้ามระดับย่าน; ร้านเป็นหัวเรื่องไม่ใช่ crumb; จอแคบพับ 4 ระดับเป็น “…”; crumb actions ล้างระดับที่ถูกต้อง; `document.title` ตรง crumbs |
 | AC20 | matrix | ทุกช่องกว้าง/สูงเท่ากันไม่ว่าค่าใด; caption บอกว่าขนาดไม่มีความหมาย; legend สีใช้ count classes |
 | AC21 | product statement | MD + JSON มี Who/What/Which/How, quality bar, ป้ายหลักฐาน, hypotheses; JSON ผ่าน schema 1.2.0 |
+| AC24 | อาคารของสถานที่มองเห็นเสมอ | ที่ระดับสถานที่ใน 3D เห็นรูปทรงสีน้ำเงินของสถานที่จากทุก bearing, pitch (≤ 75) และ zoom ≥ 13 แม้มีอาคารสูงกว่าคั่นระหว่างกล้องกับสถานที่; กดที่รูปทรงแล้วเลือกสถานที่/ร้านได้; ลำดับชั้น city/focus/occluder → host extrusion → venue-xray → water-name; ใน 2D ยังเห็น footprint |
+| AC25 | มุมมองทั้งประเทศ | zoom < 9 จังหวัดที่มีแบรนด์มีกรอบระบายสีพร้อม legend “จังหวัด · จำนวนแบรนด์” และป้ายชิป; กดกรอบ/ป้าย/รายการในแผงแล้วได้ตัวกรองจังหวัด breadcrumb และกล้อง; zoom ≥ 9 กรอบเหลือเส้นและ legend กลับเป็นย่าน; เลือกจังหวัดแล้วกรอบอื่น quiet |
+| AC26 | Pictogram | metric tiles หัวข้อ และป้ายจังหวัดแสดง pictogram 8 แบบเมื่อฟอนต์โหลดแล้วเท่านั้น (`pictograms-ready`); ไม่มีฟอนต์ ข้อความอ่านได้เหมือนเดิม; nav-7 bytes ไม่เปลี่ยน |
 | AC22 | โฟกัสระดับสถานที่ + ฉากมองทะลุ | เปิดสถานที่ (หรือร้านในสถานที่) แล้วเฉพาะอาคารของสถานที่นั้นเป็นสีน้ำเงิน เฉพาะแถวของสถานที่มีหมุดสีประเภท/โลโก้ แถวอื่นเป็นจุดเทา; มวลอาคารเมือง opacity 0.16 (ปกติ 0.22 + จางตามระยะ) ชั้นโฟกัส 0.62; อาคารที่ยืนระหว่างกล้องกับสถานที่วาดที่ 0.14; ออกจากระดับสถานที่แล้วคืนค่าทั้งหมด |
 
 ## วิธีพัฒนาและทดสอบ
 
 ```sh
 npm start        # http://127.0.0.1:4173/
-npm test         # 81 unit tests บนข้อมูลจริงและ fixture tile
+npm test         # 91 unit tests บนข้อมูลจริงและ fixture tile
 npm run handoff:manifest   # เขียน handoff/handoff-manifest.json จาก bytes จริง
 npm run handoff:bundle     # + dist/CityMETER-Luxury-Brands-Developer-Handoff.zip
 npm run verify:live        # เทียบ SHA-256 ของไฟล์บน GitHub Pages กับ manifest
 ```
 
-ตรวจ browser ที่ 390 px และ 1280 px ทั้งสองธีม: 3D first Aha, ดูทุกย่าน, โปรไฟล์ย่าน (model preset), สถานที่ (มุมสถาปนิก, อาคารของสถานที่เท่านั้นสีน้ำเงิน, อาคารที่บังโปร่งใส), ร้าน, ปุ่มมุมสถาปนิก → model, ปุ่ม 3D → plan, breadcrumb 4 ระดับ (และ “…” บนจอแคบ), กราฟสามมุมมอง (matrix ช่องเท่ากัน), ตาราง, help, no results, permalink ถ้า CDN/tiles ถูกบล็อกในเครื่องทดสอบ ให้ vendored MapLibre จาก npm, stub TileJSON และ tile สังเคราะห์ตาม OpenMapTiles schema ผ่าน request interception (วิธีที่ใช้ใน VERIFICATION) แล้วยืนยันรูปลักษณ์จาก tile จริงบน live อีกครั้ง การอ่าน source ไม่เท่ากับทดสอบ browser จริง
+ตรวจ browser ที่ 390 px และ 1280 px ทั้งสองธีม: 3D first Aha, ดูทุกย่าน, ดูทั้งหมด (กรอบจังหวัด + legend จังหวัด + ป้าย), เจาะลงจังหวัด, โปรไฟล์ย่าน (model preset), สถานที่ (มุมสถาปนิก, อาคารของสถานที่เท่านั้นสีน้ำเงินและมองเห็นเสมอ — หมุน/เอียง/ซูมแล้วยังเห็นและกดได้, อาคารที่บังโปร่งใส), ร้าน, ปุ่มมุมสถาปนิก → model, ปุ่ม 3D → plan, breadcrumb 4 ระดับ (และ “…” บนจอแคบ), กราฟสามมุมมอง (matrix ช่องเท่ากัน), ตาราง, help, no results, permalink ถ้า CDN/tiles ถูกบล็อกในเครื่องทดสอบ ให้ vendored MapLibre จาก npm, stub TileJSON และ tile สังเคราะห์ตาม OpenMapTiles schema ผ่าน request interception (วิธีที่ใช้ใน VERIFICATION) แล้วยืนยันรูปลักษณ์จาก tile จริงบน live อีกครั้ง การอ่าน source ไม่เท่ากับทดสอบ browser จริง
 
 จูนกล้อง/มวลอาคารสดได้จาก console: `__citymeter.applyPreset('eye')`, `__citymeter.fitMap()`, `__citymeter.state.massingResult` ก่อนแก้ค่าคงที่ใน `js/camera.js` / `js/massing.js`
 

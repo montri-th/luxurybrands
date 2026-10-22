@@ -4,14 +4,15 @@
  * Every actionable element carries data-action (and data-id / data-value) and
  * the app binds one delegated click handler. Actions:
  *   select-area · select-store · select-venue · search-brand · back
- *   explore-top · clear-focus · open-charts · open-table · clear-filter
+ *   explore-top · clear-focus · open-charts · open-table · clear-filter · select-province
  *
  * Copy is Thai, short and natural (owner instruction 2026-10-22: no caveats on
  * screen — provenance lives in the data section, help and docs). Units:
  * แบรนด์ = distinct brand labels, สาขา = one brand point of sale (store, counter or
  * shop-in-shop), สถานที่ = venue. Closures stay factual; missing is never zero.
- * Metric tiles carry the legend symbols (pin = สาขา, blue block = สถานที่,
- * outline = ย่าน) so labels can stay one word.
+ * Metric tiles and section headings carry pictograms (Material Symbols Rounded
+ * subset, js/navigation.js PICTOGRAM_CONTRACT) so labels can stay one word; the
+ * text is the meaning, the pictogram is decorative.
  */
 import {SEGMENTS, SEGMENT_SHORT, hasPoint} from './model.js';
 import {brandLogoMarkup, getBrandLogo} from './brand-logos.js';
@@ -40,10 +41,17 @@ export function statusPill(status) {
   return `<span class="status-pill tone-${esc(status.tone)}" title="${esc(status.detail)}">${esc(status.label)}</span>`;
 }
 
-/** Metric tile with a legend symbol (pin = สาขา, blue block = สถานที่, outline = ย่าน, ring = แบรนด์). */
+/**
+ * Metric tile with a pictogram (brand = diamond, store = storefront, venue = shopping
+ * bag, area = map, province = city, exclusive = star, gla = ruler). The pictogram
+ * is decorative; the one-word label carries the meaning. Pictograms are a test
+ * exception to LDS nav-7 approved by the owner 2026-10-22 (js/navigation.js PICTOGRAM_CONTRACT).
+ */
 export function metricTile(value, label, kind = '') {
-  return `<div class="metric${kind ? ` metric-${kind}` : ''}"><i class="metric-symbol sym-${esc(kind || 'plain')}" aria-hidden="true"></i><strong class="data-number">${num(value)}</strong><span>${esc(label)}</span></div>`;
+  return `<div class="metric${kind ? ` metric-${kind}` : ''}"><i class="metric-symbol pictogram pic-${esc(kind || 'plain')}" aria-hidden="true"></i><strong class="data-number">${num(value)}</strong><span>${esc(label)}</span></div>`;
 }
+/** Section heading with a pictogram. */
+export const heading = (kind, text, id = '') => `<h3${id ? ` id="${esc(id)}"` : ''}><i class="pictogram pic-${esc(kind)}" aria-hidden="true"></i>${esc(text)}</h3>`;
 
 function segmentBars(segmentMix, totalBrands) {
   if (!segmentMix.length) return '';
@@ -60,7 +68,7 @@ function segmentBars(segmentMix, totalBrands) {
  * focusMode: 'auto' (default — the top areas carry the detail, the rest is quiet),
  * 'explicit' (user-chosen areas) or 'none' (every area in detail).
  */
-export function renderOverview({insight, overview, summary, focusMode = 'auto', focused, areaModel, asOf, venues = [], view3d = true}) {
+export function renderOverview({insight, overview, summary, focusMode = 'auto', focused, areaModel, asOf, venues = [], view3d = true, provinces = []}) {
   const count = insight.areas.length;
   const share = insight.totalBrands ? Math.round(insight.share) : 0;
   const names = insight.areas.map(a => a.name);
@@ -92,7 +100,7 @@ export function renderOverview({insight, overview, summary, focusMode = 'auto', 
   const ranking = overview.ranking.slice(0, 10);
   const max = Math.max(1, ...ranking.map(a => a.brands));
   const rankList = ranking.length ? `<section class="panel-section" aria-labelledby="rank-title">
-    <div class="section-heading"><h3 id="rank-title">ย่านเรียงตามแบรนด์</h3><span class="hint">${num(overview.areaCount)} ย่าน</span></div>
+    <div class="section-heading">${heading('area', 'ย่านเรียงตามแบรนด์', 'rank-title')}<span class="hint">${num(overview.areaCount)} ย่าน</span></div>
     <ol class="rank-list">${ranking.map((a, i) => {
       const cls = areaModel?.areas.find(x => x.id === a.id);
       return `<li><button type="button" class="rank-row" data-action="select-area" data-id="${esc(a.id)}" aria-label="อันดับ ${i + 1} ${esc(a.name)} ${num(a.brands)} แบรนด์ ${num(a.pos)} สาขา">
@@ -103,9 +111,14 @@ export function renderOverview({insight, overview, summary, focusMode = 'auto', 
     }).join('')}</ol>
     ${overview.outsidePos ? `<p class="hint">อีก ${num(overview.outsidePos)} สาขาอยู่นอกย่านที่นิยามไว้</p>` : ''}
   </section>` : (venues.length ? `<section class="panel-section" aria-labelledby="venue-rank-title">
-    <div class="section-heading"><h3 id="venue-rank-title">สถานที่เรียงตามแบรนด์</h3><span class="hint">${num(venues.length)} แห่ง</span></div>
+    <div class="section-heading">${heading('venue', 'สถานที่เรียงตามแบรนด์', 'venue-rank-title')}<span class="hint">${num(venues.length)} แห่ง</span></div>
     <ul class="venue-list">${venues.slice(0, 10).map(c => `<li><button type="button" class="venue-row" data-action="select-venue" data-id="${esc(c.mallId)}" data-value="${esc(c.venue)}" aria-label="${esc(c.name)} ${num(c.brands)} แบรนด์ ${num(c.pos)} สาขา"><span class="venue-name">${esc(c.name)}<small>${esc(c.type || c.province || 'ทำเล')}</small></span><span class="venue-count data-number">${num(c.brands)}<small>แบรนด์</small></span></button></li>`).join('')}</ul>
   </section>` : '');
+  // Country level: the provinces that hold brands, each a drill-down (the map shows them as frames).
+  const provinceList = provinces.length > 1 ? `<section class="panel-section" aria-labelledby="province-title">
+    <div class="section-heading">${heading('province', 'จังหวัดที่มีแบรนด์', 'province-title')}<span class="hint">${num(provinces.length)} จังหวัด</span></div>
+    <ul class="province-list">${provinces.map(p => `<li><button type="button" class="province-row" data-action="select-province" data-id="${esc(p.code)}" aria-label="${esc(p.name)} ${num(p.brands)} แบรนด์ ${num(p.pos)} สาขา กดเพื่อดูจังหวัด"><i class="province-swatch" style="background:${esc(p.fill)}" aria-hidden="true"></i><span class="province-name">${esc(p.name)}</span><span class="province-count data-number">${num(p.brands)}<small>แบรนด์ · ${num(p.pos)} สาขา</small></span></button></li>`).join('')}</ul>
+  </section>` : '';
   const narrowed = mode !== 'none' && count > 0 && summary.pos !== insight.totalPos;
   const metrics = `<section class="metrics" aria-label="${narrowed ? 'ตัวเลขของย่านที่โฟกัส' : 'ตัวเลขรวมของข้อมูลที่เลือก'}">
     ${metricTile(summary.brands, `แบรนด์${narrowed ? ' ในโฟกัส' : ''}`, 'brand')}
@@ -113,7 +126,7 @@ export function renderOverview({insight, overview, summary, focusMode = 'auto', 
     ${metricTile(summary.centers.length, 'ศูนย์การค้า', 'venue')}
     ${metricTile(overview.areaCount, 'ย่าน', 'area')}
   </section>`;
-  return `${aha}${metrics}${rankList}<p class="hint panel-foot">Luxury Brands Thailand · ข้อมูล ${esc(thaiDate(asOf))}</p>`;
+  return `${aha}${metrics}${provinceList}${rankList}<p class="hint panel-foot">Luxury Brands Thailand · ข้อมูล ${esc(thaiDate(asOf))}</p>`;
 }
 
 /* ---------- Neighborhood profile ---------- */
@@ -122,7 +135,7 @@ export function renderNeighborhood(profile) {
   if (!profile) return '';
   const p = profile;
   const statusText = p.status === 'desk-reviewed' ? 'ตรวจบนโต๊ะแล้ว' : p.status === 'candidate' ? 'ขอบเขตรอทบทวน' : p.status;
-  const venues = p.venues.length ? `<section class="panel-section"><div class="section-heading"><h3>สถานที่ในย่าน</h3><span class="hint">${num(p.venues.length)} แห่ง</span></div>
+  const venues = p.venues.length ? `<section class="panel-section"><div class="section-heading">${heading('venue', 'สถานที่ในย่าน')}<span class="hint">${num(p.venues.length)} แห่ง</span></div>
     <ul class="venue-list">${p.venues.slice(0, 12).map(v => `<li><button type="button" class="venue-row" data-action="select-venue" data-id="${esc(v.mallId)}" data-value="${esc(v.name)}" aria-label="${esc(v.name)} ${num(v.brands)} แบรนด์ ${num(v.pos)} สาขา">
       <span class="venue-name">${esc(v.name)}<small>${esc(v.type || (v.mallId ? 'ศูนย์การค้า' : 'ทำเล / อาคาร'))}</small></span>
       <span class="venue-count data-number">${num(v.brands)}<small>แบรนด์</small></span></button></li>`).join('')}</ul>
@@ -133,7 +146,7 @@ export function renderNeighborhood(profile) {
     const title = typeof b === 'string' ? `${brand} — เฉพาะย่านนี้` : `${brand} — พบที่ ${b.elsewhere.join(', ')} ด้วย`;
     return `<li><button type="button" class="brand-chip chip-${kind}" data-action="search-brand" data-value="${esc(brand)}" title="${esc(title)}">${logo ? brandLogoMarkup(brand, {className: 'chip-logo'}) : ''}<span>${esc(brand)}</span></button></li>`;
   }).join('');
-  const brands = `<section class="panel-section"><div class="section-heading"><h3>แบรนด์เฉพาะย่านนี้</h3><span class="hint">${num(p.exclusive.length)} จาก ${num(p.brands)}</span></div>
+  const brands = `<section class="panel-section"><div class="section-heading">${heading('exclusive', 'แบรนด์เฉพาะย่านนี้')}<span class="hint">${num(p.exclusive.length)} จาก ${num(p.brands)}</span></div>
     ${p.exclusive.length ? `<ul class="chip-list">${chips(p.exclusive, 'exclusive')}</ul>` : '<p class="hint">ไม่มี — ทุกแบรนด์พบในย่านอื่นด้วย</p>'}
     <div class="section-heading"><h3>พบในย่านอื่นด้วย</h3><span class="hint">${num(p.shared.length)}</span></div>
     ${p.shared.length ? `<ul class="chip-list">${chips(p.shared, 'shared')}</ul>` : '<p class="hint">ไม่มี</p>'}</section>`;
@@ -145,7 +158,7 @@ export function renderNeighborhood(profile) {
       ${p.closed ? `<p class="hint">รวมปิดถาวร ${num(p.closed)} สาขา</p>` : ''}
       <div class="detail-actions"><button type="button" class="btn" data-action="open-table">ดูสาขา</button><button type="button" class="btn quiet" data-action="open-charts">เปรียบเทียบย่าน</button></div>
     </section>
-    <section class="panel-section"><div class="section-heading"><h3>กลุ่มแบรนด์</h3><span class="hint">แบรนด์ / สาขา</span></div>${segmentBars(p.segmentMix, p.brands)}</section>
+    <section class="panel-section"><div class="section-heading">${heading('segment', 'กลุ่มแบรนด์')}<span class="hint">แบรนด์ / สาขา</span></div>${segmentBars(p.segmentMix, p.brands)}</section>
     ${venues}${brands}
     <section class="panel-section boundary"><div class="section-heading"><h3>ขอบเขตย่าน</h3><span class="hint">${esc(statusText)}</span></div>
       <p class="subtle">${esc(p.definition)}</p>
@@ -165,8 +178,8 @@ export function renderVenue(v) {
       <div class="metrics compact">${metricTile(v.brands, 'แบรนด์', 'brand')}${metricTile(v.pos, 'สาขา', 'store')}${v.gla ? metricTile(v.gla, 'GLA ตร.ม.', 'gla') : ''}</div>
       ${v.source ? `<p class="links">${link(v.source, 'ศูนย์การค้านี้ใน CityMETER')}</p>` : ''}
     </section>
-    <section class="panel-section"><div class="section-heading"><h3>กลุ่มแบรนด์</h3><span class="hint">แบรนด์ / สาขา</span></div>${segmentBars(v.segmentMix, v.brands)}</section>
-    <section class="panel-section"><div class="section-heading"><h3>สาขา</h3><span class="hint">${num(v.rows.length)}</span></div><ul class="outlet-list">${rows}</ul></section>`;
+    <section class="panel-section"><div class="section-heading">${heading('segment', 'กลุ่มแบรนด์')}<span class="hint">แบรนด์ / สาขา</span></div>${segmentBars(v.segmentMix, v.brands)}</section>
+    <section class="panel-section"><div class="section-heading">${heading('store', 'สาขา')}<span class="hint">${num(v.rows.length)}</span></div><ul class="outlet-list">${rows}</ul></section>`;
 }
 
 /* ---------- Store ---------- */
@@ -193,7 +206,7 @@ export function renderStore(d) {
       </dl>
       <p class="links">${link(r.source, 'หลักฐาน')} ${link(r.statusSource, 'สถานะ')} ${link(r.coordinateSource, 'พิกัด')} ${logo ? link(logo.sourceURL, 'โลโก้') : ''}</p>
     </section>
-    <section class="panel-section"><div class="section-heading"><h3>สาขาอื่นของ ${esc(r.brand)}</h3><span class="hint">${num(Math.max(0, d.presence.pos - 1))} สาขา · ${num(d.presence.venues)} สถานที่</span></div>
+    <section class="panel-section"><div class="section-heading">${heading('store', `สาขาอื่นของ ${r.brand}`)}<span class="hint">${num(Math.max(0, d.presence.pos - 1))} สาขา · ${num(d.presence.venues)} สถานที่</span></div>
       ${d.presence.areas.length ? `<p class="subtle">${d.presence.areas.map(a => esc(a)).join(' · ')}</p>` : ''}
       ${others.length ? `<ul class="outlet-list">${others.slice(0, 10).map(s => `<li><button type="button" class="brand-row" data-action="select-store" data-id="${esc(s.id)}"><span><strong>${esc(s.venue)}</strong><br><span class="small muted">${esc(s.name || '')} · ${esc(s.province)}</span></span></button></li>`).join('')}</ul>` : '<p class="hint">ไม่มี</p>'}
       <div class="detail-actions"><button type="button" class="btn quiet" data-action="search-brand" data-value="${esc(r.brand)}">ดูเฉพาะแบรนด์นี้</button></div>

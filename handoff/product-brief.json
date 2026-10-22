@@ -1,9 +1,9 @@
 {
   "$schema": "./handoff.schema.json",
-  "schemaVersion": "1.2.0",
+  "schemaVersion": "1.3.0",
   "documentType": "product-brief",
   "productId": "citymeter-luxury-brands",
-  "productVersion": "0.3.0",
+  "productVersion": "0.4.0",
   "updatedOn": "2026-10-22",
   "datasetCheckedOn": "2026-10-21",
   "language": "th-TH",
@@ -22,15 +22,15 @@
     "นักวิเคราะห์และที่ปรึกษาด้านทำเล"
   ],
   "journey": [
-    "เห็นข้อค้นพบระดับย่านและเมือง 3 มิติที่โฟกัส 3 ย่านอันดับต้นแล้วทันที ไม่ต้องตั้งค่าตัวกรอง",
+    "เห็นข้อค้นพบระดับย่านและเมือง 3 มิติที่โฟกัส 3 ย่านอันดับต้นแล้วทันที ไม่ต้องตั้งค่าตัวกรอง; ซูมออกทั้งประเทศแล้วยังเห็นกรอบจังหวัดที่มีแบรนด์ กดเพื่อเจาะลง",
     "ขยายเป็นทุกย่านด้วยการกดครั้งเดียว (ดูทุกย่าน) หรือเจาะย่านจาก breadcrumb/ป้าย",
     "เปิดโปรไฟล์ย่าน: บุคลิกตามกลุ่มแบรนด์ สถานที่ แบรนด์เฉพาะ/ร่วม ในมุมมองโมเดลเมือง (เส้นตั้งตั้งตรง)",
-    "เจาะสถานที่: เฉพาะอาคารและร้านของสถานที่นั้นมีสี กล้องมุมสถาปนิก (2-point) จัดกรอบพอดีอาคาร อาคารรอบข้างจางลงและอาคารที่บังโปร่งใส; เจาะร้าน อ่านสถานะ หลักฐาน และระดับความแม่นของพิกัด",
+    "เจาะสถานที่: เฉพาะอาคารและร้านของสถานที่นั้นมีสี อาคารของสถานที่มองเห็นเสมอ (x-ray) และกดได้ กล้องมุมสถาปนิก (2-point) จัดกรอบทั้งอาคารรวมหลังคา อาคารรอบข้างจางลงและอาคารที่บังโปร่งใส; เจาะร้าน อ่านสถานะ หลักฐาน และระดับความแม่นของพิกัด",
     "เปรียบเทียบย่านด้วยกราฟและตารางช่องเท่ากัน แล้วคัดรายการไปสำรวจ"
   ],
   "changesSince": {
     "from": "0.2.0",
-    "ownerInstructions": "2026-10-22: 3D first Aha · classy basemap (archiMap-like) · rounded buildings (style-spec #1047, display-only) · product statement as winning strategy · production-compatible breadcrumb · equal-cell matrix · 2-point close-up · simplified-cartoon focus/quiet 3D",
+    "ownerInstructions": "2026-10-22: 3D first Aha · classy basemap (archiMap-like) · rounded buildings (style-spec #1047, display-only) · product statement as winning strategy · production-compatible breadcrumb · equal-cell matrix · 2-point close-up · simplified-cartoon focus/quiet 3D · 2026-10-22 (second round): venue mass must stay visible and clickable at any pan/tilt/zoom · real pictograms on metric tiles (test exception) · province frames with drill-down when the whole country is on screen",
     "items": [
       "firstAha.defaultFocus = auto (top-3 areas focused on load; map opens in the 3D city preset)",
       "generated paper basemap on OpenFreeMap vector tiles replaces Positron/Dark style URLs",
@@ -48,7 +48,12 @@
       "city tier fades with distance from the focus (feature-state) and sits at 0.22 opacity; dark massing tokens lifted for contrast",
       "neighborhood fit fills the frame (maxZoom 17.5)",
       "copy pass: สาขา replaces จุดขาย (one point-of-sale record), no caveats on screen, metric tiles carry legend symbols",
-      "neighborhood labels restyled as ink chips distinct from logo boxes (owner feedback 2026-10-22)"
+      "neighborhood labels restyled as ink chips distinct from logo boxes (owner feedback 2026-10-22)",
+      "0.4: host (venue) extrusion installed before every massing tier — MapLibre depth order follows draw order, translucent extrusions still write depth (root cause of the vanished Central Embassy host)",
+      "0.4: venue x-ray custom layer (js/venue-xray.js) draws the venue solid over everything in the 3D pass with a scissored depth clear; click/hover stay on the style layer",
+      "0.4: frameVenue fits footprint + roof vertices (camera.projectPoint), zooming out at most one level beyond the footprint fit",
+      "0.4: province frames (data/provinces.geojson, js/provinces.js): count fill below zoom 9, outline to zoom 12, ink-chip labels below zoom 9.5, legend switch, panel list, selectProvince drill-down",
+      "0.4: pictograms (Material Symbols Rounded subset, 8 glyphs) on metric tiles, section headings and province chips — test exception to LDS nav-7"
     ]
   },
   "rowScopes": {
@@ -159,8 +164,12 @@
         "quiet": "inherits current focus"
       },
       "venue": {
-        "focus": "only the venue's own rows: category pins, logos, host building(s) in map.activeLayer; camera = eye preset framed on the host footprint(s)",
+        "focus": "only the venue's own rows: category pins, logos, host building(s) in map.activeLayer drawn by the venue x-ray on top of every massing tier (always visible, clickable via the style layer); camera = eye preset framed on the host footprint(s) and roof",
         "quiet": "other venues' rows are grey context dots; their host buildings are not drawn as data and fall back to quiet/focus massing; SCENE.eye lowers massing opacity (city 0.16, focus 0.62) and buildings between the camera and the venue move to the 0.14-opacity occluder layer; the city tier also fades to the ground tone with distance from the focus"
+      },
+      "countryAll": {
+        "focus": "below zoom 9: province frames filled by distinct brands per province (count family, 5 equal-interval classes of their own), ink-chip province labels with counts, legend “จังหวัด · จำนวนแบรนด์”, panel list “จังหวัดที่มีแบรนด์”",
+        "quiet": "provinces without rows in the dataset are not drawn (out_of_scope); with a จังหวัด filter the other frames are outline-only (quiet); from zoom 9 the frames are outlines until zoom 12 and the neighborhoods carry the scale"
       }
     },
     "choropleth": {
@@ -178,7 +187,8 @@
     "hostBuildings": "map.activeLayer role (light #347DA8 / dark #65B6DB), only for rows in focus, extrusion zoom ≥ 14, outline zoom ≥ 12, visible in both plan and 3D",
     "logos": "zoom ≥ 14, rows in focus only, ≤ 250 (js/pins.js LOGO_MIN_ZOOM, MAX_LOGOS)",
     "detailRows": "js/app.js#detailRows: venueLevel() ? rows of the current venue (mallId, else venue label) : rows",
-    "areaLabels": "ink chips (--area-label-bg/ink/border, display font, area square glyph, light count badge) so they never read as brand logo boxes; quiet = 72% opacity; hidden below zoom 11.5"
+    "areaLabels": "ink chips (--area-label-bg/ink/border, display font, area square glyph, light count badge) so they never read as brand logo boxes; quiet = 72% opacity; hidden below zoom 11.5",
+    "drawOrder": "host extrusion (buildings.js) is installed first; installMassing({beforeId: HOST_LAYERS.extrusion}) inserts city/focus/occluder tiers before it; venue-xray is the last 3D layer (before water-name). Reason: MapLibre 3D layers share one depth buffer and translucent fill-extrusion writes depth in its first pass, so anything drawn later and farther is cut away."
   },
   "basemapContract": {
     "generator": "js/map-style.js#buildMapStyle(theme, {palette, tileJSON, glyphs}) — a MapLibre style v8 object built at runtime; no hosted style URL",
@@ -334,7 +344,7 @@
       "method": "start from cameraForBounds (flat), apply preset pitch/bearing/FOV, zoom out in 0.1 steps until every point (polygon vertices when given, else bbox corners) projects inside the padded viewport, then zoom in while they still fit; jumps are computed without rendering and the final camera is animated",
       "padding": "desktop 3D padding ignores the legend; mobile portrait with the sheet open uses plan, then re-frames in 3D on sheet close",
       "bearing": "28° so the Siam → Chit Lom → Phrom Phong axis runs left-to-right on wide screens",
-      "venue": "frameVenue: fitPitched over the venue's host footprint vertices with top headroom 20% (eye) / 12% (model), maxZoom 17.6, minZoom 14.5; falls back to framePoint(zoom 16) when no host building is displayed or on mobile portrait",
+      "venue": "frameVenue: fitPitched over the host footprint vertices AND roof vertices (vertex + display_height_m, projected with camera.projectPoint through transform.modelViewProjectionMatrix), top padding 12% (eye) / 10% (model), maxZoom 17.6, minZoom = max(14.5, footprint-only fit − 1) so a very tall tower cannot push the pins out of reading range; falls back to framePoint(zoom 16) when no host building is displayed or on mobile portrait",
       "neighborhood": "fitArea: fitPitched over the area outline vertices, maxZoom 17.5 so the outline fills the frame"
     },
     "maplibre": {
@@ -442,7 +452,8 @@
       "logoIdentities": 168
     },
     "closurePolicy": "Retain permanently closed records and factual closure status; exclude from the default current view; never delete to improve counts",
-    "coordinatePolicy": "Preserve original geographic coordinates; marker displacement is screen-space only; precision is described from geometryRole/geometryStatus and never upgraded"
+    "coordinatePolicy": "Preserve original geographic coordinates; marker displacement is screen-space only; precision is described from geometryRole/geometryStatus and never upgraded",
+    "provinces": "data/provinces.geojson (metadata.version 2026-10-22-r1; OpenGISData-Thailand CC BY 4.0; context frames)"
   },
   "visualSystem": {
     "release": "LDS 0.9.7",
@@ -602,6 +613,18 @@
     {
       "id": "INV21",
       "rule": "On-screen copy is short and natural, without caveats: แบรนด์ = distinct brand labels, สาขา = one point-of-sale record, สถานที่ = venue; provenance, units and limits live in the data section, help and docs"
+    },
+    {
+      "id": "INV22",
+      "rule": "The venue's host building is never hidden by context: it is drawn before every massing tier and the venue x-ray draws it on top in 3D; its click target is the style layer"
+    },
+    {
+      "id": "INV23",
+      "rule": "Province frames are navigation context with their own count classes; they never replace the neighborhood scale above zoom 9 and never claim administrative authority"
+    },
+    {
+      "id": "INV24",
+      "rule": "Pictograms are decorative: every tile and heading keeps its text label; the nav-7 approved subset stays byte-identical and the pictogram subset is a declared test exception"
     }
   ],
   "chartContracts": [
@@ -665,5 +688,70 @@
     "verifyLive": "npm run verify:live",
     "localUrl": "http://127.0.0.1:4173/",
     "devHook": "window.__citymeter (state, map, update, fitMap, fitPitched, applyPreset, buildMapStyle) — console tuning only, not an API"
+  },
+  "venueXrayContract": {
+    "module": "js/venue-xray.js#installVenueXray(map, {beforeId, toMercator, colors}) → {update(features, {colors}), setEnabled, dispose, count, enabled, failed}",
+    "layer": "venue-xray (type custom, renderingMode 3d), inserted before water-name after every fill-extrusion layer",
+    "input": "host features of the venue being looked at (mall_ids / venue_names match) with render_as = extrusion; display_base_m / display_height_m",
+    "geometry": "walls (two triangles per edge), roof via earcut (holes supported; js/vendor/earcut.js 3.2.4 ISC), edge lines; mercator coordinates relative to the centroid origin; z = MercatorCoordinate.z of the altitude",
+    "matrix": "options.defaultProjectionData.mainMatrix (64-bit) × translate(origin) multiplied on the CPU, Float32 to the shader",
+    "depth": "scissored depth clear inside the venue screen box (device pixels, padded 4 px), then LEQUAL read-write depth test against itself only; polygon offset keeps edges on top",
+    "visibility": "3D only (pitch > 0) and zoom ≥ 13 (XRAY_MIN_ZOOM); hidden with the 3D toggle; disabled at non-venue levels (empty feature set)",
+    "colours": "faces map.activeLayer × shade (roof 1, walls 0.66–0.92 by orientation), edges map.selectedStroke — map roles, not data colours",
+    "interaction": "click/hover remain on luxury-venue-buildings-3d; MapLibre fill-extrusion hit-testing ignores what was drawn over it",
+    "failSafe": "a GL error disables the layer (failed = true) and the style host layer keeps drawing",
+    "references": [
+      "MapLibre GL JS CustomLayerInterface (renderingMode 3d, defaultProjectionData.mainMatrix)",
+      "MapLibre src/render/draw_fill_extrusion.ts — translucent extrusions drawn depth-first, then colour with depth EQUAL",
+      "three.js material.depthTest = false selection highlight",
+      "Cesium Entity.disableDepthTestDistance"
+    ],
+    "knownTradeOff": "inside the cleared box a translucent 2D layer that sits below an opaque fill in style order may draw over it; none of the generated paper style layers are ordered that way"
+  },
+  "provinceContract": {
+    "data": "data/provinces.geojson — 9 provinces present in the dataset; id = production code (BKK …), properties.dopaCode = DOPA two-digit code, name (Thai), nameEn; metadata: source, sourceCommit, sourceSha256, retrievedOn, license CC BY 4.0, attribution",
+    "source": "https://github.com/chingchai/OpenGISData-Thailand provinces.geojson (publisher credits DOPA); extracted by scripts/extract-provinces.mjs; coordinates rounded to 5 decimals, no simplification",
+    "module": "js/provinces.js#installProvinceLayers(map, geojson, {onSelect}) → {update({rows, selectedCode, visible}), retheme, dispose, model}; buildProvinceModel(rows, geojson)",
+    "rows": "filterRows(data.rows, {...filters, province: \"\"}) — every filter except the province filter, so each frame keeps its own count",
+    "metric": "distinct brand labels per province; equal-interval 5 classes of the count family from the province maximum; measured_zero = lowest fill + zero outline; out_of_scope = not drawn",
+    "zoomWindows": {
+      "fill": "< 9 (PROVINCE_FILL_MAX_ZOOM, hard switch)",
+      "outline": "< 12 (PROVINCE_OUTLINE_MAX_ZOOM, opacity fades 10.5 → 12)",
+      "selected": "< 13",
+      "labels": "< 9.5 (PROVINCE_LABEL_MAX_ZOOM)",
+      "legend": "province classes below 9, neighborhood classes from 9"
+    },
+    "layers": [
+      "province-fill (before the first basemap line layer)",
+      "province-zero-outline",
+      "province-outline",
+      "province-selected"
+    ],
+    "labels": "js/map-layers.js#installAreaLabels({className: province-label, minZoom 0, maxZoom 9.5}) — ink chips with the location_city pictogram and the brand count",
+    "drillDown": "click frame / label / panel row → app.js selectProvince(code): province filter, neighborhood cleared, overview panel, update({fit: true}) → camera on the province rows and focus areas; URL ?province=CODE; breadcrumb ประเทศไทย › จังหวัด",
+    "quiet": "with a province selected the other frames are outline-only (filled 0, quiet 1)",
+    "limits": "frames are navigation context, not an administrative claim; production boundaries may differ (N13)"
+  },
+  "pictogramContract": {
+    "status": "test exception to LDS nav-7 approved by the owner 2026-10-22 — evaluate here first, register in LDS if it proves itself; nav-7 subset bytes unchanged",
+    "font": "assets/icons/material-pictogram-300.woff2 (1732 bytes, sha256 33d9084bbd26b976d5c42002a0c669618573c21123567247816e9e694671c7b0), manifest assets/icons/material-pictogram-300.json, built by scripts/build-pictogram-font.py from google/material-design-icons MaterialSymbolsRounded[FILL,GRAD,opsz,wght].ttf (Apache-2.0)",
+    "axes": {
+      "FILL": 0,
+      "wght": 300,
+      "GRAD": 0,
+      "opsz": 24
+    },
+    "glyphs": {
+      "brand": "diamond U+EAD5",
+      "store": "storefront U+EA12",
+      "venue": "local_mall U+E54C",
+      "area": "map U+E55B",
+      "province": "location_city U+E7F1",
+      "exclusive": "star U+F09A",
+      "gla": "square_foot U+EA49",
+      "segment": "category U+E72C"
+    },
+    "usage": "metric tiles (js/panel.js#metricTile), section headings (js/panel.js#heading), province label chips; CSS .pictogram / .pic-<role>; colour follows the mark (store = pin, venue = host building, exclusive = series 7)",
+    "accessibility": "aria-hidden decorative glyphs; the text label is the meaning; hidden until document.fonts reports the face (pictograms-ready), display:none when unavailable"
   }
 }
