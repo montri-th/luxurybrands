@@ -51,6 +51,28 @@ export const COHORTS = Object.freeze({
   closed: 'ปิดถาวร',
 });
 
+/**
+ * Provinces present in the dataset, keyed by the code CityMETER production uses
+ * in its drill-down path (/v3/citymeter/{code}; observed on landometer.com,
+ * 2026-10-22: BKK, PKT, CMI, SPK, NBI, CBI, PTE, UDN, NMA). `en` is the value
+ * stored in each row's `province` field; `th` is the breadcrumb label.
+ */
+export const PROVINCES = Object.freeze([
+  {code: 'BKK', th: 'กรุงเทพมหานคร', en: 'Bangkok'},
+  {code: 'PKT', th: 'ภูเก็ต', en: 'Phuket'},
+  {code: 'CMI', th: 'เชียงใหม่', en: 'Chiang Mai'},
+  {code: 'SPK', th: 'สมุทรปราการ', en: 'Samut Prakan'},
+  {code: 'NBI', th: 'นนทบุรี', en: 'Nonthaburi'},
+  {code: 'CBI', th: 'ชลบุรี', en: 'Chonburi'},
+  {code: 'PTE', th: 'ปทุมธานี', en: 'Pathum Thani'},
+  {code: 'UDN', th: 'อุดรธานี', en: 'Udon Thani'},
+  {code: 'NMA', th: 'นครราชสีมา', en: 'Nakhon Ratchasima'},
+]);
+export const provinceByCode = code => PROVINCES.find(p => p.code === String(code || '').toUpperCase()) || null;
+export const provinceByName = en => PROVINCES.find(p => p.en === en) || null;
+/** Accept a production code (BKK) or a dataset name (Bangkok); returns the dataset name or ''. */
+export const provinceNameFrom = value => (provinceByCode(value) || provinceByName(value))?.en || '';
+
 /** A usable source coordinate inside Thailand's bounding box. */
 export const hasPoint = r => Number.isFinite(r.latitude) && Number.isFinite(r.longitude) &&
   r.latitude >= 5 && r.latitude <= 21 && r.longitude >= 97 && r.longitude <= 106;

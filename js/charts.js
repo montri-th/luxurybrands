@@ -69,9 +69,11 @@ function matrix(element, model, select, selectedId) {
     return `<tr${pressed ? ' class="is-selected"' : ''}><th scope="row"><button type="button" class="matrix-row" data-area="${esc(a.id)}" aria-pressed="${pressed}">${esc(a.name)}<small class="data-number">${num(a.brands)}</small></button></th>${cells}</tr>`;
   }).join('');
   const legend = classes.classes.map(c => `<span class="legend-step"><i style="background:${c.fill}" aria-hidden="true"></i>${esc(c.label)}</span>`).join('');
-  element.innerHTML = `<p class="chart-caption">${num(m.areas.length)}/${num(m.totalAreas)} ย่าน · ${num(m.segments.length)}/${num(m.totalSegments)} กลุ่ม · ตัวเลข = แบรนด์ไม่ซ้ำในช่อง · 0 = ไม่พบในข้อมูลที่เลือก</p>
-    <div class="matrix-scroll"><table class="matrix"><thead><tr><th scope="col" class="matrix-corner">ย่าน · แบรนด์</th>${head}</tr></thead><tbody>${body}</tbody></table></div>
-    <p class="chart-legend"><span class="legend-title">ระดับสี (แบรนด์ในช่อง):</span>${legend}<span class="legend-step"><i class="legend-zero" aria-hidden="true"></i>0</span></p>`;
+  // Every cell is the same size on purpose: only the tint and the number carry meaning.
+  const columns = `<colgroup><col class="matrix-head-col">${m.segments.map(() => '<col class="matrix-cell-col">').join('')}</colgroup>`;
+  element.innerHTML = `<p class="chart-caption">${num(m.areas.length)}/${num(m.totalAreas)} ย่าน · ${num(m.segments.length)}/${num(m.totalSegments)} กลุ่ม · ตัวเลข = แบรนด์ไม่ซ้ำในช่อง · สีเข้ม = มากกว่า · ช่องทุกช่องขนาดเท่ากัน ขนาดไม่มีความหมาย</p>
+    <div class="matrix-scroll"><table class="matrix" style="--matrix-columns:${m.segments.length}">${columns}<thead><tr><th scope="col" class="matrix-corner">ย่าน · แบรนด์</th>${head}</tr></thead><tbody>${body}</tbody></table></div>
+    <p class="chart-legend"><span class="legend-title">ระดับสี (แบรนด์ในช่อง, ${num(classes.classCount)} ระดับเท่าช่วง):</span>${legend}<span class="legend-step"><i class="legend-zero" aria-hidden="true"></i>0 = ไม่พบ</span></p>`;
   element.querySelectorAll('[data-area]').forEach(b => b.addEventListener('click', () => select({type: 'neighborhood', id: b.dataset.area})));
 }
 

@@ -1,42 +1,98 @@
 {
   "$schema": "./handoff.schema.json",
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "1.2.0",
   "documentType": "product-brief",
   "productId": "citymeter-luxury-brands",
-  "productVersion": "0.2.0",
+  "productVersion": "0.3.0",
   "updatedOn": "2026-10-22",
   "datasetCheckedOn": "2026-10-21",
   "language": "th-TH",
   "productName": "CityMETER · Luxury Brands",
   "repository": "https://github.com/montri-th/luxurybrands",
   "liveUrl": "https://montri-th.github.io/luxurybrands/",
-  "job": "อ่านเมืองผ่านแบรนด์: เห็นก่อนว่าแบรนด์กระจุกอยู่ย่านใด แล้วเจาะลงถึงศูนย์การค้า อาคาร และจุดขายพร้อมหลักฐาน",
+  "productStatement": {
+    "human": "../PRODUCT_STATEMENT.md",
+    "machine": "product-statement.json",
+    "framework": "MBB v0.5.3 §7.2 + CityMETER Product Brief v6 §1.6 (Who → What → Which → How)"
+  },
+  "job": "ถ้าจะเปิดร้านที่นี่ จะอยู่ข้างใคร — อ่านเมืองผ่านย่านในภาพ 3 มิติทันที แล้วเจาะลงถึงศูนย์การค้า อาคาร และจุดขายพร้อมหลักฐาน",
   "audiences": [
-    "ทีมแบรนด์และขยายสาขา",
-    "ทีมศูนย์การค้าและเจ้าของสินทรัพย์",
+    "ทีมขยายสาขาและ distributor ของแบรนด์หรู",
+    "ทีม leasing / asset ของศูนย์การค้า",
     "นักวิเคราะห์และที่ปรึกษาด้านทำเล"
   ],
   "journey": [
-    "เห็นข้อค้นพบระดับย่านและแผนที่ย่านทันที ไม่ต้องตั้งค่าตัวกรอง",
-    "สำรวจ 3 ย่านอันดับต้นด้วยการกดครั้งเดียว ส่วนอื่นของแผนที่เงียบลง",
-    "เปิดโปรไฟล์ย่าน: บุคลิกตามกลุ่มแบรนด์ สถานที่ แบรนด์เฉพาะ/ร่วม",
-    "เจาะสถานที่และร้าน อ่านสถานะ หลักฐาน และระดับความแม่นของพิกัด",
-    "เปรียบเทียบย่านด้วยกราฟและตาราง แล้วคัดรายการไปสำรวจ"
+    "เห็นข้อค้นพบระดับย่านและเมือง 3 มิติที่โฟกัส 3 ย่านอันดับต้นแล้วทันที ไม่ต้องตั้งค่าตัวกรอง",
+    "ขยายเป็นทุกย่านด้วยการกดครั้งเดียว (ดูทุกย่าน) หรือเจาะย่านจาก breadcrumb/ป้าย",
+    "เปิดโปรไฟล์ย่าน: บุคลิกตามกลุ่มแบรนด์ สถานที่ แบรนด์เฉพาะ/ร่วม ในมุมมองโมเดลเมือง (เส้นตั้งตั้งตรง)",
+    "เจาะสถานที่: เฉพาะอาคารและร้านของสถานที่นั้นมีสี กล้องมุมสถาปนิก (2-point) จัดกรอบพอดีอาคาร อาคารรอบข้างจางลงและอาคารที่บังโปร่งใส; เจาะร้าน อ่านสถานะ หลักฐาน และระดับความแม่นของพิกัด",
+    "เปรียบเทียบย่านด้วยกราฟและตารางช่องเท่ากัน แล้วคัดรายการไปสำรวจ"
   ],
+  "changesSince": {
+    "from": "0.2.0",
+    "ownerInstructions": "2026-10-22: 3D first Aha · classy basemap (archiMap-like) · rounded buildings (style-spec #1047, display-only) · product statement as winning strategy · production-compatible breadcrumb · equal-cell matrix · 2-point close-up · simplified-cartoon focus/quiet 3D",
+    "items": [
+      "firstAha.defaultFocus = auto (top-3 areas focused on load; map opens in the 3D city preset)",
+      "generated paper basemap on OpenFreeMap vector tiles replaces Positron/Dark style URLs",
+      "two-tier massing (city quiet + focus rounded/enclosing) and host buildings on both views",
+      "camera presets plan/city/model/eye with vertex-based pitched fitting",
+      "breadcrumb ประเทศไทย › จังหวัด › ย่าน with production province codes; URL carries ?province=CODE",
+      "matrix chart uses table-layout fixed with equal cells and a caption saying size has no meaning",
+      "logo labels appear from zoom 14 (was 13.5); mid-size pins 12–14",
+      "PRODUCT_STATEMENT.md rewritten; product-statement.json added (schema 1.2.0)",
+      "breadcrumb gains the venue level (CityMETER Shopping Center id); store is the panel heading, never a crumb",
+      "venue level is its own focus: only the venue's rows carry detail (blue host, category pins, logos); other venues → quiet massing + grey context dots",
+      "eye (two-point) is the venue-level camera by default (?cam=model opts out), framed on the venue's host building; SCENE.eye quiets the surroundings and makes occluding buildings see-through",
+      "context dots are grey regardless of category (CSS specificity fix)"
+    ]
+  },
   "rowScopes": {
     "scopeRows": {
       "definition": "rows after search/cohort/segment/province/channel/venue filters, before neighborhood selection and area focus",
-      "consumers": ["aha denominator", "choropleth", "charts", "neighborhood profile exclusive/shared reference", "context pins"]
+      "consumers": [
+        "aha denominator",
+        "choropleth",
+        "charts",
+        "neighborhood profile exclusive/shared reference",
+        "context pins"
+      ]
     },
     "baseRows": {
       "definition": "scopeRows narrowed by the selected neighborhood",
-      "consumers": ["panel ranking", "aha when a neighborhood is selected"]
+      "consumers": [
+        "panel ranking",
+        "aha when a neighborhood is selected"
+      ]
     },
     "rows": {
-      "definition": "baseRows narrowed by the explore-top-3 area focus",
-      "consumers": ["focused pins", "counters", "table", "host buildings"]
+      "definition": "baseRows narrowed by area focus (auto top-3, explicit ?areas=, or none with ?areas=all)",
+      "consumers": [
+        "focused pins",
+        "counters (labelled ในโฟกัส when narrowed)",
+        "table",
+        "host buildings",
+        "focus massing regions"
+      ]
     },
-    "visibleCue": "chart scope caption appends ‘เทียบทุกย่าน ไม่รวมการเลือกย่าน’ whenever rows ≠ scopeRows"
+    "focusModes": {
+      "auto": {
+        "default": true,
+        "focusIds": "top areaIds from summarizeAreaInsight (≤ 3) when no neighborhood is selected",
+        "url": "no areas parameter",
+        "state": "state.autoFocus = true, state.focusAreaIds = []"
+      },
+      "explicit": {
+        "focusIds": "user-chosen area IDs (≤ 3)",
+        "url": "?areas=siam,phrom-phong",
+        "state": "state.focusAreaIds non-empty"
+      },
+      "none": {
+        "focusIds": "[] — every area equal, no quiet",
+        "url": "?areas=all",
+        "state": "state.autoFocus = false, state.focusAreaIds = []"
+      }
+    },
+    "visibleCue": "chart scope caption appends ‘เทียบทุกย่าน ไม่รวมการเลือกย่าน’ whenever rows ≠ scopeRows; counters show ‘ในโฟกัส’ plus a ‘ทั้งหมดในตัวกรอง’ note when focus narrows rows"
   },
   "firstAha": {
     "scope": "baseRows (scopeRows narrowed by a selected neighborhood when present)",
@@ -45,15 +101,23 @@
     "numerator": "union of distinct source brand labels assigned to the top neighborhoods",
     "denominator": "all distinct brand labels in baseRows, including rows outside defined neighborhoods",
     "secondaryFinding": "neighborhood with the most exclusive brands within scopeRows (profile-model.js#buildOverviewInsights)",
-    "action": "สำรวจ {areaCount} ย่านนี้",
+    "defaultFocus": "auto",
+    "defaultCamera": "city preset, fitPitched over the union bounds of the focused areas with every polygon vertex inside the padded viewport (legend ignored in 3D padding)",
+    "mapCue": "แผนที่แสดงรายละเอียดและอาคาร 3 มิติเฉพาะ {areaCount} ย่านนี้ ส่วนอื่นเป็นบริบทที่เงียบลง",
+    "action": "ดูทุกย่าน (clears auto focus → ?areas=all); เปรียบเทียบย่าน",
+    "explicitAction": "สำรวจ {areaCount} ย่านนี้ (shown only when focus mode is none)",
     "model": "js/area-insight.js#summarizeAreaInsight",
     "filter": "js/area-insight.js#filterAreaRows",
     "fallbacks": {
       "noRows": "ไม่พบจุดขายตามตัวกรองนี้ + clear filter action",
-      "rowsOutsideAllAreas": "explain rows are outside the ten defined cores and rank venues with profile-model.js#rankVenues"
+      "rowsOutsideAllAreas": "explain rows are outside the ten defined cores and rank venues with profile-model.js#rankVenues; focus list empty, no quiet"
     },
     "defaultSnapshot": {
-      "areas": ["siam", "phrom-phong", "chit-lom-phloen-chit"],
+      "areas": [
+        "siam",
+        "phrom-phong",
+        "chit-lom-phloen-chit"
+      ],
       "brands": 97,
       "totalBrands": 113,
       "sharePercent": 85.8,
@@ -64,61 +128,304 @@
     },
     "requirements": [
       "No login, sharing or geolocation prerequisite",
-      "Core dataset and neighborhood boundaries enable the area Aha; counts and table still work without boundaries; the map vendor loads separately",
+      "Core dataset and neighborhood boundaries enable the area Aha; counts and table still work without boundaries; the map vendor and tiles load separately",
       "Snapshot values are regression fixtures, never UI constants",
-      "Returning to all clears only area focus"
+      "Returning to all (ดูทุกย่าน) clears only area focus; filters stay",
+      "3D is the default; the 3D toggle and ?view3d=0 switch to the plan preset without changing data"
     ]
   },
   "mapFocusContract": {
     "principle": "Show detail only for the focused part; keep everything else quiet (owner instruction 2026-10-22)",
     "states": {
-      "overview": {
-        "focus": "all defined areas filled by distinct brands (count family, 5 equal-interval classes), labels with counts",
-        "quiet": "pins are 3–5 px dots below zoom 13.5, no logos"
+      "overviewAuto": {
+        "focus": "top-3 areas: count fill, labels with counts, category pins, host buildings, rounded focus massing (zoom ≥ 13)",
+        "quiet": "other areas outline-only with quiet labels; rows outside focus are grey context dots without logos; city massing in the quiet tone; no logos below zoom 14"
       },
-      "exploreTop3": {
-        "focus": "the three areas keep their fill and emphasis outline; category pins and logos inside",
-        "quiet": "other areas outline-only with quiet labels; rows outside focus become grey context dots without logos, aria-hidden, not in the tab order"
+      "overviewAll": {
+        "focus": "all defined areas filled by distinct brands (count family, 5 equal-interval classes), labels with counts",
+        "quiet": "pins are size-tiered dots; city massing only; no rounded focus massing"
       },
       "neighborhood": {
-        "focus": "selected area fill below zoom 14.5, selected outline, host buildings, category pins, logos",
-        "quiet": "as above"
+        "focus": "selected area fill below zoom 14.5, selected outline, host buildings, rounded focus massing, category pins, logos",
+        "quiet": "as overviewAuto"
       },
       "store": {
-        "focus": "selected pin ring, leader line to the source coordinate, desktop popup",
+        "focus": "selected pin ring, leader line to the source coordinate, desktop popup; a store inside a venue inherits the venue state",
         "quiet": "inherits current focus"
+      },
+      "venue": {
+        "focus": "only the venue's own rows: category pins, logos, host building(s) in map.activeLayer; camera = eye preset framed on the host footprint(s)",
+        "quiet": "other venues' rows are grey context dots; their host buildings are not drawn as data and fall back to quiet/focus massing; SCENE.eye lowers massing opacity (city 0.3, focus 0.62) and buildings between the camera and the venue move to the 0.14-opacity occluder layer"
       }
     },
     "choropleth": {
       "scaleId": "count",
       "metric": "distinct brand labels per defined neighborhood within scopeRows",
       "classification": "equal-interval, 5 classes from the current maximum, integer closed intervals shown in the legend",
-      "evidenceStates": {"measured": "class fill", "measured_zero": "lowest fill + zero outline", "out_of_scope": "bare basemap"},
-      "themePolicy": "identical light HEX on both themes; fill-opacity 1 under the basemap's first line layer; hard switch off at zoom ≥ 14.5",
+      "evidenceStates": {
+        "measured": "class fill",
+        "measured_zero": "lowest fill + zero outline",
+        "out_of_scope": "bare basemap"
+      },
+      "themePolicy": "identical light HEX on both themes; fill-opacity 1 inserted before the basemap's first line layer (waterway); hard switch off at zoom ≥ 14.5",
       "model": "js/map-layers.js#buildAreaModel, js/scales.js#buildCountClasses"
     },
-    "hostBuildings": "map.activeLayer role (light #347DA8 / dark #65B6DB), only for rows in focus, zoom ≥ 14"
+    "hostBuildings": "map.activeLayer role (light #347DA8 / dark #65B6DB), only for rows in focus, extrusion zoom ≥ 14, outline zoom ≥ 12, visible in both plan and 3D",
+    "logos": "zoom ≥ 14, rows in focus only, ≤ 250 (js/pins.js LOGO_MIN_ZOOM, MAX_LOGOS)",
+    "detailRows": "js/app.js#detailRows: venueLevel() ? rows of the current venue (mallId, else venue label) : rows"
+  },
+  "basemapContract": {
+    "generator": "js/map-style.js#buildMapStyle(theme, {palette, tileJSON, glyphs}) — a MapLibre style v8 object built at runtime; no hosted style URL",
+    "tiles": {
+      "tileJson": "https://tiles.openfreemap.org/planet",
+      "schema": "OpenMapTiles (OpenFreeMap build)",
+      "sourceId": "openmaptiles",
+      "maxzoom": 14,
+      "buildingLayer": "building (fields render_height, render_min_height, hide_3d; available z13–14)",
+      "glyphs": "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf (Noto Sans Regular / Italic)",
+      "attribution": "© OpenMapTiles © OpenStreetMap contributors (OpenFreeMap)",
+      "labels": "name:th preferred, then name; no POI, housenumber or boundary labels"
+    },
+    "palette": {
+      "source": "assets/theme.css --basemap-* tokens (light and dark declared once each; basemap-only, not data colours)",
+      "resolver": "js/map-style.js#basemapPalette(theme)",
+      "light": {
+        "ground": "#EEF1EE",
+        "water": "#E2E9ED",
+        "park": "#DCE6D4",
+        "building": "#DFE2DD",
+        "massingQuiet": "#ECEDE8",
+        "massingFocus": "#D9D7CD",
+        "road": "#FFFFFF",
+        "roadCasing": "#DCE1DD",
+        "label": "#5F635A",
+        "halo": "#F6F7F3",
+        "sky": "#F6F7F3",
+        "fog": "#EEF1EE"
+      },
+      "dark": {
+        "ground": "#11191D",
+        "water": "#18333E",
+        "park": "#16251F",
+        "building": "#1C262B",
+        "massingQuiet": "#1F282D",
+        "massingFocus": "#34404A",
+        "road": "#293337",
+        "roadCasing": "#33403D",
+        "label": "#A6B5B1",
+        "halo": "#11191D",
+        "sky": "#0D1418",
+        "fog": "#11191D"
+      }
+    },
+    "layerOrder": [
+      "background / landcover / park / water",
+      "data fill (inserted before DATA_FILL_BEFORE = waterway)",
+      "2D building footprints",
+      "roads, rail, paths",
+      "massing + host buildings (inserted before MASSING_BEFORE = water-name, the first symbol layer)",
+      "labels",
+      "area outlines, selection outline, pins, logos"
+    ],
+    "atmosphere": "sky + fog blend the far ground into the paper colour; viewport-anchored light (#FFFFFF, intensity 0.32) gives massing a soft shade; both are quiet context, never data",
+    "themeSwitch": "map.setStyle(buildMapStyle(theme)) then re-install spatial layers; data layers keep the same HEX on both themes"
+  },
+  "massingContract": {
+    "module": "js/massing.js#installMassing(map, {sourceId, beforeId, colors, tileUrl, fetchImpl}) → {update, retheme, dispose, layerIds}",
+    "cityTier": {
+      "layer": "city-massing (fill-extrusion, source openmaptiles, source-layer building, minzoom 13)",
+      "height": "render_height / render_min_height from the tile; hide_3d features excluded",
+      "colour": "--basemap-massing-quiet, vertical gradient, no outline",
+      "visibility": "3D view only; hidden in plan",
+      "filter": "['all', ['!=', ['get','hide_3d'], true], ['!', ['in', ['id'], ['literal', hiddenIds]]]] — OSM twins of host buildings hidden by feature id"
+    },
+    "focusTier": {
+      "source": "focus-massing (GeoJSON built from the same tile URLs MapLibre loads, decoded by js/mvt.js; z14, ≤ 9 tiles per update, tiles touching the focus regions only)",
+      "layer": "focus-massing-3d (fill-extrusion, minzoom 13)",
+      "selection": "buildings overlapping a focus polygon (point-in-ring or ring intersection), clipped to the tile box with buffer, host-overlapping buildings dropped",
+      "shape": "js/geometry.js: cleanRing → clipRingToBox → offsetRing(+d) → roundRing(r, 3 segments, encloseOffset d)",
+      "height": "render_height + 0.35 m (HEIGHT_LIFT_M); base = render_min_height",
+      "colour": "--basemap-massing-focus, vertical gradient",
+      "visibility": "3D and plan (plan shows the rounded footprints flat)",
+      "cacheKey": "regions + hosts + zoom bucket (full zoom level) + tile availability"
+    },
+    "hostTier": {
+      "source": "data/venue-buildings.geojson via js/buildings.js (controller exposes displayedFeatures())",
+      "colour": "map.activeLayer; outline map.selectedStroke",
+      "visibility": "extrusion zoom ≥ 14, outline zoom ≥ 12, rows in focus only; before MASSING_BEFORE"
+    },
+    "rounding": {
+      "radiusMetres": "roundingRadiusM(zoom, lat) = clamp(4 px in metres at max(zoom, 14.5), 3, 12)",
+      "segmentsPerCorner": 3,
+      "reference": "maplibre/maplibre-style-spec#1047 (polygon corner radius) is unsupported in MapLibre; rounding is done in geometry, display only"
+    },
+    "enclosure": {
+      "offsetMetres": "encloseOffsetM(r) = max(1, r / 2.5)",
+      "radiusCap": "radius ≤ 0.95 · d / (1 − sin(θ/2)) so the rounded ring still encloses the original polygon at every corner",
+      "purpose": "the quiet city twin stays fully inside the rounded focus solid → no z-fighting without hiding it; host twins are hidden instead because the host solid is the data layer"
+    },
+    "provenance": "building heights and footprints are OSM via OpenFreeMap (defaults when no height tag); context only, never a claim of this dataset; OpenFreeMap merges same-height buildings into MultiPolygons, so single roofs cannot be picked",
+    "scene": {
+      "module": "massing.setScene('default'|'eye', targets)",
+      "opacities": {
+        "default": {
+          "city": 1,
+          "focus": 1,
+          "occluder": 0.18
+        },
+        "eye": {
+          "city": 0.3,
+          "focus": 0.62,
+          "occluder": 0.14
+        }
+      },
+      "occluderLayer": "focus-massing-occluding (same source as the focus tier; filter by unique feature ids; the focus tier excludes them)",
+      "occlusionTest": "screen-space: a focus building whose box (ground vertices + tops lifted by height × local px/m × sin(pitch)) overlaps a target's box and whose mean ground y is larger (nearer the camera) is an occluder; recomputed on moveend and after each tile update; targets = the venue's host rings (buildings.js displayedFeatures filtered by mall_ids / venue_names) with display_height_m",
+      "hostStaysOpaque": true
+    }
+  },
+  "cameraContract": {
+    "module": "js/camera.js (CAMERA, presetFor, applyPreset, fitPitched, framePoint, shiftPadding)",
+    "presets": {
+      "plan": {
+        "pitch": 0,
+        "bearing": 0,
+        "fov": 36.87,
+        "when": "view3d off (3D toggle / ?view3d=0) or bounds wider than 0.3°"
+      },
+      "city": {
+        "pitch": 56,
+        "bearing": 28,
+        "fov": 36.87,
+        "fitShift": 0.2,
+        "when": "overview in 3D (first Aha)"
+      },
+      "model": {
+        "pitch": 60,
+        "bearing": 28,
+        "fov": 14,
+        "fitShift": 0.16,
+        "when": "neighborhood in 3D (and venue level when มุมสถาปนิก is switched off) — near-axonometric, verticals upright"
+      },
+      "eye": {
+        "pitch": 82,
+        "bearing": 28,
+        "fov": 32,
+        "shift": 0.38,
+        "when": "venue level only (venue mode, or a store inside a venue): on by default, ?cam=model opts out; disabled elsewhere and in 2D; on mobile portrait it waits until the sheet closes"
+      }
+    },
+    "fitting": {
+      "function": "fitPitched(map, bounds, {preset, padding, maxZoom 16, minZoom 10, points, shift})",
+      "method": "start from cameraForBounds (flat), apply preset pitch/bearing/FOV, zoom out in 0.1 steps until every point (polygon vertices when given, else bbox corners) projects inside the padded viewport, then zoom in while they still fit; jumps are computed without rendering and the final camera is animated",
+      "padding": "desktop 3D padding ignores the legend; mobile portrait with the sheet open uses plan, then re-frames in 3D on sheet close",
+      "bearing": "28° so the Siam → Chit Lom → Phrom Phong axis runs left-to-right on wide screens",
+      "venue": "frameVenue: fitPitched over the venue's host footprint vertices with top headroom 26% (eye) / 12% (model), maxZoom 17.6, minZoom 14.5; falls back to framePoint(zoom 16) when no host building is displayed or on mobile portrait"
+    },
+    "maplibre": {
+      "version": "5.6.2",
+      "requires": "setVerticalFieldOfView (≥ 4.7), maxPitch 85",
+      "orthographic": "not available in MapLibre; narrow FOV is the standard substitute"
+    },
+    "alternatives": "deck.gl custom projectionMatrix or three.js camera.setViewOffset give a true two-point camera; not adopted to keep a single MapLibre scene"
+  },
+  "breadcrumbContract": {
+    "module": "js/breadcrumb.js (buildBreadcrumb, renderBreadcrumb, breadcrumbText) + js/model.js PROVINCES",
+    "levels": [
+      "ประเทศไทย",
+      "จังหวัด (ชื่อไทย; code in URL)",
+      "ย่าน (dataset-specific neighborhood core; from point-in-polygon on the venue's representative point when a venue is open)",
+      "สถานที่ (venue: CityMETER Shopping Center id, else plain venue label)"
+    ],
+    "productionPath": {
+      "observed": "https://landometer.com/v3/citymeter/{PROVINCE_CODE} (BKK, PKT, CMI, SPK, NBI, CBI, PTE, UDN, NMA observed 2026-10-22); third level encodes the entity type: /L/{locale uuid} for Locales, /M/{dopa code} for municipalities",
+      "proposal": "/v3/citymeter/{PROVINCE_CODE}/N/{neighborhood id}/V/{center id}?d=luxuryBrands until the cores are registered as Locales (then /L/{locale uuid}/V/{center id})",
+      "status": "Inference — proposal, not implemented in production"
+    },
+    "demoQuery": "?province=BKK&neighborhood=siam&place=<center id> (code preferred; Thai/English province names from older links still resolve)",
+    "provinceCodes": {
+      "BKK": "กรุงเทพมหานคร",
+      "PKT": "ภูเก็ต",
+      "CMI": "เชียงใหม่",
+      "SPK": "สมุทรปราการ",
+      "NBI": "นนทบุรี",
+      "CBI": "ชลบุรี",
+      "PTE": "ปทุมธานี",
+      "UDN": "อุดรธานี",
+      "NMA": "นครราชสีมา"
+    },
+    "dataBinding": "data/neighborhoods.geojson properties.provinceCode / provinceName (nimman = CMI, others BKK)",
+    "actions": [
+      "crumb-country (clear province + area)",
+      "crumb-province (clear area, keep province)",
+      "crumb-area (re-open the area profile)",
+      "crumb-venue (re-open the venue profile by id or label)",
+      "crumb-expand (unfold collapsed levels on narrow screens)"
+    ],
+    "documentTitle": "breadcrumbText(crumbs) drives document.title",
+    "venueRules": [
+      "a venue outside every core skips the ย่าน level (ประเทศไทย › ภูเก็ต › Central Phuket)",
+      "a store is never a crumb — the panel heading names it; the crumb trail ends at its venue (or ย่าน for street stores)",
+      "four or more levels fold the upper ones behind “…” on narrow screens (crumb-expand); the last two stay visible",
+      "venue ids come from data/luxury.json centers[].id (source: landometer.com/api/v2/citymeter-v3/shopping-center/detail/{id}, externalId SC-…)"
+    ]
   },
   "panel": {
-    "modes": ["overview", "neighborhood", "venue", "store"],
-    "navigation": "back stack (max 20); mode and id restored from URL (?neighborhood, ?place, ?store)",
-    "actions": ["select-area", "select-store", "select-venue", "search-brand", "back", "explore-top", "clear-focus", "open-charts", "open-table", "clear-filter"],
+    "modes": [
+      "overview",
+      "neighborhood",
+      "venue",
+      "store"
+    ],
+    "navigation": "back stack (max 20); mode and id restored from URL (?province, ?neighborhood, ?place, ?store, ?areas, ?view3d, ?cam)",
+    "actions": [
+      "select-area",
+      "select-store",
+      "select-venue",
+      "search-brand",
+      "back",
+      "explore-top",
+      "clear-focus",
+      "open-charts",
+      "open-table",
+      "clear-filter",
+      "crumb-country",
+      "crumb-province",
+      "crumb-area",
+      "toggle-3d",
+      "crumb-venue",
+      "crumb-expand"
+    ],
     "models": {
       "neighborhood": "js/profile-model.js#buildNeighborhoodProfile (uses scopeRows so exclusive/shared keeps the whole selection as reference)",
       "venue": "js/profile-model.js#buildVenueProfile",
       "store": "js/profile-model.js#buildStoreDetail (+describeGeometry, describeStatus)",
-      "overview": "js/profile-model.js#buildOverviewInsights, rankVenues"
+      "overview": "js/profile-model.js#buildOverviewInsights, rankVenues; js/panel.js#renderOverview(focusMode, view3d)"
     },
-    "renderer": "js/panel.js (pure HTML strings, delegated data-action clicks)"
+    "renderer": "js/panel.js (pure HTML strings, delegated data-action clicks); breadcrumb rendered first in .panel-top"
   },
   "data": {
     "observationGrain": "one declared brand store/counter/POS observation; repeated source records are not silently merged",
     "core": "data/luxury.json",
-    "neighborhoods": "data/neighborhoods.geojson",
+    "neighborhoods": "data/neighborhoods.geojson (metadata.version 2026-10-22-r2: provinceCode/provinceName added, geometry unchanged)",
     "hostBuildings": "data/venue-buildings.geojson",
+    "cityMassing": "OpenFreeMap vector tiles, building source-layer (context, not part of the dataset)",
     "brandLogos": "data/brand-logos.json",
-    "defaultFilter": {"origin": "market_refresh", "excludedStatuses": ["permanently closed", "closure_conflict_review"]},
-    "snapshot": {"observations": 565, "mappedObservations": 562, "defaultPOS": 345, "defaultBrands": 113, "definedNeighborhoods": 10, "logoIdentities": 168},
+    "defaultFilter": {
+      "origin": "market_refresh",
+      "excludedStatuses": [
+        "permanently closed",
+        "closure_conflict_review"
+      ]
+    },
+    "snapshot": {
+      "observations": 565,
+      "mappedObservations": 562,
+      "defaultPOS": 345,
+      "defaultBrands": 113,
+      "definedNeighborhoods": 10,
+      "logoIdentities": 168
+    },
     "closurePolicy": "Retain permanently closed records and factual closure status; exclude from the default current view; never delete to improve counts",
     "coordinatePolicy": "Preserve original geographic coordinates; marker displacement is screen-space only; precision is described from geometryRole/geometryStatus and never upgraded"
   },
@@ -128,43 +435,216 @@
     "revision": "standalone-0.9.7-r1",
     "colorSetId": "color-srgb-10",
     "normativeSha256": "d3085cbc0a50195f1cbf0c77b1d77c0d19b84364daf2948eb367348d65432d96",
-    "appliedTokens": "assets/theme.css (foundation pairs, semantic states, map roles, data states, series 1–10, count classes)",
-    "analyticalScale": {"family": "count", "lutSamples": 41, "scaleVersion": "4ff5c1fb4be71ecd13c48685b38371b528bcd4ce369ce964a75354c2eb4d0980", "source": "js/scales.js"},
-    "categoricalSeries": {"registry": "landometer-series-10-v8", "variant": "soft", "segmentAssignment": "model.js SEGMENTS order = series.01 … series.08", "compareCues": {"exclusive": "series.07 hexagon", "shared": "series.09 dash"}},
-    "locationProfile": {"document": "Location-Intelligence-Profile-for-LDS-v0.9.7.md", "applied": false, "reason": "profile defines business metrics (demand, supply, market size …) that this dataset does not carry"},
-    "fonts": {"body": "Bai Jamjuree 400/600", "headingLatin": "Arvo 700", "headingThai": "IBM Plex Sans Thai Looped 700", "numbers": "JetBrains Mono 400 tabular"},
-    "icons": {"asset": "assets/icons/material-nav-300.woff2", "axes": {"FILL": 0, "wght": 300, "GRAD": 0, "opsz": 24}, "allowed": ["open_in_new", "menu", "close", "light_mode", "dark_mode", "contrast", "groups"], "fallback": "visible semantic text label"},
+    "appliedTokens": "assets/theme.css (foundation pairs, semantic states, map roles, data states, series 1–10, count classes, basemap-only tokens)",
+    "analyticalScale": {
+      "family": "count",
+      "lutSamples": 41,
+      "scaleVersion": "4ff5c1fb4be71ecd13c48685b38371b528bcd4ce369ce964a75354c2eb4d0980",
+      "source": "js/scales.js"
+    },
+    "categoricalSeries": {
+      "registry": "landometer-series-10-v8",
+      "variant": "soft",
+      "segmentAssignment": "model.js SEGMENTS order = series.01 … series.08",
+      "compareCues": {
+        "exclusive": "series.07 hexagon",
+        "shared": "series.09 dash"
+      }
+    },
+    "locationProfile": {
+      "document": "Location-Intelligence-Profile-for-LDS-v0.9.7.md",
+      "applied": false,
+      "reason": "profile defines business metrics (demand, supply, market size …) that this dataset does not carry"
+    },
+    "fonts": {
+      "body": "Bai Jamjuree 400/600",
+      "headingLatin": "Arvo 700",
+      "headingThai": "IBM Plex Sans Thai Looped 700",
+      "numbers": "JetBrains Mono 400 tabular"
+    },
+    "icons": {
+      "asset": "assets/icons/material-nav-300.woff2",
+      "axes": {
+        "FILL": 0,
+        "wght": 300,
+        "GRAD": 0,
+        "opsz": 24
+      },
+      "allowed": [
+        "open_in_new",
+        "menu",
+        "close",
+        "light_mode",
+        "dark_mode",
+        "contrast",
+        "groups"
+      ],
+      "fallback": "visible semantic text label (3D / มุมสถาปนิก toggles use text)"
+    },
     "iconSet": "iconset.landometer.portfolio.symbol.01 (16/32/48/180/192/512) + site.webmanifest",
-    "mapStyles": {"light": "https://tiles.openfreemap.org/styles/positron", "dark": "https://tiles.openfreemap.org/styles/dark"},
-    "layout": {"headerPx": 48, "desktopPanel": "min(max(300px,28%),440px)", "chartTrayCollapsedPx": 52, "mobileSheetMaxHeight": "64dvh"}
+    "mapStyles": {
+      "generator": "js/map-style.js#buildMapStyle",
+      "tiles": "https://tiles.openfreemap.org/planet",
+      "replaced": "positron / dark hosted styles (0.2)"
+    },
+    "layout": {
+      "headerPx": 48,
+      "desktopPanel": "min(max(300px,28%),440px)",
+      "chartTrayCollapsedPx": 52,
+      "mobileSheetMaxHeight": "64dvh",
+      "toolbar": [
+        "ดูทั้งหมด",
+        "กรุงเทพฯ",
+        "ย่าน",
+        "3D",
+        "มุมสถาปนิก",
+        "วิธีใช้",
+        "ข้อมูล (mobile)"
+      ]
+    }
   },
   "invariants": [
-    {"id": "INV01", "rule": "One store observation owns one pin; no clustering or aggregation, including quiet context pins"},
-    {"id": "INV02", "rule": "250 logo labels is a ceiling, never a quota; logos only at zoom ≥ 13.5 and only for rows in focus"},
-    {"id": "INV03", "rule": "Preserve original logo artwork; use the verified local sprite and restrained framing"},
-    {"id": "INV04", "rule": "Default first insight concerns neighborhoods, not venues; venues are the fallback only when no defined area has rows"},
-    {"id": "INV05", "rule": "Never sum distinct brands across areas; use set union"},
-    {"id": "INV06", "rule": "Keep generic caveats and workflow notes out of UI; retain provenance in documentation and real closure/error states"},
-    {"id": "INV07", "rule": "No CSV download UI"},
-    {"id": "INV08", "rule": "No decorative bracket or colored left rail; keep visible focus"},
-    {"id": "INV09", "rule": "No fabricated coordinates, store openings, administrative boundaries or consumer behavior claims"},
-    {"id": "INV10", "rule": "Pins, counters, table and panel counts use the same committed rows; Aha, choropleth and charts use scopeRows and say so when they differ"},
-    {"id": "INV11", "rule": "Detail only for the focused part; everything else stays visible but quiet (no logos, grey dots, outline-only areas)"},
-    {"id": "INV12", "rule": "Analytical colours keep the approved light HEX on both themes; contrast is solved with labels, outlines and backplates, never by recolouring data"},
-    {"id": "INV13", "rule": "Exclusive/shared and the Aha denominator reference the whole filtered scope, never a single selected area"}
+    {
+      "id": "INV01",
+      "rule": "One store observation owns one pin; no clustering or aggregation, including quiet context pins"
+    },
+    {
+      "id": "INV02",
+      "rule": "250 logo labels is a ceiling, never a quota; logos only at zoom ≥ 14 and only for rows in focus"
+    },
+    {
+      "id": "INV03",
+      "rule": "Preserve original logo artwork; use the verified local sprite and restrained framing"
+    },
+    {
+      "id": "INV04",
+      "rule": "Default first insight concerns neighborhoods, not venues; venues are the fallback only when no defined area has rows"
+    },
+    {
+      "id": "INV05",
+      "rule": "Never sum distinct brands across areas; use set union"
+    },
+    {
+      "id": "INV06",
+      "rule": "Keep generic caveats and workflow notes out of UI; retain provenance in documentation and real closure/error states"
+    },
+    {
+      "id": "INV07",
+      "rule": "No CSV download UI"
+    },
+    {
+      "id": "INV08",
+      "rule": "No decorative bracket or colored left rail; keep visible focus"
+    },
+    {
+      "id": "INV09",
+      "rule": "No fabricated coordinates, store openings, administrative boundaries or consumer behavior claims"
+    },
+    {
+      "id": "INV10",
+      "rule": "Pins, counters, table and panel counts use the same committed rows; Aha, choropleth and charts use scopeRows and say so when they differ"
+    },
+    {
+      "id": "INV11",
+      "rule": "Detail only for the focused part; everything else stays visible but quiet (no logos, grey dots, outline-only areas, quiet massing)"
+    },
+    {
+      "id": "INV12",
+      "rule": "Analytical colours keep the approved light HEX on both themes; contrast is solved with labels, outlines and backplates, never by recolouring data"
+    },
+    {
+      "id": "INV13",
+      "rule": "Exclusive/shared and the Aha denominator reference the whole filtered scope, never a single selected area"
+    },
+    {
+      "id": "INV14",
+      "rule": "The first view is 3D with the top-3 areas focused; ?areas=all and the 3D toggle are the only ways to leave that state, and neither changes the data"
+    },
+    {
+      "id": "INV15",
+      "rule": "Basemap and massing colours come only from --basemap-* tokens; they never reuse data, series or state colours, and massing never encodes a metric"
+    },
+    {
+      "id": "INV16",
+      "rule": "City massing is OSM context: rounding and enclosure are display-only, heights are never quoted as dataset facts, and host buildings stay the only building layer that carries data colour"
+    },
+    {
+      "id": "INV17",
+      "rule": "Breadcrumb levels are ประเทศไทย › จังหวัด › ย่าน with production province codes; the demo never invents a Locale or municipality id"
+    },
+    {
+      "id": "INV18",
+      "rule": "Matrix cells are equal in size; only the number and its count class carry meaning"
+    },
+    {
+      "id": "INV19",
+      "rule": "Camera presets never move or scale data; the eye preset is the venue-level camera only (default there, ?cam=model opts out) and never applies to overview or neighborhood"
+    },
+    {
+      "id": "INV20",
+      "rule": "At venue level only the venue's rows carry detail: its host building is the only blue one; other venues' buildings and pins become quiet context; the eye scene only changes massing opacity, never data"
+    }
   ],
   "chartContracts": [
-    {"viewKey": "centers", "title": "ย่านที่มีแบรนด์", "question": "ย่านใดมีแบรนด์หลากหลาย", "encoding": "horizontal bars; bar fill = count class of the area", "metric": "distinct brand labels per assigned neighborhood", "scope": "scopeRows", "action": {"type": "neighborhood", "id": "neighborhood ID"}},
-    {"viewKey": "mix", "title": "บุคลิกของย่าน", "question": "ย่านใดเด่นแบรนด์กลุ่มไหน", "encoding": "numeric heat table; cell tint = count class of the cell value; 0 shown with zero outline", "metric": "distinct brand labels per neighborhood × segment", "scope": "scopeRows", "action": {"type": "neighborhood", "id": "neighborhood ID"}},
-    {"viewKey": "compare", "title": "แบรนด์เฉพาะ / ร่วม", "question": "แต่ละย่านมีแบรนด์ต่างหรือซ้ำกับย่านอื่นเพียงใด", "encoding": "stacked horizontal bars with shape cues", "metric": "brands assigned to exactly one versus multiple neighborhoods", "reference": "all assigned neighborhoods in scopeRows, before display truncation", "scope": "scopeRows", "minimumAreas": 2, "emptyAction": {"type": "resetAreas"}}
+    {
+      "viewKey": "centers",
+      "title": "ย่านที่มีแบรนด์",
+      "question": "ย่านใดมีแบรนด์หลากหลาย",
+      "encoding": "horizontal bars; bar fill = count class of the area",
+      "metric": "distinct brand labels per assigned neighborhood",
+      "scope": "scopeRows",
+      "action": {
+        "type": "neighborhood",
+        "id": "neighborhood ID"
+      }
+    },
+    {
+      "viewKey": "mix",
+      "title": "บุคลิกของย่าน",
+      "question": "ย่านใดเด่นแบรนด์กลุ่มไหน",
+      "encoding": "numeric heat table with table-layout fixed and a <colgroup>; every cell equal width/height; cell tint = count class of the cell value; 0 shown with zero outline; caption states cell size carries no meaning",
+      "metric": "distinct brand labels per neighborhood × segment",
+      "scope": "scopeRows",
+      "action": {
+        "type": "neighborhood",
+        "id": "neighborhood ID"
+      }
+    },
+    {
+      "viewKey": "compare",
+      "title": "แบรนด์เฉพาะ / ร่วม",
+      "question": "แต่ละย่านมีแบรนด์ต่างหรือซ้ำกับย่านอื่นเพียงใด",
+      "encoding": "stacked horizontal bars with shape cues",
+      "metric": "brands assigned to exactly one versus multiple neighborhoods",
+      "reference": "all assigned neighborhoods in scopeRows, before display truncation",
+      "scope": "scopeRows",
+      "minimumAreas": 2,
+      "emptyAction": {
+        "type": "resetAreas"
+      }
+    }
   ],
   "delivery": {
-    "human": ["README.md", "PRODUCT_BRIEF.md", "IMPLEMENTATION_PLAN.md", "VERIFICATION.md", "START_HERE.md"],
-    "machine": ["product-brief.json", "implementation-plan.json", "handoff-manifest.json", "handoff.schema.json"],
+    "human": [
+      "README.md",
+      "PRODUCT_BRIEF.md",
+      "IMPLEMENTATION_PLAN.md",
+      "VERIFICATION.md",
+      "START_HERE.md",
+      "../PRODUCT_STATEMENT.md"
+    ],
+    "machine": [
+      "product-statement.json",
+      "product-brief.json",
+      "implementation-plan.json",
+      "handoff-manifest.json",
+      "handoff.schema.json"
+    ],
     "start": "npm start",
     "test": "npm test",
     "handoff": "npm run handoff:bundle",
     "verifyLive": "npm run verify:live",
-    "localUrl": "http://127.0.0.1:4173/"
+    "localUrl": "http://127.0.0.1:4173/",
+    "devHook": "window.__citymeter (state, map, update, fitMap, fitPitched, applyPreset, buildMapStyle) — console tuning only, not an API"
   }
 }

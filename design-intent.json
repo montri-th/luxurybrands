@@ -1,6 +1,6 @@
 {
-  "artifact": "CityMETER Luxury Brands — neighborhood-first retail presence map",
-  "productVersion": "0.2.0",
+  "artifact": "CityMETER Luxury Brands — 3D-first, neighborhood-first retail presence map",
+  "productVersion": "0.3.0",
   "updatedOn": "2026-10-22",
   "ldsVersion": "0.9.7",
   "release": "v0.9.7-owner.1",
@@ -16,14 +16,14 @@
     "navigation": "Material Symbols Rounded approved nav-7 subset; FILL 0 / wght 300 / GRAD 0 / opsz 24"
   },
   "colors": {
-    "applied": "assets/theme.css — foundation pairs, semantic states, map roles (activeLayer, selectedStroke, markerHalo, markerStroke), data states (noData, zero), categorical series 1–10 (landometer-series-10-v8 soft), count classes",
+    "applied": "assets/theme.css — foundation pairs, semantic states, map roles (activeLayer, selectedStroke, markerHalo, markerStroke), data states (noData, zero), categorical series 1–10 (landometer-series-10-v8 soft), count classes, basemap-only tokens (--basemap-*) for the generated paper basemap and massing",
     "analytical": "js/scales.js — count family, 41-sample LUT, scaleVersion 4ff5c1fb4be71ecd13c48685b38371b528bcd4ce369ce964a75354c2eb4d0980, identical HEX on both themes",
     "notDistributed": "full LDS library, other analytical families, Location Intelligence profile scales"
   },
-  "firstAha": "share of distinct brands held by the top three neighborhoods, computed per selection, with the neighborhood choropleth as the map-side expression",
+  "firstAha": "share of distinct brands held by the top three neighborhoods, computed per selection; the map opens in the 3D city preset with those three areas focused automatically and the rest of the city quiet",
   "focusAndQuiet": {
-    "ownerInstruction": "2026-10-22: show detail only for the focused part; keep the rest quiet",
-    "implementation": "map-layers.js filled/quiet properties; pins.js context pins; panel modes drive focus"
+    "ownerInstruction": "2026-10-22: show detail only for the focused part; keep the rest quiet; the first view is 3D with the top-3 areas focused; style classy and simplified like an architectural model",
+    "implementation": "app.js focus modes (auto/explicit/none); map-layers.js filled/quiet properties; pins.js context pins; massing.js quiet city tier vs rounded focus tier; camera.js presets"
   },
   "geometryAndMetricContract": "brand–POS observation rows, source status, host representative geometry and coordinate precision remain explicit; distinct brands never summed across areas",
   "accessibility": [
@@ -35,10 +35,10 @@
     "empty, map-failure and load-error paths with actions"
   ],
   "validation": {
-    "status": "release 0.2 verified as recorded in handoff/VERIFICATION.md",
-    "unitTests": 62,
-    "renderedHarness": "Playwright + vendored MapLibre + stub style; 1280×800 and 390×844; light and dark",
-    "liveChecks": "Chrome on macOS against https://montri-th.github.io/luxurybrands/ (overview, explore 3, Siam profile, dark theme, matrix)",
+    "status": "release 0.3 verification recorded in handoff/VERIFICATION.md",
+    "unitTests": 80,
+    "renderedHarness": "Playwright + vendored MapLibre + stub TileJSON + synthetic OpenMapTiles-schema tiles; 1280×800 and 390×844; light and dark",
+    "liveChecks": "see handoff/VERIFICATION.md (0.3 section) — real-tile look confirmed only there",
     "scope": "Applied LDS assets, fonts and actual rendered interfaces. No blanket LDS, CVD, native-device or market-completeness claim."
   },
   "layoutContract": {
@@ -49,16 +49,24 @@
     "mobilePortrait": "full map, bottom sheet ≤ 64dvh with sticky close, compact Aha card on the map while the sheet is closed"
   },
   "mapContract": {
-    "basemaps": ["https://tiles.openfreemap.org/styles/positron", "https://tiles.openfreemap.org/styles/dark"],
+    "basemap": "generated at runtime by js/map-style.js on https://tiles.openfreemap.org/planet (OpenMapTiles schema) with --basemap-* tokens; no hosted style URL; labels name:th first; no POI/housenumber/boundary labels; sky/fog fade the distance into the paper colour",
+    "layerOrder": "landcover/water → data fill (before waterway) → 2D footprints → roads → massing + host buildings (before water-name) → labels → outlines/pins/logos",
+    "massing": "city tier = native fill-extrusion from the building source-layer in --basemap-massing-quiet (3D only, zoom ≥ 13); focus tier = same tiles decoded, offset outward and corner-rounded so they enclose the original, in --basemap-massing-focus (display-only answer to maplibre-style-spec #1047); OSM twins of host buildings hidden by feature id",
+    "camera": "plan (pitch 0) · city (pitch 56, bearing 28) · model (pitch 60, FOV 14, near-axonometric) for a neighborhood · eye (pitch 82, FOV 32, principal-point shift 38% = two-point perspective) as the venue-level default, framed on the venue's host building; pitched fits keep every polygon vertex inside the padded viewport",
     "choropleth": "count family, five equal-interval classes from the current maximum, fill-opacity 1 beneath the basemap's first line layer, off at zoom ≥ 14.5, EVID-05 measured / measured_zero / out_of_scope",
-    "pins": "one declared point-of-sale row per pin; zoom tiers 3 px / 5 px / full; context pins grey and logo-less; screen displacement with leader lines, source coordinates unchanged",
-    "logos": "≤ 250, only at zoom ≥ 13.5 and only inside the focus",
-    "venues": "source building footprints/parts with explicit height provenance in map.activeLayer; unknown heights use a marked 3 m display slab",
-    "neighborhoods": "frozen named analytical road/river envelopes; no arbitrary radius components; no claimed consumer consensus"
+    "pins": "one declared point-of-sale row per pin; zoom tiers <12 / 12–14 / ≥14; context pins grey and logo-less; screen displacement with leader lines, source coordinates unchanged",
+    "logos": "≤ 250, only at zoom ≥ 14 and only inside the focus",
+    "venues": "source building footprints/parts with explicit height provenance in map.activeLayer; unknown heights use a marked 3 m display slab; visible in plan and 3D",
+    "neighborhoods": "frozen named analytical road/river envelopes with production province codes; no arbitrary radius components; no claimed consumer consensus",
+    "breadcrumb": "ประเทศไทย › จังหวัด › ย่าน › สถานที่; province codes BKK PKT CMI SPK NBI CBI PTE UDN NMA as observed on landometer.com 2026-10-22; venue id = CityMETER Shopping Center id; ย่าน of a venue by point-in-polygon; store is the heading, not a crumb",
+    "venueLevel": "only the venue's rows carry detail (blue host, category pins, logos); other venues' buildings fall back to quiet massing and their pins to grey context dots; SCENE.eye lowers massing opacity (city 0.3 / focus 0.62) and buildings standing between the camera and the venue are drawn at 0.14 opacity"
   },
   "brandIdentity": {
     "sources": "155 official brand sources; 13 retailers; source artwork embedded unchanged, outer whitespace cropped in viewport only",
     "fallback": "Visible brand names and accessible marker labels retained; logos are identity, not a metric or endorsement",
     "manifest": "assets/brand-logos-manifest.json"
+  },
+  "chartContract": {
+    "matrix": "table-layout fixed with a colgroup; every cell the same size; caption says size carries no meaning; cell tint = count class"
   }
 }

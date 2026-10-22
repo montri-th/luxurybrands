@@ -89,6 +89,38 @@
   --scale-count-ink-on-3: #182327;
   --scale-count-ink-on-4: #FFFFFF;
   --scale-count-ink-on-5: #FFFFFF;
+
+  /* Basemap-only tokens (release 0.3) — foundation values for the generated "paper"
+     basemap (js/map-style.js). Where an LDS foundation token fits it is reused
+     (ground = surface.alt, water = surface.blue-tint, casings = borders, labels =
+     text roles, halo/sky = surface.canvas). Land cover, buildings and massing have
+     no LDS token and are declared here once so no value is approximated in code.
+     These are never data colours and carry no meaning in legends. */
+  --basemap-ground: #EEF1EE;
+  --basemap-water: #E2E9ED;
+  --basemap-water-line: #CBD9E1;
+  --basemap-park: #DCE6D4;
+  --basemap-wood: #D2DFC8;
+  --basemap-grass: #E3EBDA;
+  --basemap-sand: #F0EEE4;
+  --basemap-aeroway: #E9EBE7;
+  --basemap-building: #DFE2DD;
+  --basemap-building-line: #CDD2CD;
+  --basemap-massing-quiet: #ECEDE8;
+  --basemap-massing-focus: #D9D7CD;
+  --basemap-road: #FFFFFF;
+  --basemap-road-casing: #DCE1DD;
+  --basemap-motorway-casing: #C9D0CB;
+  --basemap-tunnel: #F4F6F3;
+  --basemap-rail: #C9D0CB;
+  --basemap-transit: #B4BDB7;
+  --basemap-path: #FFFFFF;
+  --basemap-label: #5F635A;
+  --basemap-label-quiet: #7B877D;
+  --basemap-halo: #F6F7F3;
+  --basemap-sky: #F6F7F3;
+  --basemap-horizon: #DCE1DD;
+  --basemap-fog: #EEF1EE;
 }
 
 :root[data-theme="dark"] {
@@ -156,4 +188,32 @@
   --chart-on-fill: #182327;
 
   /* DATAVIZ-03: analytical values keep the approved light HEX on dark surfaces. */
+
+  /* Basemap-only tokens — dark theme (ground = surface.canvas, water = surface.blue-tint,
+     roads = surface.raised/card, casings = borders, labels = text roles). */
+  --basemap-ground: #11191D;
+  --basemap-water: #18333E;
+  --basemap-water-line: #1F3F4C;
+  --basemap-park: #16251F;
+  --basemap-wood: #14211C;
+  --basemap-grass: #172620;
+  --basemap-sand: #1C2328;
+  --basemap-aeroway: #172126;
+  --basemap-building: #1C262B;
+  --basemap-building-line: #2A3539;
+  --basemap-massing-quiet: #1F282D;
+  --basemap-massing-focus: #34404A;
+  --basemap-road: #293337;
+  --basemap-road-casing: #33403D;
+  --basemap-motorway-casing: #46524F;
+  --basemap-tunnel: #1A2327;
+  --basemap-rail: #46524F;
+  --basemap-transit: #5E6B67;
+  --basemap-path: #293337;
+  --basemap-label: #A6B5B1;
+  --basemap-label-quiet: #8D9D99;
+  --basemap-halo: #11191D;
+  --basemap-sky: #0D1418;
+  --basemap-horizon: #172126;
+  --basemap-fog: #11191D;
 }

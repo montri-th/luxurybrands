@@ -1,11 +1,12 @@
 {
   "$schema": "./handoff.schema.json",
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "1.2.0",
   "documentType": "implementation-plan",
   "productId": "citymeter-luxury-brands",
-  "productVersion": "0.2.0",
+  "productVersion": "0.3.0",
   "updatedOn": "2026-10-22",
   "brief": "product-brief.json",
+  "statement": "product-statement.json",
   "humanPlan": "IMPLEMENTATION_PLAN.md",
   "architecture": {
     "runtime": "static HTML/CSS/JavaScript ES modules",
@@ -19,82 +20,745 @@
       "handoffBundle": "npm run handoff:bundle",
       "verifyLive": "npm run verify:live"
     },
-    "libraries": {"maplibre": "5.6.2"},
-    "removed": {"amcharts": "charts are rendered by js/charts.js as HTML/SVG"},
+    "libraries": {
+      "maplibre": "5.6.2"
+    },
+    "externalServices": {
+      "tiles": {
+        "url": "https://tiles.openfreemap.org/planet",
+        "role": "OpenMapTiles vector tiles (basemap + building massing)",
+        "offlineSubstitute": "stub TileJSON + synthetic tiles in the Playwright harness (see VERIFICATION.md)"
+      },
+      "glyphs": {
+        "url": "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+        "role": "basemap label glyphs"
+      }
+    },
+    "removed": {
+      "amcharts": "charts are rendered by js/charts.js as HTML/SVG",
+      "hostedMapStyles": "positron/dark style URLs replaced by js/map-style.js in 0.3"
+    },
     "coreDataTimeoutMs": 12000,
     "optionalVendorTimeoutMs": 20000,
     "modules": [
-      {"path": "js/app.js", "role": "orchestration, row scopes, panel modes, URL state, map lifecycle"},
-      {"path": "js/model.js", "role": "taxonomy, shared filter, summaries"},
-      {"path": "js/neighborhoods.js", "role": "point-in-polygon membership and area summaries"},
-      {"path": "js/area-insight.js", "role": "top-3 Aha and area focus"},
-      {"path": "js/chart-model.js", "role": "ranking, matrix, exclusive/shared model"},
-      {"path": "js/profile-model.js", "role": "neighborhood/venue/store/brand view models, geometry and status descriptions, venue ranking"},
-      {"path": "js/scales.js", "role": "LDS count family LUT, class projection, EVID-05 states"},
-      {"path": "js/map-layers.js", "role": "choropleth, outlines, focus/quiet, HTML labels"},
-      {"path": "js/pins.js", "role": "per-observation pins, context pins, logo placement, keyboard"},
-      {"path": "js/buildings.js", "role": "host building extrusions and coverage"},
-      {"path": "js/charts.js", "role": "vendor-free chart renderers"},
-      {"path": "js/panel.js", "role": "panel HTML renderers and filter chips"},
-      {"path": "js/vendors.js", "role": "MapLibre loader with timeout/retry"},
-      {"path": "js/brand-logos.js", "role": "approved brand identity registry"},
-      {"path": "js/navigation.js", "role": "approved icons and help dialog"},
-      {"path": "js/launch.js", "role": "boot states and file bridge"},
-      {"path": "scripts/build-handoff.mjs", "role": "manifest + bundle"},
-      {"path": "scripts/verify-live.mjs", "role": "live byte attestation"}
+      {
+        "path": "js/app.js",
+        "role": "orchestration, row scopes and focus modes, panel modes, breadcrumb, URL state, map lifecycle, camera calls, spatial layer install"
+      },
+      {
+        "path": "js/model.js",
+        "role": "taxonomy, shared filter, summaries, PROVINCES (production province codes)"
+      },
+      {
+        "path": "js/neighborhoods.js",
+        "role": "point-in-polygon membership and area summaries"
+      },
+      {
+        "path": "js/area-insight.js",
+        "role": "top-3 Aha and area focus"
+      },
+      {
+        "path": "js/chart-model.js",
+        "role": "ranking, matrix, exclusive/shared model"
+      },
+      {
+        "path": "js/profile-model.js",
+        "role": "neighborhood/venue/store/brand view models, geometry and status descriptions, venue ranking"
+      },
+      {
+        "path": "js/scales.js",
+        "role": "LDS count family LUT, class projection, EVID-05 states"
+      },
+      {
+        "path": "js/map-style.js",
+        "role": "generated paper basemap (style v8) from --basemap-* tokens; layer anchors DATA_FILL_BEFORE / MASSING_BEFORE"
+      },
+      {
+        "path": "js/map-layers.js",
+        "role": "choropleth, outlines, focus/quiet, HTML labels"
+      },
+      {
+        "path": "js/pins.js",
+        "role": "per-observation pins, context pins, logo placement (zoom ≥ 14), keyboard"
+      },
+      {
+        "path": "js/buildings.js",
+        "role": "host building extrusions, coverage, displayedFeatures()"
+      },
+      {
+        "path": "js/massing.js",
+        "role": "two-tier city massing: quiet native extrusion + rounded/enclosing focus solids; host twins hidden"
+      },
+      {
+        "path": "js/mvt.js",
+        "role": "minimal Mapbox Vector Tile reader + tile maths (no dependency)"
+      },
+      {
+        "path": "js/geometry.js",
+        "role": "ring cleaning, clipping, outward offset, corner fillets, point-in-ring, ring intersection"
+      },
+      {
+        "path": "js/camera.js",
+        "role": "camera presets plan/city/model/eye, principal-point shift, vertex-based pitched fitting"
+      },
+      {
+        "path": "js/breadcrumb.js",
+        "role": "ประเทศไทย › จังหวัด › ย่าน crumbs, document title"
+      },
+      {
+        "path": "js/charts.js",
+        "role": "vendor-free chart renderers (fixed-layout matrix)"
+      },
+      {
+        "path": "js/panel.js",
+        "role": "panel HTML renderers (focus modes, 3D cue) and filter chips"
+      },
+      {
+        "path": "js/vendors.js",
+        "role": "MapLibre loader with timeout/retry"
+      },
+      {
+        "path": "js/brand-logos.js",
+        "role": "approved brand identity registry"
+      },
+      {
+        "path": "js/navigation.js",
+        "role": "approved icons, toolbar titles and help dialog"
+      },
+      {
+        "path": "js/launch.js",
+        "role": "boot states and file bridge"
+      },
+      {
+        "path": "scripts/build-handoff.mjs",
+        "role": "manifest + bundle"
+      },
+      {
+        "path": "scripts/verify-live.mjs",
+        "role": "live byte attestation"
+      }
     ]
   },
   "selection": {
-    "filterFields": ["search", "cohort", "segment", "province", "channel", "venue", "neighborhood"],
-    "queryFields": ["search", "cohort", "segment", "province", "channel", "venue", "neighborhood", "areas", "view", "store", "place", "mall"],
-    "rowScopes": ["scopeRows", "baseRows", "rows"],
-    "areaFocusQuery": "areas=comma-separated stable neighborhood IDs; at most three",
+    "filterFields": [
+      "search",
+      "cohort",
+      "segment",
+      "province",
+      "channel",
+      "venue",
+      "neighborhood"
+    ],
+    "queryFields": [
+      "search",
+      "cohort",
+      "segment",
+      "province",
+      "channel",
+      "venue",
+      "neighborhood",
+      "areas",
+      "view",
+      "store",
+      "place",
+      "mall",
+      "view3d",
+      "cam"
+    ],
+    "rowScopes": [
+      "scopeRows",
+      "baseRows",
+      "rows"
+    ],
+    "focusModes": [
+      "auto (default, no areas param)",
+      "explicit (areas=a,b,c ≤ 3)",
+      "none (areas=all)"
+    ],
+    "areaFocusQuery": "areas=comma-separated stable neighborhood IDs (≤ 3) or areas=all to disable auto focus",
+    "provinceQuery": "province=<production code BKK|PKT|CMI|SPK|NBI|CBI|PTE|UDN|NMA>; legacy Thai/English names still resolve",
+    "cameraQuery": "view3d=0 forces the plan preset; cam=model switches the venue-level camera from eye (default) to model; legacy cam=eye is accepted",
     "panelQuery": "store=<row id> opens store mode; place=<center id> opens venue mode; neighborhood=<area id> opens neighborhood mode",
     "legacyMallQuery": "mall=<center id> narrows the venue filter to that center's label when present",
-    "chartActions": [{"type": "neighborhood", "id": "stable area ID"}, {"type": "resetAreas"}],
-    "panelActions": ["select-area", "select-store", "select-venue", "search-brand", "back", "explore-top", "clear-focus", "open-charts", "open-table", "clear-filter"]
+    "chartActions": [
+      {
+        "type": "neighborhood",
+        "id": "stable area ID"
+      },
+      {
+        "type": "resetAreas"
+      }
+    ],
+    "panelActions": [
+      "select-area",
+      "select-store",
+      "select-venue",
+      "search-brand",
+      "back",
+      "explore-top",
+      "clear-focus",
+      "open-charts",
+      "open-table",
+      "clear-filter",
+      "crumb-country",
+      "crumb-province",
+      "crumb-area",
+      "toggle-3d",
+      "crumb-venue",
+      "crumb-expand"
+    ]
   },
   "tasks": [
-    {"id": "P01", "title": "Snapshot, contracts and manifest script", "dependsOn": [], "acceptanceCriteria": ["AC12"], "files": ["data/luxury.json", "data/neighborhoods.geojson", "assets/manifest.json", "scripts/build-handoff.mjs", "handoff/handoff-manifest.json"], "status": "done"},
-    {"id": "P02", "title": "Row scopes and neighborhood Aha with fallbacks", "dependsOn": ["P01"], "acceptanceCriteria": ["AC06"], "files": ["js/app.js", "js/area-insight.js", "js/profile-model.js", "tests/area-insight.test.js", "tests/profile-model.test.js"], "status": "done"},
-    {"id": "P03", "title": "Vendor-free chart suite", "dependsOn": ["P02"], "acceptanceCriteria": ["AC06", "AC10"], "files": ["js/chart-model.js", "js/charts.js", "tests/chart-model.test.js", "docs/CHART_SELECTION.md"], "status": "done"},
-    {"id": "P04", "title": "Count choropleth, focus/quiet map, pins, logos, buildings", "dependsOn": ["P02"], "acceptanceCriteria": ["AC07", "AC08", "AC13", "AC14"], "files": ["js/map-layers.js", "js/scales.js", "js/pins.js", "js/buildings.js", "tests/scales.test.js", "tests/pins.test.js"], "status": "done"},
-    {"id": "P05", "title": "Reading panel modes, filters, mobile sheet, LDS presentation", "dependsOn": ["P02", "P03", "P04"], "acceptanceCriteria": ["AC09", "AC11"], "files": ["index.html", "styles.css", "navigation.css", "logos.css", "assets/theme.css", "js/panel.js", "js/navigation.js", "site.webmanifest"], "status": "done"},
-    {"id": "P06", "title": "Resilience and retries", "dependsOn": ["P01"], "acceptanceCriteria": ["AC01", "AC02", "AC03", "AC04", "AC05"], "files": ["js/launch.js", "js/vendors.js", "js/app.js"], "status": "retained_source_checked"},
-    {"id": "P07", "title": "Verification", "dependsOn": ["P02", "P03", "P04", "P05", "P06"], "acceptanceCriteria": ["AC01", "AC06", "AC07", "AC08", "AC09", "AC10", "AC11", "AC13", "AC14"], "files": ["tests", "handoff/VERIFICATION.md"], "status": "done_scoped"},
-    {"id": "P08", "title": "Public release, live attestation and developer bundle", "dependsOn": ["P07"], "acceptanceCriteria": ["AC12"], "files": ["scripts/verify-live.mjs", "handoff/handoff-manifest.json", "RELEASE_RECEIPT.json (bundle envelope)", "evidence/ (bundle envelope)"], "status": "done"}
+    {
+      "id": "P01",
+      "title": "Snapshot, contracts and manifest script",
+      "dependsOn": [],
+      "acceptanceCriteria": [
+        "AC12"
+      ],
+      "files": [
+        "data/luxury.json",
+        "data/neighborhoods.geojson",
+        "assets/manifest.json",
+        "scripts/build-handoff.mjs",
+        "handoff/handoff-manifest.json"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P02",
+      "title": "Row scopes and neighborhood Aha with fallbacks",
+      "dependsOn": [
+        "P01"
+      ],
+      "acceptanceCriteria": [
+        "AC06"
+      ],
+      "files": [
+        "js/app.js",
+        "js/area-insight.js",
+        "js/profile-model.js",
+        "tests/area-insight.test.js",
+        "tests/profile-model.test.js"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P03",
+      "title": "Vendor-free chart suite",
+      "dependsOn": [
+        "P02"
+      ],
+      "acceptanceCriteria": [
+        "AC06",
+        "AC10"
+      ],
+      "files": [
+        "js/chart-model.js",
+        "js/charts.js",
+        "tests/chart-model.test.js",
+        "docs/CHART_SELECTION.md"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P04",
+      "title": "Count choropleth, focus/quiet map, pins, logos, buildings",
+      "dependsOn": [
+        "P02"
+      ],
+      "acceptanceCriteria": [
+        "AC07",
+        "AC08",
+        "AC13",
+        "AC14"
+      ],
+      "files": [
+        "js/map-layers.js",
+        "js/scales.js",
+        "js/pins.js",
+        "js/buildings.js",
+        "tests/scales.test.js",
+        "tests/pins.test.js"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P05",
+      "title": "Reading panel modes, filters, mobile sheet, LDS presentation",
+      "dependsOn": [
+        "P02",
+        "P03",
+        "P04"
+      ],
+      "acceptanceCriteria": [
+        "AC09",
+        "AC11"
+      ],
+      "files": [
+        "index.html",
+        "styles.css",
+        "navigation.css",
+        "logos.css",
+        "assets/theme.css",
+        "js/panel.js",
+        "js/navigation.js",
+        "site.webmanifest"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P06",
+      "title": "Resilience and retries",
+      "dependsOn": [
+        "P01"
+      ],
+      "acceptanceCriteria": [
+        "AC01",
+        "AC02",
+        "AC03",
+        "AC04",
+        "AC05"
+      ],
+      "files": [
+        "js/launch.js",
+        "js/vendors.js",
+        "js/app.js"
+      ],
+      "status": "retained_source_checked"
+    },
+    {
+      "id": "P07",
+      "title": "Verification",
+      "dependsOn": [
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06"
+      ],
+      "acceptanceCriteria": [
+        "AC01",
+        "AC06",
+        "AC07",
+        "AC08",
+        "AC09",
+        "AC10",
+        "AC11",
+        "AC13",
+        "AC14"
+      ],
+      "files": [
+        "tests",
+        "handoff/VERIFICATION.md"
+      ],
+      "status": "done_scoped"
+    },
+    {
+      "id": "P08",
+      "title": "Public release, live attestation and developer bundle (0.2)",
+      "dependsOn": [
+        "P07"
+      ],
+      "acceptanceCriteria": [
+        "AC12"
+      ],
+      "files": [
+        "scripts/verify-live.mjs",
+        "handoff/handoff-manifest.json",
+        "RELEASE_RECEIPT.json (bundle envelope)",
+        "evidence/ (bundle envelope)"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P09",
+      "title": "Product statement as winning strategy (Who/What/Which/How) + machine copy",
+      "dependsOn": [],
+      "acceptanceCriteria": [
+        "AC21"
+      ],
+      "files": [
+        "PRODUCT_STATEMENT.md",
+        "handoff/product-statement.json",
+        "handoff/handoff.schema.json"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P10",
+      "title": "Generated paper basemap on OpenFreeMap tiles with basemap-only tokens",
+      "dependsOn": [
+        "P04"
+      ],
+      "acceptanceCriteria": [
+        "AC16",
+        "AC09"
+      ],
+      "files": [
+        "js/map-style.js",
+        "assets/theme.css",
+        "js/app.js",
+        "tests/map-style.test.js"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P11",
+      "title": "Two-tier massing: quiet city tier, rounded enclosing focus tier, hidden host twins",
+      "dependsOn": [
+        "P10"
+      ],
+      "acceptanceCriteria": [
+        "AC17",
+        "AC13"
+      ],
+      "files": [
+        "js/massing.js",
+        "js/mvt.js",
+        "js/geometry.js",
+        "js/buildings.js",
+        "tests/massing.test.js",
+        "tests/mvt.test.js",
+        "tests/geometry.test.js",
+        "tests/fixtures/mvt-sample.pbf"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P12",
+      "title": "Camera presets, vertex-based pitched fitting, 3D toggle, venue-level มุมสถาปนิก (default) with quiet/see-through scene",
+      "dependsOn": [
+        "P10"
+      ],
+      "acceptanceCriteria": [
+        "AC15",
+        "AC18",
+        "AC22"
+      ],
+      "files": [
+        "js/camera.js",
+        "js/app.js",
+        "index.html",
+        "styles.css",
+        "js/navigation.js",
+        "js/massing.js",
+        "tests/massing.test.js"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P13",
+      "title": "3D-first auto focus (top-3) with ดูทุกย่าน and panel cues",
+      "dependsOn": [
+        "P11",
+        "P12"
+      ],
+      "acceptanceCriteria": [
+        "AC15",
+        "AC06"
+      ],
+      "files": [
+        "js/app.js",
+        "js/panel.js",
+        "styles.css",
+        "index.html"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P14",
+      "title": "Breadcrumb ประเทศไทย › จังหวัด › ย่าน › สถานที่ with production province codes and Shopping Center ids",
+      "dependsOn": [
+        "P05"
+      ],
+      "acceptanceCriteria": [
+        "AC19"
+      ],
+      "files": [
+        "js/breadcrumb.js",
+        "js/model.js",
+        "data/neighborhoods.geojson",
+        "js/app.js",
+        "index.html",
+        "styles.css",
+        "tests/map-style.test.js"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P15",
+      "title": "Equal-cell matrix with explicit caption",
+      "dependsOn": [
+        "P03"
+      ],
+      "acceptanceCriteria": [
+        "AC20"
+      ],
+      "files": [
+        "js/charts.js",
+        "styles.css",
+        "docs/CHART_SELECTION.md"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "P16",
+      "title": "0.3 verification, release, live attestation and handoff bundle",
+      "dependsOn": [
+        "P09",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15"
+      ],
+      "acceptanceCriteria": [
+        "AC12",
+        "AC15",
+        "AC16",
+        "AC17",
+        "AC18",
+        "AC19",
+        "AC20",
+        "AC22"
+      ],
+      "files": [
+        "handoff/VERIFICATION.md",
+        "handoff/handoff-manifest.json",
+        "RELEASE_RECEIPT.json (bundle envelope)",
+        "evidence/ (bundle envelope)"
+      ],
+      "status": "in_progress"
+    }
   ],
   "acceptanceCriteria": [
-    {"id": "AC01", "scenario": "HTTP/HTTPS first load", "expected": "Data and panel ready before the map; citymeter:ready dismisses the launch overlay", "verificationType": "browser", "result": "see VERIFICATION.md"},
-    {"id": "AC02", "scenario": "Local file entry", "expected": "Fixed public route preserves query/hash; no origin protections bypassed", "verificationType": "manual-browser", "result": "not re-verified in 0.2; source retained"},
-    {"id": "AC03", "scenario": "Core data failure", "expected": "Short message, link and retry; never a blank shell", "verificationType": "fault-injection", "result": "source retained; not fault-injected in 0.2"},
-    {"id": "AC04", "scenario": "Malformed optional data", "expected": "Counts, filters and table usable; invalid geometry never enters spatial calculation", "verificationType": "fault-injection", "result": "source retained; not fault-injected in 0.2"},
-    {"id": "AC05", "scenario": "Map vendor timeout and retry", "expected": "Data, table and charts survive; retry works; no duplicate scripts", "verificationType": "fault-injection", "result": "charts no longer depend on a vendor; map retry source retained"},
-    {"id": "AC06", "scenario": "Filters, neighborhood selection, area focus, clear", "expected": "rows drive pins/counters/table; scopeRows drive Aha/choropleth/charts with a visible scope cue; URL restores state", "verificationType": "unit-and-browser", "result": "see VERIFICATION.md"},
-    {"id": "AC07", "scenario": "Co-located source points", "expected": "Separate pin per ID; bounded screen offsets; source coordinates unchanged", "verificationType": "unit-and-browser", "result": "see VERIFICATION.md"},
-    {"id": "AC08", "scenario": "Logo density", "expected": "≤ 250 collision-free labels; distinct brands first; none below zoom 13.5 or on context pins", "verificationType": "unit-and-browser", "result": "see VERIFICATION.md"},
-    {"id": "AC09", "scenario": "Responsive light/dark", "expected": "48 px header; panel/sheet per contract; readable popup; no horizontal overflow at 390 px", "verificationType": "browser", "result": "see VERIFICATION.md"},
-    {"id": "AC10", "scenario": "Keyboard and reduced motion", "expected": "Visible focus; pins, charts, panel and help operable; context pins out of the tab order", "verificationType": "browser", "result": "see VERIFICATION.md"},
-    {"id": "AC11", "scenario": "Dynamic text truth", "expected": "No caveat/research/CSV UI; real closure status, dates, sources, units; missing never shown as 0", "verificationType": "source-and-browser", "result": "see VERIFICATION.md"},
-    {"id": "AC12", "scenario": "Release and handoff", "expected": "Commit, live bytes, manifest hashes and bundle agree; no secrets or private URLs", "verificationType": "release-attestation", "result": "see RELEASE_RECEIPT.json"},
-    {"id": "AC13", "scenario": "Focus and quiet context", "expected": "With a selected or explored area, other areas are thin outlines with quiet labels; rows outside focus are grey context dots without logos", "verificationType": "browser", "result": "see VERIFICATION.md"},
-    {"id": "AC14", "scenario": "Choropleth integrity", "expected": "Class colours equal the legend and the ranking bars; measured zero has a zero outline; fill off at zoom ≥ 14.5; same HEX on both themes", "verificationType": "unit-and-browser", "result": "see VERIFICATION.md"}
+    {
+      "id": "AC01",
+      "scenario": "HTTP/HTTPS first load",
+      "expected": "Data and panel ready before the map; citymeter:ready dismisses the launch overlay",
+      "verificationType": "browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC02",
+      "scenario": "Local file entry",
+      "expected": "Fixed public route preserves query/hash; no origin protections bypassed",
+      "verificationType": "manual-browser",
+      "result": "not re-verified in 0.3; source retained"
+    },
+    {
+      "id": "AC03",
+      "scenario": "Core data failure",
+      "expected": "Short message, link and retry; never a blank shell",
+      "verificationType": "fault-injection",
+      "result": "source retained; not fault-injected in 0.3"
+    },
+    {
+      "id": "AC04",
+      "scenario": "Malformed optional data",
+      "expected": "Counts, filters and table usable; invalid geometry never enters spatial calculation",
+      "verificationType": "fault-injection",
+      "result": "source retained; not fault-injected in 0.3"
+    },
+    {
+      "id": "AC05",
+      "scenario": "Map vendor timeout and retry",
+      "expected": "Data, table and charts survive; retry works; no duplicate scripts",
+      "verificationType": "fault-injection",
+      "result": "charts no longer depend on a vendor; map retry source retained"
+    },
+    {
+      "id": "AC06",
+      "scenario": "Filters, neighborhood selection, area focus, clear",
+      "expected": "rows drive pins/counters/table; scopeRows drive Aha/choropleth/charts with a visible scope cue; auto/explicit/none focus restore from URL",
+      "verificationType": "unit-and-browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC07",
+      "scenario": "Co-located source points",
+      "expected": "Separate pin per ID; bounded screen offsets; source coordinates unchanged",
+      "verificationType": "unit-and-browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC08",
+      "scenario": "Logo density",
+      "expected": "≤ 250 collision-free labels; distinct brands first; none below zoom 14 or on context pins",
+      "verificationType": "unit-and-browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC09",
+      "scenario": "Responsive light/dark",
+      "expected": "48 px header; panel/sheet per contract; readable popup; no horizontal overflow at 390 px; generated basemap in both themes",
+      "verificationType": "browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC10",
+      "scenario": "Keyboard and reduced motion",
+      "expected": "Visible focus; pins, charts, panel, toolbar toggles and help operable; context pins out of the tab order",
+      "verificationType": "browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC11",
+      "scenario": "Dynamic text truth",
+      "expected": "No caveat/research/CSV UI; real closure status, dates, sources, units; missing never shown as 0",
+      "verificationType": "source-and-browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC12",
+      "scenario": "Release and handoff",
+      "expected": "Commit, live bytes, manifest hashes and bundle agree; no secrets or private URLs",
+      "verificationType": "release-attestation",
+      "result": "see RELEASE_RECEIPT.json"
+    },
+    {
+      "id": "AC13",
+      "scenario": "Focus and quiet context",
+      "expected": "With auto, explicit or selected focus, other areas are thin outlines with quiet labels; rows outside focus are grey context dots without logos; city massing stays in the quiet tone",
+      "verificationType": "browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC14",
+      "scenario": "Choropleth integrity",
+      "expected": "Class colours equal the legend and the ranking bars; measured zero has a zero outline; fill off at zoom ≥ 14.5; same HEX on both themes",
+      "verificationType": "unit-and-browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC15",
+      "scenario": "3D first Aha",
+      "expected": "First paint after data+map ready is the city preset (pitch 56, bearing 28) framing the top-3 areas with every polygon vertex inside the padded viewport; panel shows the Aha with the 3D map cue and ดูทุกย่าน; ?areas=all and the 3D toggle leave the state without changing counts",
+      "verificationType": "browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC16",
+      "scenario": "Generated basemap",
+      "expected": "Style built from buildMapStyle with --basemap-* tokens only; data fill sits before waterway; massing before water-name; labels name:th first; no POI/housenumber/boundary labels; theme switch rebuilds the style and re-installs spatial layers",
+      "verificationType": "unit-and-browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC17",
+      "scenario": "Rounded enclosing focus massing",
+      "expected": "Focus solids are offset outward then filleted so every original vertex lies inside; no z-fighting with the quiet twin; buildings overlapping host footprints are removed from the focus tier and hidden in the city tier; heights are render_height + 0.35 m",
+      "verificationType": "unit-and-browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC18",
+      "scenario": "Camera presets",
+      "expected": "model preset (FOV 14, upright verticals) for a neighborhood; at venue level the eye preset (pitch 82 / FOV 32 / 38% principal-point shift) is on by default, framed on the venue's host footprint with every vertex inside the padded viewport; the toggle switches to model and writes ?cam=model; the toggle is disabled in overview/neighborhood and in 2D; plan preset at pitch 0 when 3D is off",
+      "verificationType": "browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC19",
+      "scenario": "Breadcrumb",
+      "expected": "ประเทศไทย › จังหวัด › ย่าน › สถานที่ rendered first in the panel; province code in URL equals the production code; the venue crumb carries the Shopping Center id; a venue outside every core skips ย่าน; a store is the heading, not a crumb; crumb actions clear the right levels; on narrow screens four levels fold behind “…”; document title mirrors the crumbs",
+      "verificationType": "unit-and-browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC20",
+      "scenario": "Matrix equal cells",
+      "expected": "All matrix cells share the same width and height regardless of value; caption states that size carries no meaning; colour legend uses the count classes",
+      "verificationType": "browser",
+      "result": "see VERIFICATION.md"
+    },
+    {
+      "id": "AC21",
+      "scenario": "Product statement contract",
+      "expected": "PRODUCT_STATEMENT.md and product-statement.json carry Who/What/Which/How, the quality bar, evidence labels and hypotheses; JSON validates against handoff.schema.json 1.2.0",
+      "verificationType": "schema-and-review",
+      "result": "validated 2026-10-22 (ajv 2020-12)"
+    },
+    {
+      "id": "AC22",
+      "scenario": "Venue-level focus and see-through scene",
+      "expected": "With a venue (or a store inside it) open, only that venue's host building is blue and only its rows keep category pins/logos; other rows are grey context dots; city massing opacity 0.3 and focus massing 0.62; focus buildings standing between the camera and the venue are drawn at 0.14 opacity; leaving venue level restores opacities and all hosts",
+      "verificationType": "unit-and-browser",
+      "result": "see VERIFICATION.md"
+    }
   ],
   "developerWorkflow": [
-    "Read AGENTS.md, then handoff/README.md and the paired human/machine briefs",
-    "Run npm test before changes; keep the three row scopes and the panel action contract",
-    "Change one bounded task at a time; preserve invariant IDs INV01–INV13",
-    "Validate calculations with real dataset fixtures in tests/",
-    "Review rendered Thai/English at 390 px and desktop in both themes; use the stub-tile harness when CDN/tiles are blocked",
+    "Read AGENTS.md, then handoff/README.md, PRODUCT_STATEMENT.md and the paired human/machine briefs",
+    "Run npm test before changes; keep the three row scopes, the focus modes and the panel action contract",
+    "Change one bounded task at a time; preserve invariant IDs INV01–INV19",
+    "Validate calculations with real dataset fixtures in tests/; tile-dependent code uses tests/fixtures/mvt-sample.pbf",
+    "Review rendered Thai/English at 390 px and desktop in both themes; use the stub-tile harness when CDN/tiles are blocked, then confirm the real-tile look live",
+    "Tune camera and massing live via window.__citymeter in the console before changing constants",
     "Publish only authorized changes; wait for the Pages run; run verify:live before reporting a release",
     "Regenerate the manifest and bundle from final bytes; never hand-edit hashes"
   ],
   "backlog": [
-    {"id": "N01", "title": "Playwright regression in CI with stub tiles and vendored MapLibre, including vendor fault injection", "ownerRole": "frontend developer", "status": "engineering backlog"},
-    {"id": "N02", "title": "Neighborhood labels as a MapLibre symbol layer with native collision", "ownerRole": "frontend developer", "status": "engineering backlog"},
-    {"id": "N03", "title": "Side-by-side comparison of two neighborhood profiles on the same scopeRows", "ownerRole": "product + frontend", "status": "product decision"},
-    {"id": "N04", "title": "Define analytical cores outside Bangkok (Phuket, Pattaya, Chiang Mai) per NEIGHBORHOOD_METHOD", "ownerRole": "data and field research", "status": "research backlog"},
-    {"id": "N05", "title": "Assign data refresh owner, cadence and closure review workflow", "ownerRole": "data owner", "status": "requires product decision"},
-    {"id": "N06", "title": "Native file: entry and fault-injection checks in Chrome/Safari", "ownerRole": "QA", "status": "engineering backlog"}
+    {
+      "id": "N01",
+      "title": "Playwright regression in CI with stub tiles and vendored MapLibre, including vendor fault injection",
+      "ownerRole": "frontend developer",
+      "status": "engineering backlog"
+    },
+    {
+      "id": "N02",
+      "title": "Neighborhood labels as a MapLibre symbol layer with native collision",
+      "ownerRole": "frontend developer",
+      "status": "engineering backlog"
+    },
+    {
+      "id": "N03",
+      "title": "Side-by-side comparison of two neighborhood profiles on the same scopeRows",
+      "ownerRole": "product + frontend",
+      "status": "product decision"
+    },
+    {
+      "id": "N04",
+      "title": "Define analytical cores outside Bangkok (Phuket, Pattaya, Chiang Mai) per NEIGHBORHOOD_METHOD",
+      "ownerRole": "data and field research",
+      "status": "research backlog"
+    },
+    {
+      "id": "N05",
+      "title": "Assign data refresh owner, cadence and closure review workflow",
+      "ownerRole": "data owner",
+      "status": "requires product decision"
+    },
+    {
+      "id": "N06",
+      "title": "Native file: entry and fault-injection checks in Chrome/Safari",
+      "ownerRole": "QA",
+      "status": "engineering backlog"
+    },
+    {
+      "id": "N07",
+      "title": "Register the ten cores as CityMETER Locales so the breadcrumb can use /L/{locale uuid}/V/{center id} instead of the proposed /N/…/V/ segments; confirm the production venue route",
+      "ownerRole": "CityMETER platform + data owner",
+      "status": "requires product decision"
+    },
+    {
+      "id": "N08",
+      "title": "Mobile 3D performance budget (tile decode on a worker, lower focus tile count, reduced-motion camera)",
+      "ownerRole": "frontend developer",
+      "status": "engineering backlog"
+    },
+    {
+      "id": "N09",
+      "title": "Audit OSM building heights in the focus cores (default heights where tags are missing) and document per-core coverage",
+      "ownerRole": "data and field research",
+      "status": "research backlog"
+    },
+    {
+      "id": "N10",
+      "title": "Validate the Who/What/Which/How hypotheses with the three user groups (statement §7)",
+      "ownerRole": "product owner",
+      "status": "requires owner decision"
+    }
   ]
 }

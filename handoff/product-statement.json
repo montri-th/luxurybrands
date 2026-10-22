@@ -1,0 +1,112 @@
+{
+  "$schema": "./handoff.schema.json",
+  "schemaVersion": "1.2.0",
+  "documentType": "product-statement",
+  "productId": "citymeter-luxury-brands",
+  "productVersion": "0.3.0",
+  "updatedOn": "2026-10-22",
+  "humanDocument": "../PRODUCT_STATEMENT.md",
+  "standard": "Product Brief — CityMETER v6 §1.6.3 metadata block; Master Brand Brief v0.5.3 §7.2 / §3.7",
+  "evidenceLabels": {"personas": "hypothesis", "alternatives": "inference", "dataFacts": "observed", "urgency": "owner-stated", "severity": "inference"},
+  "dataset_id": "luxury-brands",
+  "dataset_name_en": "Luxury Brands",
+  "dataset_name_th": "ย่านแบรนด์หรู",
+  "category": "Location",
+  "outcome_layer": "Local Decisions",
+  "status": "prototype",
+  "positioning": {
+    "one_line_highlight": "แผนที่ย่านแบรนด์หรูของไทยที่บอกว่าใครอยู่ข้างใคร พร้อมหลักฐานรายร้าน เพื่อเลือกทำเลและ tenant mix ด้วยหลักฐาน ไม่ใช่ความจำ",
+    "unique_advantage": "อ่านเป็นย่าน (แบรนด์ไม่ซ้ำ, exclusive/shared, บุคลิกตามกลุ่ม) บนฉากเมือง 3 มิติแบบ focus/quiet ที่พร้อมฉายในห้องประชุม พร้อมหลักฐานต่อรายการ",
+    "unique_vs_other_citymeter_datasets": "ชุดเดียวที่ลงถึงแบรนด์–จุดขายและ adjacency; Shopping Center ให้ host complexes และ GLA แต่ไม่รู้ว่าแบรนด์ใดอยู่ที่ไหน",
+    "unique_vs_competitors": "locator/directory ทีละแหล่ง, Google Maps ทีละ POI, รายงาน PDF ไม่ลงรายแบรนด์ — ไม่มีแหล่งใดรวม ตรวจย้อนได้ และเทียบย่านได้"
+  },
+  "users": {
+    "primary_users": ["ทีมขยายสาขาและ distributor ของแบรนด์หรู", "ทีม leasing / asset ของศูนย์การค้าและ mixed-use", "นักวิเคราะห์และที่ปรึกษาด้านค้าปลีกและทำเล"],
+    "decision_contexts": ["เปิด ย้าย หรือปิดร้านที่ย่าน/ศูนย์ใด", "เชิญแบรนด์ใดเติม tenant mix และใช้อะไรโน้มน้าว", "หลักฐานใดใช้ใน proposal และต้องตรวจเพิ่มอะไร"],
+    "functional_needs": ["เห็นว่าแบรนด์ peer อยู่ย่าน/ศูนย์ใด", "หา gap และ exclusive เทียบย่าน/ศูนย์คู่แข่ง", "ส่งต่อรายการที่มีหลักฐานและวันที่", "เทียบย่านบนตัวชี้วัดเดียวกัน"],
+    "emotional_needs": ["ไม่อยากผูกสัญญาระยะยาวกับทำเลที่เลือกผิด", "ต้องดูน่าเชื่อถือต่อหน้า HQ / landlord / ลูกค้า", "ไม่อยากถูกจับได้ว่ารายชื่อเก่าหรือตรวจไม่ได้"],
+    "trigger_voice_in_head": ["แบรนด์ระดับเดียวกับเราไปอยู่ที่ไหนกัน?", "ถ้าเปิดที่นี่ จะอยู่ข้างใคร?", "ห้างนี้เสียใครไปบ้างปีนี้?", "เราขาดแบรนด์กลุ่มไหนเมื่อเทียบกับย่านข้าง ๆ?", "รายชื่อนี้ใครตรวจ ตรวจเมื่อไร?"],
+    "value_proposition": "เติมช่องว่างระหว่าง ‘พอรู้ว่าแบรนด์หรูอยู่แถวสยาม–เพลินจิต–พร้อมพงษ์’ กับ ‘เห็นเป็นย่านว่าใครอยู่ข้างใคร ใครมีเฉพาะที่ไหน ตรวจเมื่อไร และส่งต่อได้ทันที’"
+  },
+  "problem": {
+    "statement": "ก่อนตัดสินใจเรื่องร้านหรือ tenant mix ของแบรนด์หรู ทีมต้องรู้ adjacency ปัจจุบัน แต่ไม่มีแหล่งเดียวที่รวม ตรวจย้อนได้ และเทียบย่านได้",
+    "urgency": "ทุกรอบที่มีพื้นที่ว่าง ต่อสัญญา หรือขยายสาขา",
+    "severity": "ผลของการเลือกย่าน/ศูนย์ผิดผูกกับสัญญาเช่าระยะยาวและชื่อเสียงของผู้เสนอ (ไม่ระบุตัวเลขเพราะยังไม่มีหลักฐานโครงการ)",
+    "out_of_scope": ["ยอดขาย", "ค่าเช่า", "footfall", "กำลังซื้อ", "สิทธิ์จำหน่าย", "catchment"]
+  },
+  "competitor_landscape": {
+    "present_competitors": [
+      {"name": "Store locator ของแต่ละแบรนด์", "how_users_use_it": "ยืนยันสาขาของแบรนด์หนึ่ง", "strength": "เป็นทางการ อัปเดตโดยแบรนด์", "gap": "ทีละแบรนด์ ไม่มีย่าน ไม่มีวันที่ตรวจ ไม่เทียบข้ามแบรนด์"},
+      {"name": "Directory / floor guide ของศูนย์การค้า", "how_users_use_it": "ดู tenant ของศูนย์หนึ่ง", "strength": "ครบในศูนย์นั้น", "gap": "ทีละศูนย์ ไม่มี standalone ไม่รู้ว่าแบรนด์มีที่อื่นด้วยไหม"},
+      {"name": "ค้น Google Maps / Apple Maps", "how_users_use_it": "หาเร็ว ดูตำแหน่ง", "strength": "เร็ว เข้าถึงง่าย", "gap": "POI ทีละจุด ไม่รวมเป็นย่าน ปิดถาวรตามช้า ไม่มี evidence trail"},
+      {"name": "รายงานตลาดค้าปลีกของที่ปรึกษา/broker", "how_users_use_it": "ภาพรวม prime retail และค่าเช่า", "strength": "น่าเชื่อถือ มีบริบทตลาด", "gap": "ไม่ลงรายแบรนด์ ไม่ interactive ช้าเป็นไตรมาส"},
+      {"name": "Excel/รายชื่อภายใน + เดินห้างสำรวจ", "how_users_use_it": "tenant list ของตัวเอง", "strength": "แม่นสำหรับศูนย์ตัวเอง", "gap": "มืดสำหรับที่อื่น ใช้แรงงาน เก่าเร็ว"},
+      {"name": "ข่าวเปิดร้านใน Instagram/LINE/สื่อแฟชั่น", "how_users_use_it": "รู้ว่าใครเปิดใหม่", "strength": "เร็ว มีภาพ", "gap": "กระจัดกระจาย ไม่มีขอบเขต ไม่ถาวร"}
+    ],
+    "aspirational_competitors": [
+      {"name": "archiMap (masslabs) และเครื่องมือแผนที่สถาปัตยกรรม", "benchmark_quality": "presentation quality", "what_to_learn_or_match": "พื้นกระดาษ ถนนขาว มวลอาคารเรียบ มุมมองพร้อมฉาย"},
+      {"name": "แผนที่ consumer ที่มีอาคาร 3 มิติแบบ simplified", "benchmark_quality": "clean 3D", "what_to_learn_or_match": "อาคารมุมโค้ง สีเรียบ ไม่แย่งความสนใจจากข้อมูล"},
+      {"name": "แพลตฟอร์ม location intelligence ระดับสากล", "benchmark_quality": "comparability", "what_to_learn_or_match": "ตัวชี้วัดและตัวหารเดียวกันข้ามพื้นที่ output ที่ stakeholder ใช้ต่อได้"},
+      {"name": "CityMETER production", "benchmark_quality": "consistency", "what_to_learn_or_match": "breadcrumb ประเทศไทย › จังหวัด › ย่าน › สถานที่, รหัสจังหวัดและ Shopping Center id, วินัย source/date/boundary"}
+    ],
+    "expected_quality_bar": [
+      "ตอบ ‘ใครอยู่ข้างใคร’ ใน 1 นาทีโดยไม่ตั้งค่าตัวกรอง",
+      "ทุกตัวเลขมี dataset · source · date · boundary และทุกรายการมีลิงก์หลักฐาน",
+      "เทียบย่านบนตัวชี้วัดเดียวกัน",
+      "ภาพพร้อมห้องประชุมโดยไม่ต้องวาดใหม่",
+      "สถานะปิด/ย้าย/pop-up เก็บเป็นข้อเท็จจริง",
+      "เข้ากับ CityMETER (breadcrumb, province code, agent-ready JSON)",
+      "ซื่อสัตย์เรื่องขอบเขต"
+    ]
+  },
+  "winning_strategy": [
+    "อ่านเป็นย่านก่อน ไม่ใช่หมุดก่อน (scopeRows เป็นฐานเทียบเดียว)",
+    "หลักฐานรายรายการเป็นสินค้า (1 หมุด = 1 observation; ปิดถาวรคงไว้; missing ≠ 0)",
+    "โฟกัสแล้วเงียบ (รายละเอียดเฉพาะส่วนที่ตัดสินใจ)",
+    "ภาพระดับสถาปนิกด้วยข้อมูลเปิด (basemap paper, massing OSM, กล้องเส้นตั้งตั้งตรง)",
+    "พร้อมสำหรับคนและเครื่อง (JSON contracts, breadcrumb/province code ตรง production)"
+  ],
+  "primary_decisions": ["screen ย่าน/ศูนย์สำหรับร้านใหม่", "compare tenant mix ข้ามย่าน", "prioritize รายการไปสำรวจและเจรจา"],
+  "primary_questions": ["ถ้าเปิดที่นี่ จะอยู่ข้างใคร", "ย่าน/ศูนย์นี้ยังขาดแบรนด์กลุ่มไหน", "แบรนด์ X มีที่ไหนบ้างและตรวจเมื่อไร"],
+  "channel_readiness": {
+    "search": {"priority": "P2", "target_queries": ["แบรนด์หรู สยาม", "luxury brands Bangkok neighborhoods"], "required_page_blocks": ["title/meta", "summary", "map", "HTML table", "source/limitation"], "schema_types": ["Dataset", "Place"]},
+    "llm": {"priority": "P1", "askable_questions": ["ย่านไหนมีแบรนด์หรูมากที่สุดในกรุงเทพฯ", "พร้อมพงษ์มีแบรนด์อะไรที่ย่านอื่นไม่มี"], "answer_block": "signal → meaning → action → limitation (5–8 บรรทัด)", "citation_note": "อ้าง release, snapshot date และ field path", "freshness_note": "ตรวจถึง 2026-10-21"},
+    "agent": {"priority": "P1", "actionability_score": 3, "possible_actions": ["compare_locations", "shortlist", "export"], "required_fields": ["id", "brand", "venue", "neighborhood", "latitude", "longitude", "status", "checkedOn", "source"]}
+  },
+  "primary_decision_actions": ["screen", "compare", "prioritize", "export"],
+  "data_sources": [
+    {"name": "Official brand store locators", "owner": "แต่ละแบรนด์", "url_or_reference": "ลิงก์ต่อรายการใน data/luxury.json (source)", "data_type": "official"},
+    {"name": "Shopping center directories", "owner": "ผู้บริหารศูนย์", "url_or_reference": "ลิงก์ต่อรายการ", "data_type": "official"},
+    {"name": "Retailer / distributor sources", "owner": "ผู้ประกอบการ", "url_or_reference": "ลิงก์ต่อรายการ", "data_type": "open"},
+    {"name": "CityMETER Shopping Center API", "owner": "Landometer", "url_or_reference": "https://landometer.com/api/v2/citymeter-v3/shopping-center", "data_type": "derived"},
+    {"name": "OpenStreetMap via OpenFreeMap (OpenMapTiles)", "owner": "OSM contributors / OpenFreeMap", "url_or_reference": "https://tiles.openfreemap.org/planet", "data_type": "open"}
+  ],
+  "spatial_granularity": "point → building/host → locale (analytical core) → province → country",
+  "temporal_coverage": "snapshot 2026-10-21 (refresh) + legacy history",
+  "update_frequency": "ad hoc",
+  "last_updated": "2026-10-21",
+  "key_metrics": ["distinct brands per neighborhood", "POS rows per neighborhood", "share of brands in top-3 neighborhoods", "exclusive vs shared brands", "brands by segment per neighborhood"],
+  "visual_layers": ["choropleth", "point", "polygon", "ranking", "matrix", "3d-massing"],
+  "recommended_pairing_layers": ["Shopping Center", "Building", "Transit: Road", "Locale Insight (when cores are registered as locales)"],
+  "data_transparency": {
+    "raw_fields": ["brand", "name", "venue", "province", "segment", "channel", "status", "source", "statusSource", "coordinateSource", "checkedOn", "latitude", "longitude", "geometryRole", "geometryStatus"],
+    "calculated_metrics": ["brands (distinct labels)", "pos (rows)", "share", "exclusiveBrands", "sharedBrands", "class (equal-interval 5)"],
+    "inferred_outputs": ["neighborhood membership (point-in-polygon on analytical cores)", "ranking", "mostExclusive"],
+    "recommended_actions": ["screen", "compare", "prioritize", "export"],
+    "source_note": "official locators / directories / retailer sources with per-row links; checked 2026-10-21",
+    "calculation_note": "distinct brand labels counted separately from rows; equal-interval classes from the current maximum within the filter",
+    "inference_note": "cores are analytical, not administrative; rankings help prioritise, not judge potential",
+    "confidence_note": "status and coordinate precision stated per row; conflicting evidence kept on both sides",
+    "limitation_summary": "not a census; locator ≠ open; host point ≠ entrance; OSM heights may be defaults; cores outside Bangkok/Chiang Mai undefined"
+  },
+  "known_limitations": ["ไม่ใช่สำมะโน", "locator ≠ เปิดจริง", "จุดตัวแทนศูนย์ ≠ ประตูร้าน", "legacy 211 แถวยังจับคู่ไม่ลงตัว", "ย่านนอกกรุงเทพฯ/เชียงใหม่ยังไม่นิยาม", "ความสูง OSM อาจเป็นค่า default"],
+  "methodology_note": "docs/NEIGHBORHOOD_METHOD.md, DATA_METHOD.md",
+  "example_use_cases": ["คัดย่านสำหรับร้านแรกของแบรนด์นาฬิกา", "หา gap ของ tenant mix ของศูนย์เทียบย่านข้างเคียง", "รายชื่อแบรนด์เฉพาะย่านสำหรับ proposal"],
+  "hypotheses_to_validate": [
+    {"hypothesis": "ผู้ใช้สามกลุ่มถาม ‘ใครอยู่ข้างใคร’ และเริ่มจากย่าน", "test": "สัมภาษณ์ 3–5 คนต่อกลุ่มด้วย demo 0.3", "criterion": "≥ 2 ใน 3 กลุ่มยืนยัน trigger และใช้โปรไฟล์ย่านก่อนตาราง"},
+    {"hypothesis": "ภาพ 3D focus/quiet ถูกใช้ใน deck โดยไม่วาดใหม่", "test": "ขอ screenshot ที่ใช้จริง", "criterion": "≥ 1 กรณี (ไม่นับเป็น traction)"},
+    {"hypothesis": "เวลาจากคำถามถึงรายชื่อที่ส่งต่อได้ < 10 นาที", "test": "จับเวลา 3 task", "criterion": "มัธยฐาน < 10 นาที"}
+  ],
+  "owner_team": "Landometer · CityMETER",
+  "last_reviewed": "2026-10-22"
+}

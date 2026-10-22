@@ -23,19 +23,19 @@
     .launch-card :focus-visible{outline:3px solid var(--interaction-focus-ring,#1D4497);outline-offset:3px}
     @media(max-width:420px){#launch-status{padding:16px}.launch-card{padding:20px}.launch-card h1{font-size:21px}}
   </style>
-  <script src="js/launch.js?v=20261022-r7"></script>
+  <script src="js/launch.js?v=20261022-r9"></script>
   <link rel="icon" href="assets/icons/icon-portfolio-32.png" sizes="32x32">
   <link rel="icon" href="assets/icons/icon-portfolio-16.png" sizes="16x16">
   <link rel="icon" href="assets/icons/icon-portfolio-48.png" sizes="48x48">
   <link rel="apple-touch-icon" href="assets/icons/icon-portfolio-180.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="stylesheet" href="assets/lds/build-kit/fonts.css?v=20261022-r7">
-  <link rel="stylesheet" href="assets/theme.css?v=20261022-r7">
-  <link rel="stylesheet" href="styles.css?v=20261022-r7">
-  <link rel="stylesheet" href="navigation.css?v=20261022-r7">
-  <link rel="stylesheet" href="logos.css?v=20261022-r7">
-  <script type="module" src="js/app.js?v=20261022-r7"></script>
-  <script type="module" src="js/navigation.js?v=20261022-r7"></script>
+  <link rel="stylesheet" href="assets/lds/build-kit/fonts.css?v=20261022-r9">
+  <link rel="stylesheet" href="assets/theme.css?v=20261022-r9">
+  <link rel="stylesheet" href="styles.css?v=20261022-r9">
+  <link rel="stylesheet" href="navigation.css?v=20261022-r9">
+  <link rel="stylesheet" href="logos.css?v=20261022-r9">
+  <script type="module" src="js/app.js?v=20261022-r9"></script>
+  <script type="module" src="js/navigation.js?v=20261022-r9"></script>
 </head>
 <body>
 <a class="skip" href="#panel">ข้ามไปแผงข้อมูล</a>
@@ -77,7 +77,8 @@
         <button id="fit-map" type="button">ดูทั้งหมด</button>
         <button id="bangkok-map" type="button">กรุงเทพฯ</button>
         <button id="toggle-neighborhoods" type="button" aria-pressed="true">ย่าน</button>
-        <button id="toggle-centers" type="button" aria-pressed="true">อาคาร 3D</button>
+        <button id="toggle-3d" type="button" aria-pressed="true" title="สลับมุมมอง 3 มิติ (อาคารทั้งเมือง) กับแผนผัง 2 มิติ">3D</button>
+        <button id="toggle-eye" type="button" aria-pressed="true" disabled title="มุมสถาปนิก: เปอร์สเปกทีฟ 2 จุดที่ระดับสถานที่ — อาคารรอบข้างจางลง อาคารที่บังสถานที่โปร่งใส">มุมสถาปนิก</button>
         <button id="open-help" type="button" aria-haspopup="dialog" aria-controls="usage-help">วิธีใช้</button>
         <button id="mobile-panel" type="button" aria-expanded="false" aria-controls="panel">ข้อมูล</button>
       </div>
@@ -89,7 +90,9 @@
         </div>
         <div class="legend-block legend-marks">
           <span><i class="legend-pin" aria-hidden="true"></i>1 หมุด = 1 รายการจุดขาย</span>
-          <span class="legend-building-item"><i class="legend-building" aria-hidden="true"></i>อาคารที่ตั้ง</span>
+          <span class="legend-building-item"><i class="legend-building" aria-hidden="true"></i>อาคารที่ตั้งร้าน</span>
+          <span class="legend-massing-item is-focus-item" title="รูปทรงอาคารจาก OpenStreetMap ผ่าน OpenFreeMap: ย่านที่โฟกัสแสดงมุมโค้งและโทนเข้มขึ้น ความสูงเป็นบริบท ไม่ใช่ผลรังวัด"><i class="legend-massing is-focus" aria-hidden="true"></i>อาคารในย่านโฟกัส</span>
+          <span class="legend-massing-item is-quiet-item" title="อาคารอื่นทั่วเมืองจาก OpenStreetMap ผ่าน OpenFreeMap แสดงจางลงเป็นบริบท"><i class="legend-massing is-quiet" aria-hidden="true"></i>อาคารบริบท</span>
           <details id="category-key"><summary>สีประเภทแบรนด์</summary><div id="category-items"></div></details>
         </div>
       </div>
@@ -134,10 +137,11 @@
   <aside id="panel" class="panel" aria-labelledby="dataset-title">
     <button id="close-mobile-panel" type="button" class="mobile-close">กลับไปแผนที่</button>
     <div class="panel-top">
+      <nav id="crumbs" class="crumbs-nav" aria-label="เส้นทางพื้นที่: ประเทศไทย › จังหวัด › ย่าน"></nav>
       <div class="dataset-heading">
         <p class="eyebrow">CITYMETER · LOCATION</p>
         <h1 id="dataset-title" tabindex="-1">Luxury Brands</h1>
-        <p class="intro">อ่านเมืองผ่านแบรนด์ — ย่านไหนรวมแบรนด์ไว้มากที่สุด แล้วเจาะลงถึงร้าน</p>
+        <p class="intro">ถ้าจะเปิดร้านที่นี่ จะอยู่ข้างใคร — อ่านเมืองผ่านย่าน แล้วเจาะลงถึงศูนย์การค้าและร้าน</p>
       </div>
       <form id="filters" class="filters" autocomplete="off">
         <label class="search-field">
@@ -168,12 +172,14 @@
     <div><p class="eyebrow">CITYMETER LUXURY BRANDS</p><h2 id="usage-help-title">อ่านเมืองผ่านแบรนด์อย่างไร</h2></div>
     <button id="close-help" type="button">ปิดวิธีใช้</button>
   </div>
-  <p id="usage-help-intro" class="help-intro">เริ่มจากย่าน เลือกย่านที่สนใจ แล้วเจาะลงศูนย์การค้าและร้าน ทุกมุมมองใช้ขอบเขตข้อมูลเดียวกัน</p>
+  <p id="usage-help-intro" class="help-intro">เริ่มจากย่าน: หน้าแรกเปิดเป็นเมือง 3 มิติที่มีรายละเอียดเฉพาะ 3 ย่านที่มีแบรนด์มากที่สุด ส่วนอื่นเงียบลง เลือกย่านที่สนใจ แล้วเจาะลงศูนย์การค้าและร้าน ทุกมุมมองใช้ขอบเขตข้อมูลเดียวกัน</p>
   <ol class="help-steps">
-    <li><strong>อ่านข้อค้นพบแรก</strong><p>แผงด้านขวาสรุปว่าแบรนด์ที่เลือกกระจุกอยู่ในย่านใด กด “สำรวจ 3 ย่านนี้” เพื่อซูมไปยังย่านเหล่านั้น หรือกดชื่อย่านในรายการเพื่อเปิดโปรไฟล์ย่าน</p></li>
-    <li><strong>อ่านสีย่านบนแผนที่</strong><p>ที่ระดับภาพรวม ย่านถูกระบายสีตามจำนวนแบรนด์ไม่ซ้ำ (ช่วงตัวเลขอยู่ในคำอธิบายมุมล่างซ้าย) ซูมเข้าแล้วสีจะเปลี่ยนเป็นเส้นขอบ เพื่อให้เห็นหมุดรายร้านและอาคาร</p></li>
+    <li><strong>อ่านข้อค้นพบแรก</strong><p>แผงด้านขวาสรุปว่าแบรนด์ที่เลือกกระจุกอยู่ในย่านใด แผนที่โฟกัส 3 ย่านนั้นให้แล้ว กดชื่อย่านเพื่อเปิดโปรไฟล์ หรือกด “ดูทุกย่าน” เพื่อยกระดับทุกย่านเท่ากัน</p></li>
+    <li><strong>เดินตามเส้นทางพื้นที่</strong><p>แถวบนของแผงคือ ประเทศไทย › จังหวัด › ย่าน แบบเดียวกับ CityMETER กดระดับใดก็ได้เพื่อถอยกลับ</p></li>
+    <li><strong>อ่านสีย่านบนแผนที่</strong><p>ย่านถูกระบายสีตามจำนวนแบรนด์ไม่ซ้ำ (ช่วงตัวเลขอยู่ในคำอธิบายมุมล่างซ้าย) ย่านนอกโฟกัสเหลือเพียงเส้นขอบ ซูมเข้าแล้วสีจะเปลี่ยนเป็นเส้นขอบ เพื่อให้เห็นหมุดรายร้านและอาคาร</p></li>
+    <li><strong>อ่านอาคาร</strong><p>อาคารทั้งเมืองเป็นรูปทรงจาก OpenStreetMap: ย่านที่โฟกัสแสดงมุมโค้งและโทนเข้มขึ้น ส่วนอื่นจางลง อาคารสีน้ำเงินคืออาคารที่ตั้งร้าน เลือกอาคารเพื่อดูร้านทั้งหมดในอาคารนั้น กด “3D” เพื่อสลับเป็นแผนผัง เมื่อเปิดสถานที่ (ศูนย์การค้า) แผนที่ใช้ “มุมสถาปนิก” — เปอร์สเปกทีฟ 2 จุดที่อาคารรอบข้างจางลงมาก และอาคารที่บังสถานที่กลายเป็นโปร่งใส ปิดปุ่มนี้เพื่อกลับเป็นมุมโมเดลเมือง</p></li>
+    <li><strong>เส้นทาง</strong><p>บรรทัดบนของแผงคือ ประเทศไทย › จังหวัด › ย่าน › สถานที่ กดระดับใดก็ได้เพื่อย้อนกลับ สถานที่ที่อยู่นอกย่านทั้ง 10 จะข้ามระดับย่าน ส่วนร้านเป็นหัวเรื่องของแผง ไม่ใช่ระดับเส้นทาง</p></li>
     <li><strong>เลือกร้านบนแผนที่</strong><p>หนึ่งหมุดคือหนึ่งรายการจุดขาย สีหมุดคือกลุ่มแบรนด์ (ดู “สีประเภทแบรนด์”) เลือกหมุดเพื่อดูสถานะ หลักฐาน และระดับความแม่นของพิกัด</p></li>
-    <li><strong>ดูอาคารที่ตั้ง</strong><p>กด “อาคาร 3D” เพื่อเปิดหรือซ่อนรูปทรงอาคารที่ร้านตั้งอยู่ แล้วเลือกอาคารเพื่อดูร้านทั้งหมดในอาคารนั้น</p></li>
     <li><strong>เปรียบเทียบย่านด้วยกราฟและตาราง</strong><p>กด “เปิดกราฟ” เพื่อดูอันดับย่าน บุคลิกของย่านตามกลุ่มแบรนด์ และแบรนด์เฉพาะ/ร่วม หรือ “รายการ” เพื่อดูตารางพร้อมแหล่งข้อมูล</p></li>
   </ol>
   <p class="help-keyboard"><strong>คีย์บอร์ด:</strong> ใช้ Tab ไปยังปุ่มและตัวกรอง ใช้ปุ่มลูกศรเลื่อนระหว่างหมุดที่มองเห็น กด Enter เพื่อเลือก และกด Escape เพื่อปิดวิธีใช้</p>

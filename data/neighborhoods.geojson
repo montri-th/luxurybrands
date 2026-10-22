@@ -2,14 +2,15 @@
   "type": "FeatureCollection",
   "name": "CityMETER analytical neighborhood cores",
   "metadata": {
-    "version": "2026-10-21-r1",
+    "version": "2026-10-22-r2",
     "checkedOn": "2026-10-21",
     "methodURL": "docs/NEIGHBORHOOD_METHOD.md",
     "crs": "OGC:CRS84 / WGS84 longitude, latitude",
     "coverage": "Selected Bangkok and Chiang Mai retail neighborhood cores only. Not a national neighborhood registry.",
     "membership": "Point-in-polygon against fixed features, independent of filters; no nearest fallback.",
     "attribution": "© OpenStreetMap contributors; ODbL 1.0",
-    "consensusEvidence": "No consumer survey or community boundary approval; named-place evidence and analyst-selected physical edges are separate."
+    "consensusEvidence": "No consumer survey or community boundary approval; named-place evidence and analyst-selected physical edges are separate.",
+    "provinceCodes": "provinceCode = CityMETER production province path code (observed landometer.com/v3/citymeter, 2026-10-22); provinceName = dataset province label. Added 2026-10-22 for the breadcrumb; geometry unchanged."
   },
   "features": [
     {
@@ -62,7 +63,9 @@
           "https://www.openstreetmap.org/way/1507574343"
         ],
         "attribution": "© OpenStreetMap contributors; ODbL 1.0",
-        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned.",
+        "provinceCode": "BKK",
+        "provinceName": "Bangkok"
       },
       "geometry": {
         "type": "Polygon",
@@ -216,7 +219,9 @@
           "https://www.openstreetmap.org/way/33069215"
         ],
         "attribution": "© OpenStreetMap contributors; ODbL 1.0",
-        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned.",
+        "provinceCode": "BKK",
+        "provinceName": "Bangkok"
       },
       "geometry": {
         "type": "Polygon",
@@ -352,7 +357,9 @@
           "https://www.openstreetmap.org/way/33058673"
         ],
         "attribution": "© OpenStreetMap contributors; ODbL 1.0",
-        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned.",
+        "provinceCode": "BKK",
+        "provinceName": "Bangkok"
       },
       "geometry": {
         "type": "Polygon",
@@ -482,7 +489,9 @@
           "https://www.openstreetmap.org/way/156985384"
         ],
         "attribution": "© OpenStreetMap contributors; ODbL 1.0",
-        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned.",
+        "provinceCode": "BKK",
+        "provinceName": "Bangkok"
       },
       "geometry": {
         "type": "Polygon",
@@ -590,7 +599,9 @@
           "https://www.openstreetmap.org/way/820345538"
         ],
         "attribution": "© OpenStreetMap contributors; ODbL 1.0",
-        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned.",
+        "provinceCode": "BKK",
+        "provinceName": "Bangkok"
       },
       "geometry": {
         "type": "Polygon",
@@ -764,7 +775,9 @@
           "https://www.openstreetmap.org/way/973299119"
         ],
         "attribution": "© OpenStreetMap contributors; ODbL 1.0",
-        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned.",
+        "provinceCode": "BKK",
+        "provinceName": "Bangkok"
       },
       "geometry": {
         "type": "Polygon",
@@ -892,7 +905,9 @@
           "https://www.openstreetmap.org/way/185077898"
         ],
         "attribution": "© OpenStreetMap contributors; ODbL 1.0",
-        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned.",
+        "provinceCode": "BKK",
+        "provinceName": "Bangkok"
       },
       "geometry": {
         "type": "Polygon",
@@ -1320,7 +1335,9 @@
           "https://www.openstreetmap.org/way/697182261"
         ],
         "attribution": "© OpenStreetMap contributors; ODbL 1.0",
-        "limitations": "Selected southern core only. MAYA/Rin Kham is associated with Nimman but outside this road-delimited core; unassigned does not mean outside the broader perceived neighborhood."
+        "limitations": "Selected southern core only. MAYA/Rin Kham is associated with Nimman but outside this road-delimited core; unassigned does not mean outside the broader perceived neighborhood.",
+        "provinceCode": "CMI",
+        "provinceName": "Chiang Mai"
       },
       "geometry": {
         "type": "Polygon",
@@ -1434,7 +1451,9 @@
           "https://www.openstreetmap.org/way/1193789425"
         ],
         "attribution": "© OpenStreetMap contributors; ODbL 1.0",
-        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned.",
+        "provinceCode": "BKK",
+        "provinceName": "Bangkok"
       },
       "geometry": {
         "type": "Polygon",
@@ -1758,7 +1777,9 @@
           "https://www.openstreetmap.org/way/835280924"
         ],
         "attribution": "© OpenStreetMap contributors; ODbL 1.0",
-        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned."
+        "limitations": "Store points can represent host venues. Boundary agreement with consumers has not been measured. Points outside the selected core stay unassigned.",
+        "provinceCode": "BKK",
+        "provinceName": "Bangkok"
       },
       "geometry": {
         "type": "Polygon",

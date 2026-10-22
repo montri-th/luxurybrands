@@ -182,7 +182,9 @@ export function installVenueBuildings(map, geojson, options = {}) {
     if (active.get(map) === controller) active.delete(map);
     leave();
   }
-  const controller = {update, getCoverage, dispose};
+  /** Features currently drawn (hosts of the selected rows) — used to keep OSM massing from swallowing them. */
+  function displayedFeatures() { return disposed || !enabled ? [] : displayed.slice(); }
+  const controller = {update, getCoverage, displayedFeatures, dispose};
   active.set(map, controller);
   update();
   return controller;

@@ -49,11 +49,16 @@ function segmentBars(segmentMix, totalBrands) {
 
 /* ---------- Overview ---------- */
 
-export function renderOverview({insight, overview, summary, focused, areaModel, asOf, venues = []}) {
+/**
+ * focusMode: 'auto' (default — the top areas carry the detail, the rest is quiet),
+ * 'explicit' (user-chosen areas) or 'none' (every area in detail).
+ */
+export function renderOverview({insight, overview, summary, focusMode = 'auto', focused, areaModel, asOf, venues = [], view3d = true}) {
   const count = insight.areas.length;
   const share = insight.totalBrands ? Math.round(insight.share) : 0;
   const names = insight.areas.map(a => a.name);
   const nameList = names.length > 1 ? `${names.slice(0, -1).join(' · ')} และ${names.at(-1)}` : names[0] || '';
+  const mode = focused === true ? 'explicit' : focusMode;
   let aha;
   if (!count && !summary.pos) {
     aha = `<section class="aha" aria-label="ข้อค้นพบ"><p class="eyebrow">ข้อค้นพบแรก</p><h2>ไม่พบจุดขายตามตัวกรองนี้</h2><p class="aha-copy">ยังไม่พบรายการที่ตรงกับคำค้นหรือตัวกรองที่เลือก ไม่ได้แปลว่าไม่มีร้านในพื้นที่ ลองใช้คำค้นอื่นหรือล้างตัวกรอง</p>
@@ -62,17 +67,24 @@ export function renderOverview({insight, overview, summary, focused, areaModel, 
     const top = venues.slice(0, 3);
     aha = `<section class="aha" aria-label="ข้อค้นพบ"><p class="eyebrow">ข้อค้นพบแรก · นอกขอบเขตย่านที่นิยามไว้</p><h2>${num(summary.pos)} รายการนี้อยู่นอกแกนย่านที่นิยามไว้</h2><p class="aha-copy">ขอบเขตย่านชุดนี้ยังครอบคลุมเฉพาะ ${num(areaModel?.areas.length || 0)} แกนย่าน การอยู่นอกขอบเขตไม่ได้แปลว่าไม่มีย่านหรือตลาด${top.length ? ` สถานที่ที่มีแบรนด์มากที่สุดในตัวกรองนี้: ${top.map(c => `${esc(c.name)} (${num(c.brands)} แบรนด์)`).join(' · ')}` : ''}</p>
       <div class="aha-actions"><button type="button" data-action="open-table" class="btn">ดูรายการ</button><button type="button" data-action="clear-filter" data-id="all" class="btn quiet">ล้างตัวกรอง</button></div></section>`;
-  } else if (focused) {
+  } else if (mode === 'explicit') {
     aha = `<section class="aha is-focused" aria-label="ข้อค้นพบ"><p class="eyebrow">กำลังสำรวจ ${num(count)} ย่าน</p>
       <h2>${esc(nameList)}</h2>
       <p class="aha-copy"><strong class="data-number">${num(insight.brands)}</strong> แบรนด์ไม่ซ้ำ · <strong class="data-number">${num(insight.pos)}</strong> รายการจุดขาย ในย่านที่เลือก</p>
       <div class="aha-actions"><button type="button" data-action="clear-focus" class="btn">กลับไปดูทุกย่าน</button><button type="button" data-action="open-charts" class="btn quiet">เปรียบเทียบย่าน</button></div></section>`;
   } else {
-    aha = `<section class="aha" aria-label="ข้อค้นพบ"><p class="eyebrow">ข้อค้นพบแรก · อ่านเมืองผ่านย่าน</p>
+    const mapCue = mode === 'auto'
+      ? `แผนที่แสดงรายละเอียด${view3d ? 'และอาคาร 3 มิติ' : ''}เฉพาะ ${num(count)} ย่านนี้ ส่วนอื่นเป็นบริบทที่เงียบลง`
+      : 'แผนที่แสดงทุกย่านในระดับเดียวกัน';
+    const toggle = mode === 'auto'
+      ? `<button type="button" data-action="clear-focus" class="btn">ดูทุกย่าน</button>`
+      : `<button type="button" data-action="explore-top" class="btn primary">โฟกัส ${num(count)} ย่านนี้</button>`;
+    aha = `<section class="aha${mode === 'auto' ? ' is-auto' : ''}" aria-label="ข้อค้นพบ"><p class="eyebrow">ข้อค้นพบแรก · อ่านเมืองผ่านย่าน</p>
       <h2><span class="aha-number data-number">${num(share)}%</span><span class="aha-headline">ของแบรนด์ที่เลือกอยู่ใน ${num(count)} ย่านนี้</span></h2>
       <p class="aha-copy">${esc(nameList)} รวมกันมี <strong class="data-number">${num(insight.brands)}</strong> จาก <strong class="data-number">${num(insight.totalBrands)}</strong> แบรนด์ไม่ซ้ำ (${num(insight.pos)} จาก ${num(insight.totalPos)} รายการจุดขาย)</p>
       ${overview.mostExclusive ? `<p class="aha-secondary">ย่านที่มีแบรนด์เฉพาะมากที่สุด: <button type="button" class="link-button" data-action="select-area" data-id="${esc(overview.mostExclusive.id)}">${esc(overview.mostExclusive.name)}</button> — ${num(overview.mostExclusive.exclusiveBrands)} จาก ${num(overview.mostExclusive.brands)} แบรนด์พบเฉพาะที่นี่ในข้อมูลที่เลือก</p>` : ''}
-      <div class="aha-actions"><button type="button" data-action="explore-top" class="btn primary">สำรวจ ${num(count)} ย่านนี้</button><button type="button" data-action="open-charts" class="btn quiet">ดูกราฟเปรียบเทียบ</button></div></section>`;
+      <p class="aha-map-cue hint">${mapCue} · กดชื่อย่านเพื่อเปิดโปรไฟล์</p>
+      <div class="aha-actions">${toggle}<button type="button" data-action="open-charts" class="btn quiet">เปรียบเทียบย่าน</button></div></section>`;
   }
   const ranking = overview.ranking.slice(0, 10);
   const max = Math.max(1, ...ranking.map(a => a.brands));
@@ -91,12 +103,13 @@ export function renderOverview({insight, overview, summary, focused, areaModel, 
     <div class="section-heading"><h3 id="venue-rank-title">สถานที่เรียงตามแบรนด์ไม่ซ้ำ</h3><span class="hint">${num(venues.length)} แห่ง · กดเพื่อดู</span></div>
     <ul class="venue-list">${venues.slice(0, 10).map(c => `<li><button type="button" class="venue-row" data-action="select-venue" data-id="${esc(c.mallId)}" data-value="${esc(c.venue)}" aria-label="${esc(c.name)} ${num(c.brands)} แบรนด์ ${num(c.pos)} จุดขาย"><span class="venue-name">${esc(c.name)}<small>${esc(c.type || c.province || 'ทำเล')}</small></span><span class="venue-count data-number">${num(c.brands)}<small>แบรนด์</small></span></button></li>`).join('')}</ul>
   </section>` : '');
-  const metrics = `<section class="metrics" aria-label="ตัวเลขรวมของข้อมูลที่เลือก">
-    <div><strong class="data-number">${num(summary.brands)}</strong><span>แบรนด์ไม่ซ้ำ</span></div>
-    <div><strong class="data-number">${num(summary.pos)}</strong><span>รายการจุดขาย</span></div>
+  const narrowed = mode !== 'none' && count > 0 && summary.pos !== insight.totalPos;
+  const metrics = `<section class="metrics" aria-label="${narrowed ? 'ตัวเลขของย่านที่โฟกัส' : 'ตัวเลขรวมของข้อมูลที่เลือก'}">
+    <div><strong class="data-number">${num(summary.brands)}</strong><span>แบรนด์ไม่ซ้ำ${narrowed ? ' ในโฟกัส' : ''}</span></div>
+    <div><strong class="data-number">${num(summary.pos)}</strong><span>รายการจุดขาย${narrowed ? ' ในโฟกัส' : ''}</span></div>
     <div><strong class="data-number">${num(summary.centers.length)}</strong><span>ศูนย์การค้าที่จับคู่</span></div>
     <div><strong class="data-number">${num(overview.areaCount)}</strong><span>ย่านที่มีจุดขาย</span></div>
-  </section>`;
+  </section>${narrowed ? `<p class="hint metrics-note">ทั้งหมดในตัวกรอง ${num(insight.totalBrands)} แบรนด์ · ${num(insight.totalPos)} รายการ · ตารางและหมุดแสดงเฉพาะส่วนที่โฟกัส</p>` : ''}`;
   return `${aha}${metrics}${rankList}<p class="hint panel-foot">ชุดข้อมูล Luxury Brands Thailand · ตรวจถึง ${esc(thaiDate(asOf))} · ขอบเขตย่านเป็นแกนวิเคราะห์ที่นิยามไว้ ไม่ใช่เขตปกครอง · มีพิกัด ${num(summary.mapped)}/${num(summary.pos)} รายการ</p>`;
 }
 

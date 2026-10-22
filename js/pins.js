@@ -12,6 +12,8 @@ import {hasPoint, isClosed, SEGMENTS} from './model.js';
 import {brandLogoMarkup, getBrandLogo} from './brand-logos.js';
 
 export const MAX_LOGOS = 250;
+/** Logos (and full-size pins) only from this zoom: the 3D overview stays calm. */
+export const LOGO_MIN_ZOOM = 14;
 const segmentIndex = new Map(Object.keys(SEGMENTS).map((id, i) => [id, i + 1]));
 const intersects = (a, b, gap = 0) => a.left < b.right + gap && a.right > b.left - gap && a.top < b.bottom + gap && a.bottom > b.top - gap;
 const inside = (p, b) => p.x >= b.left && p.x <= b.right && p.y >= b.top && p.y <= b.bottom;
@@ -129,9 +131,9 @@ export function installStorePins(map, container, {onSelect, onLayout, reservedBo
       .filter(e => e.offsetWidth && e.offsetHeight).map(obstacle);
     const bounds = {left: 5, right: width - 5, top: 5, bottom: Math.max(6, height - reservedBottom()), exclusions: blockers};
     const zoom = map.getZoom();
-    // Quiet overview: tiny marks below z12, small marks to z13.5, full detail (size + logos) beyond.
+    // Quiet overview: tiny marks below z12, small marks to z14, full detail (size + logos) beyond.
     overlay.classList.toggle('is-overview', zoom < 12);
-    overlay.classList.toggle('is-midzoom', zoom >= 12 && zoom < 13.5);
+    overlay.classList.toggle('is-midzoom', zoom >= 12 && zoom < 14);
     const projected = [];
     for (const e of entries) {
       const p = map.project([e.row.longitude, e.row.latitude]);
@@ -146,7 +148,7 @@ export function installStorePins(map, container, {onSelect, onLayout, reservedBo
     try { placed = separatePins(projected, bounds, pitch, {minSpacing: 0.125, maxOffset}); }
     catch { placed = projected.map(p => ({...p, anchorX: p.x, anchorY: p.y, spacing: 1})); }
     const labelBounds = {...bounds, exclusions: [...blockers, ...[...panel.querySelectorAll('.neighborhood-label:not([hidden])')].map(obstacle)]};
-    const labels = zoom >= 13.5 ? placeBrandLogos(placed, labelBounds, {selectedId, width: zoom >= 15 ? 68 : 60, height: zoom >= 15 ? 34 : 30}) : new Map();
+    const labels = zoom >= LOGO_MIN_ZOOM ? placeBrandLogos(placed, labelBounds, {selectedId, width: zoom >= 15 ? 68 : 60, height: zoom >= 15 ? 34 : 30}) : new Map();
     const ids = placed.filter(p => !p.entry.context).map(p => p.id);
     if (!ids.includes(activeId)) activeId = ids[0] || '';
     for (const p of placed) {

@@ -75,7 +75,21 @@ snapshot นี้มี 60 host footprints และ 53 building parts จา�
 
 ผู้ใช้อนุญาตให้นำบริบท Shopping Center ของ CityMETER มาใช้ใน demo นี้ สิทธิ์ของ underlying providers ยังคงแยกตามแหล่ง จึงเก็บ provenance และหลีกเลี่ยงการเผยแพร่ raw nearby-tenant lists, credentials หรือข้อมูลส่วนบุคคลที่ไม่จำเป็น แบรนด์และเครื่องหมายการค้าเป็นของเจ้าของตามกฎหมาย
 
-แผนที่ใช้ [OpenFreeMap](https://openfreemap.org/) และ style [Positron / Dark](https://github.com/hyperknot/openfreemap-styles) ที่ใช้ข้อมูล OpenStreetMap พร้อม attribution ของ OpenFreeMap, OpenMapTiles และ OpenStreetMap ตามผู้ให้บริการ ไม่มี offline download หรือ bulk tile prefetch กราฟวาดภายในโปรเจกต์โดยไม่มีไลบรารีภายนอก การโหลด CDN หรือการเปิด demo สำเร็จไม่ใช่หลักฐานว่าสาขาทั้งหมดผ่าน field validation
+แผนที่ใช้ vector tiles ของ [OpenFreeMap](https://openfreemap.org/) (OpenMapTiles schema, ข้อมูล OpenStreetMap) ผ่าน style ที่สร้างเองใน `js/map-style.js` ตั้งแต่รุ่น 0.3 แทน style สำเร็จรูป Positron/Dark พร้อม attribution ของ OpenFreeMap, OpenMapTiles และ OpenStreetMap ตามผู้ให้บริการ ไม่มี offline download หรือ bulk tile prefetch (ชั้นมวลอาคารโฟกัสดึง tile ซ้ำเฉพาะ ≤ 9 tiles ที่แตะย่านโฟกัส จาก URL เดียวกับที่ MapLibre โหลด) กราฟวาดภายในโปรเจกต์โดยไม่มีไลบรารีภายนอก การโหลด CDN หรือการเปิด demo สำเร็จไม่ใช่หลักฐานว่าสาขาทั้งหมดผ่าน field validation
+
+## มวลอาคารเมือง (บริบท ไม่ใช่ข้อมูลของชุดนี้)
+
+ตั้งแต่รุ่น 0.3 แผนที่แสดงอาคารทั้งเมืองจาก `building` source-layer ของ OpenFreeMap (ที่มา OpenStreetMap) สองชั้น:
+
+- **ชั้นเมือง (quiet):** fill-extrusion จาก tile โดยตรง ใช้ `render_height` / `render_min_height` ที่ OpenMapTiles คำนวณจาก tag `height`, `building:levels` หรือค่า default เมื่อไม่มี tag อาคารที่ tile ระบุ `hide_3d` ไม่แสดง สีโทนเงียบจาก `--basemap-massing-quiet`
+- **ชั้นโฟกัส:** อาคารที่ซ้อนทับ polygon ของย่านที่โฟกัส ถอดจาก tile เดียวกันด้วย `js/mvt.js` แล้ว **ขยายออกเล็กน้อยและลบมุมโค้ง** (`js/geometry.js`) ให้รูปทรงใหม่ล้อมต้นฉบับทั้งก้อน ยกความสูงขึ้น 0.35 เมตร เป็นการแสดงผลแบบโมเดลเมืองเท่านั้น (คำตอบต่อ maplibre-style-spec #1047 ที่ยังไม่รองรับใน MapLibre) ไม่เปลี่ยน footprint หรือความสูงต้นทางในข้อมูลใด
+- อาคารจาก OSM ที่ซ้อนกับ **อาคารที่ตั้งร้าน** ใน `data/venue-buildings.geojson` ถูกตัดออกจากชั้นโฟกัสและซ่อนในชั้นเมืองด้วย feature id เพื่อให้อาคารที่ตั้ง (สี `map.activeLayer`) เป็นชั้นเดียวที่ถือข้อมูลของชุดนี้
+
+ความสูงและรูปทรงจาก OSM เป็นบริบทที่ความครอบคลุมต่างกันรายพื้นที่ (OpenFreeMap รวมอาคารความสูงเดียวกันเป็น MultiPolygon เดียว) ห้ามนำไปอ้างเป็นความสูงจริง จำนวนชั้น หรือข้อเท็จจริงของร้าน รายการตรวจความครอบคลุมรายย่านอยู่ใน backlog N09
+
+## รหัสจังหวัดและ breadcrumb
+
+ย่านทั้ง 10 มี `provinceCode` / `provinceName` ใน `data/neighborhoods.geojson` (metadata.version 2026-10-22-r2; geometry ไม่เปลี่ยน) รหัสตรงกับ path ของ CityMETER production ที่สังเกตเมื่อ 22 ต.ค. 2569 (`/v3/citymeter/BKK`, `/PKT`, `/CMI`, `/SPK`, `/NBI`, `/CBI`, `/PTE`, `/UDN`, `/NMA`) ระดับที่สามของ production เข้ารหัสชนิดใน path (`/L/{locale uuid}`, `/M/{dopa code}`) ย่านของชุดนี้ยังไม่ใช่ Locale จึงเสนอ `/N/{neighborhood id}` เป็นทางเลือกระหว่างรอลงทะเบียน (Inference — ยังไม่ได้ทำใน production) ระดับที่สี่คือสถานที่: ศูนย์การค้าที่จับคู่แล้วใช้ `centers[].id` ซึ่งเป็น Shopping Center id ของ CityMETER (`externalId` SC-…, source `landometer.com/api/v2/citymeter-v3/shopping-center/detail/{id}`) จึงเสนอ `/V/{center id}` ต่อท้าย; สถานที่ที่ไม่มี id ใช้ป้ายชื่อ venue ตามข้อมูล ระดับย่านของสถานที่ตัดสินด้วย point-in-polygon ของจุดตัวแทนสถานที่ (พิกัดศูนย์ หรือแถวแรกที่มีพิกัด) ไม่ใช่ชื่อ สถานที่นอกย่านทั้ง 10 จึงไม่มีระดับย่าน
 
 ก่อนเป็น production dataset ต้องกำหนดผู้รับผิดชอบ รอบตรวจสถานะ การทบทวน duplicate/physical-site identity การตรวจพิกัดภาคสนาม และสิทธิ์เผยแพร่ระดับข้อมูลให้ครบ
 
