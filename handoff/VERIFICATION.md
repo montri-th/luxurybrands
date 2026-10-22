@@ -14,7 +14,19 @@ The six 0.4 scenarios re-run without application errors on the 0.5.0 working tre
 
 ## Live checks — 0.5 (Chrome on macOS, real tiles)
 
-_Recorded after the Pages run of the 0.5 commit — see the entry below once attested._
+Commit `8be2af5` (Pages run 39726270276, success 2026-10-22 05:09 UTC). Module files re-fetched with `cache: 'reload'` before the checks (GitHub Pages caches ~10 min).
+
+| Check | Result |
+|---|---|
+| Live registry | `data/venue-logos.json` meta.status `partial: 33 of 50 files verified; 17 pending transfer…`, 33 assets; `assets/venue-logos/siam-paragon.svg` 200 / 9 927 bytes |
+| Venue rows, สยาม (`?neighborhood=siam`) | 4 rows: Siam Paragon carries its mark (image loaded), Siam Square / Siam Center / Siam Kempinski Hotel show the name only — no `.venue-logo` element, no broken image (their files are in `meta.pending`) |
+| Venue heading, Siam Paragon (`live-venue-heading-dark-0.5.jpg`, `live-venue-heading-light-0.5.jpg`) | `.detail-head.venue` carries `.detail-venue-logo` 89×56 on `--venue-logo-bg #E5E9E6` (computed rgb(229, 233, 230) in both themes), alt “โลโก้ Siam Paragon”, no role caption (venue_specific); crumbs ประเทศไทย › กรุงเทพมหานคร › สยาม › Siam Paragon; x-ray solid still visible and clickable behind the panel |
+| Store facts, A. Lange & Söhne Siam Paragon (`POS-35d02ded3252`) | `.fact-venue` shows the 64×36 mark (loaded) beside “Siam Paragon · Bangkok” |
+| Role caption, Central Chidlom (`live-venue-role-caption-0.5.png`) | heading mark `assets/venue-logos/central-department-store.svg` on `#E5E9E6`, `data-role shared_department_store_banner`, caption “โลโก้ห้างสรรพสินค้าในเครือ” in the type line |
+| Themes | light ↔ dark via the header select: backplate HEX unchanged, marks legible on both page backgrounds; preference restored to auto |
+| Not verified live | mobile width (window resize not applied by the desktop Chrome in this session), Safari, AC02/AC03/AC05 (as in 0.4) |
+
+Live byte attestation: `npm run verify:live` on `8be2af5` — **122 ok, 0 failed** (146-file manifest) → `evidence/live-attestation-8be2af5.json`.
 
 ---
 

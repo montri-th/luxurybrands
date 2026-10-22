@@ -8,6 +8,8 @@
 
 ชุดนี้มี source code (ES modules อ่านง่าย มีคอมเมนต์สัญญาทุกโมดูล), datasets, verified assets, 96 unit tests, JSON Schema 1.3.0, acceptance criteria AC01–AC27, สคริปต์สร้าง manifest/bundle และตรวจ live bytes อ่าน `source/AGENTS.md` ก่อนแก้ไข
 
+สถานะโลโก้สถานที่ในรุ่นนี้: ไฟล์ตรวจแล้ว 33 จาก 50 (ชีต `10_VENUE_LOGOS`) อีก 17 ไฟล์ประกาศใน `data/venue-logos.json → meta.pending` งานต่อคือ plan N16 (ย้ายไฟล์ที่ตรวจ sha256 แล้วเข้า `assets/venue-logos/` และรัน `scripts/build-venue-logos.py`; ไม่ต้องแก้โค้ด)
+
 เว็บจริง: https://montri-th.github.io/luxurybrands/
 Repository: https://github.com/montri-th/luxurybrands
 
