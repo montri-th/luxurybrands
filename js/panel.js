@@ -21,6 +21,8 @@ import {venueLogoMarkup, getVenueLogo} from './venue-logos.js';
 const NUMBER = new Intl.NumberFormat('th-TH', {maximumFractionDigits: 0});
 export const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 export const num = n => NUMBER.format(n);
+/** How this dataset draws its ย่าน (shown on the ย่าน panel next to the boundary). */
+const NEIGHBORHOOD_METHOD_URL = 'https://github.com/montri-th/luxurybrands/blob/main/docs/NEIGHBORHOOD_METHOD.md';
 const safeURL = value => { try { const u = new URL(value); return u.protocol === 'https:' ? u.href : ''; } catch { return ''; } };
 const SEGMENT_ORDER = Object.keys(SEGMENTS);
 const segIndex = id => Math.max(0, SEGMENT_ORDER.indexOf(id) + 1);
@@ -153,7 +155,7 @@ export function renderNeighborhood(profile) {
     ${p.shared.length ? `<ul class="chip-list">${chips(p.shared, 'shared')}</ul>` : '<p class="hint">ไม่มี</p>'}</section>`;
   return `<section class="detail-head">
       <button type="button" class="btn quiet back" data-action="back">กลับ</button>
-      <p class="eyebrow">ย่าน${p.rank ? ` · อันดับ ${num(p.rank)} จาก ${num(p.areaCount)}` : ''}</p>
+      <p class="eyebrow">ย่านของชุดข้อมูลนี้${p.rank ? ` · อันดับ ${num(p.rank)} จาก ${num(p.areaCount)}` : ''}</p>
       <h2>${esc(p.name)}</h2>${p.nameEn ? `<p class="subtle">${esc(p.nameEn)}</p>` : ''}
       <div class="metrics compact">${metricTile(p.brands, 'แบรนด์', 'brand')}${metricTile(p.pos, 'สาขา', 'store')}${metricTile(p.venues.length, 'สถานที่', 'venue')}${metricTile(p.exclusive.length, 'เฉพาะย่าน', 'exclusive')}</div>
       ${p.closed ? `<p class="hint">รวมปิดถาวร ${num(p.closed)} สาขา</p>` : ''}
@@ -163,7 +165,8 @@ export function renderNeighborhood(profile) {
     ${venues}${brands}
     <section class="panel-section boundary"><div class="section-heading"><h3>ขอบเขตย่าน</h3><span class="hint">${esc(statusText)}</span></div>
       <p class="subtle">${esc(p.definition)}</p>
-      ${p.sourceURLs.length ? `<p class="links">${p.sourceURLs.slice(0, 4).map((u, i) => link(u, `อ้างอิง ${i + 1}`)).join(' ')}</p>` : ''}
+      <p class="hint">ขอบเขตที่ชุดข้อมูลนี้กำหนดเอง ไม่ใช่เขตปกครอง และยังไม่ใช่ Locale ของ CityMETER</p>
+      <p class="links">${[link(NEIGHBORHOOD_METHOD_URL, 'วิธีกำหนดขอบเขต'), ...p.sourceURLs.slice(0, 4).map((u, i) => link(u, `อ้างอิง ${i + 1}`))].join(' ')}</p>
     </section>`;
 }
 

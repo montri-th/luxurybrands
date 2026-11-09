@@ -35,7 +35,7 @@ test('breadcrumb mirrors production levels: ประเทศไทย › จ�
   const siam = {id: 'siam', properties: {id: 'siam', name: 'สยาม', provinceCode: 'BKK'}};
   const crumbs = buildBreadcrumb({area: siam, provinceName: 'Phuket'});
   assert.deepEqual(crumbs.map(c => c.label), ['ประเทศไทย', 'กรุงเทพมหานคร', 'สยาม'], 'the area’s own province wins over a stale filter');
-  assert.equal(crumbs[1].code, 'BKK');
+  assert.equal(crumbs[1].id, 'BKK');
   assert.equal(crumbs.at(-1).current, true);
   assert.equal(breadcrumbText(crumbs), 'ประเทศไทย › กรุงเทพมหานคร › สยาม');
   const html = renderBreadcrumb(crumbs);
@@ -51,26 +51,30 @@ test('breadcrumb venue level: inside a core → 4 levels; outside every core →
   const siam = {id: 'siam', properties: {id: 'siam', name: 'สยาม', provinceCode: 'BKK'}};
   const paragon = {id: '49b5afdc-2436-48bc-8a89-007ac5541d98', label: 'Siam Paragon', province: 'Bangkok'};
   const four = buildBreadcrumb({area: siam, provinceName: '', venue: paragon});
-  assert.deepEqual(four.map(c => c.level), ['country', 'province', 'neighborhood', 'venue']);
+  assert.deepEqual(four.map(c => c.level), ['country', 'province', 'zone', 'site']);
   assert.equal(breadcrumbText(four), 'ประเทศไทย › กรุงเทพมหานคร › สยาม › Siam Paragon');
   assert.equal(four.at(-1).current, true);
   assert.equal(four.at(-1).id, paragon.id, 'the venue crumb carries the CityMETER Shopping Center id');
   // Venue outside every defined core: the ย่าน level is skipped, the province comes from the venue.
   const phuket = buildBreadcrumb({area: null, provinceName: '', venue: {id: 'x', label: 'Central Phuket', province: 'Phuket'}});
   assert.deepEqual(phuket.map(c => c.label), ['ประเทศไทย', 'ภูเก็ต', 'Central Phuket']);
-  // Plain venue label (no matched center) still gets a crumb that re-opens the venue by label.
+  // Plain venue label (no matched center) still gets a crumb; it is always the last one, so it never needs to re-open the venue.
   const plain = buildBreadcrumb({area: siam, venue: {id: '', label: 'Ari Soi 4', province: 'Bangkok'}});
-  assert.equal(plain.at(-1).value, 'Ari Soi 4');
+  assert.deepEqual([plain.at(-1).id, plain.at(-1).label, plain.at(-1).current], ['', 'Ari Soi 4', true]);
   // Rendering: with four levels the upper two are collapsible behind “…”; the last two never are.
   const html = renderBreadcrumb(four);
   assert.equal((html.match(/class="is-collapsible"/g) || []).length, 2);
   assert.ok(html.includes('crumb-ellipsis') && html.includes('data-action="crumb-expand"'));
-  assert.ok(html.includes('data-action="crumb-venue"') === false, 'the current venue is a label, not a link');
+  assert.ok(html.includes('data-action="crumb-site"') === false, 'the current venue is a label, not a link');
   const three = renderBreadcrumb(buildBreadcrumb({area: siam}));
   assert.ok(!three.includes('crumb-ellipsis') && !three.includes('is-collapsible'));
   // In store mode the app passes the host venue: the venue stays the last crumb (and a link), the store is the panel heading.
   const storeCrumbs = buildBreadcrumb({area: siam, venue: paragon});
-  assert.equal(storeCrumbs.at(-1).level, 'venue');
+  assert.equal(storeCrumbs.at(-1).level, 'site');
+  // The ย่าน is this dataset's own core, not a production Locale: no production link, and it is never put in `at`.
+  assert.equal(four[2].href, undefined);
+  assert.equal(four[2].action, 'crumb-zone');
+  assert.equal(four[1].href, 'https://landometer.com/v3/citymeter/BKK');
   assert.ok(renderBreadcrumb(storeCrumbs.map((c, i) => ({...c, current: i === storeCrumbs.length - 1}))).includes('aria-current'));
 });
 

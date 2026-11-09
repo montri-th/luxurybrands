@@ -3,7 +3,7 @@
   "schemaVersion": "1.3.0",
   "documentType": "implementation-plan",
   "productId": "citymeter-luxury-brands",
-  "productVersion": "0.5.0",
+  "productVersion": "0.6.0",
   "updatedOn": "2026-10-22",
   "brief": "product-brief.json",
   "statement": "product-statement.json",
@@ -126,7 +126,7 @@
         "role": "approved icons, toolbar titles and help dialog; PICTOGRAM_CONTRACT + pictograms-ready font gate"
       },
       {
-        "path": "js/launch.js",
+        "path": "js/shell/launch.js",
         "role": "boot states and file bridge"
       },
       {
@@ -349,7 +349,7 @@
         "AC05"
       ],
       "files": [
-        "js/launch.js",
+        "js/shell/launch.js",
         "js/vendors.js",
         "js/app.js"
       ],

@@ -11,7 +11,7 @@ Static HTML/CSS และ JavaScript ES modules ไม่มี build step ไ�
 | ไฟล์ | หน้าที่ | ข้อต่อที่ต้องรักษา |
 |---|---|---|
 | `index.html` | โครงหน้าจอ: header + toolbar (3D, มุมสถาปนิก), map panel + chrome, ถาดกราฟ, ตาราง, แผงอ่านข้อมูล (breadcrumb บนสุด), help dialog, launch overlay | DOM IDs ที่ `app.js` และ `navigation.js` ใช้; `?v=` บน entry files; ไม่มี CSV/caveat UI |
-| `js/launch.js` | classic boot script, file bridge, loading/slow/error fallback | events `citymeter:ready`, `citymeter:load-error`; public origin คงที่ |
+| `js/shell/launch.js` | classic boot script, file bridge, loading/slow/error fallback | events `citymeter:ready`, `citymeter:load-error`; public origin คงที่ |
 | `js/app.js` | state, สามขอบเขตข้อมูล + focus mode (`auto`/explicit/none), panel modes + back stack, breadcrumb, URL state, map lifecycle, camera calls, ติดตั้งชั้น spatial (areas → buildings → massing) | `update()` เป็นจุดเดียวที่คำนวณ selection และ `focusIds`; `updateSpatialLayers()` ส่ง regions/hosts ให้ massing |
 | `js/model.js` | taxonomy, cohorts, ตัวกรองร่วม, summaries, point features, `PROVINCES` (รหัส production) | ไม่แก้แถวต้นทาง; POS กับ distinct brands แยกกัน; รหัสจังหวัดตรง production |
 | `js/neighborhoods.js` | point-in-polygon, membership, สรุปย่าน | boundary คงที่; shared edge ใช้ priority แล้ว stable ID |
