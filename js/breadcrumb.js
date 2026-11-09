@@ -1,67 +1,43 @@
 /**
- * Breadcrumb — ประเทศไทย › จังหวัด › ย่าน › สถานที่ — aligned with CityMETER production.
+ * Breadcrumb — ประเทศไทย › จังหวัด › ย่าน › สถานที่, through the shared shell (js/shell/breadcrumb.js,
+ * citymeter-shell 0.4.2).
  *
- * Production (landometer.com/v3/citymeter, observed 2026-10-22) drills
- * country → province → one third level whose type is encoded in the path:
- *   /v3/citymeter/{PROVINCE_CODE}                 e.g. BKK, PKT, CMI
- *   /v3/citymeter/{PROVINCE_CODE}/L/{locale uuid}  Locale (ย่านจาก Locale Insight)
- *   /v3/citymeter/{PROVINCE_CODE}/M/{dopa code}    เทศบาล
- * This dataset's third level is its own analytical core (ย่าน, data/
- * neighborhoods.geojson), not yet a registered Locale, so the demo keeps the
- * same province codes but serialises the levels as query parameters (static
- * hosting): ?province=BKK&neighborhood=siam&place=<center id>.
+ * The ย่าน level here is this dataset's own analytical core (data/neighborhoods.geojson, docs/NEIGHBORHOOD_METHOD.md),
+ * not a production Locale and not an administrative area, so its crumb is a zone with no production link
+ * (demo-platform-review §6 phase 3, the plan the owner approved 2026-11-08: a ย่าน uses a production Locale or says
+ * it is this dataset's ย่าน) and the address keeps it as the filter `f.neighborhood`. Never invent a Locale or municipality id for a core. The
+ * province crumb links /v3/citymeter/{code}; production has no luxury-brands dataset yet (`luxuryBrands` is this
+ * repository's proposal), so the links carry no `d`.
  *
- * Fourth level (owner decision 2026-10-22): the venue — a shopping center or
- * plain venue label. Matched centers carry the CityMETER Shopping Center id
- * (data/luxury.json centers[].id / externalId SC-…), so the crumb already names
- * the production entity. Rules:
- *   - the ย่าน crumb appears when a neighborhood is selected or when the venue's
- *     representative point lies inside a core (point-in-polygon, never by name);
+ * Fourth level (owner decision 2026-10-22): the venue — a matched shopping center (CityMETER Shopping Center id,
+ * data/luxury.json centers[].id / externalId SC-…) or a plain venue label — the last crumb, with no production link.
+ * Rules:
+ *   - the ย่าน crumb appears when a neighborhood is selected or when the venue's representative point lies inside a
+ *     core (point-in-polygon, never by name);
  *   - a venue outside every core skips that level: ประเทศไทย › ภูเก็ต › Central Phuket;
  *   - a store is not a crumb (it is a record, not a container) — the panel heading names it;
  *   - with four crumbs on narrow screens the upper levels collapse behind “…”.
- * Proposed production mapping: /v3/citymeter/{code}/N/{neighborhood id}/V/{center id}
- * ?d=luxuryBrands until each core is registered as a Locale (then /L/{uuid}).
  */
 import {provinceByName, provinceByCode} from './model.js';
+import {buildBreadcrumb as shellBreadcrumb, renderBreadcrumb, breadcrumbText} from './shell/breadcrumb.js';
 
-const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+/** Production carries no luxury-brands dataset yet: crumbs link the place alone (no `?d=`). */
+const PRODUCTION_DATASET = '';
+const shellProvince = code => { const p = provinceByCode(code); return p ? {code: p.code, th: p.th} : null; };
 
 /**
- * Pure model. `area` is the selected or containing neighborhood feature (or
- * null); `provinceName` is the dataset province filter value (e.g. "Bangkok")
- * or ''; `venue` is `{id, label, province}` for the open venue/store host (or
- * null). Province precedence: the area's own province (properties.provinceCode)
- * → the filter → the venue's province.
+ * Pure model. `area` is the selected or containing neighborhood feature (or null); `provinceName` is the dataset
+ * province filter value (e.g. "Bangkok") or ''; `venue` is `{id, label, province}` for the open venue/store host (or
+ * null). Province precedence: the area's own province (properties.provinceCode) → the filter → the venue's province.
  */
 export function buildBreadcrumb({area = null, provinceName = '', venue = null} = {}) {
-  const crumbs = [{level: 'country', label: 'ประเทศไทย', action: 'crumb-country'}];
-  const areaProvince = area ? provinceByCode(area.properties?.provinceCode) : null;
-  const province = areaProvince || provinceByName(provinceName) || (venue?.province ? provinceByName(venue.province) : null);
-  if (province) crumbs.push({level: 'province', label: province.th, code: province.code, action: 'crumb-province'});
-  if (area) crumbs.push({level: 'neighborhood', label: area.properties.name, id: area.id || area.properties.id, action: 'crumb-area'});
-  if (venue && venue.label) crumbs.push({level: 'venue', label: venue.label, id: venue.id || '', value: venue.label, action: 'crumb-venue'});
-  crumbs[crumbs.length - 1].current = true;
-  return crumbs;
+  const code = provinceByCode(area?.properties?.provinceCode)?.code || provinceByName(provinceName)?.code
+    || (venue?.province ? provinceByName(venue.province)?.code : '') || '';
+  return shellBreadcrumb({
+    province: code,
+    zone: area ? {id: area.id || area.properties.id, name: area.properties.name, province: code} : null,
+    site: venue?.label ? {id: venue.id || '', name: venue.label, province: code} : null,
+  }, {dataset: PRODUCTION_DATASET, provinceByCode: shellProvince});
 }
 
-/**
- * HTML for the panel header; the last crumb is the current level (aria-current).
- * With four or more levels the upper ones get `is-collapsible` so narrow
- * screens can fold them behind an “…” toggle (the last two always stay visible).
- */
-export function renderBreadcrumb(crumbs) {
-  const collapsible = crumbs.length >= 4;
-  const items = crumbs.map((c, i) => {
-    const fold = collapsible && i < crumbs.length - 2;
-    const inner = c.current
-      ? `<span class="crumb is-current" aria-current="location">${esc(c.label)}</span>`
-      : `<button type="button" class="crumb" data-action="${esc(c.action)}" data-id="${esc(c.id || c.code || '')}"${c.value ? ` data-value="${esc(c.value)}"` : ''}>${esc(c.label)}</button>`;
-    return `<li${fold ? ' class="is-collapsible"' : ''}>${inner}</li>`;
-  });
-  if (collapsible) items.splice(crumbs.length - 2, 0, '<li class="crumb-ellipsis"><button type="button" class="crumb crumb-more" data-action="crumb-expand" aria-expanded="false" aria-label="แสดงระดับบน">…</button></li>');
-  return `<ol class="crumbs${collapsible ? ' is-collapsible' : ''}">${items.join('')}</ol>`;
-}
-
-/** Compact text form for the mobile map card and the document title. */
-export const breadcrumbText = crumbs => crumbs.map(c => c.label).join(' › ');
+export {renderBreadcrumb, breadcrumbText};

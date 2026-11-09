@@ -24,7 +24,10 @@
  * Camera: 3D by default (camera.js presets city/model/eye) with a 2D plan
  * toggle; the basemap is generated (map-style.js) on OpenFreeMap tiles.
  * Panel modes: overview | neighborhood | venue | store (with a back stack).
- * URL state: filters, areas, view, store, place, view3d, cam — restored on load.
+ * URL state (own names, inside): filters (neighborhood among them), areas, view, store, place, view3d, cam —
+ * written in the shared grammar d · at · e · f.* · focus · view · v3d · cam by citymeter-shell (js/shell/url.js):
+ * the ย่าน (this dataset's own core, not a production Locale) stays `f.neighborhood`, a filter that opens a level;
+ * one browser history entry per level (the back button goes up a level), restored on load.
  * Resilience: core data first; the map (MapLibre, CDN) and optional datasets
  * are independent and retryable; charts are vendor-free.
  */
@@ -46,6 +49,8 @@ import {buildMapStyle, basemapPalette, TILEJSON_URL, MASSING_BEFORE} from './map
 import {installMassing, outerRings} from './massing.js';
 import {presetFor, applyPreset, fitPitched, framePoint} from './camera.js';
 import {buildBreadcrumb, renderBreadcrumb, breadcrumbText} from './breadcrumb.js';
+import {createCodec, createNavigator} from './shell/url.js';
+import {pageTitle} from './shell/title.js';
 
 const $ = id => document.getElementById(id);
 const FIELDS = ['search', 'cohort', 'segment', 'province', 'channel', 'venue', 'neighborhood'];
@@ -85,6 +90,22 @@ const sheetOpen = () => mobilePortrait() && $('panel').classList.contains('is-op
 const cameraPreset = () => presetFor({view3d: state.view3d, mode: state.panel.mode === 'overview' ? 'overview' : 'detail', twoPoint: state.twoPoint && venueLevel() && !sheetOpen()});
 const animate = () => !reduced();
 
+/* ---------- address (citymeter-shell, js/shell/url.js) ---------- */
+// The page keeps its own parameter names inside (saveURL / restoreFromURL); the shell writes them in the shared
+// grammar d · at · e · f.* · focus · view · v3d · cam, and opening a ย่าน, a store or a venue adds one browser history
+// entry, so the back button goes up a level. A ย่าน here is this dataset's own analytical core
+// (data/neighborhoods.geojson), not a production Locale, so it never goes in `at`: it stays the filter
+// `f.neighborhood=<core id>`, a filter that opens a level (citymeter-shell levelFilters); a province is `at=BKK`. Old
+// links (?province=, ?neighborhood=, ?store=, ?place=, ?areas=, ?view3d= …) still open and are rewritten.
+// `d=luxuryBrands` is this repository's proposal, not a production dataset yet; the `e` kinds are provisional until
+// the dataset registry declares them: `store` (POS-) and `venue` (the CityMETER Shopping Center id,
+// data/luxury.json centers[].id). A venue without a matched center has no address yet.
+const nav = createNavigator(createCodec({
+  dataset: 'luxuryBrands', levels: ['P'], place: {province: 'province'},
+  items: {store: 'store', place: 'venue'}, filters: FIELDS, levelFilters: ['neighborhood'],
+  rename: {areas: 'focus', view: 'view', view3d: 'v3d', cam: 'cam'},
+}), {onPop: restoreFromHistory});
+
 function saveURL() {
   const f = values(), p = new URLSearchParams();
   for (const [k, v] of Object.entries(f)) {
@@ -98,7 +119,7 @@ function saveURL() {
   if (state.panel.mode === 'venue' && state.panel.id) p.set('place', state.panel.id);
   if (!state.view3d) p.set('view3d', '0');
   if (!state.twoPoint) p.set('cam', 'model');
-  history.replaceState(null, '', location.pathname + (p.size ? '?' + p : ''));
+  nav.commit(p);
 }
 
 /* ---------- theme ---------- */
@@ -222,7 +243,10 @@ function renderCrumbs() {
   const area = selectedNeighborhood() || (venue?.point ? assignNeighborhood(venue.point, state.neighborhoods) : null);
   const crumbs = buildBreadcrumb({area, provinceName: $('province').value, venue});
   $('crumbs').innerHTML = renderBreadcrumb(crumbs);
-  document.title = `${breadcrumbText(crumbs)} · Luxury Brands · CityMETER`;
+  // Tab title: what the view shows, then the product, ≤ 60 characters (LDS FAVICON-01, js/shell/title.js).
+  const r = state.panel.mode === 'store' ? rowById(state.panel.id) : null;
+  document.title = pageTitle(r ? r.name || [r.brand, r.venue].filter(Boolean).join(' ')
+    : state.panel.mode === 'venue' && venue ? venue.label : `แบรนด์หรู ${crumbs[crumbs.length - 1].label}`);
   return crumbs;
 }
 
@@ -267,6 +291,9 @@ function renderMapAha(insight) {
 function pushHistory() { state.history.push({...state.panel}); if (state.history.length > 20) state.history.shift(); }
 
 function goBack() {
+  // Every addressed level is a browser history entry (citymeter-shell): go up the way the browser's button does. A
+  // venue without a host id has no address of its own, so its step back stays in the panel's own history.
+  if (!(state.panel.mode === 'venue' && !state.panel.id) && nav.canGoBack()) { nav.back(); return; }
   const previous = state.history.pop();
   const leavingArea = state.panel.mode === 'neighborhood';
   if (!previous || previous.mode === 'overview') {
@@ -409,8 +436,8 @@ function onPanelAction(event) {
     case 'crumb-country': $('province').value = ''; $('neighborhood').value = ''; resetToOverview(); break;
     case 'crumb-province': { const name = provinceNameFrom(id); if ([...$('province').options].some(o => o.value === name)) $('province').value = name; $('neighborhood').value = ''; resetToOverview(); break; }
     case 'select-province': selectProvince(id); break;
-    case 'crumb-area': selectNeighborhood(id); break;
-    case 'crumb-venue': selectVenue(id, value); break;
+    case 'crumb-zone': selectNeighborhood(id); break;
+    case 'crumb-site': selectVenue(id, value); break;
     case 'crumb-expand': { const ol = target.closest('.crumbs'); ol.classList.add('is-expanded'); target.setAttribute('aria-expanded', 'true'); ol.querySelector('.crumb:not(.crumb-more)')?.focus({preventScroll: true}); break; }
     case 'toggle-3d': toggle3d(); break;
     default: break;
@@ -767,7 +794,7 @@ function options(id, items, labels = {}) {
 }
 
 function restoreFromURL() {
-  const p = new URLSearchParams(location.search);
+  const p = nav.read();
   for (const f of FIELDS) if (p.has(f)) $(f).value = f === 'province' ? (provinceNameFrom(p.get(f)) || p.get(f)) : p.get(f);
   if (!$('cohort').value) $('cohort').value = 'refresh';
   if (['centers', 'mix', 'compare'].includes(p.get('view'))) state.view = p.get('view');
@@ -781,6 +808,25 @@ function restoreFromURL() {
   if (mall && [...$('venue').options].some(o => o.value === mall.name)) $('venue').value = mall.name;
   if (p.get('store') && rowById(p.get('store'))) state.panel = {mode: 'store', id: p.get('store'), venue: ''};
   else if (p.get('place')) { const c = state.data.centers.find(x => x.id === p.get('place')); if (c) state.panel = {mode: 'venue', id: c.id, venue: c.name}; }
+}
+
+/** Frame what a restored address opened (browser back / forward): the venue's building or point, the store's point. */
+function frameOpen() {
+  if (state.panel.mode === 'venue') frameVenue(buildVenueProfile(state.scopeRows, {mallId: state.panel.id, venue: state.panel.venue, centers: state.data.centers, geojson: state.neighborhoods}));
+  else { const r = rowById(state.panel.id); if (r && hasPoint(r)) framePoint(state.map, [r.longitude, r.latitude], {preset: cameraPreset(), zoom: 16, offset: sheetOffset(), animate: animate()}); }
+  state.lastPreset = cameraPreset();
+}
+
+/** Browser back / forward (citymeter-shell): show the level the restored address names. */
+function restoreFromHistory() {
+  for (const f of FIELDS) $(f).value = '';
+  Object.assign(state, {view: 'centers', focusAreaIds: [], autoFocus: true, panel: overviewPanel(), history: []});
+  state.popup?.remove(); state.popup = null;
+  restoreFromURL();
+  $('toggle-3d').setAttribute('aria-pressed', String(state.view3d));
+  const open = state.panel.mode === 'venue' || state.panel.mode === 'store';
+  update({fit: !open});
+  if (open && state.loaded) frameOpen();
 }
 
 function wireEvents() {
