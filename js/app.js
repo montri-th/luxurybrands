@@ -50,6 +50,7 @@ import {installMassing, outerRings} from './massing.js';
 import {presetFor, applyPreset, fitPitched, framePoint} from './camera.js';
 import {buildBreadcrumb, renderBreadcrumb, breadcrumbText} from './breadcrumb.js';
 import {createCodec, createNavigator} from './shell/url.js';
+import {mapBudget, budgetPixelRatio, reloadOnContextLoss} from './shell/maplibre-guard.js';
 import {pageTitle} from './shell/title.js';
 
 const $ = id => document.getElementById(id);
@@ -671,7 +672,7 @@ function initMap() {
   if (!window.maplibregl) throw new Error('Map library is unavailable');
   try {
     state.mapTheme = theme();
-    state.map = new maplibregl.Map({container: 'map', center: BANGKOK.center, zoom: BANGKOK.zoom, pitch: 0, maxPitch: 85, attributionControl: {compact: true}, style: buildMapStyle(state.mapTheme)});
+    state.map = new maplibregl.Map({container: 'map', pixelRatio: budgetPixelRatio(mapBudget()), maxTileCacheZoomLevels: mapBudget().cacheZoomLevels, center: BANGKOK.center, zoom: BANGKOK.zoom, pitch: 0, maxPitch: 85, attributionControl: {compact: true}, style: buildMapStyle(state.mapTheme)});
     state.map.addControl(new maplibregl.NavigationControl({showCompass: true, visualizePitch: true}), 'top-right');
     state.labels = installNeighborhoodLabels(state.map, $('map'), {onSelect: id => selectNeighborhood(id, {fromMap: true}), reservedBottom: bottomSpace});
     state.provinceLabels = installAreaLabels(state.map, $('map'), {className: 'province-label', hostId: 'province-labels', hostLabel: 'จังหวัดบนแผนที่', minZoom: 0, maxZoom: PROVINCE_LABEL_MAX_ZOOM, verb: 'กดเพื่อดูจังหวัด', detailZoomClass: false, onSelect: code => selectProvince(code), reservedBottom: bottomSpace});
@@ -687,6 +688,8 @@ function initMap() {
     updatePins();
     state.map.on('style.load', installSpatialLayers);
     state.map.on('error', e => console.warn('Map resource', e.error?.message || e));
+    // A lost WebGL context (a phone under memory pressure): say so and reload once, lean (js/shell/maplibre-guard.js).
+    reloadOnContextLoss(state.map);
     // The same TileJSON MapLibre reads gives the tile template for the focus massing decoder.
     fetch(TILEJSON_URL).then(r => r.json()).then(j => { state.tileTemplate = j.tiles?.[0] || ''; if (state.loaded) updateSpatialLayers(); }).catch(e => { partial('basemap'); console.warn('TileJSON', e); });
   } catch (e) {
