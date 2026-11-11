@@ -50,6 +50,7 @@ import {installMassing, outerRings} from './massing.js';
 import {presetFor, applyPreset, fitPitched, framePoint} from './camera.js';
 import {buildBreadcrumb, renderBreadcrumb, breadcrumbText} from './breadcrumb.js';
 import {createCodec, createNavigator} from './shell/url.js';
+import {mapBudget, budgetPixelRatio, reloadOnContextLoss} from './shell/maplibre-guard.js';
 import {pageTitle} from './shell/title.js';
 
 const $ = id => document.getElementById(id);
@@ -671,7 +672,7 @@ function initMap() {
   if (!window.maplibregl) throw new Error('Map library is unavailable');
   try {
     state.mapTheme = theme();
-    state.map = new maplibregl.Map({container: 'map', center: BANGKOK.center, zoom: BANGKOK.zoom, pitch: 0, maxPitch: 85, attributionControl: {compact: true}, style: buildMapStyle(state.mapTheme)});
+    state.map = new maplibregl.Map({container: 'map', pixelRatio: budgetPixelRatio(mapBudget()), maxTileCacheZoomLevels: mapBudget().cacheZoomLevels, center: BANGKOK.center, zoom: BANGKOK.zoom, pitch: 0, maxPitch: 85, attributionControl: {compact: true}, style: buildMapStyle(state.mapTheme)});
     state.map.addControl(new maplibregl.NavigationControl({showCompass: true, visualizePitch: true}), 'top-right');
     state.labels = installNeighborhoodLabels(state.map, $('map'), {onSelect: id => selectNeighborhood(id, {fromMap: true}), reservedBottom: bottomSpace});
     state.provinceLabels = installAreaLabels(state.map, $('map'), {className: 'province-label', hostId: 'province-labels', hostLabel: 'จังหวัดบนแผนที่', minZoom: 0, maxZoom: PROVINCE_LABEL_MAX_ZOOM, verb: 'กดเพื่อดูจังหวัด', detailZoomClass: false, onSelect: code => selectProvince(code), reservedBottom: bottomSpace});
@@ -687,8 +688,10 @@ function initMap() {
     updatePins();
     state.map.on('style.load', installSpatialLayers);
     state.map.on('error', e => console.warn('Map resource', e.error?.message || e));
+    // A lost WebGL context (a phone under memory pressure): say so and reload once, lean (js/shell/maplibre-guard.js).
+    reloadOnContextLoss(state.map);
     // The same TileJSON MapLibre reads gives the tile template for the focus massing decoder.
-    fetch(TILEJSON_URL).then(r => r.json()).then(j => { state.tileTemplate = j.tiles?.[0] || ''; if (state.loaded) updateSpatialLayers(); }).catch(e => console.warn('TileJSON', e));
+    fetch(TILEJSON_URL).then(r => r.json()).then(j => { state.tileTemplate = j.tiles?.[0] || ''; if (state.loaded) updateSpatialLayers(); }).catch(e => { partial('basemap'); console.warn('TileJSON', e); });
   } catch (e) {
     state.loaded = false; state.initialCameraDone = false;
     for (const cleanup of [() => state.pins?.dispose(), () => state.labels?.dispose(), () => state.provinceLabels?.dispose(), () => state.xray?.dispose(), () => state.buildings?.dispose(), () => state.massing?.dispose(), () => state.map?.remove()]) { try { cleanup(); } catch (err) { console.warn('Map cleanup', err); } }
@@ -879,6 +882,25 @@ function wireEvents() {
   matchMedia('(max-width: 760px) and (orientation: portrait)').addEventListener?.('change', () => { if (!mobilePortrait()) $('panel').classList.remove('is-open'); renderPanel(); });
 }
 
+/**
+ * A part of the data that did not load is said on the page (citymeter-shell 0.6.0, js/shell/launch.js
+ * `citymeter:partial`): what is missing and what that does to the result on screen, with a reload that keeps the
+ * address. The words live here, by file: [Thai name, Thai effect, English name, English effect].
+ */
+const PARTIAL = {
+  'data/provinces.geojson': ['กรอบจังหวัด', 'แผนที่ไม่แสดงขอบจังหวัด', 'Province outlines', 'The map shows no province outlines'],
+  'basemap': ['แผนที่ฐาน', 'ถนน แหล่งน้ำ และอาคารพื้นหลังอาจไม่แสดง ข้อมูลในแผงและตารางยังใช้ได้', 'Basemap', 'Roads, water and background buildings may be missing; the panel and the table still work'],
+  'data/brand-logos.json': ['โลโก้แบรนด์', 'แสดงชื่อแทนโลโก้', 'Brand logos', 'Names are shown instead of logos'],
+  'data/venue-logos.json': ['โลโก้สถานที่', 'แสดงชื่อแทนโลโก้', 'Venue logos', 'Names are shown instead of logos'],
+  'data/venue-buildings.geojson': ['อาคารของสถานที่', 'สถานที่ไม่แสดงเป็นอาคารบนแผนที่', 'Venue buildings', 'Venues are not drawn as buildings on the map'],
+  'data/neighborhoods.geojson': ['ขอบเขตย่าน', 'ผลไม่ได้แบ่งตามย่าน มุมมองเริ่มต้นจึงต่างจากปกติ', 'Neighbourhood outlines', 'Results are not divided by neighbourhood, so the opening view differs'],
+};
+function partial(key) {
+  const words = PARTIAL[key];
+  if (!words || typeof window === 'undefined') return;
+  window.dispatchEvent(new CustomEvent('citymeter:partial', {detail: {id: key, label: words[0], effect: words[1], labelEn: words[2], effectEn: words[3]}}));
+}
+
 async function init() {
   try {
     const resources = ['data/luxury.json', 'data/neighborhoods.geojson', 'data/venue-buildings.geojson', 'data/brand-logos.json', 'data/provinces.geojson', 'data/venue-logos.json'];
@@ -893,6 +915,8 @@ async function init() {
         console.warn('Optional dataset unavailable', error);
       }
     }
+    // A file that did not load is said on the page (citymeter-shell 0.6.0).
+    resources.forEach((r, i) => { if (results[i].status === 'rejected') partial(r); });
     state.neighborhoods = results[1].status === 'fulfilled' ? results[1].value : {type: 'FeatureCollection', features: []};
     state.buildingData = results[2].status === 'fulfilled' ? results[2].value : {type: 'FeatureCollection', features: []};
     state.provinces = results[4].status === 'fulfilled' ? results[4].value : {type: 'FeatureCollection', features: []};
