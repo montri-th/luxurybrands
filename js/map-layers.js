@@ -119,7 +119,8 @@ export function installNeighborhoodLayers(map, geojson, {onSelect} = {}) {
 
 /**
  * HTML labels for the defined neighborhoods: name + distinct-brand badge.
- * Collision-managed against each other and the map chrome; hidden below z11.5.
+ * Collision-managed against each other and the map chrome; hidden below z11.5. The chrome includes the bottom
+ * controls, the map's credit among them, as the pins keep clear of them (release 0.7.3).
  * installAreaLabels is the general form (province frames reuse it with their
  * own class, zoom window and wording).
  */
@@ -139,7 +140,7 @@ export function installAreaLabels(map, container, {onSelect, reservedBottom = ()
   function layout() {
     const width = container.clientWidth, height = container.clientHeight - reservedBottom();
     const panel = container.closest('.map-panel'), rect = container.getBoundingClientRect();
-    const chrome = [...panel.querySelectorAll('.map-toolbar, .map-legend, .map-status, .map-aha, .maplibregl-ctrl-top-right')]
+    const chrome = [...panel.querySelectorAll('.map-toolbar, .map-legend, .map-status, .map-aha, .maplibregl-ctrl-top-right, .maplibregl-ctrl-bottom-right, .maplibregl-ctrl-bottom-left')]
       .filter(e => e.offsetWidth && e.offsetHeight)
       .map(e => { const b = e.getBoundingClientRect(); return {left: b.left - rect.left - 4, right: b.right - rect.left + 4, top: b.top - rect.top - 4, bottom: b.bottom - rect.top + 4}; });
     const placed = [];

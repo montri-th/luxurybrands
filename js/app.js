@@ -719,7 +719,8 @@ const sameCamera = (a, b) => ['zoom', 'bearing', 'pitch'].every(k => Math.abs(a[
  *   button on a narrow screen — the key and the finding stand above it (.is-key-lifted);
  * - where the strip of map between the toolbar and the tray cannot hold the finding, the key and the attribution
  *   together (the chart open), the finding gives way (.is-crowded): the panel states it too;
- * - while the first view stands untouched, it is framed again for where the cards now begin (reframeFirst).
+ * - while the first view stands untouched, it is framed again for where the cards now begin (reframeFirst);
+ * - the area labels are placed again for where the cards and the credit now stand, clear of both.
  * Measured once a frame, outside the observer's own callback: hiding the finding changes a size it observes.
  */
 function trackAttribution(map) {
@@ -745,6 +746,8 @@ function trackAttribution(map) {
       panel.classList.toggle('is-crowded', phone && ahaHeight > 0 && need > room);
     }
     reframeFirst();
+    state.labels?.layout();
+    state.provinceLabels?.layout();
   };
   const schedule = () => { if (!frame) frame = requestAnimationFrame(set); };
   const observer = new ResizeObserver(schedule);
