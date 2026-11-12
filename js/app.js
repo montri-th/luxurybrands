@@ -66,7 +66,7 @@ const state = {
   view: 'centers', page: 0,
   focusAreaIds: [], autoFocus: true, focusIds: [], selectedId: '',
   panel: {mode: 'overview', id: '', venue: ''}, history: [],
-  map: null, loaded: false, mapTheme: '', popup: null, initialCameraDone: false, tileTemplate: '',
+  map: null, loaded: false, mapTheme: '', popup: null, initialCameraDone: false, firstFrame: null, tileTemplate: '',
   view3d: true, twoPoint: true, showNeighborhoods: true,
   pins: null, buildings: null, massing: null, xray: null, areaLayers: null, labels: null, areaModel: null,
   provinceLayers: null, provinceLabels: null, provinceModel: null,
@@ -662,11 +662,54 @@ function installSpatialLayers() {
   updateSpatialLayers();
   if (!state.initialCameraDone) {
     state.initialCameraDone = true;
-    if (state.panel.mode === 'store') { const r = rowById(state.panel.id); if (r && hasPoint(r)) framePoint(map, [r.longitude, r.latitude], {preset: cameraPreset(), zoom: 16, animate: false}); }
-    else if (state.panel.mode === 'venue') { const p = buildVenueProfile(state.scopeRows, {mallId: state.panel.id, venue: state.panel.venue, centers: state.data.centers, geojson: state.neighborhoods}); frameVenue(p, {instant: true}); }
-    else fitMap({instant: true});
+    frameFirst();
   }
 }
+
+/** The first view: the linked store or venue, otherwise the overview. */
+function frameFirstView() {
+  if (state.panel.mode === 'store') { const r = rowById(state.panel.id); if (r && hasPoint(r)) framePoint(state.map, [r.longitude, r.latitude], {preset: cameraPreset(), zoom: 16, animate: false}); }
+  else if (state.panel.mode === 'venue') { const p = buildVenueProfile(state.scopeRows, {mallId: state.panel.id, venue: state.panel.venue, centers: state.data.centers, geojson: state.neighborhoods}); frameVenue(p, {instant: true}); }
+  else fitMap({instant: true});
+}
+
+/**
+ * The first view is framed when the map loads, often before the map's attribution has its text. On a phone the key
+ * and the finding then rise above the attribution (trackAttribution) and can stand over the lowest framed areas: on
+ * citymeter.pages.dev in Chrome on 2026-11-12 (release 0.7.1) Silom's label lay 21 px under the finding at 320 × 568
+ * until the map was first moved (Camera Shops, the same code: Siam's, 11 px at 393 × 659). So while nobody has touched
+ * the page and the camera stands where the first frame left it, the first view is framed again for where the cards now
+ * begin (reframeFirst, called by trackAttribution), at most three times. A frame that pulls out by more than half a
+ * zoom level is not kept: on a short screen the strip between the toolbar and the cards can be too low for the fit.
+ */
+function frameFirst() {
+  frameFirstView();
+  state.firstFrame = mobilePortrait() && state.map ? {camera: cameraOf(state.map), top: cardsTop(), left: 3} : null;
+  if (!state.firstFrame) return;
+  const touched = () => { state.firstFrame = null; };
+  for (const type of ['pointerdown', 'keydown', 'wheel']) window.addEventListener(type, touched, {capture: true, once: true, passive: true});
+}
+
+function reframeFirst() {
+  const first = state.firstFrame;
+  if (!first || !state.map || !mobilePortrait()) return;
+  const top = cardsTop();
+  if (top == null || first.top == null || Math.abs(top - first.top) < 2) return;
+  const before = cameraOf(state.map);
+  if (!sameCamera(before, first.camera) || first.left <= 0) { state.firstFrame = null; return; }
+  frameFirstView();
+  if (state.map.getZoom() < before.zoom - 0.5) { state.map.jumpTo(before); state.firstFrame = null; return; }
+  state.firstFrame = {camera: cameraOf(state.map), top, left: first.left - 1};
+}
+
+/** Where the cards over the map begin: the finding's top, or the key's while the finding is out of the way (as cameraPadding reads it). */
+function cardsTop() {
+  const aha = $('map-aha'), legend = $('map-legend');
+  if (aha && !aha.hidden && aha.offsetHeight) return Math.round(aha.getBoundingClientRect().top);
+  return legend?.offsetHeight ? Math.round(legend.getBoundingClientRect().top) : null;
+}
+const cameraOf = map => ({center: map.getCenter().toArray(), zoom: map.getZoom(), bearing: map.getBearing(), pitch: map.getPitch(), padding: map.getPadding()});
+const sameCamera = (a, b) => ['zoom', 'bearing', 'pitch'].every(k => Math.abs(a[k] - b[k]) < 1e-6) && a.center.every((v, i) => Math.abs(v - b.center[i]) < 1e-9);
 
 /**
  * The map's attribution (OpenStreetMap, OpenMapTiles, CityMETER) must stay readable (owner 2026-11-12 00:36, the look
@@ -675,7 +718,8 @@ function installSpatialLayers() {
  * - where the key would stand over the attribution — open on load until the map is first moved, or folded to its
  *   button on a narrow screen — the key and the finding stand above it (.is-key-lifted);
  * - where the strip of map between the toolbar and the tray cannot hold the finding, the key and the attribution
- *   together (the chart open), the finding gives way (.is-crowded): the panel states it too.
+ *   together (the chart open), the finding gives way (.is-crowded): the panel states it too;
+ * - while the first view stands untouched, it is framed again for where the cards now begin (reframeFirst).
  * Measured once a frame, outside the observer's own callback: hiding the finding changes a size it observes.
  */
 function trackAttribution(map) {
@@ -694,11 +738,13 @@ function trackAttribution(map) {
     panel.style.setProperty('--legend-height', `${legendHeight}px`);
     const lifted = phone && Boolean(a && k) && k.right > a.left - 4;        // side by side they need no lift
     panel.classList.toggle('is-key-lifted', lifted);
-    if (!aha || !tray || !toolbar) return;
-    if (aha.offsetHeight) ahaHeight = aha.offsetHeight;                      // kept while the finding is out of the way
-    const room = tray.getBoundingClientRect().top - toolbar.getBoundingClientRect().bottom;
-    const need = 8 + ahaHeight + 8 + legendHeight + (lifted ? attribHeight + 14 : 8);
-    panel.classList.toggle('is-crowded', phone && ahaHeight > 0 && need > room);
+    if (aha && tray && toolbar) {
+      if (aha.offsetHeight) ahaHeight = aha.offsetHeight;                    // kept while the finding is out of the way
+      const room = tray.getBoundingClientRect().top - toolbar.getBoundingClientRect().bottom;
+      const need = 8 + ahaHeight + 8 + legendHeight + (lifted ? attribHeight + 14 : 8);
+      panel.classList.toggle('is-crowded', phone && ahaHeight > 0 && need > room);
+    }
+    reframeFirst();
   };
   const schedule = () => { if (!frame) frame = requestAnimationFrame(set); };
   const observer = new ResizeObserver(schedule);
@@ -734,7 +780,7 @@ function initMap() {
     // The same TileJSON MapLibre reads gives the tile template for the focus massing decoder.
     fetch(TILEJSON_URL).then(r => r.json()).then(j => { state.tileTemplate = j.tiles?.[0] || ''; if (state.loaded) updateSpatialLayers(); }).catch(e => { partial('basemap'); console.warn('TileJSON', e); });
   } catch (e) {
-    state.loaded = false; state.initialCameraDone = false;
+    state.loaded = false; state.initialCameraDone = false; state.firstFrame = null;
     for (const cleanup of [() => state.pins?.dispose(), () => state.labels?.dispose(), () => state.provinceLabels?.dispose(), () => state.xray?.dispose(), () => state.buildings?.dispose(), () => state.massing?.dispose(), () => state.map?.remove()]) { try { cleanup(); } catch (err) { console.warn('Map cleanup', err); } }
     state.map = null; state.pins = null; state.labels = null; state.provinceLabels = null; state.buildings = null; state.massing = null; state.xray = null; state.areaLayers = null; state.provinceLayers = null; state.provinceModel = null;
     throw e;
