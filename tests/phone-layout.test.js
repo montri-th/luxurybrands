@@ -44,6 +44,18 @@ test('phone: an untouched first view is framed again when the cards move, within
   assert.match(again, /!sameCamera\(before, first\.camera\) \|\| first\.left <= 0/, 'only while the camera stands where the first frame left it, and at most three times');
   assert.match(again, /getZoom\(\) < before\.zoom - 0\.5\) \{ state\.map\.jumpTo\(before\);/, 'a frame that pulls out by more than half a level is not kept');
   const track = app.slice(app.indexOf('function trackAttribution(map)'));
-  assert.match(track.slice(0, track.indexOf('const schedule')), /\n    reframeFirst\(\);\n  \};/, 'after the cards have their place for this frame');
+  assert.match(track.slice(0, track.indexOf('const schedule')), /\n    reframeFirst\(\);\n    state\.labels\?\.layout\(\);/, 'after the cards have their place for this frame');
   assert.match(app, /state\.initialCameraDone = false; state\.firstFrame = null;/);
+});
+
+// Release 0.7.3 (owner's choice 2026-11-12 after the morning check): on load an area label could stand over the map's
+// credit (Camera Shops, the same code: 23 % of its text at 360 × 712), as the labels kept clear of the cards but not of it, and were placed only when the map moved.
+test('phone: area labels keep clear of the map credit and are placed again when the cards move', () => {
+  const layers = readFileSync(new URL('js/map-layers.js', root), 'utf8');
+  const area = layers.slice(layers.indexOf('export function installAreaLabels'));
+  assert.match(area, /querySelectorAll\('\.map-toolbar, \.map-legend, \.map-status, \.map-aha, \.maplibregl-ctrl-top-right, \.maplibregl-ctrl-bottom-right, \.maplibregl-ctrl-bottom-left'\)/, 'the labels keep clear of what the pins keep clear of');
+  const pins = readFileSync(new URL('js/pins.js', root), 'utf8');
+  assert.match(pins, /\.maplibregl-ctrl-bottom-right, \.maplibregl-ctrl-bottom-left'\)/, 'the pins still keep clear of the bottom controls');
+  const track = app.slice(app.indexOf('function trackAttribution(map)'));
+  assert.match(track.slice(0, track.indexOf('const schedule')), /\n    reframeFirst\(\);\n    state\.labels\?\.layout\(\);\n    state\.provinceLabels\?\.layout\(\);\n  \};/, 'placed again each time the cards or the credit move');
 });
