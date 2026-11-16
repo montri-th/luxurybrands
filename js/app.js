@@ -52,6 +52,9 @@ import {buildBreadcrumb, renderBreadcrumb, breadcrumbText} from './breadcrumb.js
 import {createCodec, createNavigator} from './shell/url.js';
 import {mapBudget, budgetPixelRatio, reloadOnContextLoss} from './shell/maplibre-guard.js';
 import {pageTitle} from './shell/title.js';
+import {createIndex} from './shell/fuzzy.js';
+import {installSearch} from './shell/search.js';
+import {SEARCH_KINDS, SEARCH_HEADS, SEARCH_HINT, searchEntries, searchNote} from './find.js';
 
 const $ = id => document.getElementById(id);
 const FIELDS = ['search', 'cohort', 'segment', 'province', 'channel', 'venue', 'neighborhood'];
@@ -70,6 +73,7 @@ const state = {
   view3d: true, twoPoint: true, showNeighborhoods: true,
   pins: null, buildings: null, massing: null, xray: null, areaLayers: null, labels: null, areaModel: null,
   provinceLayers: null, provinceLabels: null, provinceModel: null,
+  finder: null,
 };
 
 /* ---------- helpers ---------- */
@@ -181,6 +185,7 @@ function update({fit = false} = {}) {
   drawChart();
   renderTable();
   saveURL();
+  state.finder?.sync();
   announce(`พบ ${num(s.pos)} สาขา ${num(s.brands)} แบรนด์`);
 }
 
@@ -427,7 +432,7 @@ function onPanelAction(event) {
     case 'select-area': selectNeighborhood(id); break;
     case 'select-store': selectStore(id); break;
     case 'select-venue': selectVenue(id, value); break;
-    case 'search-brand': $('search').value = value; $('neighborhood').value = ''; resetToOverview(); $('search').focus({preventScroll: true}); break;
+    case 'search-brand': $('search').value = value; $('neighborhood').value = ''; resetToOverview(); (state.finder?.box || $('search')).focus({preventScroll: true}); break;
     case 'back': goBack(); break;
     case 'explore-top': exploreTop(); break;
     case 'clear-focus': clearFocus(); break;
@@ -922,6 +927,61 @@ function restoreFromHistory() {
   if (open && state.loaded) frameOpen();
 }
 
+/**
+ * The search box (0.8.0; owner 2026-11-12 12:05, VERBATIM: “ศึกษาแนวคิดเรื่อง Fuzzy search แล้ว implement กับ demo web
+ * ให้ได้ user benefit สูงสุดตาม user intent ในขณะนั้น และตาม product statement”). A name typed is listed with what it is
+ * and where (js/shell/search.js, names from js/find.js) and opens what it names: a province or a ย่าน its boutiques,
+ * a brand group or a kind of place its filter, a brand its boutiques (its name as the words of the text filter, the
+ * page's own way to a brand), a shopping centre and a boutique their pages. The map and the panel no longer change
+ * while the reader is still typing.
+ */
+/** How many boutiques a set of filter values keeps on the overview (every ย่าน). */
+const keptBy = v => filterRows(state.data.rows, {...v, neighborhoodIds: null}).length;
+function openFound(entry) {
+  // A filter chosen by name is shown for the whole page: the ย่าน being looked at is left and the filters that would
+  // leave it no boutique are lifted first (js/shell/search.js#makeWay).
+  const choose = (field, id) => { state.finder.makeWay(field, id); $(field).value = id; $(field).dispatchEvent(new Event('change', {bubbles: true})); };
+  // A boutique or a shopping centre chosen by name always opens: the filters it does not pass, and a ย่าน it is not
+  // in, are lifted first.
+  const clear = rows => {
+    let changed = state.finder.makeWayFor(v => filterRows(rows, {...v, neighborhoodIds: null}).length).length > 0;
+    const hood = selectedNeighborhood();
+    if (hood && !rows.some(r => assignNeighborhood(r, state.neighborhoods) === hood)) { $('neighborhood').value = ''; changed = true; }
+    if (changed) update();
+  };
+  if (entry.kind === 'province') selectProvince(entry.id);
+  else if (entry.kind === 'hood') {
+    // A ย่าน is in one province: a จังหวัด filter on another would leave it empty.
+    const p = provinceByCode(entry.province)?.en || '';
+    if ($('province').value && $('province').value !== p) $('province').value = '';
+    selectNeighborhood(entry.id);
+  }
+  else if (entry.kind === 'segment' || entry.kind === 'channel') choose(entry.kind, entry.id);
+  else if (entry.kind === 'brand') state.finder.filter(entry.name);
+  else if (entry.kind === 'venue') { clear(entry.rows); selectVenue(entry.mallId, entry.venue); }
+  else if (entry.kind === 'store') { clear([entry.row]); selectStore(entry.id); }
+}
+function installFinder() {
+  try {
+    state.finder = installSearch({
+      input: $('search'),
+      index: createIndex({kinds: SEARCH_KINDS, heads: SEARCH_HEADS}),
+      entries: () => searchEntries({data: state.data, neighborhoods: state.neighborhoods}),
+      note: searchNote,
+      // What the reader is looking at comes first among equal names.
+      scope: () => ({province: provinceByName($('province').value)?.code || selectedNeighborhood()?.properties.provinceCode || '', area: $('neighborhood').value}),
+      rows: text => keptBy({...values(), search: text}),
+      unit: 'สาขา',
+      hint: SEARCH_HINT,
+      pick: openFound,
+      // A filter or words chosen from the list: the ย่าน being looked at is left; the filters that may be lifted for
+      // it are these — never the province (a province without it is a reading of that province) nor the cohort.
+      filters: {fields: ['segment', 'channel', 'venue'], values, count: keptBy,
+        leave: () => { $('neighborhood').value = ''; state.panel = overviewPanel(); }},
+    });
+  } catch (e) { state.finder = null; console.warn('Search list unavailable', e); }
+}
+
 function wireEvents() {
   let timer;
   for (const f of FIELDS) $(f).addEventListener(f === 'search' ? 'input' : 'change', () => {
@@ -931,8 +991,10 @@ function wireEvents() {
       state.history = [];
       const feature = selectedNeighborhood();
       state.panel = feature ? {mode: 'neighborhood', id: areaKey(feature), venue: ''} : overviewPanel();
-      update({fit: f !== 'search'});
-    }, f === 'search' ? 180 : 0);
+      // Words applied from the search list are shown on the map. With the list they arrive whole (Enter or the list's
+      // last row); without it the box filters as it is typed in.
+      update({fit: f !== 'search' || Boolean(state.finder && $('search').value)});
+    }, f === 'search' && !state.finder ? 180 : 0);
   });
   $('filters').addEventListener('reset', () => setTimeout(() => { $('cohort').value = 'refresh'; resetToOverview(); }, 0));
   $('panel-view').addEventListener('click', onPanelAction);
@@ -1029,6 +1091,7 @@ async function init() {
     try { $('theme').value = localStorage.getItem('citymeter-luxury-theme') || 'auto'; } catch {}
     applyTheme();
     wireEvents();
+    installFinder();
     update();
     if (state.panel.mode !== 'overview') openMobilePanel();
     window.dispatchEvent(new CustomEvent('citymeter:ready'));
@@ -1040,6 +1103,6 @@ async function init() {
 }
 
 // Developer hook for live tuning in a browser console (not an API; may change without notice).
-window.__citymeter = {state, get map() { return state.map; }, update, fitMap, updateSpatialLayers, applyPreset: (name, opts) => state.map && applyPreset(state.map, name, opts), fitPitched: (b, opts) => state.map && fitPitched(state.map, b, opts), cameraPadding, buildMapStyle};
+window.__citymeter = {state, get map() { return state.map; }, get finder() { return state.finder; }, update, fitMap, updateSpatialLayers, applyPreset: (name, opts) => state.map && applyPreset(state.map, name, opts), fitPitched: (b, opts) => state.map && fitPitched(state.map, b, opts), cameraPadding, buildMapStyle};
 
 init();
