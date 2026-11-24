@@ -40,7 +40,7 @@ import {installVenueBuildings, HOST_LAYERS} from './buildings.js';
 import {installVenueXray} from './venue-xray.js';
 import {assignNeighborhood} from './neighborhoods.js';
 import {configureBrandLogos, brandLogoMarkup} from './brand-logos.js';
-import {configureVenueLogos} from './venue-logos.js';
+import {configureVenueLogos, withFamilyVenueLogos} from './venue-logos.js';
 import {installNeighborhoodLayers, installNeighborhoodLabels, installAreaLabels, buildAreaModel, featureBounds} from './map-layers.js';
 import {installProvinceLayers, buildProvinceModel, provinceBounds, PROVINCE_FILL_MAX_ZOOM, PROVINCE_LABEL_MAX_ZOOM} from './provinces.js';
 import {buildOverviewInsights, buildNeighborhoodProfile, buildStoreDetail, buildVenueProfile, describeStatus, rankVenues} from './profile-model.js';
@@ -982,6 +982,7 @@ const PARTIAL = {
   'basemap': ['แผนที่ฐาน', 'ถนน แหล่งน้ำ และอาคารพื้นหลังอาจไม่แสดง ข้อมูลในแผงและตารางยังใช้ได้', 'Basemap', 'Roads, water and background buildings may be missing; the panel and the table still work'],
   'data/brand-logos.json': ['โลโก้แบรนด์', 'แสดงชื่อแทนโลโก้', 'Brand logos', 'Names are shown instead of logos'],
   'data/venue-logos.json': ['โลโก้สถานที่', 'แสดงชื่อแทนโลโก้', 'Venue logos', 'Names are shown instead of logos'],
+  'data/venue-logo-links.json': ['โลโก้สถานที่ที่รอโอน', 'สถานที่ที่โลโก้ยังรอโอนแสดงชื่ออย่างเดียว', 'Pending venue logos', 'Venues whose logo was pending are shown by name only'],
   'data/venue-buildings.geojson': ['อาคารของสถานที่', 'สถานที่ไม่แสดงเป็นอาคารบนแผนที่', 'Venue buildings', 'Venues are not drawn as buildings on the map'],
   'data/neighborhoods.geojson': ['ขอบเขตย่าน', 'ผลไม่ได้แบ่งตามย่าน มุมมองเริ่มต้นจึงต่างจากปกติ', 'Neighbourhood outlines', 'Results are not divided by neighbourhood, so the opening view differs'],
 };
@@ -993,7 +994,7 @@ function partial(key) {
 
 async function init() {
   try {
-    const resources = ['data/luxury.json', 'data/neighborhoods.geojson', 'data/venue-buildings.geojson', 'data/brand-logos.json', 'data/provinces.geojson', 'data/venue-logos.json'];
+    const resources = ['data/luxury.json', 'data/neighborhoods.geojson', 'data/venue-buildings.geojson', 'data/brand-logos.json', 'data/provinces.geojson', 'data/venue-logos.json', 'data/venue-logo-links.json'];
     const results = await Promise.allSettled(resources.map(fetchJSON));
     if (results[0].status === 'rejected') throw results[0].reason;
     state.data = results[0].value;
@@ -1013,7 +1014,7 @@ async function init() {
     const coverage = configureBrandLogos(results[3].status === 'fulfilled' ? results[3].value : {brands: []}, state.data.rows);
     if (!coverage.complete) console.warn('Brand logo coverage', coverage);
     // Venue logos are optional identity support: a missing or invalid registry only means no venue logos.
-    const venueLogos = configureVenueLogos(results[5].status === 'fulfilled' ? results[5].value : {assets: []});
+    const venueLogos = configureVenueLogos(withFamilyVenueLogos(results[5].status === 'fulfilled' ? results[5].value : {assets: []}, results[6].status === 'fulfilled' ? results[6].value : null));
     if (!venueLogos.complete) console.warn('Venue logo registry', venueLogos);
 
     options('segment', Object.keys(SEGMENTS), SEGMENTS);

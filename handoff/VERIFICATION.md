@@ -127,3 +127,10 @@ Recorded after the Pages run of each release commit (Chrome on macOS, 1512×804,
 ## Release 0.2 (2026-10-22) — retained record
 
 Unit 62/62; harness with stub style JSON (no tiles); live spot checks on the published commit: overview choropleth under Positron roads, explore-3 focus/quiet with 40 context dots, Siam profile with host buildings and logos at zoom ≥ 13.5, dark theme. Not re-verified: native `file:` entry (AC02), fault injection (AC03/AC05), Safari.
+
+## Release 0.8.0 (2026-11-24) — pending venue logos from the CityMETER family — local
+
+- Owner 2026-11-24 07:53 (VERBATIM): “ทำไมหลายร้านในศูนย์การค้าเราควรจะมี logo แล้ว แต่เวบเดโมไม่แสดงโลโก้ แก้ให้ครบทุก venue และตรวจใน dataset อื่นๆด้วยในเคสนี้หาวิธีแก้ที่แก้ได้ทุกที่เหมือนกัน”; continued after “Merge, publish และทำต่อ (Recommended)”.
+- `python3 -I scripts/attach-family-venue-logos.py --family <checkouts> --checked-on 2026-11-24`: 17 pending → 14 found byte-identical to the sheet's SHA-256 (filled 21 venue labels, 10 centres); still pending roast8ry.jpeg, siam-takashimaya.png, siam-kempinski.svg.
+- `npm test` 142/142 (new `tests/venue-logo-links.test.js`, 4 tests).
+- Headless Chrome on a local server (`?d=luxuryBrands&at=BKK&e=venue:035fd94c-…`): Central Ladprao shows `assets/venue-logos-family/central-ladprao.png` at 1440 px dark and 390 px light; with `data/venue-logo-links.json` blocked the notice reads “โลโก้สถานที่ที่รอโอน — สถานที่ที่โลโก้ยังรอโอนแสดงชื่ออย่างเดียว” and the venue shows its name only.

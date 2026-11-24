@@ -57,6 +57,7 @@ basemap ทั้งสองธีมสร้างเองใน `js/map-sty
 - Research master ใน Google Sheets (internal working reference; public demo data: [data/luxury.json](data/luxury.json))
 - ต้นฉบับของมายด์ (internal working reference; public demo data: [data/luxury.json](data/luxury.json))
 - [CityMETER Shopping Center](https://landometer.com/v3/citymeter?d=shoppingCenter)
+- โลโก้สถานที่ที่ทะเบียนยัง “รอโอน” 14 จาก 17 ไฟล์ มาจากเดโมอื่นของ CityMETER ที่ไบต์ตรง SHA-256 ที่ชีตบันทึก (รุ่น 0.8.0, ชุดกลาง `scripts/logo-kit/`) — [DATA_METHOD.md](DATA_METHOD.md)
 
 ## Assets and verification
 
