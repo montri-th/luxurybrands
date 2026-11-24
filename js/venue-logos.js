@@ -11,7 +11,7 @@
  * chain) and parent-complex marks keep their explicit role so the UI can say so.
  * Collecting the files is not a trademark licence.
  */
-const FILE_PATTERN = /^assets\/venue-logos\/[A-Za-z0-9._-]+\.(svg|png|jpe?g|webp)$/;
+const FILE_PATTERN = /^assets\/venue-logos(-family)?\/[A-Za-z0-9._-]+\.(svg|png|jpe?g|webp)$/;
 const MIME_TYPES = new Set(['image/svg+xml', 'image/png', 'image/jpeg', 'image/webp']);
 export const ROLE_LABELS = Object.freeze({
   venue_specific: '', parent_complex: 'โลโก้โครงการแม่', shared_department_store_banner: 'โลโก้ห้างสรรพสินค้าในเครือ', shared_chain_banner: 'โลโก้เครือ', none: '',
@@ -29,6 +29,20 @@ function approvedAsset(item) {
   return Object.freeze({key: item.key, file: item.file, mime: item.mime, width, height, sha256: item.sha256,
     background: /^#[0-9A-Fa-f]{6}$/.test(item.background || '') ? item.background : '#E5E9E6',
     sourcePage: typeof item.sourcePage === 'string' ? item.sourcePage : '', sourceKind: item.sourceKind || ''});
+}
+
+/**
+ * Files the registry lists as pending transfer, taken from the CityMETER demo family when their bytes equal the SHA-256
+ * the sheet recorded (data/venue-logo-links.json, kit citymeter-logos). They fill only the keys the registry leaves empty
+ * for the labels and centres it ties to that logo key; a key the registry already gives is never replaced.
+ */
+export function withFamilyVenueLogos(catalog, links) {
+  if (!catalog || !Array.isArray(catalog.assets) || !links || !Array.isArray(links.assets)) return catalog;
+  const have = new Set(catalog.assets.map(a => a?.key));
+  const added = links.assets.filter(a => a && !have.has(a.key));
+  const keys = new Set(added.map(a => a.key));
+  const fill = (rows, by, id) => (Array.isArray(rows) ? rows.map(r => (r && !r.key && keys.has(by?.[r[id]]) ? {...r, key: by[r[id]], family: true} : r)) : rows);
+  return {...catalog, assets: [...catalog.assets, ...added], venues: fill(catalog.venues, links.venues, 'label'), centers: fill(catalog.centers, links.centers, 'id')};
 }
 
 /** Load the registry; returns coverage figures and rejected records (never throws on a bad catalog). */
